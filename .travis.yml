@@ -18,15 +18,17 @@ cache:
 before_script:
   - cd frontend
   - npm install -g @angular/cli
+  - npm install
+
   - cd ../backend
+  - npm install jasmine-node --save
+  - npm install request --save
   - npm install
   - cd ..
 
 script:
 
   - cd backend
-  - npm install jasmine-node --save
-  - npm install request --save
   - npm test
 
   - cd ..
