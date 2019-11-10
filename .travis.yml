@@ -29,6 +29,8 @@ script:
   - npm install request --save
   - npm test
 
+  - cd ..
+
   - cd frontend
   - ng lint
   - ng test --watch=false
