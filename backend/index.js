@@ -17,7 +17,7 @@ app.listen(5000, () => {
 app.route('/api/holamundo').get((req, res) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.send({
-        holamundo: 'aaaa'
+        holamundo: 'hola mundo'
     })
 });
 

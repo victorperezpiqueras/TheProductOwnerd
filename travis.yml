@@ -1,0 +1,36 @@
+language: node_js
+node_js:
+  - "10.16.3"
+sudo: true
+
+addons:
+  chrome: stable
+
+branches:
+  only:
+    - master
+
+cache:
+  directories:
+    - backend/node_modules
+    - frontend/node_modules
+
+before_script:
+  - cd frontend
+  - npm install -g @angular/cli
+  - cd ../backend
+  - npm install
+  - cd ..
+
+script:
+
+  - cd ../backend
+  - npm install jasmine-node --save
+  - npm install request --save
+  - npm test
+
+  - cd frontend
+  - ng lint
+  - ng test --watch=false
+  - ng build --prod --base-href https://github.com/victorperezpiqueras/TFG
+  
