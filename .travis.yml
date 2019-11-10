@@ -24,7 +24,7 @@ before_script:
 
 script:
 
-  - cd ../backend
+  - cd backend
   - npm install jasmine-node --save
   - npm install request --save
   - npm test
