@@ -1,3 +1,0 @@
-    
-    /* "test-headless": "ng test --watch false --browsers ChromeHeadless",
-    "e2e-headless": "ng e2e --protractor-config='e2e/protractor.conf.ci.js'" */
