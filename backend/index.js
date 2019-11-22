@@ -21,6 +21,9 @@ app.route('/api/holamundo').get((req, res) => {
     })
 });
 
+app.get('/*', function (req, res) {
+    res.sendFile(path.join(__dirname, '../frontend/src/index.html'));
+});
 
 
 
