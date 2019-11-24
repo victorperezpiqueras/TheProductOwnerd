@@ -14,7 +14,8 @@
     "lint": "cd frontend && npm run lint",
     "start": "node backend/server.js",
     "build": "cd frontend && ng build --aot --prod",
-    "postinstall": "cd frontend && ng build --aot --prod"
+    "postinstall": "cd frontend && ng build --aot --prod",
+    "preinstall": "npm install -g @angular/cli"
   },
   "repository": {
     "type": "git",
