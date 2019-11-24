@@ -21,20 +21,14 @@ before_script:
   - npm install
 
   - cd ../backend
-  - npm install jasmine-node --save
-  - npm install request --save
   - npm install
   - cd ..
 
 script:
 
-  - cd backend
-  - npm test
+  - npm run test-backend
 
-  - cd ..
-
-  - cd frontend
-  - ng lint
-  - ng test --watch=false
-  - ng build --prod --base-href https://github.com/victorperezpiqueras/TFG
+  - npm run lint
+  - npm run test-frontend
+  - npm run build
   
