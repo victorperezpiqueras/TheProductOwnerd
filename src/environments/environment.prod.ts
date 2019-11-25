@@ -10,7 +10,8 @@ export const environment = {
   production: true,
   hmr: false,
   version: '1.0.0',
-  serverUrl: 'https://api.chucknorris.io',
+  //serverUrl: '/api',
+  serverUrl: 'https://sleepy-mountain-89375.herokuapp.com/api/',
   defaultLanguage: 'en-US',
   supportedLanguages: ['en-US', 'fr-FR']
 };

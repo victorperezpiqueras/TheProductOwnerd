@@ -14,7 +14,8 @@ export const environment = {
   production: false,
   hmr: true,
   version: '1.0.0' + '-dev',
-  serverUrl: '/api',
+  //serverUrl: '/api',
+  serverUrl: 'https://sleepy-mountain-89375.herokuapp.com/api/',
   defaultLanguage: 'en-US',
   supportedLanguages: ['en-US', 'fr-FR']
 };

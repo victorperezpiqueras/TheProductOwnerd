@@ -4,7 +4,8 @@ import { Observable } from 'rxjs';
 
 @Injectable()
 export class HolaMundoService {
-  private url = 'https://sleepy-mountain-89375.herokuapp.com/api/holamundo/';
+  //private url = process.env.URL;
+  private url = '/holamundo/';
   constructor(private http: HttpClient) {}
 
   getHolaMundo(): Observable<any> {
