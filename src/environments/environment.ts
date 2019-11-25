@@ -15,7 +15,7 @@ export const environment = {
   hmr: true,
   version: '1.0.0' + '-dev',
   // serverUrl: '/api',
-  serverUrl: 'https://the-product-ownerd.herokuapp.com/api/',
+  serverUrl: 'https://the-product-ownerd.herokuapp.com/api',
   defaultLanguage: 'en-US',
   supportedLanguages: ['en-US', 'fr-FR']
 };
