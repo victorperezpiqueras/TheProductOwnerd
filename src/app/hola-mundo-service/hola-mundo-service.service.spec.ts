@@ -13,7 +13,6 @@ describe('Service: HolaMundoService', () => {
   });
 
   it('should ...', inject([HolaMundoService], (service: HolaMundoService) => {
-    //expect(service).toBeTruthy();
-    expect(true).toBeTruthy();
+    expect(service).toBeTruthy();
   }));
 });

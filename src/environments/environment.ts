@@ -8,13 +8,13 @@
 // This is useful for granularity you might need beyond just the environment.
 // Note that as usual, any environment variables you expose through it will end up in your
 // bundle, and you should not use it for any sensitive information like passwords or keys.
-//import { env } from 'src/environments/.env';
+// import { env } from 'src/environments/.env';
 
 export const environment = {
   production: false,
   hmr: true,
   version: '1.0.0' + '-dev',
-  //serverUrl: '/api',
+  // serverUrl: '/api',
   serverUrl: 'https://sleepy-mountain-89375.herokuapp.com/api/',
   defaultLanguage: 'en-US',
   supportedLanguages: ['en-US', 'fr-FR']

@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 
 @Injectable()
 export class HolaMundoService {
-  //private url = process.env.URL;
   private url = '/holamundo/';
   constructor(private http: HttpClient) {}
 
