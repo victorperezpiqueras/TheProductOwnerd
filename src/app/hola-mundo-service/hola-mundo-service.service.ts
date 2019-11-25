@@ -4,9 +4,10 @@ import { Observable } from 'rxjs';
 
 @Injectable()
 export class HolaMundoService {
+  private url = '/api/holamundo/';
   constructor(private http: HttpClient) {}
 
   getHolaMundo(): Observable<any> {
-    return this.http.get<any>('http://localhost:5000/api/holamundo/');
+    return this.http.get<any>(this.url);
   }
 }
