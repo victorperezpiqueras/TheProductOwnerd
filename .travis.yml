@@ -12,6 +12,9 @@ branches:
   only:
     - master
 
+notifications:
+  slack: tfg-tfm:lwgeRIHNsxUNHjAFJPiDBE37
+
 cache:
   directories:
     - backend/node_modules
