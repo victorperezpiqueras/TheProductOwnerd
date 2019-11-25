@@ -4,12 +4,12 @@
 // This is useful for granularity you might need beyond just the environment.
 // Note that as usual, any environment variables you expose through it will end up in your
 // bundle, and you should not use it for any sensitive information like passwords or keys.
-//import { env } from 'src/environments/.env';
+import { env } from 'src/environments/.env';
 
 export const environment = {
   production: true,
   hmr: false,
-  // version: env.npm_package_version,
+  version: '1.0.0',
   serverUrl: 'https://api.chucknorris.io',
   defaultLanguage: 'en-US',
   supportedLanguages: ['en-US', 'fr-FR']
