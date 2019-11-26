@@ -13,7 +13,9 @@ branches:
     - master
 
 notifications:
-  slack: tfg-tfm:lwgeRIHNsxUNHjAFJPiDBE37
+  slack: tfg-tfm:Nt0zyMTjL9krI6NigVWgzYIC
+  on_success: always
+  on_failure: never
 
 cache:
   directories:
