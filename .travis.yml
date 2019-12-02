@@ -1,8 +1,10 @@
 language: node_js
+
 node_js:
-  - '10.16.3'
+  - 10.16.3
 
 dist: trusty
+
 sudo: true
 
 addons:
@@ -24,18 +26,21 @@ cache:
 
 before_script:
   - npm install -g @angular/cli
-  - npm install
-
+  - npm ci
   - cd backend
-  - npm install
+  - npm ci
   - cd ..
 
 script:
   - cd backend
   - npm test
-
   - cd ..
-
   - npm run lint
   - npm run test
   - npm run build
+
+deploy:
+  provider: heroku
+  api_key:
+    secure: ctE6A8pvSz+USSre2xKLofVk/M86Vi0m1VOQAhCdQhyNQ5A8OIAGAmyFnQB1Xgv7u5m9zXdruhA347qOiJ1/nhOS3VD87GEPtYvMuljEVfYZB22lhW8EKE1SHMB1nOMKjq66F1EyR+x41UCeeqnEqC+8fSZBoC3UOd+KpdwmmMVfFbmbgqeUW9wMLAoXjZO917i6VBins67vGqMKm09tou2v1VVoblG7uGojhmPQgFjtwQsVNXkuxXzzfUwD5K8Ke8udSJijacgxzO9Bl0eKTdpGkPNVjUhSH+LReuNTnxgaWpnJ1VvghqpaCWAKoLAUHZLtUr8/iGZlpdlhXySYgKMlALcb2Z4IenjqXs14M3MAdx+kxcbV4gN2E7ZK534wncwnnlRauMizo5fGkKwswIS0sYBrNNmHJZGGJ/OCQaAxLSPiBA74sT5pdz6yDDVAFnPhLJQEqHZ0Io4v6dluWnXnb6zJ0K99IWH1fnfdbaGkn24UvhG/8uriT5TUKDR4OVrWyLZ01Fam1hmtxvATI5wx8Lly4wwINYhI+7fu4s5ub38ktuuGQWwU9zeQVSa+FKhWz7q/A14TP4HB62Y8Y3RX5wZPAq+ENtu8c0oDb7KiDFdoSutpobM9u/5goV6+dOMF2jaHWlOAxGAoHeFHYuQ2oBA5gB8iiP50M2Db190=
+  app: the-product-ownerd
