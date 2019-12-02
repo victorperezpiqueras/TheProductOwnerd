@@ -1,36 +1,27 @@
 language: node_js
-
 node_js:
   - 10.16.3
-
 dist: trusty
-
 sudo: true
-
 addons:
   chrome: stable
-
 branches:
   only:
     - master
-
 notifications:
   slack: tfg-tfm:Nt0zyMTjL9krI6NigVWgzYIC
   on_success: always
   on_failure: never
-
 cache:
   directories:
     - backend/node_modules
     - node_modules
-
 before_script:
   - npm install -g @angular/cli
   - npm ci
   - cd backend
   - npm ci
   - cd ..
-
 script:
   - cd backend
   - npm test
@@ -38,9 +29,8 @@ script:
   - npm run lint
   - npm run test
   - npm run build
-
 deploy:
   provider: heroku
   api_key:
-    secure: ctE6A8pvSz+USSre2xKLofVk/M86Vi0m1VOQAhCdQhyNQ5A8OIAGAmyFnQB1Xgv7u5m9zXdruhA347qOiJ1/nhOS3VD87GEPtYvMuljEVfYZB22lhW8EKE1SHMB1nOMKjq66F1EyR+x41UCeeqnEqC+8fSZBoC3UOd+KpdwmmMVfFbmbgqeUW9wMLAoXjZO917i6VBins67vGqMKm09tou2v1VVoblG7uGojhmPQgFjtwQsVNXkuxXzzfUwD5K8Ke8udSJijacgxzO9Bl0eKTdpGkPNVjUhSH+LReuNTnxgaWpnJ1VvghqpaCWAKoLAUHZLtUr8/iGZlpdlhXySYgKMlALcb2Z4IenjqXs14M3MAdx+kxcbV4gN2E7ZK534wncwnnlRauMizo5fGkKwswIS0sYBrNNmHJZGGJ/OCQaAxLSPiBA74sT5pdz6yDDVAFnPhLJQEqHZ0Io4v6dluWnXnb6zJ0K99IWH1fnfdbaGkn24UvhG/8uriT5TUKDR4OVrWyLZ01Fam1hmtxvATI5wx8Lly4wwINYhI+7fu4s5ub38ktuuGQWwU9zeQVSa+FKhWz7q/A14TP4HB62Y8Y3RX5wZPAq+ENtu8c0oDb7KiDFdoSutpobM9u/5goV6+dOMF2jaHWlOAxGAoHeFHYuQ2oBA5gB8iiP50M2Db190=
+    secure: BenOncehAL8xDoF5P0Fwr7zQOQj6AW6Nzz1M5zVXNeFYoZE5ZSJfff5lvjjhwmnosixaihgrIrYn2v08FLTyVAP0cOLa+MB5pyVEYhFxT3LtvqBS74BmDiNNGrlUjaY73DnZTcQGDFzlj4sQwHVrX3wgeQqoKogOF+zlOOT025GawfZ2DiewUpDvYkXta+JChDBOsBLbSyXGl3sxKZwb+7Ld9MTkisy8sZWl76CDawx64nyVFES6V8vYKfEQULkh8eKTBqXCQD4P7LHd27ccXoU7Ld49oxQ3WwAZNh5B5AlxfOhTjrCxZNozsrxHWugAS4mtFN6T2KrwFrSMynvqZsiPoJUHsPKlvMCKoUDnxeclS4yL3t/DceMrJaXMsRB/hb/L19T3kUobBUHBumJqvvEYhRymjy/UwBhjkZ/wi2nm+Cv2isy0FMUTvc0PhJe/6pbG2NrsdjYuWNcTJaozS4ufNuNO2duqEjbT1DwpfFT1lk1hq4LXpK041PEAa53gC5h6BJB9W8s/fO4MTeimm6Sp6u60yP2rKu8vO8it0zg3/3t7XiVsV4Qcj1kGJKa4Y2yOV+ELP6OxDI+dpaSZrW7u1mhJLB6Y9zMJnj0nQi64MDhErWgaV0f9hHSYdxGgQXZfNv4L6ChKYeVtevQNVjZQky4TXMtvL6TAUpI4vaw=
   app: the-product-ownerd
