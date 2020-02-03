@@ -19,7 +19,7 @@
     <mat-card fxFlex="90%" fxFlex.sm="66%" fxFlex.md="50%" fxFlex.gt-md="33%" class="login-box">
       <form (ngSubmit)="login()" [formGroup]="loginForm" novalidate>
         <div class="login-error" [hidden]="!error || isLoading" translate>
-          Username or password incorrect.
+          {{error}}
         </div>
         <br />
         <div class="login-fields" fxLayout="column">

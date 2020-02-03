@@ -28,7 +28,8 @@ export class AuthenticationService {
     // Replace by proper authentication call
     const data = {
       username: context.username,
-      token: '123456'
+      //: '123456'
+      id:1
     };
     this.credentialsService.setCredentials(data, context.remember);
     return of(data);

@@ -20,6 +20,10 @@ import { LoginModule } from './login/login.module';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HolaMundoService } from './hola-mundo-service/hola-mundo-service.service';
+import { LoginService } from './services/login-service';
+import { ProyectosModule } from './proyectos/proyectos.module';
+import { UsuariosService } from './services/usuarios-service';
+import { ProyectosService } from './services/proyectos-service';
 
 @NgModule({
   imports: [
@@ -39,11 +43,12 @@ import { HolaMundoService } from './hola-mundo-service/hola-mundo-service.servic
 
     HomeModule,
     LoginModule,
+    ProyectosModule,
 
     AppRoutingModule // must be imported as the last module as it contains the fallback route
   ],
   declarations: [AppComponent],
-  providers: [HolaMundoService],
+  providers: [HolaMundoService, LoginService, UsuariosService, ProyectosService],
   entryComponents: [],
   bootstrap: [AppComponent]
 })

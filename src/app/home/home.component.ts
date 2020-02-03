@@ -16,20 +16,10 @@ export class HomeComponent implements OnInit {
   title = 'Frontend';
   message = 'Sin mensaje';
 
-  constructor(private quoteService: QuoteService, private holaMundoService: HolaMundoService) {}
+  constructor(private holaMundoService: HolaMundoService) {}
 
   ngOnInit() {
     this.isLoading = true;
-    this.quoteService
-      .getRandomQuote({ category: 'dev' })
-      .pipe(
-        finalize(() => {
-          this.isLoading = false;
-        })
-      )
-      .subscribe((quote: string) => {
-        this.quote = quote;
-      });
   }
 
   clickButton() {
