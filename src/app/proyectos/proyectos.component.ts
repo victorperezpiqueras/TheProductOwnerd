@@ -8,7 +8,6 @@ import { Proyecto } from '@app/models/proyectos';
 import { ProyectosService } from '@app/services/proyectos-service';
 import { Observable, forkJoin } from 'rxjs';
 
-
 @Component({
   selector: 'app-proyectos',
   templateUrl: './proyectos.component.html',
@@ -18,10 +17,10 @@ export class ProyectosComponent implements OnInit, OnDestroy {
   isLoading = false;
   panelOpenState = false;
 
-  proyectos: Proyecto[]=[];
+  proyectos: Proyecto[] = [];
 
-  displayedColumns: string[] = ['Nombre','Rol'];
-  dataSource:any[]=[];
+  displayedColumns: string[] = ['Nombre', 'Rol'];
+  dataSource: any[] = [];
 
   constructor(
     private router: Router,
@@ -30,15 +29,12 @@ export class ProyectosComponent implements OnInit, OnDestroy {
     private credentialsService: CredentialsService,
     private usuariosService: UsuariosService,
     private proyectosService: ProyectosService
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     this.isLoading = true;
-    var proyectos$ = this.usuariosService.getUsuariosProyectos(this.username);
+    var proyectos$ = this.usuariosService.getUsuariosProyectos(this.idusuario);
     var usuariosTotales$ = this.proyectosService.getProyectosUsuariosRoles();
-
-    
 
     forkJoin([proyectos$, usuariosTotales$]).subscribe(results => {
       results[0].forEach((element: any) => {
@@ -50,19 +46,15 @@ export class ProyectosComponent implements OnInit, OnDestroy {
         for (var user of results[1]) {
           if (user.idproyecto == proy.idproyecto) {
             proy.usuarios.push(user);
-            console.log(user)
+            console.log(user);
           }
         }
       }
       this.isLoading = false;
     });
-
-
-
   }
 
-  ngOnDestroy() { }
-
+  ngOnDestroy() {}
 
   /* getUsuarios(proyecto:any){
     this.proyectosService.getProyectosUsuarios(proyecto.idproyecto).subscribe((usuarios)=>{
@@ -78,4 +70,8 @@ export class ProyectosComponent implements OnInit, OnDestroy {
     return credentials ? credentials.username : null;
   }
 
+  get idusuario(): number | null {
+    const credentials = this.credentialsService.credentials;
+    return credentials ? credentials.id : null;
+  }
 }
