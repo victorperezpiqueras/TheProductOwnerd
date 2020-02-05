@@ -36,7 +36,14 @@ module.exports = function(config) {
     // Level of logging, can be: LOG_DISABLE || LOG_ERROR || LOG_WARN || LOG_INFO || LOG_DEBUG
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['ChromeHeadless'],
+    /* browsers: ['ChromeHeadless'], */
+    browsers: ['Chrome-headless'],
+    customLaunchers: {
+      'Chrome-headless': {
+        base: 'Chrome',
+        flags: ['--headless', '--remote-debugging-port=9222', '--no-sandbox']
+      }
+    },
     singleRun: false,
     restartOnFileChange: true
   });
