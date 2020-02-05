@@ -24,6 +24,7 @@ import { LoginService } from './services/login-service';
 import { ProyectosModule } from './proyectos/proyectos.module';
 import { UsuariosService } from './services/usuarios-service';
 import { ProyectosService } from './services/proyectos-service';
+import { ProyectoDialogComponent } from './proyectos/proyectoDialog/proyectoDialog.component';
 
 @NgModule({
   imports: [
@@ -47,9 +48,9 @@ import { ProyectosService } from './services/proyectos-service';
 
     AppRoutingModule // must be imported as the last module as it contains the fallback route
   ],
-  declarations: [AppComponent],
+  declarations: [AppComponent, ProyectoDialogComponent],
   providers: [HolaMundoService, LoginService, UsuariosService, ProyectosService],
-  entryComponents: [],
+  entryComponents: [ProyectoDialogComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

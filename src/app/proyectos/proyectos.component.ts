@@ -7,6 +7,8 @@ import { CredentialsService } from '@app/core';
 import { Proyecto } from '@app/models/proyectos';
 import { ProyectosService } from '@app/services/proyectos-service';
 import { Observable, forkJoin } from 'rxjs';
+import { MatDialogConfig, MatDialogRef, MatDialog } from '@angular/material/dialog';
+import { ProyectoDialogComponent } from './proyectoDialog/proyectoDialog.component';
 
 @Component({
   selector: 'app-proyectos',
@@ -14,6 +16,9 @@ import { Observable, forkJoin } from 'rxjs';
   styleUrls: ['./proyectos.component.scss']
 })
 export class ProyectosComponent implements OnInit, OnDestroy {
+  /* --------------DIALOG ELEMENTS AND VARIABLES-------------- */
+  dialogRef: MatDialogRef<any>;
+
   isLoading = false;
   panelOpenState = false;
 
@@ -28,11 +33,44 @@ export class ProyectosComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private credentialsService: CredentialsService,
     private usuariosService: UsuariosService,
-    private proyectosService: ProyectosService
+    private proyectosService: ProyectosService,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit() {
+    this.actualizarDatos();
+  }
+
+  ngOnDestroy() {}
+
+  crearProyectoDialog(): void {
+    const dialogConfig = new MatDialogConfig();
+    //dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      proyecto: new Proyecto(null, null, null, null),
+      dialogMode: 'create'
+    };
+    this.dialogRef = this.dialog.open(ProyectoDialogComponent, dialogConfig);
+    this.dialogRef.afterClosed().subscribe(data => {
+      if (data != undefined) this.addProyecto(data.proyecto);
+    });
+  }
+
+  addProyecto(proyecto: Proyecto) {
+    var data = {
+      nombre: proyecto.nombre,
+      descripcion: proyecto.descripcion,
+      idusuario: this.idusuario
+    };
+    this.proyectosService.crearProyecto(data).subscribe(() => {
+      this.actualizarDatos();
+    });
+  }
+
+  actualizarDatos() {
     this.isLoading = true;
+    this.proyectos = [];
     var proyectos$ = this.usuariosService.getUsuariosProyectos(this.idusuario);
     var usuariosTotales$ = this.proyectosService.getProyectosUsuariosRoles();
 
@@ -53,17 +91,6 @@ export class ProyectosComponent implements OnInit, OnDestroy {
       this.isLoading = false;
     });
   }
-
-  ngOnDestroy() {}
-
-  /* getUsuarios(proyecto:any){
-    this.proyectosService.getProyectosUsuarios(proyecto.idproyecto).subscribe((usuarios)=>{
-      console.log(proyectos);
-      this.proyectos=proyectos;
-      console.log(this.proyectos)
-      this.isLoading = false;
-    })
-  } */
 
   get username(): string | null {
     const credentials = this.credentialsService.credentials;
