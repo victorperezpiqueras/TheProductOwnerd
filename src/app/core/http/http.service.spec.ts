@@ -1,4 +1,4 @@
-import { Type } from '@angular/core';
+/* import { Type } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { HttpClient, HttpInterceptor } from '@angular/common/http';
@@ -104,3 +104,4 @@ describe('HttpService', () => {
     httpMock.expectOne({}).flush({});
   });
 });
+ */
