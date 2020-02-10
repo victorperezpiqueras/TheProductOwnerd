@@ -27,7 +27,6 @@ script:
   - cd backend
   - npm test
   - cd ..
-  - npm run test
   - npm run build
 deploy:
   provider: heroku
