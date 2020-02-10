@@ -12,6 +12,7 @@ import { UsuariosService } from '@app/services/usuarios-service';
 import { ProyectosService } from '@app/services/proyectos-service';
 import { ProyectoComponent } from './proyecto.component';
 import { ProyectosComponent } from '@app/proyectos/proyectos.component';
+import { HighchartsChartModule } from 'highcharts-angular';
 
 describe('ProyectoComponent', () => {
   let component: ProyectoComponent;
@@ -27,7 +28,8 @@ describe('ProyectoComponent', () => {
         RouterTestingModule,
         TranslateModule.forRoot(),
         ReactiveFormsModule,
-        CoreModule
+        CoreModule,
+        HighchartsChartModule
       ],
       declarations: [ProyectoComponent],
       providers: [AuthenticationService, CredentialsService, UsuariosService, ProyectosService]
