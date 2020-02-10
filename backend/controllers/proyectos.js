@@ -20,6 +20,19 @@ ControllerProyectos.getProyectos = function() {
     });
   });
 };
+ControllerProyectos.getProyecto = function(id) {
+  return new Promise(function(resolve, reject) {
+    var sql = 'select * from proyectos where idproyecto = ?';
+    connection.query(sql, [id], function(err, result) {
+      if (err) {
+        reject({ error: 'Error inesperado' });
+      } else {
+        console.log(result);
+        resolve(result);
+      }
+    });
+  });
+};
 
 ControllerProyectos.getProyectosUsuarios = function(id) {
   return new Promise(function(resolve, reject) {

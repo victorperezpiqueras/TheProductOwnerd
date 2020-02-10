@@ -24,7 +24,8 @@
       </mat-card> -->
         <mat-expansion-panel class="proyecto-card" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
           <mat-expansion-panel-header>
-            <mat-panel-title>
+            <mat-panel-title
+              >{{ proyecto.idproyecto }}
               {{ proyecto.nombre }}
             </mat-panel-title>
             <mat-panel-description>
@@ -54,7 +55,17 @@
             </mat-list-item>
           </mat-list> -->
           <br />
-          <button mat-raised-button color="primary" class="abrir-btn">Abrir proyecto</button>
+          <button
+            mat-raised-button
+            color="primary"
+            class="abrir-btn"
+            [routerLink]="['/proyectos', proyecto.idproyecto]"
+            routerLinkActive="active"
+            [state]="{ proyecto: proyecto }"
+            (click)="proyectoSeleccionado(proyecto)"
+          >
+            Abrir proyecto
+          </button>
         </mat-expansion-panel>
         <br />
       </div>

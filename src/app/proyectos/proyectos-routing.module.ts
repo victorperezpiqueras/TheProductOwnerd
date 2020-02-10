@@ -5,9 +5,14 @@ import { extract } from '@app/core';
 import { ProyectosComponent } from './proyectos.component';
 import { Shell } from '@app/shell/shell.service';
 
-const routes: Routes =  [
+const routes: Routes = [
   Shell.childRoutes([
-    { path: 'proyectos', component: ProyectosComponent, data: { title: extract('Proyectos') } }
+    {
+      path: 'proyectos',
+      component: ProyectosComponent,
+      data: { title: extract('Proyectos') }
+    } /* ,
+    { path: 'proyectos/:id', component: ProyectosComponent, data: { title: extract('Proyectossssssssssss') } } */
   ])
 ];
 

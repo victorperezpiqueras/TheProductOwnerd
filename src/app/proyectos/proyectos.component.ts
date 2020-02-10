@@ -27,6 +27,8 @@ export class ProyectosComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = ['Nombre', 'Rol'];
   dataSource: any[] = [];
 
+  proyecto: Proyecto;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -40,8 +42,6 @@ export class ProyectosComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.actualizarDatos();
   }
-
-  ngOnDestroy() {}
 
   crearProyectoDialog(): void {
     const dialogConfig = new MatDialogConfig();
@@ -100,5 +100,12 @@ export class ProyectosComponent implements OnInit, OnDestroy {
   get idusuario(): number | null {
     const credentials = this.credentialsService.credentials;
     return credentials ? credentials.id : null;
+  }
+
+  ngOnDestroy() {
+    if (this.proyecto) this.proyectosService.proyecto = this.proyecto;
+  }
+  proyectoSeleccionado(proyecto: Proyecto) {
+    this.proyecto = proyecto;
   }
 }

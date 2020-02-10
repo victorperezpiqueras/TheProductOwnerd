@@ -19,6 +19,19 @@
       <mat-icon>folder</mat-icon>
       <span translate>Proyectos</span>
     </button>
+    <button
+      mat-button
+      *ngFor="let proy of proyectosFavoritos"
+      [routerLink]="['/proyectos', proy.idproyecto]"
+      routerLinkActive="active"
+      (click)="proyectoSeleccionado(proy)"
+    >
+      <mat-icon>star</mat-icon>
+      <span>{{ proy.nombre }}</span>
+    </button>
+    <button mat-button class="add">
+      <mat-icon>add_circle_outline</mat-icon>
+    </button>
   </div>
   <span fxFlex></span>
   <button mat-icon-button [matMenuTriggerFor]="languageMenu">
