@@ -23,7 +23,9 @@ export class ProyectosService {
   getProyectosUsuarios(idproyecto: any): Observable<any> {
     return this.http.get<any>(this.url + '/' + idproyecto + '/usuarios', httpOptions);
   }
-
+  getProyectoUsuariosRoles(idproyecto: any): Observable<any> {
+    return this.http.get<any>(this.url + '/' + idproyecto + '/usuarios/roles', httpOptions);
+  }
   getProyectosUsuariosRoles(): Observable<any> {
     return this.http.get<any>(this.url + '/usuarios/roles', httpOptions);
   }

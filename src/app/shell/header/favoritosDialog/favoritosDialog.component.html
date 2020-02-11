@@ -1,0 +1,20 @@
+<div class="container">
+  <h2 mat-dialog-title>Proyectos favoritos</h2>
+  <mat-list>
+    <div *ngFor="let proy of proyectos">
+      <mat-list-item>
+        <div>
+          <mat-icon *ngIf="proy.fav" class="icon" (click)="toggleFavoritos(proy)">star</mat-icon>
+          <mat-icon *ngIf="!proy.fav" class="icon" (click)="toggleFavoritos(proy)">star_border</mat-icon>
+        </div>
+        {{ proy.nombre }}
+      </mat-list-item>
+      <mat-divider></mat-divider>
+    </div>
+  </mat-list>
+  <br />
+  <div mat-dialog-actions>
+    <button class="close-button" mat-raised-button (click)="close()" color="primary">Cancelar</button>
+    <button class="save-button" mat-raised-button (click)="save()" color="accent">Guardar</button>
+  </div>
+</div>

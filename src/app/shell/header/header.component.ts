@@ -7,6 +7,9 @@ import { AuthenticationService, CredentialsService, I18nService } from '@app/cor
 import { Proyecto } from '@app/models/proyectos';
 import { ProyectosService } from '@app/services/proyectos-service';
 import { UsuariosService } from '@app/services/usuarios-service';
+import { MatDialogRef, MatDialogConfig, MatDialog } from '@angular/material';
+import { ProyectoDialogComponent } from '@app/proyectos/proyectoDialog/proyectoDialog.component';
+import { FavoritosDialogComponent } from './favoritosDialog/favoritosDialog.component';
 
 @Component({
   selector: 'app-header',
@@ -16,8 +19,9 @@ import { UsuariosService } from '@app/services/usuarios-service';
 export class HeaderComponent implements OnInit {
   @Input() sidenav!: MatSidenav;
 
-  proyectosFavoritos: Proyecto[];
+  proyectosFavoritos: Proyecto[] = [];
   proyecto: Proyecto;
+  dialogRef: MatDialogRef<any>;
 
   constructor(
     private router: Router,
@@ -26,13 +30,21 @@ export class HeaderComponent implements OnInit {
     private credentialsService: CredentialsService,
     private i18nService: I18nService,
     private usuariosService: UsuariosService,
-    private proyectosService: ProyectosService
+    private proyectosService: ProyectosService,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit() {
-    this.usuariosService.getUsuariosProyectos(this.idusuario).subscribe(proyectos => {
+    /* this.usuariosService.getUsuariosProyectos(this.idusuario).subscribe(proyectos => {
       this.proyectosFavoritos = proyectos;
-    });
+    }); */
+    //this.proyectosFavoritos
+    this.cargarFavoritos();
+  }
+
+  cargarFavoritos() {
+    var favoritos = localStorage.getItem('proyectosFavoritos');
+    if (favoritos) this.proyectosFavoritos = JSON.parse(favoritos);
   }
 
   setLanguage(language: string) {
@@ -72,5 +84,37 @@ export class HeaderComponent implements OnInit {
     console.log(proyecto);
     this.proyecto = proyecto;
     this.proyectosService.proyecto = proyecto;
+  }
+
+  agregarFavorito() {
+    //var proyectos;
+    this.usuariosService.getUsuariosProyectos(this.idusuario).subscribe(proyectos => {
+      for (var proy of proyectos) {
+        for (var fav of this.proyectosFavoritos) {
+          if (proy.idproyecto == fav.idproyecto) {
+            proy.fav = true;
+            break;
+          } else {
+            proy.fav = false;
+          }
+        }
+      }
+      console.log(this.proyectosFavoritos);
+      console.log(proyectos);
+      const dialogConfig = new MatDialogConfig();
+      dialogConfig.autoFocus = true;
+      dialogConfig.data = {
+        //favoritos: this.proyectosFavoritos,
+        proyectos: proyectos
+      };
+      this.dialogRef = this.dialog.open(FavoritosDialogComponent, dialogConfig);
+      this.dialogRef.afterClosed().subscribe(data => {
+        if (data != undefined) {
+          var favoritos = data.proyectos.filter((proy: any) => proy.fav);
+          localStorage.setItem('proyectosFavoritos', JSON.stringify(favoritos));
+          this.cargarFavoritos();
+        }
+      });
+    });
   }
 }

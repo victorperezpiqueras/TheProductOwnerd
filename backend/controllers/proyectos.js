@@ -27,8 +27,8 @@ ControllerProyectos.getProyecto = function(id) {
       if (err) {
         reject({ error: 'Error inesperado' });
       } else {
-        console.log(result);
-        resolve(result);
+        console.log(result[0]);
+        resolve(result[0]);
       }
     });
   });
@@ -50,6 +50,27 @@ ControllerProyectos.getProyectosUsuarios = function(id) {
           console.log('Close the database connection.');
         }); */
         resolve(result);
+      }
+    });
+  });
+};
+ControllerProyectos.getProyectoUsuariosRoles = function(id) {
+  return new Promise(function(resolve, reject) {
+    var sql =
+      'select u.idusuario, u.nombre, u.email, r.nombre as rol from usuarios u,' +
+      'proyectos p, roles r where u.idusuario = r.idusuario and p.idproyecto = r.idproyecto and p.idproyecto = ?';
+    connection.query(sql, [id], function(err, result) {
+      if (err) {
+        /* connection.end(function(err) {
+          console.log('Error DB');
+        }); */
+        reject({ error: 'Error inesperado' });
+      } else {
+        console.log(result /* [0] */);
+        /* connection.end(function(err) {
+          console.log('Close the database connection.');
+        }); */
+        resolve(result /* [0] */);
       }
     });
   });

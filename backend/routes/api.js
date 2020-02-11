@@ -103,6 +103,18 @@ router.get('/proyectos/:id/usuarios', function(req, res, next) {
     });
 });
 
+router.get('/proyectos/:id/usuarios/roles', function(req, res, next) {
+  console.log('getProyectoUsuariosRoles');
+  controllerProyectos
+    .getProyectoUsuariosRoles(req.params.id)
+    .then(function(usuarios) {
+      res.json(usuarios);
+    })
+    .catch(function(err) {
+      res.status(500).json(err);
+    });
+});
+
 router.get('/proyectos/usuarios/roles', function(req, res, next) {
   console.log('getProyectosUsuariosRoles');
   controllerProyectos
