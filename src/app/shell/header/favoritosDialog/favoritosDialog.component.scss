@@ -2,8 +2,15 @@ h1 {
   font-family: "Roboto", sans-serif;
 }
 
-.icon {
-  /* float: right;
-  text-align: end; */
+/* .icon {
+//   float: right;
+//  text-align: end;
   cursor: pointer;
+} */
+
+.list-item {
+  cursor: pointer;
+}
+.list-item:hover {
+  background-color: #d1d1d1;
 }

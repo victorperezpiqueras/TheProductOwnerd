@@ -1,0 +1,72 @@
+<div class="container">
+  <div *ngIf="proyecto" fxLayout="column" fxLayoutGap="2%">
+    <app-loader class="loader" [isLoading]="isLoading"></app-loader>
+    <div fxLayout="row">
+      <h2 fxFlex="30">Product Backlog Items:</h2>
+
+      <form class="example-form" fxLayoutAlign="center center" fxFlex="30">
+        <mat-form-field class="example-full-width">
+          <!--  <mat-label>Filtrar por nombre</mat-label> -->
+          <input matInput placeholder="Filter by name or date..." />
+          <!-- style="border-style: solid;border-radius: 50px;" -->
+        </mat-form-field>
+        <button mat-raised-button color="primary" style="margin-left: 5%;">
+          <mat-icon>search</mat-icon>
+        </button>
+      </form>
+
+      <div fxLayoutAlign="end center" fxFlex>
+        <button class="mat-button-create" mat-fab color="primary" (click)="crearPbiDialog()">+</button>
+      </div>
+    </div>
+
+    <div>
+      <div class="droplist" cdkDropList (cdkDropListDropped)="drop($event)">
+        <div *ngFor="let pbi of pbis">
+          <mat-card
+            class="card"
+            matBadge="{{ pbi.estimacion }}"
+            matBadgeOverlap="true"
+            matBadgeSize="medium"
+            matBadgeColor="accent"
+            cdkDragBoundary=".droplist"
+            cdkDrag
+            (click)="editarPbiDialog(pbi)"
+          >
+            <mat-card-header>
+              <mat-card-title>#{{ pbi.idpbi }} - {{ pbi.titulo }}</mat-card-title>
+              <!-- <mat-card-subtitle> -->
+              <p style="color: rgb(119, 119, 119);font-size: 1.5vmin;">{{ pbi.descripcion }}</p>
+              <!-- <button mat-mini-fab color="warn">1</button> -->
+              <!-- </mat-card-subtitle> -->
+            </mat-card-header>
+          </mat-card>
+          <br />
+        </div>
+      </div>
+
+      <div fxLayoutAlign="center center">
+        <button mat-raised-button color="primary">
+          View Done Items
+        </button>
+      </div>
+    </div>
+
+    <!-- <mat-accordion cdkDropList (cdkDropListDropped)="drop($event)">
+      <div *ngFor="let pbi of pbis">
+        <div matBadge="{{pbi.estimacion}}" matBadgeOverlap="true" matBadgeSize="medium" matBadgeColor="accent" cdkDrag>
+        <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false" > 
+          <mat-expansion-panel-header>
+            <mat-panel-title>#{{pbi.idpbi}} - {{ pbi.titulo }}</mat-panel-title>
+            <mat-panel-description>
+              {{ pbi.descripcion }}
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+        </mat-expansion-panel>
+      </div>
+        <br />
+      </div>
+    </mat-accordion> -->
+  </div>
+</div>

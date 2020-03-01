@@ -32,4 +32,8 @@ export class ProyectosService {
   crearProyecto(data: any): Observable<any> {
     return this.http.post<any>(this.url, JSON.stringify(data), httpOptions);
   }
+
+  getProyectosPBIs(idproyecto: any): Observable<any> {
+    return this.http.get<any>(this.url + '/' + idproyecto + '/pbis', httpOptions);
+  }
 }

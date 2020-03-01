@@ -27,6 +27,7 @@ import { ProyectosService } from './services/proyectos-service';
 import { ProyectoDialogComponent } from './proyectos/proyectoDialog/proyectoDialog.component';
 import { ProyectoModule } from './proyecto/proyecto.module';
 import { FavoritosDialogComponent } from './shell/header/favoritosDialog/favoritosDialog.component';
+import { PbiDialogComponent } from './proyecto/backlog/pbiDialog/pbiDialog.component';
 
 @NgModule({
   imports: [
@@ -51,9 +52,9 @@ import { FavoritosDialogComponent } from './shell/header/favoritosDialog/favorit
 
     AppRoutingModule // must be imported as the last module as it contains the fallback route
   ],
-  declarations: [AppComponent, ProyectoDialogComponent, FavoritosDialogComponent],
+  declarations: [AppComponent, ProyectoDialogComponent, FavoritosDialogComponent, PbiDialogComponent],
   providers: [HolaMundoService, LoginService, UsuariosService, ProyectosService],
-  entryComponents: [ProyectoDialogComponent, FavoritosDialogComponent],
+  entryComponents: [ProyectoDialogComponent, FavoritosDialogComponent, PbiDialogComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

@@ -115,6 +115,18 @@ router.get('/proyectos/:id/usuarios/roles', function(req, res, next) {
     });
 });
 
+router.get('/proyectos/:id/pbis', function(req, res, next) {
+  console.log('getProyectoPBIs');
+  controllerProyectos
+    .getProyectoPBIs(req.params.id)
+    .then(function(pbis) {
+      res.json(pbis);
+    })
+    .catch(function(err) {
+      res.status(500).json(err);
+    });
+});
+
 router.get('/proyectos/usuarios/roles', function(req, res, next) {
   console.log('getProyectosUsuariosRoles');
   controllerProyectos

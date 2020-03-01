@@ -1,0 +1,20 @@
+<div class="container" fxLayout="column" fxLayoutAlign="center center">
+  <h2 mat-dialog-title>Crea un nuevo proyecto</h2>
+
+  <div mat-dialog-content>
+    <mat-form-field>
+      <input matInput required placeholder="Nombre del proyecto" [(ngModel)]="name" />
+    </mat-form-field>
+  </div>
+  <div mat-dialog-content>
+    <mat-form-field>
+      <input matInput required placeholder="Descripción" [(ngModel)]="descripcion" />
+    </mat-form-field>
+  </div>
+  <div mat-dialog-actions>
+    <button class="close-button" mat-raised-button (click)="close()" color="primary">Cerrar</button>
+    <button class="save-button" mat-raised-button (click)="save()" color="warn" [disabled]="!name">
+      {{ dialogMode | uppercase }}
+    </button>
+  </div>
+</div>

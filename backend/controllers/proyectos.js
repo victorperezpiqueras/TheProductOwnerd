@@ -255,4 +255,18 @@ ControllerProyectos.proyectoAgregarUsuario = function(id, data) {
   });
 };
 
+ControllerProyectos.getProyectoPBIs = function(id) {
+  return new Promise(function(resolve, reject) {
+    var sql = 'select p.* from pbis p, proyectos pr where pr.idproyecto=p.idproyecto and p.idproyecto = ?';
+    connection.query(sql, [id], function(err, result) {
+      if (err) {
+        reject({ error: 'Error inesperado' });
+      } else {
+        console.log(result);
+        resolve(result);
+      }
+    });
+  });
+};
+
 module.exports = ControllerProyectos;
