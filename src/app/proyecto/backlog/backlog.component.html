@@ -39,10 +39,9 @@
           >
             <mat-card-header>
               <mat-card-title>#{{ pbi.idpbi }} - {{ pbi.titulo }}</mat-card-title>
-              <!-- <mat-card-subtitle> -->
-              <p style="color: rgb(119, 119, 119);font-size: 1.5vmin;">{{ pbi.descripcion }}</p>
-              <!-- <button mat-mini-fab color="warn">1</button> -->
-              <!-- </mat-card-subtitle> -->
+              <p style="color: rgb(119, 119, 119);font-size: 1.5vmin;">
+                {{ pbi.descripcion | limitTo: 100 }}
+              </p>
             </mat-card-header>
           </mat-card>
           <br />
@@ -67,14 +66,13 @@
             matBadgeOverlap="true"
             matBadgeSize="medium"
             matBadgeColor="accent"
-            (click)="editarPbiDialog(pbi)"
+            (click)="verPbiDialog(pbi)"
           >
             <mat-card-header>
               <mat-card-title>#{{ pbi.idpbi }} - {{ pbi.titulo }}</mat-card-title>
-              <!-- <mat-card-subtitle> -->
-              <p style="color: rgb(119, 119, 119);font-size: 1.5vmin;">{{ pbi.descripcion }}</p>
-              <!-- <button mat-mini-fab color="warn">1</button> -->
-              <!-- </mat-card-subtitle> -->
+              <p style="color: rgb(119, 119, 119);font-size: 1.5vmin;">
+                {{ pbi.descripcion | limitTo: 100 }}
+              </p>
             </mat-card-header>
           </mat-card>
           <br />

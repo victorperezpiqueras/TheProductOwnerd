@@ -1,5 +1,10 @@
 .container {
+  overflow: hidden;
+}
+
+.container2 {
   /* position: relative !important; */
+  overflow-y: auto;
 }
 
 .title-card {
@@ -22,12 +27,16 @@
   font-weight: bold;
 }
 
+.title {
+  width: 20%;
+}
+
 .description {
   width: 100%;
 }
 
 .checkbox {
-  margin-right: 2%;
+  margin-right: 1%;
 }
 
 .estimacion {
@@ -36,9 +45,15 @@
   justify-content: center;
   vertical-align: middle;
 }
-.save-button {
+
+/* .save-button {
   margin-left: 10%;
-}
+  display: inline-block;
+  margin-left: 80%;
+  width: 5vmin;
+  height: 4vmin;
+} */
+
 .close-button {
   margin-right: 10%;
 }

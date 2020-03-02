@@ -27,6 +27,8 @@ export class PbiDialogComponent implements OnInit {
   fibonacci: number[] = [0, 1, 2, 3, 5, 8, 13, 21, 40];
   labelColor: string;
 
+  disabled: boolean = false;
+
   constructor(
     public dialogRef: MatDialogRef<PbiDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -36,12 +38,15 @@ export class PbiDialogComponent implements OnInit {
       this.dialogMode = 'Create new PBI';
     } else if (data.dialogMode == 'edit') {
       this.dialogMode = 'Edit';
+    } else if (data.dialogMode == 'view') {
+      this.dialogMode = 'View';
+      this.disabled = true;
     }
     console.log(data.pbi);
     this.idpbi = data.pbi.idpbi;
     this.titulo = data.pbi.titulo;
     this.descripcion = data.pbi.descripcion;
-    this.done = data.pbi.done;
+    this.done = data.pbi.done ? data.pbi.done : 0;
     this.label = data.pbi.label;
     this.estimacion = data.pbi.estimacion;
     this.idproyecto = data.pbi.idproyecto;
@@ -55,13 +60,12 @@ export class PbiDialogComponent implements OnInit {
   }
 
   filled(): boolean {
-    console.log(this.titulo);
+    //console.log(this.titulo);
     var titulo = this.titulo && this.titulo.length > 0;
-    var done = this.done != null;
+    /* var done = this.done != null; */
     var label = this.label && this.label.length > 0;
     /* var estimacion=this.estimacion; */
-    var prioridad = this.prioridad != null;
-    return titulo && done && label && prioridad;
+    return titulo && label;
   }
 
   markDone() {
@@ -84,7 +88,7 @@ export class PbiDialogComponent implements OnInit {
         this.labelColor = '#ffbb00';
         break;
       default:
-        this.labelColor = '#bababa';
+        this.labelColor = '#000000';
     }
   }
 
@@ -97,7 +101,16 @@ export class PbiDialogComponent implements OnInit {
   save() {
     this.dialogRef.close({
       //proyecto: new Proyecto(null, this.name, this.descripcion, [])
-      pbi: new Pbi(this.idpbi, this.titulo, this.descripcion, this.done, this.label, this.estimacion)
+      pbi: new Pbi(
+        this.idpbi,
+        this.titulo,
+        this.descripcion,
+        this.done,
+        this.label,
+        this.estimacion,
+        this.prioridad,
+        this.idproyecto
+      )
     });
     //show snackbar on success:
     if (this.dialogMode == 'edit') this.openSnackBar('PBI edited successfully', 'Close');
@@ -105,6 +118,7 @@ export class PbiDialogComponent implements OnInit {
   }
 
   close() {
+    console.log();
     this.dialogRef.close();
   }
 }

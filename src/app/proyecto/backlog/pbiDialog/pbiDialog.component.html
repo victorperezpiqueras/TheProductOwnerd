@@ -1,110 +1,134 @@
 <div class="container" fxLayout="column" fxLayoutAlign="center center">
   <button class="close" mat-button (click)="close()">X</button>
-
-  <div fxLayout="row" fxLayoutAlign="center center">
-    <mat-card class="title-card" fxLayout="row" fxLayoutAlign="center center" [style.background-color]="labelColor">
-      <!-- matBadge="{{ estimacion }}"
+  <div class="container2" fxLayout="column" fxLayoutAlign="center center">
+    <div fxLayout="row" fxLayoutAlign="center center">
+      <mat-card class="title-card" fxLayout="row" fxLayoutAlign="center center" [style.background-color]="labelColor">
+        <!-- matBadge="{{ estimacion }}"
       matBadgeOverlap="true"
       matBadgeSize="large"
       matBadgeColor="accent" -->
 
-      <!-- <h1 mat-dialog-title>{{dialogMode}}</h1> -->
-      <!--  <div fxFill fxLayout="row" style="display: inline-block;width: 90%;"> -->
-      <h1 style="display: inline-block;width: 90%;">#{{ idpbi }} - {{ titulo }}</h1>
-      <!-- </div>
+        <!-- <h1 mat-dialog-title>{{dialogMode}}</h1> -->
+        <!--  <div fxFill fxLayout="row" style="display: inline-block;width: 90%;"> -->
+        <h1 style="display: inline-block;width: 95%;">#{{ idpbi }} - {{ titulo }}</h1>
+        <!-- </div>
       <div fxFlex="10%" fxLayoutAlign="end end" fxLayout="row" style="display: inline-block;"> -->
-      <button class="estimacion" fxFlex="10" mat-fab color="accent">
-        <h1>{{ estimacion }}</h1>
-      </button>
-      <!-- </div> -->
-      <!--  <hr> -->
-    </mat-card>
-
-    <br />
-
-    <mat-card fxLayout="row">
-      <!-- fxLayoutAlign="center center" -->
-      <div fxLayout="row">
-        <mat-form-field appearance="outline">
-          <mat-label>Title</mat-label>
-          <input matInput required placeholder="PBI title" [(ngModel)]="titulo" />
-        </mat-form-field>
-      </div>
-
-      <!-- <br> -->
-
-      <div fxLayout="row">
-        <!--         <mat-label>Label</mat-label> -->
-        <mat-form-field appearance="outline">
-          <mat-label>Label</mat-label>
-          <mat-select [(ngModel)]="label" (selectionChange)="setColor()" required>
-            <mat-option *ngFor="let label of labels" [value]="label">
-              {{ label }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-
-      <!--  <br> -->
-
-      <div fxLayout="row">
-        <mat-form-field appearance="outline">
-          <mat-label>Estimation</mat-label>
-          <!-- <input matInput type="text" [(ngModel)]="estimacion" required> -->
-          <mat-select [(ngModel)]="estimacion">
-            <mat-option *ngFor="let fib of fibonacci" [value]="fib" required>{{ fib }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-
-      <!-- <br> -->
-
-      <div fxLayout="row">
-        <mat-form-field class="description" appearance="outline">
-          <mat-label>Description</mat-label>
-          <textarea matInput placeholder="Description" [(ngModel)]="descripcion"></textarea>
-        </mat-form-field>
-      </div>
-
-      <!-- <br> -->
-
-      <div fxLayout="row"></div>
-
-      <div mat-dialog-actions fxLayout="row">
-        <!-- <div fxLayout="row" fxFill> -->
-        <mat-checkbox class="checkbox" [checked]="done == 1" (click)="markDone()"></mat-checkbox>
-        <button *ngIf="done == 1" class="done-button" mat-raised-button (click)="markDone()" color="accent">
-          Unmark as Done
-        </button>
-        <button *ngIf="!done == 1" class="done-button" mat-raised-button (click)="markDone()" color="accent">
-          &nbsp;Mark as Done&nbsp;
-        </button>
-        <!--  </div>
-        <div fxLayout="row" fxFlex="20"> -->
-        <button
-          class="save-button"
-          mat-raised-button
-          (click)="save()"
-          [color]="'success'"
-          [disabled]="!filled()"
-          style="display: inline-block;margin-left: 70%;"
-        >
-          <mat-icon>save</mat-icon>&nbsp;Save
+        <button *ngIf="estimacion != null" class="estimacion" mat-fab color="accent" [disableRipple]="true">
+          <h1>{{ estimacion }}</h1>
         </button>
         <!-- </div> -->
+        <!--  <hr> -->
+      </mat-card>
 
-        <!--     <button class="close-button" mat-raised-button (click)="close()" color="primary">Close</button> -->
+      <br />
+
+      <div fxLayout="row">
+        <!--  <mat-card fxLayout="row"> -->
+
+        <!-- fxLayoutAlign="center center" -->
+        <div fxLayout="row">
+          <mat-form-field class="title" appearance="outline">
+            <mat-label>Title</mat-label>
+            <input
+              matInput
+              required
+              placeholder="PBI title"
+              [(ngModel)]="titulo"
+              maxlength="25"
+              [disabled]="disabled"
+            />
+          </mat-form-field>
+        </div>
+
+        <!-- <br> -->
+
+        <div fxLayout="row">
+          <mat-form-field appearance="outline">
+            <mat-label>Label</mat-label>
+            <mat-select [(ngModel)]="label" (selectionChange)="setColor()" required [disabled]="disabled">
+              <mat-option *ngFor="let label of labels" [value]="label">
+                {{ label }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!--  <br> -->
+
+        <div fxLayout="row">
+          <mat-form-field appearance="outline">
+            <mat-label>Estimation</mat-label>
+            <!-- <input matInput type="text" [(ngModel)]="estimacion" required> -->
+            <mat-select [(ngModel)]="estimacion" [disabled]="disabled">
+              <mat-option *ngFor="let fib of fibonacci" [value]="fib" required>{{ fib }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- <br> -->
+
+        <div fxLayout="row">
+          <mat-form-field class="description" appearance="outline">
+            <mat-label>Description</mat-label>
+            <textarea matInput placeholder="Description" [(ngModel)]="descripcion" [disabled]="disabled"></textarea>
+          </mat-form-field>
+        </div>
+
+        <!-- <br> -->
+
+        <div fxLayout="row"></div>
+
+        <div mat-dialog-actions fxLayout="row">
+          <!-- <div fxLayout="row" fxFill> -->
+          <mat-checkbox class="checkbox" [checked]="done == 1" (click)="markDone()"></mat-checkbox>
+          <button *ngIf="done == 1" class="done-button" mat-raised-button (click)="markDone()" color="accent">
+            Unmark as Done
+          </button>
+          <button *ngIf="!done == 1" class="done-button" mat-raised-button (click)="markDone()" color="accent">
+            &nbsp;Mark as Done&nbsp;
+          </button>
+          <!--  </div>
+        <div fxLayout="row" fxFlex="20"> -->
+          <button
+            class="save-button"
+            mat-raised-button
+            (click)="save()"
+            [color]="'success'"
+            [disabled]="!filled()"
+            style="display: inline-block;margin-left: 80%;width: 9vmin;height: 5vmin;min-width: 100px;min-height: 50px;"
+          >
+            <mat-icon>save</mat-icon>&nbsp;&nbsp;Save
+          </button>
+          <!-- </div> -->
+
+          <!--     <button class="close-button" mat-raised-button (click)="close()" color="primary">Close</button> -->
+        </div>
+        <!-- </mat-card> -->
       </div>
-    </mat-card>
 
-    <br />
-  </div>
+      <br />
+    </div>
 
-  <!-- <mat-form-field appearance="fill" [color]="accent">
+    <!-- <mat-form-field appearance="fill" [color]="accent">
       <mat-label>Estimation</mat-label>
       <input matInput type="number">
     </mat-form-field> -->
 
-  <br />
-  <hr />
+    <br />
+    <hr />
+    <br />
+
+    <div>
+      <mat-card>
+        <mat-card-title>Comments</mat-card-title>
+      </mat-card>
+
+      a
+      <br />
+      a
+      <br />
+      a
+      <br />
+    </div>
+  </div>
 </div>

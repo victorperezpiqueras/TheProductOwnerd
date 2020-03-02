@@ -29,6 +29,8 @@ import { ProyectoModule } from './proyecto/proyecto.module';
 import { FavoritosDialogComponent } from './shell/header/favoritosDialog/favoritosDialog.component';
 import { PbiDialogComponent } from './proyecto/backlog/pbiDialog/pbiDialog.component';
 import { PbisService } from './services/pbis-service';
+import { TruncatePipe } from './shared/truncatePipe/truncatePipe';
+import { TruncatePipeModule } from './shared/truncatePipe/truncatePipe.module';
 
 @NgModule({
   imports: [
@@ -45,6 +47,8 @@ import { PbisService } from './services/pbis-service';
     CoreModule,
     SharedModule,
     ShellModule,
+
+    TruncatePipeModule,
 
     HomeModule,
     LoginModule,

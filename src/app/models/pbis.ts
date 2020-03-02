@@ -5,6 +5,8 @@ export class Pbi {
     public descripcion: string,
     public done: number,
     public label: string,
-    public estimacion: number
+    public estimacion: number,
+    public prioridad: number,
+    public idproyecto: number
   ) {}
 }

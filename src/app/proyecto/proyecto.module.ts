@@ -14,6 +14,7 @@ import { OverviewComponent } from './overview/overview.component';
 import { BacklogComponent } from './backlog/backlog.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { PbisService } from '@app/services/pbis-service';
+import { TruncatePipeModule } from '@app/shared/truncatePipe/truncatePipe.module';
 
 @NgModule({
   imports: [
@@ -25,6 +26,7 @@ import { PbisService } from '@app/services/pbis-service';
     MaterialModule,
     FormsModule,
     DragDropModule,
+    TruncatePipeModule,
     HighchartsChartModule,
     ProyectoRoutingModule
   ],

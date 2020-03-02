@@ -34,7 +34,7 @@ export class BacklogComponent implements OnInit, OnDestroy {
   pbiTitle: string = 'Product Backlog Items:';
   pbiDoneTitle: string = 'Done Items:';
 
-  pbis: Pbi[];
+  pbis: Pbi[] = [];
 
   constructor(
     private router: Router,
@@ -68,7 +68,15 @@ export class BacklogComponent implements OnInit, OnDestroy {
         });
       });
     });
-    this.crearPbiDialog();
+    /* this.crearPbiDialog(); */
+  }
+
+  actualizarPbis() {
+    this.isLoading = true;
+    this.proyectosService.getProyectosPBIs(this.proyecto.idproyecto).subscribe((pbis: any) => {
+      this.pbis = pbis;
+      this.isLoading = false;
+    });
   }
 
   crearPbiDialog() {
@@ -78,12 +86,15 @@ export class BacklogComponent implements OnInit, OnDestroy {
     dialogConfig.height = '800px';
     dialogConfig.width = '1920px';
     dialogConfig.data = {
-      pbi: new Pbi(null, null, null, null, null, null),
+      pbi: new Pbi(null, null, null, null, null, null, this.pbis.length, this.proyecto.idproyecto),
       dialogMode: 'create'
     };
     this.dialogRef = this.dialog.open(PbiDialogComponent, dialogConfig);
     this.dialogRef.afterClosed().subscribe(data => {
-      if (data != undefined) this.addPbi(data.pbi);
+      if (data != undefined) {
+        this.addPbi(data.pbi);
+        console.log(data);
+      }
     });
   }
 
@@ -99,8 +110,24 @@ export class BacklogComponent implements OnInit, OnDestroy {
     };
     this.dialogRef = this.dialog.open(PbiDialogComponent, dialogConfig);
     this.dialogRef.afterClosed().subscribe(data => {
-      // if (data != undefined) this.addProyecto(data.proyecto);
+      if (data != undefined) {
+        this.editarPbi(data.pbi);
+        console.log(data);
+      }
     });
+  }
+
+  verPbiDialog(pbi: Pbi) {
+    const dialogConfig = new MatDialogConfig();
+    //dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = false;
+    dialogConfig.height = '800px';
+    dialogConfig.width = '1920px';
+    dialogConfig.data = {
+      pbi: pbi,
+      dialogMode: 'view'
+    };
+    this.dialogRef = this.dialog.open(PbiDialogComponent, dialogConfig);
   }
 
   drop(event: any) {
@@ -119,6 +146,18 @@ export class BacklogComponent implements OnInit, OnDestroy {
   addPbi(pbi: Pbi) {
     this.pbisService.crearPbi(pbi).subscribe((v: any) => {
       console.log(v);
+      //this.pbis.push(pbi);///////////////////COMPROBAR
+      this.actualizarPbis();
+    });
+  }
+
+  editarPbi(pbi: Pbi) {
+    this.pbisService.editarPbi(pbi).subscribe((v: any) => {
+      console.log(v);
+      /* var itemToUpdate = this.pbis.find((item) => item.idpbi == pbi.idpbi); //////////////////COMPROBAR
+      var index = this.pbis.indexOf(itemToUpdate);
+      this.pbis[index] = pbi; */
+      this.actualizarPbis();
     });
   }
 
