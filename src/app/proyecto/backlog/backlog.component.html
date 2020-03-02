@@ -10,7 +10,7 @@
           <input matInput placeholder="Filter by name or date..." />
           <!-- style="border-style: solid;border-radius: 50px;" -->
         </mat-form-field>
-        <button mat-raised-button color="primary" style="margin-left: 5%;">
+        <button mat-raised-button [color]="viewDone ? 'accent' : 'primary'" style="margin-left: 5%;">
           <mat-icon>search</mat-icon>
         </button>
       </form>
@@ -21,6 +21,7 @@
         </button>
       </div>
     </div>
+
     <!-- BACKLOG ITEMS LIST -->
     <div class="div-list" *ngIf="!viewDone">
       <div class="droplist" cdkDropList (cdkDropListDropped)="drop($event)">

@@ -25,6 +25,7 @@ export class PbiDialogComponent implements OnInit {
 
   labels: String[] = ['feature', 'bug', 'tech-debt', 'infrastructre'];
   fibonacci: number[] = [0, 1, 2, 3, 5, 8, 13, 21, 40];
+  labelColor: string;
 
   constructor(
     public dialogRef: MatDialogRef<PbiDialogComponent>,
@@ -49,7 +50,9 @@ export class PbiDialogComponent implements OnInit {
     this.fibonacci.unshift(this.estimacion);
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.setColor();
+  }
 
   filled(): boolean {
     console.log(this.titulo);
@@ -64,6 +67,25 @@ export class PbiDialogComponent implements OnInit {
   markDone() {
     if (this.done == 1) this.done = 0;
     else this.done = 1;
+  }
+
+  setColor() {
+    switch (this.label) {
+      case 'feature':
+        this.labelColor = '#00ad17';
+        break;
+      case 'bug':
+        this.labelColor = '#ad0000';
+        break;
+      case 'infrastructre':
+        this.labelColor = '#2196f3';
+        break;
+      case 'tech-debt':
+        this.labelColor = '#ffbb00';
+        break;
+      default:
+        this.labelColor = '#bababa';
+    }
   }
 
   openSnackBar(message: string, action: string) {

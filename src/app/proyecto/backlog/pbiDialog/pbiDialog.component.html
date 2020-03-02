@@ -2,7 +2,7 @@
   <button class="close" mat-button (click)="close()">X</button>
 
   <div fxLayout="row" fxLayoutAlign="center center">
-    <mat-card class="title-card" fxLayout="row" fxLayoutAlign="center center">
+    <mat-card class="title-card" fxLayout="row" fxLayoutAlign="center center" [style.background-color]="labelColor">
       <!-- matBadge="{{ estimacion }}"
       matBadgeOverlap="true"
       matBadgeSize="large"
@@ -37,7 +37,7 @@
         <!--         <mat-label>Label</mat-label> -->
         <mat-form-field appearance="outline">
           <mat-label>Label</mat-label>
-          <mat-select [(ngModel)]="label" required>
+          <mat-select [(ngModel)]="label" (selectionChange)="setColor()" required>
             <mat-option *ngFor="let label of labels" [value]="label">
               {{ label }}
             </mat-option>
