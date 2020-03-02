@@ -3,6 +3,7 @@ var router = express.Router();
 
 var controllerUsuarios = require('../controllers/usuarios');
 var controllerProyectos = require('../controllers/proyectos');
+var controllerPbis = require('../controllers/pbis');
 
 /* USUARIOS */
 router.get('/usuarios', function(req, res, next) {
@@ -166,6 +167,31 @@ router.post('/proyectos/:id/agregarUsuario', function(req, res, next) {
     .proyectoAgregarUsuario(req.params.id, req.body)
     .then(function(proyecto) {
       res.json(proyecto);
+    })
+    .catch(function(err) {
+      res.status(500).json(err);
+    });
+});
+
+/* PBIS */
+router.post('/pbis', function(req, res, next) {
+  console.log('crearPbi');
+  controllerPbis
+    .crearPbi(req.body)
+    .then(function(pbi) {
+      res.json(pbi);
+    })
+    .catch(function(err) {
+      res.status(500).json(err);
+    });
+});
+
+router.put('/pbis/:id', function(req, res, next) {
+  console.log('editarPbi');
+  controllerPbis
+    .editarPbi(req.params.id, req.body)
+    .then(function(pbi) {
+      res.json(pbi);
     })
     .catch(function(err) {
       res.status(500).json(err);
