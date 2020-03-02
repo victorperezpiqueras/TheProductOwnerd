@@ -13,6 +13,7 @@ import { HighchartsChartModule } from 'highcharts-angular';
 import { OverviewComponent } from './overview/overview.component';
 import { BacklogComponent } from './backlog/backlog.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { PbisService } from '@app/services/pbis-service';
 
 @NgModule({
   imports: [
@@ -27,6 +28,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     HighchartsChartModule,
     ProyectoRoutingModule
   ],
-  declarations: [ProyectoComponent, OverviewComponent, BacklogComponent]
+  declarations: [ProyectoComponent, OverviewComponent, BacklogComponent],
+  providers: [PbisService]
 })
 export class ProyectoModule {}

@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from '@angular/material';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Proyecto } from '@app/models/proyectos';
+import { Pbi } from '@app/models/pbis';
 
 @Component({
   selector: 'app-pbiDialog',
@@ -11,12 +12,13 @@ import { Proyecto } from '@app/models/proyectos';
 export class PbiDialogComponent implements OnInit {
   form: FormGroup;
 
+  idpbi: number;
   titulo: string;
   descripcion: string;
   done: number;
   label: string;
   estimacion: number;
-  idproyecto: string;
+  idproyecto: number;
   prioridad: number;
 
   dialogMode: string;
@@ -35,12 +37,13 @@ export class PbiDialogComponent implements OnInit {
       this.dialogMode = 'Edit';
     }
     console.log(data.pbi);
+    this.idpbi = data.pbi.idpbi;
     this.titulo = data.pbi.titulo;
     this.descripcion = data.pbi.descripcion;
     this.done = data.pbi.done;
     this.label = data.pbi.label;
     this.estimacion = data.pbi.estimacion;
-    /*  this.idproyecto = data.pbi.idproyecto; */
+    this.idproyecto = data.pbi.idproyecto;
     this.prioridad = data.pbi.prioridad;
 
     this.fibonacci.unshift(this.estimacion);
@@ -58,6 +61,11 @@ export class PbiDialogComponent implements OnInit {
     return titulo && done && label && prioridad;
   }
 
+  markDone() {
+    if (this.done == 1) this.done = 0;
+    else this.done = 1;
+  }
+
   openSnackBar(message: string, action: string) {
     this._snackBar.open(message, action, {
       duration: 2500 //miliseconds
@@ -67,6 +75,7 @@ export class PbiDialogComponent implements OnInit {
   save() {
     this.dialogRef.close({
       //proyecto: new Proyecto(null, this.name, this.descripcion, [])
+      pbi: new Pbi(this.idpbi, this.titulo, this.descripcion, this.done, this.label, this.estimacion)
     });
     //show snackbar on success:
     if (this.dialogMode == 'edit') this.openSnackBar('PBI edited successfully', 'Close');
@@ -75,10 +84,5 @@ export class PbiDialogComponent implements OnInit {
 
   close() {
     this.dialogRef.close();
-  }
-
-  markDone() {
-    if (this.done == 1) this.done = 0;
-    else this.done = 1;
   }
 }

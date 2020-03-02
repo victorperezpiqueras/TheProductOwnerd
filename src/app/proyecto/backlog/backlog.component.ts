@@ -13,6 +13,7 @@ import { Pbi } from '@app/models/pbis';
 import { PbiDialogComponent } from './pbiDialog/pbiDialog.component';
 
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { PbisService } from '@app/services/pbis-service';
 
 @Component({
   selector: 'app-backlog',
@@ -42,6 +43,7 @@ export class BacklogComponent implements OnInit, OnDestroy {
     private credentialsService: CredentialsService,
     private usuariosService: UsuariosService,
     private proyectosService: ProyectosService,
+    private pbisService: PbisService,
     public dialog: MatDialog,
     private activeRoute: ActivatedRoute
   ) {}
@@ -81,7 +83,7 @@ export class BacklogComponent implements OnInit, OnDestroy {
     };
     this.dialogRef = this.dialog.open(PbiDialogComponent, dialogConfig);
     this.dialogRef.afterClosed().subscribe(data => {
-      // if (data != undefined) this.addProyecto(data.proyecto);
+      if (data != undefined) this.addPbi(data.pbi);
     });
   }
 
@@ -112,6 +114,12 @@ export class BacklogComponent implements OnInit, OnDestroy {
       this.itemListTitle = this.pbiDoneTitle;
     }
     this.viewDone = !this.viewDone;
+  }
+
+  addPbi(pbi: Pbi) {
+    this.pbisService.crearPbi(pbi).subscribe((v: any) => {
+      console.log(v);
+    });
   }
 
   ngOnDestroy() {}
