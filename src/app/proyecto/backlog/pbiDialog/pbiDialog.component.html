@@ -1,20 +1,82 @@
 <div class="container" fxLayout="column" fxLayoutAlign="center center">
-  <h2 mat-dialog-title>Crea un nuevo proyecto</h2>
+  <div fxLayout="row" fxLayoutAlign="center center">
+    <mat-card class="title-card" fxLayout="row" fxLayoutAlign="center center">
+      <!-- <h1 mat-dialog-title>{{dialogMode}}</h1> -->
+      <h1 mat-dialog-title>#{{ idpbi }} - {{ titulo }}</h1>
+      <!--  <hr> -->
+    </mat-card>
 
-  <div mat-dialog-content>
-    <mat-form-field>
-      <input matInput required placeholder="Nombre del proyecto" [(ngModel)]="name" />
-    </mat-form-field>
+    <br />
+
+    <mat-card fxLayout="row">
+      <!-- fxLayoutAlign="center center" -->
+      <div fxLayout="row">
+        <mat-form-field appearance="outline">
+          <input matInput required placeholder="PBI title" [(ngModel)]="titulo" />
+        </mat-form-field>
+      </div>
+
+      <!-- <br> -->
+
+      <div fxLayout="row">
+        <!--         <mat-label>Label</mat-label> -->
+        <mat-form-field appearance="outline">
+          <mat-select [(ngModel)]="label">
+            <mat-option *ngFor="let label of labels" [value]="label" required>
+              {{ label }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <!--  <br> -->
+
+      <div fxLayout="row">
+        <mat-form-field appearance="outline">
+          <mat-label>Estimation</mat-label>
+          <!-- <input matInput type="text" [(ngModel)]="estimacion" required> -->
+          <mat-select [(ngModel)]="estimacion">
+            <mat-option *ngFor="let fib of fibonacci" [value]="fib" required>{{ fib }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <!-- <br> -->
+
+      <div fxLayout="row">
+        <mat-form-field class="description" appearance="outline">
+          <textarea matInput placeholder="Description" [(ngModel)]="descripcion"></textarea>
+        </mat-form-field>
+      </div>
+
+      <!-- <br> -->
+
+      <div fxLayout="row">
+        <mat-checkbox class="checkbox" [checked]="done == 1"></mat-checkbox>
+        <button *ngIf="done == 1" class="done-button" mat-raised-button (click)="markDone()" color="accent">
+          Unmark as Done
+        </button>
+        <button *ngIf="!done == 1" class="done-button" mat-raised-button (click)="markDone()" color="accent">
+          Mark as Done
+        </button>
+      </div>
+    </mat-card>
+
+    <br />
   </div>
-  <div mat-dialog-content>
-    <mat-form-field>
-      <input matInput required placeholder="Descripción" [(ngModel)]="descripcion" />
-    </mat-form-field>
-  </div>
+
+  <!-- <mat-form-field appearance="fill" [color]="accent">
+      <mat-label>Estimation</mat-label>
+      <input matInput type="number">
+    </mat-form-field> -->
+
   <div mat-dialog-actions>
-    <button class="close-button" mat-raised-button (click)="close()" color="primary">Cerrar</button>
-    <button class="save-button" mat-raised-button (click)="save()" color="warn" [disabled]="!name">
-      {{ dialogMode | uppercase }}
+    <button class="close-button" mat-raised-button (click)="close()" color="primary">Close</button>
+    <button class="save-button" mat-raised-button (click)="save()" [color]="'success'" [disabled]="!filled()">
+      Save
     </button>
   </div>
+
+  <br />
+  <hr />
 </div>

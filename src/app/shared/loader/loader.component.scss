@@ -1,8 +1,12 @@
-/* .mat-progress-spinner {
-  display: inline-block;
-  vertical-align: middle;
+.mat-progress-spinner {
+  /*  display: inline-block; */
+  /*  vertical-align: middle; */
+
+  position: fixed;
+  top: 40%;
+  left: 40%;
 }
- */
+
 .message {
   margin-left: 0.5em;
 }

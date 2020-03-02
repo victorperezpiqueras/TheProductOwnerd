@@ -27,6 +27,12 @@ export class BacklogComponent implements OnInit, OnDestroy {
 
   isLoading = false;
 
+  viewDone: boolean = false;
+  itemListTitle: string = 'Product Backlog Items:';
+
+  pbiTitle: string = 'Product Backlog Items:';
+  pbiDoneTitle: string = 'Done Items:';
+
   pbis: Pbi[];
 
   constructor(
@@ -60,16 +66,17 @@ export class BacklogComponent implements OnInit, OnDestroy {
         });
       });
     });
+    this.crearPbiDialog();
   }
 
   crearPbiDialog() {
     const dialogConfig = new MatDialogConfig();
     //dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
+    dialogConfig.autoFocus = false;
     dialogConfig.height = '800px';
     dialogConfig.width = '1920px';
     dialogConfig.data = {
-      proyecto: new Proyecto(null, null, null, null),
+      pbi: new Pbi(null, null, null, null, null, null),
       dialogMode: 'create'
     };
     this.dialogRef = this.dialog.open(PbiDialogComponent, dialogConfig);
@@ -81,12 +88,12 @@ export class BacklogComponent implements OnInit, OnDestroy {
   editarPbiDialog(pbi: Pbi) {
     const dialogConfig = new MatDialogConfig();
     //dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
+    dialogConfig.autoFocus = false;
     dialogConfig.height = '800px';
     dialogConfig.width = '1920px';
     dialogConfig.data = {
-      proyecto: new Proyecto(null, null, null, null),
-      dialogMode: 'create'
+      pbi: pbi,
+      dialogMode: 'edit'
     };
     this.dialogRef = this.dialog.open(PbiDialogComponent, dialogConfig);
     this.dialogRef.afterClosed().subscribe(data => {
@@ -96,6 +103,15 @@ export class BacklogComponent implements OnInit, OnDestroy {
 
   drop(event: any) {
     console.log('dropped');
+  }
+
+  swapItemList() {
+    if (this.viewDone) {
+      this.itemListTitle = this.pbiTitle;
+    } else {
+      this.itemListTitle = this.pbiDoneTitle;
+    }
+    this.viewDone = !this.viewDone;
   }
 
   ngOnDestroy() {}

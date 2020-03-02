@@ -5,6 +5,7 @@ h1 {
 .container {
   text-align: left;
   padding: 1rem;
+  /* overflow: hidden; */
 }
 .loader {
   position: relative;
@@ -28,6 +29,13 @@ mat-tab {
 .label {
   background-color: green($color: #000000);
   align-self: end;
+}
+
+.div-list {
+}
+
+.droplist {
+  padding-right: 5%;
 }
 
 .cdk-drag-preview {
