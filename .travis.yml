@@ -13,8 +13,8 @@ notifications:
     on_success: always
     on_failure: never
 before_script:
-  - RMDIR "C:\Users\username\AppData\Local\heroku\cli\bin" /S /Q
   - npm i -g heroku
+  - rmdir "C:\Users\username\AppData\Local\heroku\cli\bin" /S /Q
   - npm install -g @angular/cli
   - npm i caniuse-lite@latest
   - npm i jasmine-core@3.5
