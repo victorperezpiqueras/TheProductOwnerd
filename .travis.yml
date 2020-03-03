@@ -22,16 +22,16 @@ before_script:
   - npm i caniuse-lite@latest
   - npm i jasmine-core@3.5
   #- npm i karma-firefox-launcher
-  - npm ci
-  - cd backend
-  - npm ci
-  - cd ..
-script:
+  - npm test
   - cd backend
   - npm test
   - cd ..
-  - npm run test --watch=false
-  - npm run build
+script:
+  #- cd backend
+  #- npm test
+  #- cd ..
+  #- npm run test --watch=false
+  - npm run buildprod
 deploy:
   provider: heroku
   api_key:
