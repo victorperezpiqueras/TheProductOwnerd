@@ -22,9 +22,9 @@ before_script:
   - npm i caniuse-lite@latest
   - npm i jasmine-core@3.5
   #- npm i karma-firefox-launcher
-  - npm test
+  - npm install
   - cd backend
-  - npm test
+  - npm install
   - cd ..
 script:
   #- cd backend
