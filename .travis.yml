@@ -5,14 +5,14 @@ node_js:
 os: windows
 addons:
   firefox: latest
-#branches:
-# only:
-#   - tests_sin_funcionar
+branches:
+  only:
+    - master
 notifications:
-slack:
-  rooms: tfg-tfm:Nt0zyMTjL9krI6NigVWgzYIC
-  on_success: always
-  on_failure: never
+  slack:
+    rooms: tfg-tfm:Nt0zyMTjL9krI6NigVWgzYIC
+    on_success: always
+    on_failure: never
 #cache:
 # directories:
 #   - backend/node_modules
@@ -31,7 +31,7 @@ script:
   - npm test
   - cd ..
   - npm run test --watch=false
-  - npm run buildprod
+  #- npm run buildprod
 deploy:
   provider: heroku
   api_key:
