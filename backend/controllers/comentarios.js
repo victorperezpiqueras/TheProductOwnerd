@@ -3,8 +3,8 @@ var connection = require('../db/connection');
 
 ControllerComentarios.crearComentario = function(comentario) {
   return new Promise(function(resolve, reject) {
-    var sql = 'insert into comentarios(comentario,idpbi, idusuario) values ' + '(?,?,?)';
-    var array = [comentario.comentario, comentario.idpbi, comentario.idusuario];
+    var sql = 'insert into comentarios(comentario,idpbi, idusuario,fecha) values ' + '(?,?,?,?)';
+    var array = [comentario.comentario, comentario.idpbi, comentario.idusuario, new Date(comentario.fecha)];
     connection.query(sql, array, function(err, result) {
       if (err) {
         reject({ error: 'Error inesperado en crearComentario' });

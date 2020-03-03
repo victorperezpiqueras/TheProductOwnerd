@@ -31,8 +31,8 @@ connection.connect(function(err) {
                       if (err) throw err;
                       console.log('Tabla PBIS creada');
                       connection.query(
-                        'create table comentarios ( idcomentario INT AUTO_INCREMENT PRIMARY key,comentario text,' +
-                          'idpbi int, idusuario int, foreign key(idpbi) references pbis(idpbi),foreign key(idusuario) references usuarios(idusuario) )',
+                        'create table comentarios ( idcomentario INT AUTO_INCREMENT PRIMARY key,comentario text NOT NULL,fecha DATETIME NOT NULL, ' +
+                          'idpbi int NOT NULL, idusuario int NOT NULL, foreign key(idpbi) references pbis(idpbi),foreign key(idusuario) references usuarios(idusuario) )',
                         function(err, result) {
                           if (err) throw err;
                           console.log('Tabla Comentarios creada');
