@@ -80,11 +80,11 @@
 
         <div mat-dialog-actions fxLayout="row">
           <!-- <div fxLayout="row" fxFill> -->
-          <mat-checkbox class="checkbox" [checked]="done == 1" (click)="markDone()"></mat-checkbox>
-          <button *ngIf="done == 1" class="done-button" mat-raised-button (click)="markDone()" color="accent">
+          <mat-checkbox class="checkbox" [checked]="checkDone()" (click)="markDone()"></mat-checkbox>
+          <button *ngIf="checkDone()" class="done-button" mat-raised-button (click)="markDone()" color="accent">
             Unmark as Done
           </button>
-          <button *ngIf="!done == 1" class="done-button" mat-raised-button (click)="markDone()" color="accent">
+          <button *ngIf="!checkDone()" class="done-button" mat-raised-button (click)="markDone()" color="accent">
             &nbsp;Mark as Done&nbsp;
           </button>
           <!--  </div>

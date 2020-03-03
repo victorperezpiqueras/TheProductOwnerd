@@ -98,6 +98,11 @@ export class PbiDialogComponent implements OnInit {
     });
   }
 
+  checkDone() {
+    if (this.done == 1) return true;
+    else return false;
+  }
+
   save() {
     this.dialogRef.close({
       //proyecto: new Proyecto(null, this.name, this.descripcion, [])
