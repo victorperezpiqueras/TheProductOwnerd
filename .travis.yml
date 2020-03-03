@@ -27,10 +27,10 @@ before_script:
   - npm install
   - cd ..
 script:
-  #- cd backend
-  #- npm test
-  #- cd ..
-  #- npm run test --watch=false
+  - cd backend
+  - npm test
+  - cd ..
+  - npm run test --watch=false
   - npm run buildprod
 deploy:
   provider: heroku
