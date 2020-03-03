@@ -1,9 +1,8 @@
 language: node_js
 node_js:
   - 12.5.0
-dist: trusty
-sudo: true
-#os: windows
+#dist: bionic
+os: windows
 addons:
   firefox: latest
 branches:
@@ -22,7 +21,6 @@ before_script:
   - npm install -g @angular/cli
   - npm i caniuse-lite@latest
   - npm i jasmine-core@3.5
-  #- npm i karma-firefox-launcher
   - npm install
   - cd backend
   - npm install
@@ -31,10 +29,9 @@ script:
   - cd backend
   - npm test
   - cd ..
-  - npm run test --watch=false
-  #- npm run buildprod
+  - npm run test
 deploy:
   provider: heroku
   api_key:
-    secure: BenOncehAL8xDoF5P0Fwr7zQOQj6AW6Nzz1M5zVXNeFYoZE5ZSJfff5lvjjhwmnosixaihgrIrYn2v08FLTyVAP0cOLa+MB5pyVEYhFxT3LtvqBS74BmDiNNGrlUjaY73DnZTcQGDFzlj4sQwHVrX3wgeQqoKogOF+zlOOT025GawfZ2DiewUpDvYkXta+JChDBOsBLbSyXGl3sxKZwb+7Ld9MTkisy8sZWl76CDawx64nyVFES6V8vYKfEQULkh8eKTBqXCQD4P7LHd27ccXoU7Ld49oxQ3WwAZNh5B5AlxfOhTjrCxZNozsrxHWugAS4mtFN6T2KrwFrSMynvqZsiPoJUHsPKlvMCKoUDnxeclS4yL3t/DceMrJaXMsRB/hb/L19T3kUobBUHBumJqvvEYhRymjy/UwBhjkZ/wi2nm+Cv2isy0FMUTvc0PhJe/6pbG2NrsdjYuWNcTJaozS4ufNuNO2duqEjbT1DwpfFT1lk1hq4LXpK041PEAa53gC5h6BJB9W8s/fO4MTeimm6Sp6u60yP2rKu8vO8it0zg3/3t7XiVsV4Qcj1kGJKa4Y2yOV+ELP6OxDI+dpaSZrW7u1mhJLB6Y9zMJnj0nQi64MDhErWgaV0f9hHSYdxGgQXZfNv4L6ChKYeVtevQNVjZQky4TXMtvL6TAUpI4vaw=
+    secure: fU+UMLMuqeDR3MPCrDB+OHhy/IDvdf1YxtTWGMu/AXZP+4TcTI/TMswVWS2tPArRe6PTy322g0SmJyH3QiB1fcRlWkwcTxncJB+XHg6D9u1pKyZtyLLglx2T2Qg9o6uJx3t9GDsJDTi9SFdC6W97u2vkSOstDeG3ODOOfsMf/Z9G8XP4+0RXORS7WUIR9oywTTxq3ot5pyCxEGYTO6Ipg4RDBUBhVr9Tu7f35X2gpPtFUS2CL//5RcCQ2Fq6Mh6GAY7fXhitemubegIyW2FKDJJeU5YJSp16M+j7e55eJnzO3T7WtVqck+akKIJCRdHFRzwDH8hfXMSY0+jdg2vTWNL2tgl/6qHv0UjgpDOp7VVvhJUk3Th7HIjP+rDO2oWhupdzvOcHfZMWl4prvajPBLBcRiv061em46J3OUKCRLWCKSmjf+FY9VmKFj7fRJrwqOrdrmJROKvDocXs6hKXeRUoBaxmyxGTk5ESgpqym16bFA24u0UG4IhvAutskoS4XrLmPuVlRnaxU5YkfOopbx8bQp7cOmQ1o+0wDM5e6t+cDkyrmi2PkRoEkWDKVHC4BUVXWQ7Ceto8zSZNJ2aGjY8uN6PJceIY8BHgL7LmV1DNq4XWBekq1SofZSaTSs8l7XJQVSuPjWfeGU5KwvhIi15JMMRisFIDkaXDHVi7u90=
 app: the-product-ownerd
