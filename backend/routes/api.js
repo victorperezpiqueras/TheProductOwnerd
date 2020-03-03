@@ -4,6 +4,7 @@ var router = express.Router();
 var controllerUsuarios = require('../controllers/usuarios');
 var controllerProyectos = require('../controllers/proyectos');
 var controllerPbis = require('../controllers/pbis');
+var controllerComentarios = require('../controllers/comentarios');
 
 /* USUARIOS */
 router.get('/usuarios', function(req, res, next) {
@@ -192,6 +193,31 @@ router.put('/pbis/:id', function(req, res, next) {
     .editarPbi(req.params.id, req.body)
     .then(function(pbi) {
       res.json(pbi);
+    })
+    .catch(function(err) {
+      res.status(500).json(err);
+    });
+});
+
+router.get('/pbis/:id/comentarios', function(req, res, next) {
+  console.log('obtenerComentariosPbi');
+  controllerComentarios
+    .obtenerComentariosPbi(req.params.id)
+    .then(function(comentarios) {
+      res.json(comentarios);
+    })
+    .catch(function(err) {
+      res.status(500).json(err);
+    });
+});
+
+/* COMENTARIOS */
+router.post('/comentarios', function(req, res, next) {
+  console.log('crearComentario');
+  controllerComentarios
+    .crearComentario(req.body)
+    .then(function(comentario) {
+      res.json(comentario);
     })
     .catch(function(err) {
       res.status(500).json(err);

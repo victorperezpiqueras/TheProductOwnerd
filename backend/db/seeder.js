@@ -30,8 +30,16 @@ connection.connect(function(err) {
                     function(err, result) {
                       if (err) throw err;
                       console.log('Tabla PBIS creada');
-                      connection.end();
-                      console.log('Desconectado de MYSQL');
+                      connection.query(
+                        'create table comentarios ( idcomentario INT AUTO_INCREMENT PRIMARY key,comentario text,' +
+                          'idpbi int, idusuario int, foreign key(idpbi) references pbis(idpbi),foreign key(idusuario) references usuarios(idusuario) )',
+                        function(err, result) {
+                          if (err) throw err;
+                          console.log('Tabla Comentarios creada');
+                          connection.end();
+                          console.log('Desconectado de MYSQL');
+                        }
+                      );
                     }
                   );
                 }
