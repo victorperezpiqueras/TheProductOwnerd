@@ -119,16 +119,39 @@
     <br />
 
     <div>
-      <mat-card>
+      <mat-card class="comments-card">
         <mat-card-title>Comments</mat-card-title>
       </mat-card>
+      <br />
+      <div fxLayout="row" fxLayoutAlign="end end" style="justify-content: flex-end">
+        <mat-form-field class="description" appearance="outline">
+          <mat-label>Write a comment...</mat-label>
+          <textarea matInput [(ngModel)]="comentarioData"></textarea>
+        </mat-form-field>
+        <button
+          class="save-button"
+          mat-raised-button
+          (click)="save()"
+          [color]="'success'"
+          [disabled]="!comentarioData"
+          style="justify-content: flex-end"
+        >
+          <mat-icon>add_comment</mat-icon>&nbsp;&nbsp;Comment
+        </button>
+      </div>
 
-      a
       <br />
-      a
-      <br />
-      a
-      <br />
+      <!-- <hr><br> -->
+
+      <div *ngFor="let com of comentarios">
+        <mat-card class="comentario">
+          <mat-card-subtitle>{{ com.nombre }}</mat-card-subtitle>
+          <mat-card-content>
+            {{ com.comentario }}
+          </mat-card-content>
+        </mat-card>
+        <br />
+      </div>
     </div>
   </div>
 </div>

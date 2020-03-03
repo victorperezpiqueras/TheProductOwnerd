@@ -24,10 +24,16 @@ mat-tab {
 
 .card {
   cursor: pointer;
+  background-color: #f5f5f5;
+}
+
+.card:hover {
+  cursor: pointer;
+  background-color: #ffb968;
 }
 
 .label {
-  background-color: green($color: #000000);
+  background-color: #000000;
   align-self: end;
 }
 

@@ -3,6 +3,10 @@ import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from '@angular/material';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Proyecto } from '@app/models/proyectos';
 import { Pbi } from '@app/models/pbis';
+import { Comentario } from '@app/models/comentarios';
+import { PbisService } from '@app/services/pbis-service';
+import { ComentariosService } from '@app/services/comentarios-service';
+import { CredentialsService } from '@app/core';
 
 @Component({
   selector: 'app-pbiDialog',
@@ -10,6 +14,7 @@ import { Pbi } from '@app/models/pbis';
   styleUrls: ['./pbiDialog.component.scss']
 })
 export class PbiDialogComponent implements OnInit {
+  isLoading = false;
   form: FormGroup;
 
   idpbi: number;
@@ -20,6 +25,11 @@ export class PbiDialogComponent implements OnInit {
   estimacion: number;
   idproyecto: number;
   prioridad: number;
+
+  comentarios: any[] = [];
+
+  /* comentarios data */
+  comentarioData: string;
 
   dialogMode: string;
 
@@ -32,7 +42,10 @@ export class PbiDialogComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<PbiDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private credentialsService: CredentialsService,
+    private pbisService: PbisService,
+    private comentariosService: ComentariosService
   ) {
     if (data.dialogMode == 'create') {
       this.dialogMode = 'Create new PBI';
@@ -57,6 +70,29 @@ export class PbiDialogComponent implements OnInit {
 
   ngOnInit() {
     this.setColor();
+    this.actualizarComentarios();
+  }
+
+  actualizarComentarios() {
+    this.isLoading = true;
+    this.pbisService.obtenerComentarios(this.idpbi).subscribe((comentarios: Comentario[]) => {
+      console.log(comentarios);
+      this.comentarios = comentarios;
+      this.isLoading = false;
+    });
+  }
+
+  crearComentario() {
+    this.isLoading = true;
+    var comentario = {
+      comentario: this.comentarioData,
+      idpbi: this.idpbi,
+      idusuario: this.idusuario
+    };
+    this.comentariosService.crearComentario(comentario).subscribe((res: any) => {
+      this.actualizarComentarios();
+      this.isLoading = false;
+    });
   }
 
   filled(): boolean {
@@ -125,5 +161,10 @@ export class PbiDialogComponent implements OnInit {
   close() {
     console.log();
     this.dialogRef.close();
+  }
+
+  get idusuario(): number | null {
+    const credentials = this.credentialsService.credentials;
+    return credentials ? credentials.id : null;
   }
 }

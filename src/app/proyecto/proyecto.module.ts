@@ -15,6 +15,7 @@ import { BacklogComponent } from './backlog/backlog.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { PbisService } from '@app/services/pbis-service';
 import { TruncatePipeModule } from '@app/shared/truncatePipe/truncatePipe.module';
+import { ComentariosService } from '@app/services/comentarios-service';
 
 @NgModule({
   imports: [
@@ -31,6 +32,6 @@ import { TruncatePipeModule } from '@app/shared/truncatePipe/truncatePipe.module
     ProyectoRoutingModule
   ],
   declarations: [ProyectoComponent, OverviewComponent, BacklogComponent],
-  providers: [PbisService]
+  providers: [PbisService, ComentariosService]
 })
 export class ProyectoModule {}

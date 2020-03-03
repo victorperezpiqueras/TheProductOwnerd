@@ -35,6 +35,9 @@ export class BacklogComponent implements OnInit, OnDestroy {
   pbiDoneTitle: string = 'Done Items:';
 
   pbis: Pbi[] = [];
+  showingPbis: Pbi[] = [];
+
+  searchword: string;
 
   constructor(
     private router: Router,
@@ -63,6 +66,7 @@ export class BacklogComponent implements OnInit, OnDestroy {
         this.proyecto = proyecto;
         this.proyectosService.getProyectosPBIs(proyecto.idproyecto).subscribe((pbis: any) => {
           this.pbis = pbis;
+          this.showingPbis = pbis;
           this.isLoading = false;
           console.log(pbis);
         });
@@ -71,10 +75,23 @@ export class BacklogComponent implements OnInit, OnDestroy {
     /* this.crearPbiDialog(); */
   }
 
+  actualizarFiltro() {
+    this.showingPbis = this.pbis.filter(pbi => {
+      if (pbi.titulo.includes(this.searchword) || pbi.descripcion.includes(this.searchword)) return true;
+    });
+  }
+
+  filtrarLabel(label: string) {
+    this.showingPbis = this.pbis.filter(pbi => {
+      if (pbi.label == label) return true;
+    });
+  }
+
   actualizarPbis() {
     this.isLoading = true;
     this.proyectosService.getProyectosPBIs(this.proyecto.idproyecto).subscribe((pbis: any) => {
       this.pbis = pbis;
+      this.showingPbis = pbis;
       this.isLoading = false;
     });
   }
