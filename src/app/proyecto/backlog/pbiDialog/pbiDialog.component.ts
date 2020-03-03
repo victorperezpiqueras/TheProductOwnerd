@@ -78,6 +78,7 @@ export class PbiDialogComponent implements OnInit {
     this.pbisService.obtenerComentarios(this.idpbi).subscribe((comentarios: Comentario[]) => {
       console.log(comentarios);
       this.comentarios = comentarios;
+      /* this.comentarios = comentarios.reverse(); */
       this.isLoading = false;
     });
   }
@@ -87,11 +88,14 @@ export class PbiDialogComponent implements OnInit {
     var comentario = {
       comentario: this.comentarioData,
       idpbi: this.idpbi,
-      idusuario: this.idusuario
+      idusuario: this.idusuario,
+      fecha: Date.now()
     };
     this.comentariosService.crearComentario(comentario).subscribe((res: any) => {
       this.actualizarComentarios();
       this.isLoading = false;
+      this.comentarioData = '';
+      this.openSnackBar('Comment successfully posted', 'Close');
     });
   }
 
@@ -161,6 +165,16 @@ export class PbiDialogComponent implements OnInit {
   close() {
     console.log();
     this.dialogRef.close();
+  }
+
+  prettifier(date: any) {
+    date = new Date(date);
+    var h = date.getHours();
+    var m = date.getMinutes();
+    var D = date.getDay();
+    var M = date.getMonth();
+    var Y = date.getFullYear();
+    return h + ':' + m + ' - ' + D + '-' + M + '-' + Y;
   }
 
   get idusuario(): number | null {

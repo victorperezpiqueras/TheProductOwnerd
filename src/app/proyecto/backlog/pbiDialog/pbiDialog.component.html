@@ -131,7 +131,7 @@
         <button
           class="save-button"
           mat-raised-button
-          (click)="save()"
+          (click)="crearComentario()"
           [color]="'success'"
           [disabled]="!comentarioData"
           style="justify-content: flex-end"
@@ -148,6 +148,10 @@
           <mat-card-subtitle>{{ com.nombre }}</mat-card-subtitle>
           <mat-card-content>
             {{ com.comentario }}
+          </mat-card-content>
+          <mat-card-content>
+            <i style="font-size: smaller;">Commented on {{ prettifier(com.fecha) }}</i>
+            <br />
           </mat-card-content>
         </mat-card>
         <br />
