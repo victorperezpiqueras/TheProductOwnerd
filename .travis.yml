@@ -13,10 +13,10 @@ slack:
   rooms: tfg-tfm:Nt0zyMTjL9krI6NigVWgzYIC
   on_success: always
   on_failure: never
-cache:
-  directories:
-    - backend/node_modules
-    - node_modules
+#cache:
+# directories:
+#   - backend/node_modules
+#   - node_modules
 before_script:
   - npm install -g @angular/cli
   - npm i caniuse-lite@latest
