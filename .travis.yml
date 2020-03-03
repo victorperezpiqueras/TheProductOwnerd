@@ -1,8 +1,9 @@
 language: node_js
 node_js:
   - 12.5.0
-#dist: bionic
-os: windows
+dist: trusty
+sudo: true
+#os: windows
 addons:
   firefox: latest
 branches:
