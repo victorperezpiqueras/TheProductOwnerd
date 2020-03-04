@@ -4,7 +4,7 @@ export class Comentario {
     public comentario: string,
     public idpbi: number,
     public idusuario: number,
-    public nombre: string,
+    public nombre: string, //usuario
     public fecha: Date
   ) {}
 }

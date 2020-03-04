@@ -22,4 +22,7 @@ export class PbisService {
   obtenerComentarios(idpbi: number): Observable<any> {
     return this.http.get<any>(this.url + '/' + idpbi + '/comentarios', httpOptions);
   }
+  obtenerArchivos(idpbi: number): Observable<any> {
+    return this.http.get<any>(this.url + '/' + idpbi + '/archivos', httpOptions);
+  }
 }

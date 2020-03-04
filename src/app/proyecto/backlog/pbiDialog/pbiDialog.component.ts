@@ -7,6 +7,9 @@ import { Comentario } from '@app/models/comentarios';
 import { PbisService } from '@app/services/pbis-service';
 import { ComentariosService } from '@app/services/comentarios-service';
 import { CredentialsService } from '@app/core';
+import { ArchivosService } from '@app/services/archivos-service';
+import { Archivo } from '@app/models/archivos';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-pbiDialog',
@@ -26,9 +29,13 @@ export class PbiDialogComponent implements OnInit {
   idproyecto: number;
   prioridad: number;
 
-  comentarios: any[] = [];
+  /* archivos data */
+  archivos: any[] = [];
+  archivoSrcData: any;
+  archivoNombreData: string;
 
   /* comentarios data */
+  comentarios: any[] = [];
   comentarioData: string;
 
   dialogMode: string;
@@ -38,6 +45,7 @@ export class PbiDialogComponent implements OnInit {
   labelColor: string;
 
   disabled: boolean = false;
+  uploadFileMode: boolean = false;
 
   constructor(
     public dialogRef: MatDialogRef<PbiDialogComponent>,
@@ -45,7 +53,9 @@ export class PbiDialogComponent implements OnInit {
     private _snackBar: MatSnackBar,
     private credentialsService: CredentialsService,
     private pbisService: PbisService,
-    private comentariosService: ComentariosService
+    private comentariosService: ComentariosService,
+    private archivosService: ArchivosService,
+    private sanitizer: DomSanitizer
   ) {
     if (data.dialogMode == 'create') {
       this.dialogMode = 'Create new PBI';
@@ -71,8 +81,10 @@ export class PbiDialogComponent implements OnInit {
   ngOnInit() {
     this.setColor();
     this.actualizarComentarios();
+    this.actualizarArchivos();
   }
 
+  /* COMENTARIOS */
   actualizarComentarios() {
     this.isLoading = true;
     this.pbisService.obtenerComentarios(this.idpbi).subscribe((comentarios: Comentario[]) => {
@@ -82,7 +94,6 @@ export class PbiDialogComponent implements OnInit {
       this.isLoading = false;
     });
   }
-
   crearComentario() {
     this.isLoading = true;
     var comentario = {
@@ -96,6 +107,54 @@ export class PbiDialogComponent implements OnInit {
       this.isLoading = false;
       this.comentarioData = '';
       this.openSnackBar('Comment successfully posted', 'Close');
+    });
+  }
+
+  /* ARCHIVOS */
+  actualizarArchivos() {
+    this.isLoading = true;
+    this.pbisService.obtenerArchivos(this.idpbi).subscribe((archivos: Archivo[]) => {
+      console.log(archivos);
+      this.archivos = archivos;
+      this.archivos.forEach(archivo => {
+        console.log(archivo);
+
+        var fileType = this.getFileType(archivo);
+
+        archivo.nombre += fileType.ending;
+        //archivo.src = Buffer.from(archivo.src, 'base64').toString();
+
+        var blob = new Blob([archivo.src, { type: fileType.format }]);
+        var array = new Array<Blob>();
+        array.push(blob);
+        blob = new File(array, archivo.nombre, { type: fileType.format });
+
+        console.log(fileType);
+        console.log(archivo);
+        console.log(blob);
+        archivo.src = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(blob));
+      });
+
+      this.isLoading = false;
+    });
+  }
+
+  crearArchivo() {
+    this.isLoading = true;
+    var archivo = {
+      nombre: this.archivoNombreData,
+      src: this.archivoSrcData,
+      idpbi: this.idpbi,
+      idusuario: this.idusuario
+    };
+    console.log(archivo);
+    this.archivosService.crearArchivo(archivo).subscribe((res: any) => {
+      this.actualizarArchivos();
+      this.isLoading = false;
+      this.archivoSrcData = '';
+      this.archivoNombreData = '';
+      this.openSnackBar('File successfully uploaded', 'Close');
+      this.cargarImagen();
     });
   }
 
@@ -174,7 +233,45 @@ export class PbiDialogComponent implements OnInit {
     var D = date.getDay();
     var M = date.getMonth();
     var Y = date.getFullYear();
-    return h + ':' + m + ' - ' + D + '-' + M + '-' + Y;
+    return h + ':' + m + ' - ' + D + ' - ' + M + ' - ' + Y;
+  }
+
+  onFileSelected(event: any) {
+    this.archivoSrcData = event.target.files[0];
+    console.log(this.archivoSrcData);
+    const reader = (file: any) => {
+      return new Promise((resolve, reject) => {
+        const fileReader = new FileReader();
+        fileReader.onload = () => resolve(fileReader.result);
+        fileReader.readAsDataURL(file);
+      });
+    };
+    reader(this.archivoSrcData).then(result => {
+      console.log(result);
+      this.archivoSrcData = result;
+    });
+  }
+
+  cargarImagen() {
+    this.uploadFileMode = !this.uploadFileMode;
+  }
+
+  download(archivo: any) {
+    /*  window.location.href = archivo.src; */
+    var blob = new Blob([archivo.src]);
+    archivo.src = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
+    //window.open(url);
+  }
+
+  getFileType(file: any) {
+    let checkFileType = Buffer.from(file.src, 'base64').toString();
+    checkFileType = checkFileType.split(':').pop();
+    console.log(checkFileType);
+    if (checkFileType.includes('image/png')) return { format: 'image/png', ending: '.png' };
+    else if (checkFileType.includes('image/png')) return { format: 'application/pdf', ending: '.pdf' };
+    else {
+      return { format: 'image/png', ending: '.png' };
+    }
   }
 
   get idusuario(): number | null {

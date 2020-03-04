@@ -26,9 +26,10 @@
           [matMenuTriggerFor]="menu"
           style="margin-left: 5%;"
         >
-          Label
+          Filter by Label
         </button>
         <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="filtrarLabel('none')">None</button>
           <button mat-menu-item (click)="filtrarLabel('feature')">Feature</button>
           <button mat-menu-item (click)="filtrarLabel('bug')">Bug</button>
           <button mat-menu-item (click)="filtrarLabel('tech-debt')">Tech-debt</button>

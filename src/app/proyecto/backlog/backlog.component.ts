@@ -82,9 +82,13 @@ export class BacklogComponent implements OnInit, OnDestroy {
   }
 
   filtrarLabel(label: string) {
-    this.showingPbis = this.pbis.filter(pbi => {
-      if (pbi.label == label) return true;
-    });
+    if (label == 'none') {
+      this.showingPbis = this.pbis;
+    } else {
+      this.showingPbis = this.pbis.filter(pbi => {
+        if (pbi.label == label) return true;
+      });
+    }
   }
 
   actualizarPbis() {

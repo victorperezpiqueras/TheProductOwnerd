@@ -118,6 +118,76 @@
     <hr />
     <br />
 
+    <!-- FILES -->
+    <div>
+      <mat-card class="comments-card">
+        <mat-card-title>Files</mat-card-title>
+      </mat-card>
+      <br />
+      <app-loader class="loader" [isLoading]="isLoading"></app-loader>
+
+      <div fxLayout="row" fxLayoutAlign="end end" style="justify-content: flex-end">
+        <div *ngIf="uploadFileMode">
+          <mat-form-field>
+            <input matInput required placeholder="File name" [(ngModel)]="archivoNombreData" />
+          </mat-form-field>
+
+          <input name="archivoSrcData" type="file" accept="*" (change)="onFileSelected($event)" />
+          <div fxLayout="row">
+            <button mat-raised-button color="warn" (click)="cargarImagen()">
+              Cancel
+            </button>
+
+            <button
+              mat-raised-button
+              (click)="crearArchivo()"
+              [color]="'success'"
+              [disabled]="!archivoSrcData || !archivoNombreData"
+              style="margin-left: 2%;"
+            >
+              <mat-icon>cloud_upload</mat-icon>&nbsp;Upload
+            </button>
+          </div>
+        </div>
+        <div *ngIf="!uploadFileMode">
+          <button class="boton-cargar-imagen" mat-raised-button color="primary" (click)="cargarImagen()">
+            <mat-icon>cloud_upload</mat-icon>&nbsp;Add file
+          </button>
+        </div>
+
+        <!-- <mat-form-field class="title" appearance="outline">
+          <mat-label>File name</mat-label>
+          <input matInput required placeholder="File name" [(ngModel)]="archivoNombreData" maxlength="25"/>
+        </mat-form-field> -->
+        <!-- <button class="save-button" mat-raised-button (click)="crearArchivo()" [color]="'success'"
+          [disabled]="!archivoSrcData || !archivoNombreData" style="justify-content: flex-end">
+          <mat-icon>add_comment</mat-icon>&nbsp;&nbsp;Add file
+        </button> -->
+      </div>
+
+      <br />
+      <!-- <hr><br> -->
+
+      <div *ngFor="let ar of archivos">
+        <a [href]="ar.src" download="{{ ar.nombre }}">{{ ar.nombre }}</a>
+        <!-- (click)="download(ar)" -->
+        <!-- <mat-card class="comentario">
+          <mat-card-subtitle><b>{{ ar.nombre }}</b>
+            <i style="font-size: smaller;">&nbsp;commented on {{ prettifier(com.fecha) }}</i>
+          </mat-card-subtitle>
+          <mat-card-content>
+            {{ com.comentario }}
+          </mat-card-content>
+        </mat-card> -->
+        <br />
+      </div>
+    </div>
+
+    <br />
+    <hr />
+    <br />
+
+    <!-- COMMENTS -->
     <div>
       <mat-card class="comments-card">
         <mat-card-title>Comments</mat-card-title>
@@ -141,17 +211,15 @@
       </div>
 
       <br />
-      <!-- <hr><br> -->
 
       <div *ngFor="let com of comentarios">
         <mat-card class="comentario">
-          <mat-card-subtitle>{{ com.nombre }}</mat-card-subtitle>
+          <mat-card-subtitle
+            ><b>{{ com.nombre }}</b>
+            <i style="font-size: smaller;">&nbsp;commented on {{ prettifier(com.fecha) }}</i>
+          </mat-card-subtitle>
           <mat-card-content>
             {{ com.comentario }}
-          </mat-card-content>
-          <mat-card-content>
-            <i style="font-size: smaller;">Commented on {{ prettifier(com.fecha) }}</i>
-            <br />
           </mat-card-content>
         </mat-card>
         <br />

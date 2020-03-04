@@ -31,6 +31,7 @@ import { PbiDialogComponent } from './proyecto/backlog/pbiDialog/pbiDialog.compo
 import { PbisService } from './services/pbis-service';
 import { TruncatePipe } from './shared/truncatePipe/truncatePipe';
 import { TruncatePipeModule } from './shared/truncatePipe/truncatePipe.module';
+import { ArchivosService } from './services/archivos-service';
 
 @NgModule({
   imports: [
@@ -58,7 +59,7 @@ import { TruncatePipeModule } from './shared/truncatePipe/truncatePipe.module';
     AppRoutingModule // must be imported as the last module as it contains the fallback route
   ],
   declarations: [AppComponent, ProyectoDialogComponent, FavoritosDialogComponent, PbiDialogComponent],
-  providers: [HolaMundoService, LoginService, UsuariosService, ProyectosService, PbisService],
+  providers: [HolaMundoService, LoginService, UsuariosService, ProyectosService, PbisService, ArchivosService],
   entryComponents: [ProyectoDialogComponent, FavoritosDialogComponent, PbiDialogComponent],
   bootstrap: [AppComponent]
 })
