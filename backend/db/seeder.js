@@ -36,8 +36,16 @@ connection.connect(function(err) {
                         function(err, result) {
                           if (err) throw err;
                           console.log('Tabla Comentarios creada');
-                          connection.end();
-                          console.log('Desconectado de MYSQL');
+                          connection.query(
+                            'create table archivos ( idarchivo INT AUTO_INCREMENT PRIMARY key,nombre varchar(255) not null, src longblob not null, ' +
+                              'idusuario int not null,foreign key(idusuario) references usuarios(idusuario),idpbi int not null,foreign key(idpbi) references pbis(idpbi) )',
+                            function(err, result) {
+                              if (err) throw err;
+                              console.log('Tabla Archivos creada');
+                              connection.end();
+                              console.log('Desconectado de MYSQL');
+                            }
+                          );
                         }
                       );
                     }

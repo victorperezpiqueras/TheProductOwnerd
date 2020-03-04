@@ -5,6 +5,7 @@ var controllerUsuarios = require('../controllers/usuarios');
 var controllerProyectos = require('../controllers/proyectos');
 var controllerPbis = require('../controllers/pbis');
 var controllerComentarios = require('../controllers/comentarios');
+var controllerArchivos = require('../controllers/archivos');
 
 /* USUARIOS */
 router.get('/usuarios', function(req, res, next) {
@@ -211,6 +212,18 @@ router.get('/pbis/:id/comentarios', function(req, res, next) {
     });
 });
 
+router.get('/pbis/:id/archivos', function(req, res, next) {
+  console.log('obtenerArchivosPbi');
+  controllerArchivos
+    .obtenerArchivosPbi(req.params.id)
+    .then(function(archivos) {
+      res.json(archivos);
+    })
+    .catch(function(err) {
+      res.status(500).json(err);
+    });
+});
+
 /* COMENTARIOS */
 router.post('/comentarios', function(req, res, next) {
   console.log('crearComentario');
@@ -218,6 +231,19 @@ router.post('/comentarios', function(req, res, next) {
     .crearComentario(req.body)
     .then(function(comentario) {
       res.json(comentario);
+    })
+    .catch(function(err) {
+      res.status(500).json(err);
+    });
+});
+
+/* ARCHIVOS */
+router.post('/archivos', function(req, res, next) {
+  console.log('crearArchivo');
+  controllerArchivos
+    .crearArchivo(req.body)
+    .then(function(archivo) {
+      res.json(archivo);
     })
     .catch(function(err) {
       res.status(500).json(err);
