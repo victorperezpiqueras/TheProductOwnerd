@@ -200,6 +200,18 @@ router.put('/pbis/:id', function(req, res, next) {
     });
 });
 
+router.put('/pbis', function(req, res, next) {
+  console.log('editarPrioridadesPbis');
+  controllerPbis
+    .editarPrioridadesPbis(req.body)
+    .then(function(pbis) {
+      res.json(pbis);
+    })
+    .catch(function(err) {
+      res.status(500).json(err);
+    });
+});
+
 router.get('/pbis/:id/comentarios', function(req, res, next) {
   console.log('obtenerComentariosPbi');
   controllerComentarios

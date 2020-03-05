@@ -32,4 +32,29 @@ ControllerPbis.editarPbi = function(id, pbi) {
   });
 };
 
+ControllerPbis.editarPrioridadesPbis = function(pbis) {
+  return new Promise(function(resolve, reject) {
+    console.log(pbi);
+    var promises = [];
+    for (var pbi of pbis) {
+      var promise = new Promise(function(resolve, reject) {
+        var sql = 'update pbis set prioridad=? where idpbi=?';
+        var array = [pbi.prioridad, pbi.idpbi];
+        connection.query(sql, array, function(err, result) {
+          if (err) {
+            reject({ error: 'Error inesperado en editarPrioridadesPbis' });
+          } else {
+            console.log(result);
+            resolve(result);
+          }
+        });
+      });
+      promises.push(promise);
+    }
+    Promise.all(promises).then(pbis => {
+      resolve(pbis);
+    });
+  });
+};
+
 module.exports = ControllerPbis;
