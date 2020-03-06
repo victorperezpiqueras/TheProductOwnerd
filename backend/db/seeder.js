@@ -14,8 +14,9 @@ connection.connect(function(err) {
           if (err) throw err;
           console.log('Tabla PROYECTOS creada');
           connection.query(
-            'CREATE TABLE roles (nombre VARCHAR(255) NOT NULL,idusuario int, idproyecto int,foreign key(idusuario)' +
-              ' references usuarios(idusuario),foreign key(idproyecto) references proyectos(idproyecto),idrol INT AUTO_INCREMENT PRIMARY KEY)',
+            'CREATE TABLE roles (nombre VARCHAR(255) NOT NULL,idusuario int, idproyecto int,' +
+              ' ordenar boolean,  editarPBI boolean, estimarTam boolean,estimarValor boolean,mantenerUsuarios boolean,archivarProyecto boolean,setDone boolean, proyecciones boolean, ' +
+              'foreign key(idusuario) references usuarios(idusuario),foreign key(idproyecto) references proyectos(idproyecto),idrol INT AUTO_INCREMENT PRIMARY KEY)',
             function(err, result) {
               if (err) throw err;
               console.log('Tabla ROLES creada');
@@ -26,7 +27,7 @@ connection.connect(function(err) {
                   console.log('Tabla ROLESPERMISOS creada');
                   connection.query(
                     'create table pbis ( idpbi INT AUTO_INCREMENT PRIMARY key,titulo varchar(255) not null, descripcion text,done boolean not null, prioridad int not null' +
-                      'label varchar(255) not null, estimacion int,  idproyecto int, foreign key(idproyecto) references proyectos(idproyecto) )',
+                      'label varchar(255) not null, estimacion int, valor int  idproyecto int, foreign key(idproyecto) references proyectos(idproyecto) )',
                     function(err, result) {
                       if (err) throw err;
                       console.log('Tabla PBIS creada');
@@ -42,8 +43,16 @@ connection.connect(function(err) {
                             function(err, result) {
                               if (err) throw err;
                               console.log('Tabla Archivos creada');
-                              connection.end();
-                              console.log('Desconectado de MYSQL');
+                              connection.query(
+                                'create table criterios ( idcriterio INT AUTO_INCREMENT PRIMARY key,nombre text not null, ' +
+                                  'idpbi int not null,foreign key(idpbi) references pbis(idpbi) )',
+                                function(err, result) {
+                                  if (err) throw err;
+                                  console.log('Tabla Criterios creada');
+                                  connection.end();
+                                  console.log('Desconectado de MYSQL');
+                                }
+                              );
                             }
                           );
                         }

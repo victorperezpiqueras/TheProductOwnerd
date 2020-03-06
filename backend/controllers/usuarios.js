@@ -45,7 +45,9 @@ ControllerUsuarios.getUsuariosProyectos = function(id) {
 ControllerUsuarios.getUsuariosProyectosPermisos = function(id, idp) {
   return new Promise(function(resolve, reject) {
     var sql =
-      'select r2.permiso from proyectos p, usuarios u, roles r, rolespermisos r2  where u.idusuario = ? and p.idproyecto = ? and u.idusuario = r.idusuario and p.idproyecto = r.idproyecto and r2.idrol =r.idrol';
+      //'select r2.permiso from proyectos p, usuarios u, roles r, rolespermisos r2  where u.idusuario = ? and p.idproyecto = ? and u.idusuario = r.idusuario and p.idproyecto = r.idproyecto and r2.idrol =r.idrol';
+      'select ordenar, editarPBI,estimarTam,estimarValor, mantenerUsuarios, archivarProyecto, setDone, proyecciones from proyectos p, usuarios u, roles r where u.idusuario = ? and p.idproyecto = ? ' +
+      'and u.idusuario = r.idusuario and p.idproyecto = r.idproyecto';
     connection.query(sql, [id, idp], function(err, result) {
       if (err) {
         /*  connection.end(function(err) {
@@ -53,11 +55,11 @@ ControllerUsuarios.getUsuariosProyectosPermisos = function(id, idp) {
         }); */
         reject({ error: 'Error inesperado' });
       } else {
-        console.log(result);
+        console.log(result[0]);
         /* connection.end(function(err) {
           console.log('Close the database connection.');
         }); */
-        resolve(result);
+        resolve(result[0]);
       }
     });
   });
