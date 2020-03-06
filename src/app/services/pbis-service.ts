@@ -19,6 +19,9 @@ export class PbisService {
   editarPbi(data: Pbi): Observable<any> {
     return this.http.put<any>(this.url + '/' + data.idpbi, JSON.stringify(data), httpOptions);
   }
+  editarPrioridadesPbis(data: Pbi[]): Observable<any> {
+    return this.http.put<any>(this.url, JSON.stringify(data), httpOptions);
+  }
   obtenerComentarios(idpbi: number): Observable<any> {
     return this.http.get<any>(this.url + '/' + idpbi + '/comentarios', httpOptions);
   }

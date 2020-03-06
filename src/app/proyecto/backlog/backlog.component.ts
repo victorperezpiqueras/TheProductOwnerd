@@ -36,8 +36,11 @@ export class BacklogComponent implements OnInit, OnDestroy {
 
   pbis: Pbi[] = [];
   showingPbis: Pbi[] = [];
+  showingDonePbis: Pbi[] = [];
 
   searchword: string;
+  botonLabel: string = 'Filter by Label';
+  botonLabelColor: string = '#2196F3';
 
   constructor(
     private router: Router,
@@ -60,15 +63,22 @@ export class BacklogComponent implements OnInit, OnDestroy {
       }) */
     this.isLoading = true;
     this.activeRoute.params.subscribe(routeParams => {
-      console.log(routeParams);
+      // console.log(routeParams);
       this.proyectosService.getProyecto(routeParams.id).subscribe(proyecto => {
-        console.log(proyecto);
+        //console.log(proyecto);
         this.proyecto = proyecto;
-        this.proyectosService.getProyectosPBIs(proyecto.idproyecto).subscribe((pbis: any) => {
+        this.proyectosService.getProyectosPBIs(proyecto.idproyecto).subscribe((pbis: []) => {
           this.pbis = pbis;
-          this.showingPbis = pbis;
+          this.showingPbis = pbis.filter((pbi: any) => pbi.done == 0);
+          this.showingPbis.sort((pbi1, pbi2) => {
+            return pbi1.prioridad - pbi2.prioridad;
+          });
+
+          this.showingDonePbis = this.pbis.filter((pbi: any) => pbi.done == 1);
+          //this.showingDonePbis.sort((pbi1, pbi2) => { return pbi1.prioridad - pbi2.prioridad; })
+
           this.isLoading = false;
-          console.log(pbis);
+          // console.log(this.showingPbis);
         });
       });
     });
@@ -77,25 +87,53 @@ export class BacklogComponent implements OnInit, OnDestroy {
 
   actualizarFiltro() {
     this.showingPbis = this.pbis.filter(pbi => {
-      if (pbi.titulo.includes(this.searchword) || pbi.descripcion.includes(this.searchword)) return true;
+      if (pbi.titulo.includes(this.searchword) || (pbi.descripcion.includes(this.searchword) && pbi.done == 0))
+        return true;
+    });
+    this.showingDonePbis = this.pbis.filter(pbi => {
+      if (pbi.titulo.includes(this.searchword) || (pbi.descripcion.includes(this.searchword) && pbi.done == 1))
+        return true;
     });
   }
 
   filtrarLabel(label: string) {
     if (label == 'none') {
-      this.showingPbis = this.pbis;
+      this.botonLabel = 'Filter by Label';
+      //this.showingPbis = this.pbis;
+      this.showingPbis = this.pbis.filter((pbi: any) => pbi.done == 0);
+      this.showingDonePbis = this.pbis.filter((pbi: any) => pbi.done == 1);
     } else {
+      this.botonLabel = label.charAt(0).toUpperCase() + label.substring(1);
       this.showingPbis = this.pbis.filter(pbi => {
-        if (pbi.label == label) return true;
+        if (pbi.label == label && pbi.done == 0) return true;
+      });
+      this.showingDonePbis = this.pbis.filter(pbi => {
+        if (pbi.label == label && pbi.done == 1) return true;
       });
     }
+    this.botonLabelColor = this.getLabelButtonColor();
+  }
+
+  getLabelButtonColor() {
+    if (this.botonLabel == 'Filter by Label') {
+      if (this.viewDone) return '#FF4081';
+      else return '#2196F3';
+    } else if (this.botonLabel == 'Feature') return '#00ad17';
+    else if (this.botonLabel == 'Tech-debt') return '#ffbb00';
+    else if (this.botonLabel == 'Bug') return '#ad0000';
+    else if (this.botonLabel == 'Infrastructure') return '#2196f3';
   }
 
   actualizarPbis() {
     this.isLoading = true;
     this.proyectosService.getProyectosPBIs(this.proyecto.idproyecto).subscribe((pbis: any) => {
       this.pbis = pbis;
-      this.showingPbis = pbis;
+      // this.showingPbis = pbis;
+      this.showingPbis = this.pbis.filter((pbi: any) => pbi.done == 0);
+      this.showingPbis.sort((pbi1, pbi2) => {
+        return pbi1.prioridad - pbi2.prioridad;
+      });
+      this.showingDonePbis = this.pbis.filter((pbi: any) => pbi.done == 1);
       this.isLoading = false;
     });
   }
@@ -114,7 +152,7 @@ export class BacklogComponent implements OnInit, OnDestroy {
     this.dialogRef.afterClosed().subscribe(data => {
       if (data != undefined) {
         this.addPbi(data.pbi);
-        console.log(data);
+        //console.log(data);
       }
     });
   }
@@ -133,7 +171,7 @@ export class BacklogComponent implements OnInit, OnDestroy {
     this.dialogRef.afterClosed().subscribe(data => {
       if (data != undefined) {
         this.editarPbi(data.pbi);
-        console.log(data);
+        //console.log(data);
       }
     });
   }
@@ -151,22 +189,61 @@ export class BacklogComponent implements OnInit, OnDestroy {
     this.dialogRef = this.dialog.open(PbiDialogComponent, dialogConfig);
   }
 
-  drop(event: any) {
-    console.log('dropped');
+  drop(event: CdkDragDrop<string[]>) {
+    console.log(this.showingPbis);
+    if (!this.viewDone) {
+      moveItemInArray(this.showingPbis, event.previousIndex, event.currentIndex);
+      /* console.log(this.showingPbis)
+      console.log("drop")
+      console.log(this.showingPbis[event.previousIndex])
+      console.log(this.showingPbis[event.currentIndex]) */
+      var auxPrioridad = this.showingPbis[event.previousIndex].prioridad;
+      this.showingPbis[event.previousIndex].prioridad = this.showingPbis[event.currentIndex].prioridad;
+      this.showingPbis[event.currentIndex].prioridad = auxPrioridad;
+      /* console.log("drop2")
+      console.log(this.showingPbis[event.previousIndex])
+      console.log(this.showingPbis[event.currentIndex]) */
+    }
+    this.recalcularPrioridad();
+    /*     else {
+          moveItemInArray(this.showingDonePbis, event.previousIndex, event.currentIndex);
+          console.log("drop")
+          console.log(this.showingDonePbis[event.previousIndex])
+          console.log(this.showingDonePbis[event.currentIndex])
+          var auxPrioridad = this.showingDonePbis[event.previousIndex].prioridad;
+          this.showingDonePbis[event.previousIndex].prioridad = this.showingDonePbis[event.currentIndex].prioridad;
+          this.showingDonePbis[event.currentIndex].prioridad = auxPrioridad;
+          console.log("drop2")
+          console.log(this.showingDonePbis[event.previousIndex])
+          console.log(this.showingDonePbis[event.currentIndex])
+        } */
+
+    //this.showingPbis = this.pbis;
+  }
+
+  recalcularPrioridad() {
+    for (var x = 0; x < this.showingPbis.length; x++) {
+      this.showingPbis[x].prioridad = x + 1;
+    }
+    this.pbisService.editarPrioridadesPbis(this.showingPbis).subscribe(pbis => {
+      //console.log(pbis);
+    });
   }
 
   swapItemList() {
     if (this.viewDone) {
       this.itemListTitle = this.pbiTitle;
+      this.botonLabelColor = '#2196F3';
     } else {
       this.itemListTitle = this.pbiDoneTitle;
+      this.botonLabelColor = '#FF4081';
     }
     this.viewDone = !this.viewDone;
   }
 
   addPbi(pbi: Pbi) {
     this.pbisService.crearPbi(pbi).subscribe((v: any) => {
-      console.log(v);
+      //console.log(v);
       //this.pbis.push(pbi);///////////////////COMPROBAR
       this.actualizarPbis();
     });
@@ -174,7 +251,7 @@ export class BacklogComponent implements OnInit, OnDestroy {
 
   editarPbi(pbi: Pbi) {
     this.pbisService.editarPbi(pbi).subscribe((v: any) => {
-      console.log(v);
+      //console.log(v);
       /* var itemToUpdate = this.pbis.find((item) => item.idpbi == pbi.idpbi); //////////////////COMPROBAR
       var index = this.pbis.indexOf(itemToUpdate);
       this.pbis[index] = pbi; */

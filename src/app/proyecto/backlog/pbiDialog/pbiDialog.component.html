@@ -47,7 +47,7 @@
             <mat-label>Label</mat-label>
             <mat-select [(ngModel)]="label" (selectionChange)="setColor()" required [disabled]="disabled">
               <mat-option *ngFor="let label of labels" [value]="label">
-                {{ label }}
+                {{ label.charAt(0).toUpperCase() + label.substring(1) }}
               </mat-option>
             </mat-select>
           </mat-form-field>

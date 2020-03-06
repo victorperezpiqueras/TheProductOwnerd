@@ -89,7 +89,10 @@ export class PbiDialogComponent implements OnInit {
     this.isLoading = true;
     this.pbisService.obtenerComentarios(this.idpbi).subscribe((comentarios: Comentario[]) => {
       console.log(comentarios);
-      this.comentarios = comentarios;
+      this.comentarios = comentarios.sort((com1, com2) => {
+        if (new Date(com1.fecha) < new Date(com2.fecha)) return -1;
+        else return 1;
+      });
       /* this.comentarios = comentarios.reverse(); */
       this.isLoading = false;
     });
@@ -233,7 +236,20 @@ export class PbiDialogComponent implements OnInit {
     var D = date.getDay();
     var M = date.getMonth();
     var Y = date.getFullYear();
-    return h + ':' + m + ' - ' + D + ' - ' + M + ' - ' + Y;
+
+    if (M == 1) M = 'Jan';
+    else if (M == 2) M = 'Feb';
+    else if (M == 3) M = 'Mar';
+    else if (M == 4) M = 'Apr';
+    else if (M == 5) M = 'May';
+    else if (M == 6) M = 'Jun';
+    else if (M == 7) M = 'Jul';
+    else if (M == 8) M = 'Aug';
+    else if (M == 9) M = 'Sep';
+    else if (M == 10) M = 'Oct';
+    else if (M == 11) M = 'Nov';
+    else if (M == 12) M = 'Dec';
+    return h + ':' + m + ' - ' + D + ' ' + M + ' of ' + Y;
   }
 
   onFileSelected(event: any) {

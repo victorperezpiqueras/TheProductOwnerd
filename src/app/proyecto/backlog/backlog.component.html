@@ -22,15 +22,16 @@
 
         <button
           mat-raised-button
-          [color]="viewDone ? 'accent' : 'primary'"
+          [ngStyle]="{ 'background-color': botonLabelColor }"
+          color="primary"
           [matMenuTriggerFor]="menu"
           style="margin-left: 5%;"
         >
-          Filter by Label
+          {{ botonLabel }}
         </button>
         <mat-menu #menu="matMenu">
-          <button mat-menu-item (click)="filtrarLabel('none')">None</button>
-          <button mat-menu-item (click)="filtrarLabel('feature')">Feature</button>
+          <button mat-menu-item (click)="filtrarLabel('none')">All</button>
+          <button mat-menu-item (click)="filtrarLabel('feature')" color="accent">Feature</button>
           <button mat-menu-item (click)="filtrarLabel('bug')">Bug</button>
           <button mat-menu-item (click)="filtrarLabel('tech-debt')">Tech-debt</button>
           <button mat-menu-item (click)="filtrarLabel('infrastructure')">Infrastructure</button>
@@ -46,7 +47,8 @@
 
     <!-- BACKLOG ITEMS LIST -->
     <div class="div-list" *ngIf="!viewDone">
-      <div class="droplist" cdkDropList (cdkDropListDropped)="drop($event)">
+      <div class="droplist" cdkDropList [cdkDropListData]="showingPbis" (cdkDropListDropped)="drop($event)">
+        <!-- cdkDragBoundary=".droplist" -->
         <div *ngFor="let pbi of showingPbis">
           <mat-card
             *ngIf="pbi.done == 0"
@@ -55,7 +57,6 @@
             matBadgeOverlap="true"
             matBadgeSize="medium"
             matBadgeColor="accent"
-            cdkDragBoundary=".droplist"
             cdkDrag
             (click)="editarPbiDialog(pbi)"
           >
@@ -80,7 +81,7 @@
     <!-- DONE ITEMS LIST -->
     <div class="div-list" *ngIf="viewDone">
       <div class="droplist">
-        <div *ngFor="let pbi of showingPbis">
+        <div *ngFor="let pbi of showingDonePbis">
           <mat-card
             *ngIf="pbi.done == 1"
             class="card"
