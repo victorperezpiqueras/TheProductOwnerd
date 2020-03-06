@@ -47,6 +47,17 @@
   width: 100%;
 }
 
+.criterio {
+  width: 80%;
+}
+.criterio-nombre {
+  overflow-wrap: break-word;
+}
+.borrar-criterio-icon {
+  font-size: 2vmin;
+  cursor: pointer;
+}
+
 .checkbox {
   margin-right: 1%;
 }

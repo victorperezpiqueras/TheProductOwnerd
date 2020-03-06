@@ -81,7 +81,7 @@
         <!-- </div> -->
 
         <mat-form-field class="number-form form" appearance="outline">
-          <mat-label>Value <mat-icon class="icon-valor">flash_on</mat-icon></mat-label>
+          <mat-label>Value <mat-icon class="icon-valor">flash_on</mat-icon> </mat-label>
           <input
             matInput
             type="number"
@@ -93,7 +93,7 @@
           </mat-select> -->
         </mat-form-field>
 
-        <!-- <br> -->
+        <br />
 
         <div fxLayout="row">
           <mat-form-field class="description" appearance="outline">
@@ -108,20 +108,37 @@
         </div>
 
         <div fxLayout="row">
-          <mat-form-field class="description" appearance="outline">
-            <mat-label>Acceptance Criteria</mat-label>
-            <textarea
-              matInput
-              placeholder="Acceptance Criteria"
-              [(ngModel)]="acceptanceCriteria"
-              [disabled]="disabled || permisos.editarPBI == 0"
-            ></textarea>
+          <h1 class="mat-h2" style="display: inline-block;;margin-right: 2%;">Dependencies:</h1>
+
+          <mat-chip-list style="display: inline-block;margin-right: 2%;">
+            <mat-chip
+              *ngFor="let dep of dependencias"
+              [ngStyle]="{ 'background-color': getPbiColor(dep.idpbi2) }"
+              color="accent"
+              [removable]="true"
+              (removed)="borrarDependencia(dep)"
+              selected
+              class="mat-typography"
+            >
+              {{ getPbiTitulo(dep.idpbi2) }}<mat-icon matChipRemove>cancel</mat-icon>
+            </mat-chip>
+          </mat-chip-list>
+
+          <mat-form-field style="display: inline-block;margin-right: 2%;">
+            <mat-label>Add Dependencies</mat-label>
+            <!--  <mat-select multiple (selectionChange)="actualizarDependencia(pbi)">
+              <mat-option *ngFor="let pbi of pbis" [value]="pbi">
+                #{{pbi.idpbi}} {{pbi.titulo}}</mat-option>
+            </mat-select> -->
+            <mat-select [(ngModel)]="dependenciaData" (selectionChange)="actualizarDependencia()">
+              <mat-option *ngFor="let pbi of notSelectedPbis" [value]="pbi"
+                >#{{ pbi.idpbi }} {{ pbi.titulo }}</mat-option
+              >
+            </mat-select>
           </mat-form-field>
         </div>
-
+        <br />
         <!-- <br> -->
-
-        <div fxLayout="row"></div>
 
         <div mat-dialog-actions fxLayout="row">
           <!-- <div fxLayout="row" fxFill> -->
@@ -163,9 +180,47 @@
           <!--     <button class="close-button" mat-raised-button (click)="close()" color="primary">Close</button> -->
         </div>
         <!-- </mat-card> -->
-      </div>
+        <br /><br />
+        <hr />
+        <br />
+        <div fxLayout="row">
+          <mat-card class="comments-card">
+            <mat-card-title>Acceptance Criteria</mat-card-title>
+          </mat-card>
 
-      <br />
+          <mat-list role="list" *ngFor="let crit of criterios">
+            <mat-list-item role="listitem">
+              <mat-checkbox class="checkbox" [(ngModel)]="crit.done" (change)="actualizarCriterio(crit)"></mat-checkbox>
+              {{ crit.nombre }}&nbsp;<mat-icon class="borrar-criterio-icon" (click)="borrarCriterio(crit)"
+                >cancel</mat-icon
+              >
+            </mat-list-item>
+          </mat-list>
+
+          <div fxLayout="row">
+            <mat-form-field class="criterio form" appearance="outline">
+              <mat-label>New Acceptance Criteria</mat-label>
+              <input
+                matInput
+                placeholder="New Acceptance Criteria"
+                [(ngModel)]="criterioData"
+                maxlength="50"
+                [disabled]="disabled || permisos.editarPBI == 0"
+              />
+            </mat-form-field>
+            <button
+              class="save-button"
+              mat-raised-button
+              (click)="crearCriterio()"
+              [color]="'success'"
+              [disabled]="!criterioData"
+              style="display: inline-block;width: 9vmin;height: 6vmin;min-width: 100px;min-height: 50px;"
+            >
+              <mat-icon>add_circle</mat-icon>&nbsp;&nbsp;Create
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- <mat-form-field appearance="fill" [color]="accent">

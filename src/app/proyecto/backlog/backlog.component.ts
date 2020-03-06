@@ -150,7 +150,11 @@ export class BacklogComponent implements OnInit, OnDestroy {
 
   clearSearch() {
     this.searchword = '';
-    this.filtrarLabel('none');
+    this.showingPbis = this.pbis.filter((pbi: any) => pbi.done == 0);
+    this.showingPbis.sort((pbi1, pbi2) => {
+      return pbi1.prioridad - pbi2.prioridad;
+    });
+    this.showingDonePbis = this.pbis.filter((pbi: any) => pbi.done == 1);
   }
 
   getLabelButtonColor() {
@@ -193,6 +197,7 @@ export class BacklogComponent implements OnInit, OnDestroy {
     dialogConfig.data = {
       pbi: new Pbi(null, null, null, null, null, null, null, this.pbis.length, this.proyecto.idproyecto),
       permisos: this.permisos,
+      pbis: this.pbis,
       dialogMode: 'create'
     };
     this.dialogRef = this.dialog.open(PbiDialogComponent, dialogConfig);
@@ -213,6 +218,7 @@ export class BacklogComponent implements OnInit, OnDestroy {
     dialogConfig.data = {
       pbi: pbi,
       permisos: this.permisos,
+      pbis: this.pbis,
       dialogMode: 'edit'
     };
     this.dialogRef = this.dialog.open(PbiDialogComponent, dialogConfig);
@@ -233,6 +239,7 @@ export class BacklogComponent implements OnInit, OnDestroy {
     dialogConfig.data = {
       pbi: pbi,
       permisos: this.permisos,
+      pbis: this.pbis,
       dialogMode: 'view'
     };
     this.dialogRef = this.dialog.open(PbiDialogComponent, dialogConfig);

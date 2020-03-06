@@ -11,6 +11,10 @@ import { ArchivosService } from '@app/services/archivos-service';
 import { Archivo } from '@app/models/archivos';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Permisos } from '@app/models/permisos';
+import { Criterio } from '@app/models/criterios';
+import { CriteriosService } from '@app/services/criterios-service';
+import { DependenciasService } from '@app/services/dependencias-service';
+import { Dependencia } from '@app/models/dependencias';
 
 @Component({
   selector: 'app-pbiDialog',
@@ -41,8 +45,18 @@ export class PbiDialogComponent implements OnInit {
   comentarios: any[] = [];
   comentarioData: string;
 
+  /* criterios data */
+  criterios: Criterio[];
+  criterioData: string;
+
+  /* dependencias data */
+  dependencias: Dependencia[];
+  dependenciaData: any;
+  notSelectedPbis: any[];
+
   dialogMode: string;
   permisos: Permisos;
+  pbis: any[];
 
   labels: String[] = ['feature', 'bug', 'tech-debt', 'infrastructure'];
   fibonacci: number[] = [0, 1, 2, 3, 5, 8, 13, 21, 40];
@@ -59,6 +73,8 @@ export class PbiDialogComponent implements OnInit {
     private pbisService: PbisService,
     private comentariosService: ComentariosService,
     private archivosService: ArchivosService,
+    private criteriosService: CriteriosService,
+    private dependenciasService: DependenciasService,
     private sanitizer: DomSanitizer
   ) {
     if (data.dialogMode == 'create') {
@@ -70,6 +86,12 @@ export class PbiDialogComponent implements OnInit {
       this.disabled = true;
     }
     this.permisos = data.permisos;
+    this.pbis = data.pbis;
+    this.notSelectedPbis = [...this.pbis];
+    const index: number = this.notSelectedPbis.indexOf(data.pbi);
+    if (index !== -1) {
+      this.notSelectedPbis.splice(index, 1);
+    }
 
     console.log(data.pbi);
     this.idpbi = data.pbi.idpbi;
@@ -89,13 +111,118 @@ export class PbiDialogComponent implements OnInit {
     this.setColor();
     this.actualizarComentarios();
     this.actualizarArchivos();
+    this.actualizarCriterios();
+    this.actualizarDependencias();
+  }
+
+  /* DEPENDENCIAS */
+  actualizarDependencias() {
+    this.isLoading = true;
+    this.pbisService.obtenerDependencias(this.idpbi).subscribe((dependencias: Dependencia[]) => {
+      console.log(dependencias);
+      this.dependencias = dependencias;
+      console.log(this.pbis);
+      this.notSelectedPbis = [...this.pbis];
+      //borrar los pbis que ya estan puestos
+      for (var d of this.dependencias) {
+        console.log(d);
+        var p = false;
+        var pbi1;
+        this.notSelectedPbis.forEach((pbi: any) => {
+          if (pbi.idpbi == d.idpbi2) {
+            p = true;
+            pbi1 = pbi;
+          }
+        });
+        console.log(p);
+        if (p) {
+          const index: number = this.notSelectedPbis.indexOf(pbi1);
+          console.log(index);
+          if (index !== -1) {
+            this.notSelectedPbis.splice(index, 1);
+          }
+        }
+      }
+      console.log(this.notSelectedPbis);
+      this.isLoading = false;
+    });
+  }
+  actualizarDependencia() {
+    console.log('actualizardep');
+    var existe = false;
+    this.dependencias.forEach((dep: any) => {
+      if (dep.idpbi2 == this.dependenciaData.idpbi) existe = true;
+    });
+
+    if (!existe) {
+      var dependencia = {
+        idpbi: this.idpbi,
+        idpbi2: this.dependenciaData.idpbi
+      };
+      this.dependenciasService.crearDependencia(dependencia).subscribe((res: any) => {
+        this.actualizarDependencias();
+      });
+    } else {
+      this.dependenciasService.borrarDependencia(this.idpbi, this.dependenciaData.idpbi).subscribe((res: any) => {
+        this.actualizarDependencias();
+      });
+    }
+  }
+  borrarDependencia(dep: Dependencia) {
+    this.dependenciasService.borrarDependencia(dep.idpbi, dep.idpbi2).subscribe((res: any) => {
+      this.actualizarDependencias();
+    });
+  }
+
+  /* existeDependencia(pbi: Pbi) {
+    var existe = false;
+    this.dependencias.forEach((dep: any) => {
+      if (dep.idpbi2 == pbi.idpbi) existe = true;
+    });
+    return existe;
+    // return this.dependencias.find((dep: any) => { dep.idpbi2 == pbi.idpbi }); 
+  } 
+  */
+
+  /* CRITERIOS */
+  actualizarCriterios() {
+    this.isLoading = true;
+    this.pbisService.obtenerCriterios(this.idpbi).subscribe((criterios: Criterio[]) => {
+      console.log(criterios);
+      this.criterios = criterios;
+      this.isLoading = false;
+    });
+  }
+  crearCriterio() {
+    var criterio = {
+      done: 0,
+      nombre: this.criterioData,
+      idpbi: this.idpbi
+    };
+    this.criterioData = '';
+    this.criteriosService.crearCriterio(criterio).subscribe((res: any) => {
+      console.log(res);
+      this.actualizarCriterios();
+    });
+  }
+  actualizarCriterio(criterio: Criterio) {
+    console.log(criterio);
+    this.criteriosService.actualizarCriterio(criterio).subscribe((res: any) => {
+      this.actualizarCriterios();
+    });
+  }
+  borrarCriterio(criterio: Criterio) {
+    console.log(criterio);
+    this.criteriosService.borrarCriterio(criterio.idcriterio).subscribe((res: any) => {
+      this.actualizarCriterios();
+    });
   }
 
   /* COMENTARIOS */
   actualizarComentarios() {
     this.isLoading = true;
     this.pbisService.obtenerComentarios(this.idpbi).subscribe((comentarios: Comentario[]) => {
-      console.log(comentarios);
+      //  console.log(comentarios);
       this.comentarios = comentarios.sort((com1, com2) => {
         if (new Date(com1.fecha) < new Date(com2.fecha)) return -1;
         else return 1;
@@ -124,10 +251,10 @@ export class PbiDialogComponent implements OnInit {
   actualizarArchivos() {
     this.isLoading = true;
     this.pbisService.obtenerArchivos(this.idpbi).subscribe((archivos: Archivo[]) => {
-      console.log(archivos);
+      //  console.log(archivos);
       this.archivos = archivos;
       this.archivos.forEach(archivo => {
-        console.log(archivo);
+        // console.log(archivo);
 
         var fileType = this.getFileType(archivo);
 
@@ -139,9 +266,9 @@ export class PbiDialogComponent implements OnInit {
         array.push(blob);
         blob = new File(array, archivo.nombre, { type: fileType.format });
 
-        console.log(fileType);
-        console.log(archivo);
-        console.log(blob);
+        /*  console.log(fileType);
+         console.log(archivo);
+         console.log(blob); */
         archivo.src = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(blob));
       });
 
@@ -157,7 +284,7 @@ export class PbiDialogComponent implements OnInit {
       idpbi: this.idpbi,
       idusuario: this.idusuario
     };
-    console.log(archivo);
+    //console.log(archivo);
     this.archivosService.crearArchivo(archivo).subscribe((res: any) => {
       this.actualizarArchivos();
       this.isLoading = false;
@@ -199,6 +326,27 @@ export class PbiDialogComponent implements OnInit {
       default:
         this.labelColor = '#000000';
     }
+  }
+
+  getPbiColor(idpbi: number) {
+    var pbi1: any = {};
+    // pbi = this.pbis.find((pbi:Pbi) => { pbi.idpbi == idpbi })
+    this.pbis.forEach((pbi: any) => {
+      if (pbi.idpbi == idpbi) pbi1 = pbi;
+    });
+    var label = pbi1.label;
+    if (label == 'feature') return '#00ad17';
+    else if (label == 'tech-debt') return '#ffbb00';
+    else if (label == 'bug') return '#ad0000';
+    else if (label == 'infrastructure') return '#2196f3';
+  }
+
+  getPbiTitulo(idpbi: number) {
+    var pbi1: any = {};
+    this.pbis.forEach((pbi: any) => {
+      if (pbi.idpbi == idpbi) pbi1 = pbi;
+    });
+    return pbi1.titulo;
   }
 
   openSnackBar(message: string, action: string) {
@@ -262,7 +410,7 @@ export class PbiDialogComponent implements OnInit {
 
   onFileSelected(event: any) {
     this.archivoSrcData = event.target.files[0];
-    console.log(this.archivoSrcData);
+    //console.log(this.archivoSrcData);
     const reader = (file: any) => {
       return new Promise((resolve, reject) => {
         const fileReader = new FileReader();
@@ -271,7 +419,7 @@ export class PbiDialogComponent implements OnInit {
       });
     };
     reader(this.archivoSrcData).then(result => {
-      console.log(result);
+      // console.log(result);
       this.archivoSrcData = result;
     });
   }
@@ -290,7 +438,7 @@ export class PbiDialogComponent implements OnInit {
   getFileType(file: any) {
     let checkFileType = Buffer.from(file.src, 'base64').toString();
     checkFileType = checkFileType.split(':').pop();
-    console.log(checkFileType);
+    //console.log(checkFileType);
     if (checkFileType.includes('image/png')) return { format: 'image/png', ending: '.png' };
     else if (checkFileType.includes('image/png')) return { format: 'application/pdf', ending: '.pdf' };
     else {

@@ -28,4 +28,10 @@ export class PbisService {
   obtenerArchivos(idpbi: number): Observable<any> {
     return this.http.get<any>(this.url + '/' + idpbi + '/archivos', httpOptions);
   }
+  obtenerCriterios(idpbi: number): Observable<any> {
+    return this.http.get<any>(this.url + '/' + idpbi + '/criterios', httpOptions);
+  }
+  obtenerDependencias(idpbi: number): Observable<any> {
+    return this.http.get<any>(this.url + '/' + idpbi + '/dependencias', httpOptions);
+  }
 }

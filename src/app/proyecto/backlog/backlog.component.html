@@ -86,7 +86,7 @@
             <mat-card-header>
               <mat-card-title>#{{ pbi.idpbi }} - {{ pbi.titulo }}</mat-card-title>
               &nbsp;
-              <mat-chip-list aria-label="Fish selection">
+              <mat-chip-list>
                 <mat-chip [ngStyle]="{ 'background-color': getLabelColor(pbi.label) }" color="accent" selected>
                   {{ pbi.label }}
                 </mat-chip>
