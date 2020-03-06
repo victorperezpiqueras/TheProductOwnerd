@@ -6,6 +6,8 @@ var controllerProyectos = require('../controllers/proyectos');
 var controllerPbis = require('../controllers/pbis');
 var controllerComentarios = require('../controllers/comentarios');
 var controllerArchivos = require('../controllers/archivos');
+var controllerCriterios = require('../controllers/criterios');
+var controllerDependencias = require('../controllers/dependencias');
 
 /* USUARIOS */
 router.get('/usuarios', function(req, res, next) {
@@ -236,6 +238,30 @@ router.get('/pbis/:id/archivos', function(req, res, next) {
     });
 });
 
+router.get('/pbis/:id/criterios', function(req, res, next) {
+  console.log('obtenerCriteriosPbi');
+  controllerCriterios
+    .obtenerCriteriosPbi(req.params.id)
+    .then(function(criterios) {
+      res.json(criterios);
+    })
+    .catch(function(err) {
+      res.status(500).json(err);
+    });
+});
+
+router.get('/pbis/:id/dependencias', function(req, res, next) {
+  console.log('obtenerDependenciasPbi');
+  controllerDependencias
+    .obtenerDependenciasPbi(req.params.id)
+    .then(function(dependencias) {
+      res.json(dependencias);
+    })
+    .catch(function(err) {
+      res.status(500).json(err);
+    });
+});
+
 /* COMENTARIOS */
 router.post('/comentarios', function(req, res, next) {
   console.log('crearComentario');
@@ -256,6 +282,65 @@ router.post('/archivos', function(req, res, next) {
     .crearArchivo(req.body)
     .then(function(archivo) {
       res.json(archivo);
+    })
+    .catch(function(err) {
+      res.status(500).json(err);
+    });
+});
+
+/* CRITERIOS */
+router.post('/criterios', function(req, res, next) {
+  console.log('crearCriterio');
+  controllerCriterios
+    .crearCriterio(req.body)
+    .then(function(criterio) {
+      res.json(criterio);
+    })
+    .catch(function(err) {
+      res.status(500).json(err);
+    });
+});
+router.put('/criterios/:id', function(req, res, next) {
+  console.log('actualizarCriterio');
+  controllerCriterios
+    .actualizarCriterio(req.params.id, req.body)
+    .then(function(criterio) {
+      res.json(criterio);
+    })
+    .catch(function(err) {
+      res.status(500).json(err);
+    });
+});
+router.delete('/criterios/:id', function(req, res, next) {
+  console.log('borrarCriterio');
+  controllerCriterios
+    .borrarCriterio(req.params.id)
+    .then(function(criterio) {
+      res.json(criterio);
+    })
+    .catch(function(err) {
+      res.status(500).json(err);
+    });
+});
+
+/* DEPENDENCIAS */
+router.post('/dependencias', function(req, res, next) {
+  console.log('crearDependencia');
+  controllerDependencias
+    .crearDependencia(req.body)
+    .then(function(dependencia) {
+      res.json(dependencia);
+    })
+    .catch(function(err) {
+      res.status(500).json(err);
+    });
+});
+router.delete('/dependencias/:id/:id2', function(req, res, next) {
+  console.log('borrarDependencia');
+  controllerDependencias
+    .borrarDependencia(req.params.id, req.params.id2)
+    .then(function(dependencia) {
+      res.json(dependencia);
     })
     .catch(function(err) {
       res.status(500).json(err);

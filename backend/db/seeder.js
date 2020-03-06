@@ -44,13 +44,21 @@ connection.connect(function(err) {
                               if (err) throw err;
                               console.log('Tabla Archivos creada');
                               connection.query(
-                                'create table criterios ( idcriterio INT AUTO_INCREMENT PRIMARY key,nombre text not null, ' +
+                                'create table criterios ( idcriterio INT AUTO_INCREMENT PRIMARY key,nombre text not null,done boolean not null ' +
                                   'idpbi int not null,foreign key(idpbi) references pbis(idpbi) )',
                                 function(err, result) {
                                   if (err) throw err;
                                   console.log('Tabla Criterios creada');
-                                  connection.end();
-                                  console.log('Desconectado de MYSQL');
+                                  connection.query(
+                                    'create table dependencias ( iddependencia INT AUTO_INCREMENT PRIMARY key,' +
+                                      'idpbi int not null,foreign key(idpbi) references pbis(idpbi), idpbi2 int not null,foreign key(idpbi2) references pbis(idpbi) )',
+                                    function(err, result) {
+                                      if (err) throw err;
+                                      console.log('Tabla Dependencias creada');
+                                      connection.end();
+                                      console.log('Desconectado de MYSQL');
+                                    }
+                                  );
                                 }
                               );
                             }
