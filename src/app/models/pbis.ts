@@ -6,6 +6,7 @@ export class Pbi {
     public done: number,
     public label: string,
     public estimacion: number,
+    public valor: number,
     public prioridad: number,
     public idproyecto: number
   ) {}

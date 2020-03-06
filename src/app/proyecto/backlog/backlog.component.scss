@@ -37,6 +37,23 @@ mat-tab {
   align-self: end;
 }
 
+/* .valor{
+  margin-right: 5%;
+}
+ */
+.icon-valor {
+  position: relative;
+  /* Adjust these values accordingly */
+  top: 5px;
+  left: 5px;
+  font-size: 2vmin;
+}
+
+.mat-valor {
+  background-color: black;
+  color: white;
+}
+
 .div-list {
 }
 

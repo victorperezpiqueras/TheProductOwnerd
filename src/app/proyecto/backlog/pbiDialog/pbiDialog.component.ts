@@ -10,6 +10,7 @@ import { CredentialsService } from '@app/core';
 import { ArchivosService } from '@app/services/archivos-service';
 import { Archivo } from '@app/models/archivos';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Permisos } from '@app/models/permisos';
 
 @Component({
   selector: 'app-pbiDialog',
@@ -23,9 +24,11 @@ export class PbiDialogComponent implements OnInit {
   idpbi: number;
   titulo: string;
   descripcion: string;
+  acceptanceCriteria: string;
   done: number;
   label: string;
   estimacion: number;
+  valor: number;
   idproyecto: number;
   prioridad: number;
 
@@ -39,8 +42,9 @@ export class PbiDialogComponent implements OnInit {
   comentarioData: string;
 
   dialogMode: string;
+  permisos: Permisos;
 
-  labels: String[] = ['feature', 'bug', 'tech-debt', 'infrastructre'];
+  labels: String[] = ['feature', 'bug', 'tech-debt', 'infrastructure'];
   fibonacci: number[] = [0, 1, 2, 3, 5, 8, 13, 21, 40];
   labelColor: string;
 
@@ -65,6 +69,8 @@ export class PbiDialogComponent implements OnInit {
       this.dialogMode = 'View';
       this.disabled = true;
     }
+    this.permisos = data.permisos;
+
     console.log(data.pbi);
     this.idpbi = data.pbi.idpbi;
     this.titulo = data.pbi.titulo;
@@ -72,6 +78,7 @@ export class PbiDialogComponent implements OnInit {
     this.done = data.pbi.done ? data.pbi.done : 0;
     this.label = data.pbi.label;
     this.estimacion = data.pbi.estimacion;
+    this.valor = data.pbi.valor;
     this.idproyecto = data.pbi.idproyecto;
     this.prioridad = data.pbi.prioridad;
 
@@ -215,6 +222,7 @@ export class PbiDialogComponent implements OnInit {
         this.done,
         this.label,
         this.estimacion,
+        this.valor,
         this.prioridad,
         this.idproyecto
       )

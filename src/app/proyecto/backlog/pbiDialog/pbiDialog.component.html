@@ -10,9 +10,15 @@
 
         <!-- <h1 mat-dialog-title>{{dialogMode}}</h1> -->
         <!--  <div fxFill fxLayout="row" style="display: inline-block;width: 90%;"> -->
-        <h1 style="display: inline-block;width: 95%;">#{{ idpbi }} - {{ titulo }}</h1>
+        <h1 style="display: inline-block;width: 90%;">#{{ idpbi }} - {{ titulo }}</h1>
         <!-- </div>
       <div fxFlex="10%" fxLayoutAlign="end end" fxLayout="row" style="display: inline-block;"> -->
+
+        <!-- 
+        <button *ngIf="estimacion != null" class="estimacion" mat-mini-fab [color]="'value'" [disableRipple]="true">
+          {{ estimacion }}
+        </button> -->
+        <!-- <h3 class="valor" *ngIf="valor">{{valor}}<mat-icon class="icon-valor">flash_on</mat-icon></h3> -->
         <button *ngIf="estimacion != null" class="estimacion" mat-fab color="accent" [disableRipple]="true">
           <h1>{{ estimacion }}</h1>
         </button>
@@ -21,56 +27,95 @@
       </mat-card>
 
       <br />
+      <br />
 
       <div fxLayout="row">
         <!--  <mat-card fxLayout="row"> -->
 
         <!-- fxLayoutAlign="center center" -->
-        <div fxLayout="row">
-          <mat-form-field class="title" appearance="outline">
-            <mat-label>Title</mat-label>
-            <input
-              matInput
-              required
-              placeholder="PBI title"
-              [(ngModel)]="titulo"
-              maxlength="25"
-              [disabled]="disabled"
-            />
-          </mat-form-field>
-        </div>
+        <!-- <div fxLayout="row"> -->
+        <mat-form-field class="title form" appearance="outline">
+          <mat-label>Title</mat-label>
+          <input
+            matInput
+            required
+            placeholder="PBI title"
+            [(ngModel)]="titulo"
+            maxlength="25"
+            [disabled]="disabled || permisos.editarPBI == 0"
+          />
+        </mat-form-field>
+        <!-- </div> -->
 
         <!-- <br> -->
 
-        <div fxLayout="row">
-          <mat-form-field appearance="outline">
-            <mat-label>Label</mat-label>
-            <mat-select [(ngModel)]="label" (selectionChange)="setColor()" required [disabled]="disabled">
-              <mat-option *ngFor="let label of labels" [value]="label">
-                {{ label.charAt(0).toUpperCase() + label.substring(1) }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
+        <!-- <div fxLayout="row"> -->
+        <mat-form-field class="normal-form form" appearance="outline">
+          <mat-label>Label</mat-label>
+          <mat-select
+            [(ngModel)]="label"
+            (selectionChange)="setColor()"
+            required
+            [disabled]="disabled || permisos.editarPBI == 0"
+          >
+            <mat-option *ngFor="let label of labels" [value]="label">
+              {{ label.charAt(0).toUpperCase() + label.substring(1) }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <!--  </div> -->
 
         <!--  <br> -->
 
-        <div fxLayout="row">
-          <mat-form-field appearance="outline">
-            <mat-label>Estimation</mat-label>
-            <!-- <input matInput type="text" [(ngModel)]="estimacion" required> -->
-            <mat-select [(ngModel)]="estimacion" [disabled]="disabled">
-              <mat-option *ngFor="let fib of fibonacci" [value]="fib" required>{{ fib }}</mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
+        <!-- <div fxLayout="row"> -->
+        <mat-form-field class="number-form form" appearance="outline">
+          <mat-label>Estimation</mat-label>
+          <!-- <input matInput type="text" [(ngModel)]="estimacion" required> -->
+          <mat-select
+            [(ngModel)]="estimacion"
+            [disabled]="disabled || permisos.editarPBI == 0 || permisos.estimarTam == 0"
+          >
+            <mat-option *ngFor="let fib of fibonacci" [value]="fib" required>{{ fib }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <!-- </div> -->
+
+        <mat-form-field class="number-form form" appearance="outline">
+          <mat-label>Value <mat-icon class="icon-valor">flash_on</mat-icon></mat-label>
+          <input
+            matInput
+            type="number"
+            [(ngModel)]="valor"
+            [disabled]="disabled || permisos.editarPBI == 0 || permisos.estimarValor == 0"
+          />
+          <!-- <mat-select [(ngModel)]="estimacion" [disabled]="disabled">
+            <mat-option *ngFor="let fib of fibonacci" [value]="fib" required>{{ fib }}</mat-option>
+          </mat-select> -->
+        </mat-form-field>
 
         <!-- <br> -->
 
         <div fxLayout="row">
           <mat-form-field class="description" appearance="outline">
             <mat-label>Description</mat-label>
-            <textarea matInput placeholder="Description" [(ngModel)]="descripcion" [disabled]="disabled"></textarea>
+            <textarea
+              matInput
+              placeholder="Description"
+              [(ngModel)]="descripcion"
+              [disabled]="disabled || permisos.editarPBI == 0"
+            ></textarea>
+          </mat-form-field>
+        </div>
+
+        <div fxLayout="row">
+          <mat-form-field class="description" appearance="outline">
+            <mat-label>Acceptance Criteria</mat-label>
+            <textarea
+              matInput
+              placeholder="Acceptance Criteria"
+              [(ngModel)]="acceptanceCriteria"
+              [disabled]="disabled || permisos.editarPBI == 0"
+            ></textarea>
           </mat-form-field>
         </div>
 
@@ -81,10 +126,24 @@
         <div mat-dialog-actions fxLayout="row">
           <!-- <div fxLayout="row" fxFill> -->
           <mat-checkbox class="checkbox" [checked]="checkDone()" (click)="markDone()"></mat-checkbox>
-          <button *ngIf="checkDone()" class="done-button" mat-raised-button (click)="markDone()" color="accent">
+          <button
+            *ngIf="checkDone()"
+            class="done-button"
+            mat-raised-button
+            (click)="markDone()"
+            color="accent"
+            [disabled]="permisos.setDone == 0"
+          >
             Unmark as Done
           </button>
-          <button *ngIf="!checkDone()" class="done-button" mat-raised-button (click)="markDone()" color="accent">
+          <button
+            *ngIf="!checkDone()"
+            class="done-button"
+            mat-raised-button
+            (click)="markDone()"
+            color="accent"
+            [disabled]="permisos.setDone == 0"
+          >
             &nbsp;Mark as Done&nbsp;
           </button>
           <!--  </div>
@@ -124,7 +183,7 @@
         <mat-card-title>Files</mat-card-title>
       </mat-card>
       <br />
-      <app-loader class="loader" [isLoading]="isLoading"></app-loader>
+      <!-- <app-loader class="loader" [isLoading]="isLoading"></app-loader> -->
 
       <div fxLayout="row" fxLayoutAlign="end end" style="justify-content: flex-end">
         <div *ngIf="uploadFileMode">
@@ -167,7 +226,7 @@
 
       <br />
       <!-- <hr><br> -->
-
+      <app-loader class="loader" [isLoading]="isLoading"></app-loader>
       <div *ngFor="let ar of archivos">
         <a [href]="ar.src" download="{{ ar.nombre }}">{{ ar.nombre }}</a>
         <!-- (click)="download(ar)" -->

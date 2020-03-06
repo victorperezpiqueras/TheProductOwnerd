@@ -5,7 +5,7 @@
       <h2 fxFlex="20">{{ itemListTitle }}</h2>
 
       <div class="example-form" fxLayoutAlign="center center" fxFlex="50">
-        <mat-form-field class="example-full-width">
+        <mat-form-field class="example-full-width" style="width: 30%;">
           <!--  <mat-label>Filtrar por nombre</mat-label> -->
           <input
             matInput
@@ -16,9 +16,6 @@
           />
           <!-- style="border-style: solid;border-radius: 50px;" -->
         </mat-form-field>
-        <button mat-raised-button [color]="viewDone ? 'accent' : 'primary'" style="margin-left: 5%;">
-          <mat-icon>search</mat-icon>
-        </button>
 
         <button
           mat-raised-button
@@ -36,6 +33,26 @@
           <button mat-menu-item (click)="filtrarLabel('tech-debt')">Tech-debt</button>
           <button mat-menu-item (click)="filtrarLabel('infrastructure')">Infrastructure</button>
         </mat-menu>
+
+        <button
+          mat-raised-button
+          (click)="ordenarValor()"
+          [color]="viewDone ? 'accent' : 'primary'"
+          style="margin-left: 5%;"
+        >
+          Order by Value <mat-icon *ngIf="orderValueMode">arrow_drop_up</mat-icon>
+          <mat-icon *ngIf="!orderValueMode">arrow_drop_down</mat-icon>
+        </button>
+
+        <button
+          mat-raised-button
+          (click)="clearSearch()"
+          [color]="viewDone ? 'accent' : 'primary'"
+          style="margin-left: 5%;"
+        >
+          <!-- <mat-icon>search</mat-icon> -->
+          Reset Filters
+        </button>
       </div>
 
       <div fxLayoutAlign="end center" fxFlex>
@@ -47,7 +64,13 @@
 
     <!-- BACKLOG ITEMS LIST -->
     <div class="div-list" *ngIf="!viewDone">
-      <div class="droplist" cdkDropList [cdkDropListData]="showingPbis" (cdkDropListDropped)="drop($event)">
+      <div
+        class="droplist"
+        cdkDropList
+        [cdkDropListData]="showingPbis"
+        (cdkDropListDropped)="drop($event)"
+        [cdkDropListDisabled]="permisos?.ordenar == 0"
+      >
         <!-- cdkDragBoundary=".droplist" -->
         <div *ngFor="let pbi of showingPbis">
           <mat-card
@@ -62,10 +85,23 @@
           >
             <mat-card-header>
               <mat-card-title>#{{ pbi.idpbi }} - {{ pbi.titulo }}</mat-card-title>
-              <p style="color: rgb(119, 119, 119);font-size: 1.5vmin;">
+              &nbsp;
+              <mat-chip-list aria-label="Fish selection">
+                <mat-chip [ngStyle]="{ 'background-color': getLabelColor(pbi.label) }" color="accent" selected>
+                  {{ pbi.label }}
+                </mat-chip>
+                &nbsp;&nbsp;
+                <mat-chip *ngIf="pbi.valor" color="primary" selected>
+                  <p class="valor">{{ pbi.valor }}<mat-icon class="icon-valor">flash_on</mat-icon></p>
+                </mat-chip>
+              </mat-chip-list>
+
+              &nbsp;&nbsp;
+              <p style="color: rgb(119, 119, 119);font-size: 1.5vmin;margin-left:2%;">
                 {{ pbi.descripcion | limitTo: 100 }}
               </p>
             </mat-card-header>
+            <mat-card-content></mat-card-content>
           </mat-card>
           <br />
         </div>

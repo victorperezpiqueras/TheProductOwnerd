@@ -10,6 +10,7 @@ import { Observable, forkJoin } from 'rxjs';
 import { MatDialogConfig, MatDialogRef, MatDialog } from '@angular/material/dialog';
 
 import * as Highcharts from 'highcharts';
+import { Permisos } from '@app/models/permisos';
 
 @Component({
   selector: 'app-proyecto',
@@ -47,6 +48,7 @@ export class ProyectoComponent implements OnInit, OnDestroy {
   state: Proyecto;
 
   proyecto: Proyecto;
+  permisos: Permisos;
 
   constructor(
     private router: Router,
@@ -68,14 +70,19 @@ export class ProyectoComponent implements OnInit, OnDestroy {
       }) */
     this.isLoading = true;
     this.activeRoute.params.subscribe(routeParams => {
-      console.log(routeParams);
+      //console.log(routeParams);
       this.proyectosService.getProyecto(routeParams.id).subscribe(proyecto => {
-        console.log(proyecto);
+        //console.log(proyecto);
         this.proyecto = proyecto;
         this.proyectosService.getProyectoUsuariosRoles(proyecto.idproyecto).subscribe(usuarios => {
           this.proyecto.usuarios = usuarios;
+          this.usuariosService
+            .getUsuarioProyectoPermisos(this.idusuario, this.proyecto.idproyecto)
+            .subscribe((permisos: Permisos) => {
+              this.permisos = permisos;
+              console.log(this.permisos);
+            });
           this.isLoading = false;
-          console.log(proyecto);
         });
       });
     });

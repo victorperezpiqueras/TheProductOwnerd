@@ -14,6 +14,7 @@ import { PbiDialogComponent } from './pbiDialog/pbiDialog.component';
 
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { PbisService } from '@app/services/pbis-service';
+import { Permisos } from '@app/models/permisos';
 
 @Component({
   selector: 'app-backlog',
@@ -22,6 +23,7 @@ import { PbisService } from '@app/services/pbis-service';
 })
 export class BacklogComponent implements OnInit, OnDestroy {
   @Input() proyecto: any;
+  @Input() permisos: Permisos;
 
   /* --------------DIALOG ELEMENTS AND VARIABLES-------------- */
   dialogRef: MatDialogRef<any>;
@@ -41,6 +43,8 @@ export class BacklogComponent implements OnInit, OnDestroy {
   searchword: string;
   botonLabel: string = 'Filter by Label';
   botonLabelColor: string = '#2196F3';
+
+  orderValueMode: boolean = false;
 
   constructor(
     private router: Router,
@@ -75,14 +79,16 @@ export class BacklogComponent implements OnInit, OnDestroy {
           });
 
           this.showingDonePbis = this.pbis.filter((pbi: any) => pbi.done == 1);
-          //this.showingDonePbis.sort((pbi1, pbi2) => { return pbi1.prioridad - pbi2.prioridad; })
-
-          this.isLoading = false;
-          // console.log(this.showingPbis);
+          this.usuariosService
+            .getUsuarioProyectoPermisos(this.idusuario, this.proyecto.idproyecto)
+            .subscribe((permisos: Permisos) => {
+              this.permisos = permisos;
+              console.log(this.permisos);
+              this.isLoading = false;
+            });
         });
       });
     });
-    /* this.crearPbiDialog(); */
   }
 
   actualizarFiltro() {
@@ -90,10 +96,35 @@ export class BacklogComponent implements OnInit, OnDestroy {
       if (pbi.titulo.includes(this.searchword) || (pbi.descripcion.includes(this.searchword) && pbi.done == 0))
         return true;
     });
+    this.showingPbis.sort((pbi1, pbi2) => {
+      return pbi1.prioridad - pbi2.prioridad;
+    });
     this.showingDonePbis = this.pbis.filter(pbi => {
       if (pbi.titulo.includes(this.searchword) || (pbi.descripcion.includes(this.searchword) && pbi.done == 1))
         return true;
     });
+  }
+
+  ordenarValor() {
+    this.filtrarLabel('none');
+    this.showingPbis = this.pbis.filter((pbi: any) => pbi.done == 0);
+    this.showingDonePbis = this.pbis.filter((pbi: any) => pbi.done == 1);
+    if (this.orderValueMode) {
+      this.showingPbis.sort((pbi1, pbi2) => {
+        return pbi2.valor - pbi1.valor;
+      });
+      this.showingDonePbis.sort((pbi1, pbi2) => {
+        return pbi2.valor - pbi1.valor;
+      });
+    } else {
+      this.showingPbis.sort((pbi1, pbi2) => {
+        return pbi1.valor - pbi2.valor;
+      });
+      this.showingDonePbis.sort((pbi1, pbi2) => {
+        return pbi1.valor - pbi2.valor;
+      });
+    }
+    this.orderValueMode = !this.orderValueMode;
   }
 
   filtrarLabel(label: string) {
@@ -101,6 +132,9 @@ export class BacklogComponent implements OnInit, OnDestroy {
       this.botonLabel = 'Filter by Label';
       //this.showingPbis = this.pbis;
       this.showingPbis = this.pbis.filter((pbi: any) => pbi.done == 0);
+      this.showingPbis.sort((pbi1, pbi2) => {
+        return pbi1.prioridad - pbi2.prioridad;
+      });
       this.showingDonePbis = this.pbis.filter((pbi: any) => pbi.done == 1);
     } else {
       this.botonLabel = label.charAt(0).toUpperCase() + label.substring(1);
@@ -114,6 +148,11 @@ export class BacklogComponent implements OnInit, OnDestroy {
     this.botonLabelColor = this.getLabelButtonColor();
   }
 
+  clearSearch() {
+    this.searchword = '';
+    this.filtrarLabel('none');
+  }
+
   getLabelButtonColor() {
     if (this.botonLabel == 'Filter by Label') {
       if (this.viewDone) return '#FF4081';
@@ -122,6 +161,13 @@ export class BacklogComponent implements OnInit, OnDestroy {
     else if (this.botonLabel == 'Tech-debt') return '#ffbb00';
     else if (this.botonLabel == 'Bug') return '#ad0000';
     else if (this.botonLabel == 'Infrastructure') return '#2196f3';
+  }
+
+  getLabelColor(label: string) {
+    if (label == 'feature') return '#00ad17';
+    else if (label == 'tech-debt') return '#ffbb00';
+    else if (label == 'bug') return '#ad0000';
+    else if (label == 'infrastructure') return '#2196f3';
   }
 
   actualizarPbis() {
@@ -145,7 +191,8 @@ export class BacklogComponent implements OnInit, OnDestroy {
     dialogConfig.height = '800px';
     dialogConfig.width = '1920px';
     dialogConfig.data = {
-      pbi: new Pbi(null, null, null, null, null, null, this.pbis.length, this.proyecto.idproyecto),
+      pbi: new Pbi(null, null, null, null, null, null, null, this.pbis.length, this.proyecto.idproyecto),
+      permisos: this.permisos,
       dialogMode: 'create'
     };
     this.dialogRef = this.dialog.open(PbiDialogComponent, dialogConfig);
@@ -165,6 +212,7 @@ export class BacklogComponent implements OnInit, OnDestroy {
     dialogConfig.width = '1920px';
     dialogConfig.data = {
       pbi: pbi,
+      permisos: this.permisos,
       dialogMode: 'edit'
     };
     this.dialogRef = this.dialog.open(PbiDialogComponent, dialogConfig);
@@ -184,6 +232,7 @@ export class BacklogComponent implements OnInit, OnDestroy {
     dialogConfig.width = '1920px';
     dialogConfig.data = {
       pbi: pbi,
+      permisos: this.permisos,
       dialogMode: 'view'
     };
     this.dialogRef = this.dialog.open(PbiDialogComponent, dialogConfig);
