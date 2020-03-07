@@ -7,20 +7,20 @@ addons:
 branches:
   only:
     - master
-notifications:
-  slack:
-    rooms: tfg-tfm:Nt0zyMTjL9krI6NigVWgzYIC
-    on_success: always
-    on_failure: never
+#notifications:
+#  slack:
+#   rooms: tfg-tfm:Nt0zyMTjL9krI6NigVWgzYIC
+#   on_success: always
+#  on_failure: never
 before_script:
   - npm i -g heroku
-  - npm install -g @angular/cli
-  - npm i caniuse-lite@latest
-  - npm i jasmine-core@3.5
-  - npm install
-  - cd backend
-  - npm install
-  - cd ..
+  # - npm install -g @angular/cli
+  # - npm i caniuse-lite@latest
+  # - npm i jasmine-core@3.5
+  # - npm install
+  # - cd backend
+  # - npm install
+  # - cd ..
 script:
   - cd backend
   - npm test
