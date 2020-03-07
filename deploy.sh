@@ -13,8 +13,7 @@
 # - DEPLOY_PYTHON_VERSION: used to indicate the version which will be used for deployment
 # - HEROKU_APP: the name of the application on Heroku
 
-echo "Deploying site to $HEROKU_APP"
-echo "Key: $HEROKU_API_KEY"
+
 # The Heroku gem is installed
 #gem install heroku
 #git remote add heroku git@heroku.com:$HEROKU_APP.git
@@ -26,7 +25,16 @@ echo "Key: $HEROKU_API_KEY"
 # Pushes to Heroku. This is forced so it will work even if the app is running.
 #yes | git push heroku master
 #heroku login
-heroku git:remote -a $HEROKU_APP
+echo "github email $GITHUB_EMAIL"
+echo "github name: $GITHUB_NAME"
+
+git config user.email "$GITHUB_EMAIL"
+git config user.name "$GITHUB_NAME"
+
+
+echo "Deploying site to $HEROKU_APP"
+echo "Key: $HEROKU_API_KEY"
+heroku git:remote -a 
 git add .
 git commit -am "deploying"
 git push heroku master
