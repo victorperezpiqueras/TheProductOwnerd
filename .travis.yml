@@ -22,10 +22,10 @@ before_script:
   # - npm install
   # - cd ..
 script:
-  - cd backend
-  - npm test
-  - cd ..
-  - npm run test
+  # - cd backend
+  # - npm test
+  # - cd ..
+  # - npm run test
 #deploy:
 # provider: heroku
 # api_key:
