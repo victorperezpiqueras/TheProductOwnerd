@@ -33,5 +33,5 @@ script:
 #app: the-product-ownerd
 
 after_success:
-  - heroku auth:token
+  #- heroku auth:token
   - bash deploy.sh

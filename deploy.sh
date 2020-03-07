@@ -13,21 +13,20 @@
 # - DEPLOY_PYTHON_VERSION: used to indicate the version which will be used for deployment
 # - HEROKU_APP: the name of the application on Heroku
 
-echo "Deploying site"
+echo "Deploying site to $HEROKU_APP"
 
 # The Heroku gem is installed
-gem install heroku
-git remote add heroku git@heroku.com:$HEROKU_APP.git
-
-# A configuration file is created and set up for Heroku
-echo "Host heroku.com" >> ~/.ssh/config
-echo "   StrictHostKeyChecking no" >> ~/.ssh/config
-echo "   CheckHostIP no" >> ~/.ssh/config
-echo "   UserKnownHostsFile=/dev/null" >> ~/.ssh/config
+#gem install heroku
+#git remote add heroku git@heroku.com:$HEROKU_APP.git
 
 # Sets up keys
-heroku keys:clear
-yes | heroku keys:add
+#heroku keys:clear
+#yes | heroku keys:add
 
 # Pushes to Heroku. This is forced so it will work even if the app is running.
-yes | git push heroku master -f
+#yes | git push heroku master
+
+heroku git:remote -a $HEROKU_APP
+git add .
+git commit -am "deploying"
+git push heroku master
