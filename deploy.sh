@@ -34,7 +34,7 @@ git config user.name "$GITHUB_NAME"
 
 echo "Deploying site to $HEROKU_APP"
 echo "Key: $HEROKU_API_KEY"
-heroku git:remote -a 
+heroku git:remote -a $HEROKU_APP
 git add .
 git commit -am "deploying"
 git push heroku master
