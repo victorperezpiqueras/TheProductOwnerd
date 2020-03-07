@@ -9,7 +9,8 @@ branches:
     - master
 notifications:
   slack:
-    rooms: tfg-tfm:Nt0zyMTjL9krI6NigVWgzYIC
+    rooms:
+      - secure: L/KvTXWfCsKr82eNKNBgOJw5TyE2qvGf+fJhclYqrUTQlbOjnuuzKhdDUKNSHjrcJDcp8pbcJF0BsjISqk12AX5E8piTGo7Xt0BHPKUSXDzePn85R45vfqqYr0aih7LzebfabPUHeVPHuCLm0QhvCSOUq6w4N8Axy/Jtx72KSGI+dmyHMdGwxnD5YyK0bJ/EQl3+snZk/c/cEfHkF5DvVExfHfAWr7ISKaWfKD3R3BHWaYv5H3Qar26EYqT6sueixicfy+fzbM82rXyhO08g3jCx3/QvN8LHo2fshtDh3nkiX+xn6LIK6qOpxoTJ8Z1eHMu7Gjbu8RaiNwBeks0lMIY1TN0BA42m6vY6jmLohU2uUxbybqDzCPDFRWh7f29QJYerFo7yCLuEOasURr34rSwUiwxoaM5llNIJW9q41Sq+roUZlqthRENb7IQqgM8qjP9vO/J3gW1Ahc70fqgH6u4qaziJJBgTjTsr7UY+bX/mYjUF4PgjfI/xv7poFWwykFO0R3SQb0mghVuQA5Ggeu9lOeXLnALryzujNysoyDt5JgLR2LtNDLKM3TKnTDlQla70vsN3jDiUsccbOqM7mXqCI4Dfne2R1V7dvp61WVEP+l6XQ7bzwDiPXKnnuaUuqgbEJCH95HNUW0oi7s7tqbtn/4jefy+q8gb4tawrXjE=
     on_success: always
     on_failure: never
 before_script:
@@ -28,7 +29,7 @@ script:
   - npm run test
 deploy:
   provider: heroku
-  skip_cleanup: true
+  cleanup: true
   api_key:
     secure: cjtHrD29ZcvloB/ARYh0WOCJH2j5VXUL+OAMXbF+Cym/7vqgwgZjszhxjVaHBw6ZkWXPDtbxK6vGix9wy3duLKO113beFfrwBRXqU3rSzgIb8m35kDr9W7lpwigfvjKaDiO3zYQwV/NCOgmmxHsWDY7o2Vsp4T4P/6uW6IDRkSMMirQ5W2GSt9c8RDIRik8SD7AnQ51M+bbBcptyP4RQrLLQnsxQgf3dJLsvQoqiFy01n4sOqx1EzO5xtAX/gqRIbwrQX3tn21TgfCRIpm+3cg4pY13pRDRc3FLdY2uzWE+P9m8fP8RX/4XUxfOH8KMyk3ZFnz29bbrX0lJq8MMRyUn/XGMuvzNggTKQXfS9lgDqObf+OXvED4CVTNWam2BuxD0WzeU3z7k3U2MKYU0QbMpRbO8eTJ3c2G3bQuWAU52gcHs/zw10wQeKpDWSLiu1shPM0qwXHjyHxk0J2PTeurlgPwgAiW/wvCPnpyFF+Ji38nbcgnYcEjUu5CG7yYggV8oVA0q2q3cIBM9cLrOcn3biMwoh+D4kj8j+/MN/6RScA8hMJOkoGW0nzlUKftomNPvjsdaNFOOHK+Yzx3d1tOi6VezMIpN1t33CEkhB/LwZpFUWpY+1Apc2tT9njDvK1tuCf9QGL1UfXl/0HvzsnsZMQv+niPCatyi4+zUtuEg=
   app: the-product-ownerd
