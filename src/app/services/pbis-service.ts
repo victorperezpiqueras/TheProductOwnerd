@@ -5,7 +5,11 @@ import { Proyecto } from '@app/models/proyectos';
 import { Pbi } from '@app/models/pbis';
 
 const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' })
+  headers: new HttpHeaders({
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*',
+    'Content-Disposition': 'attachment; filename="filename.png"; filename*="filename.png"'
+  })
 };
 
 @Injectable()

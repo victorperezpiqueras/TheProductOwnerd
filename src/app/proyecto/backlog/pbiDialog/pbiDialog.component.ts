@@ -119,13 +119,10 @@ export class PbiDialogComponent implements OnInit {
   actualizarDependencias() {
     this.isLoading = true;
     this.pbisService.obtenerDependencias(this.idpbi).subscribe((dependencias: Dependencia[]) => {
-      console.log(dependencias);
       this.dependencias = dependencias;
-      console.log(this.pbis);
       this.notSelectedPbis = [...this.pbis];
       //borrar los pbis que ya estan puestos
       for (var d of this.dependencias) {
-        console.log(d);
         var p = false;
         var pbi1;
         this.notSelectedPbis.forEach((pbi: any) => {
@@ -134,26 +131,21 @@ export class PbiDialogComponent implements OnInit {
             pbi1 = pbi;
           }
         });
-        console.log(p);
         if (p) {
           const index: number = this.notSelectedPbis.indexOf(pbi1);
-          console.log(index);
           if (index !== -1) {
             this.notSelectedPbis.splice(index, 1);
           }
         }
       }
-      console.log(this.notSelectedPbis);
       this.isLoading = false;
     });
   }
   actualizarDependencia() {
-    console.log('actualizardep');
     var existe = false;
     this.dependencias.forEach((dep: any) => {
       if (dep.idpbi2 == this.dependenciaData.idpbi) existe = true;
     });
-
     if (!existe) {
       var dependencia = {
         idpbi: this.idpbi,
@@ -174,16 +166,6 @@ export class PbiDialogComponent implements OnInit {
     });
   }
 
-  /* existeDependencia(pbi: Pbi) {
-    var existe = false;
-    this.dependencias.forEach((dep: any) => {
-      if (dep.idpbi2 == pbi.idpbi) existe = true;
-    });
-    return existe;
-    // return this.dependencias.find((dep: any) => { dep.idpbi2 == pbi.idpbi }); 
-  } 
-  */
-
   /* CRITERIOS */
   actualizarCriterios() {
     this.isLoading = true;
@@ -201,18 +183,15 @@ export class PbiDialogComponent implements OnInit {
     };
     this.criterioData = '';
     this.criteriosService.crearCriterio(criterio).subscribe((res: any) => {
-      console.log(res);
       this.actualizarCriterios();
     });
   }
   actualizarCriterio(criterio: Criterio) {
-    console.log(criterio);
     this.criteriosService.actualizarCriterio(criterio).subscribe((res: any) => {
       this.actualizarCriterios();
     });
   }
   borrarCriterio(criterio: Criterio) {
-    console.log(criterio);
     this.criteriosService.borrarCriterio(criterio.idcriterio).subscribe((res: any) => {
       this.actualizarCriterios();
     });
@@ -222,7 +201,6 @@ export class PbiDialogComponent implements OnInit {
   actualizarComentarios() {
     this.isLoading = true;
     this.pbisService.obtenerComentarios(this.idpbi).subscribe((comentarios: Comentario[]) => {
-      //  console.log(comentarios);
       this.comentarios = comentarios.sort((com1, com2) => {
         if (new Date(com1.fecha) < new Date(com2.fecha)) return -1;
         else return 1;
@@ -250,30 +228,49 @@ export class PbiDialogComponent implements OnInit {
   /* ARCHIVOS */
   actualizarArchivos() {
     this.isLoading = true;
-    this.pbisService.obtenerArchivos(this.idpbi).subscribe((archivos: Archivo[]) => {
-      //  console.log(archivos);
+    this.pbisService.obtenerArchivos(this.idpbi).subscribe((archivos: any[]) => {
+      console.log(archivos);
       this.archivos = archivos;
       this.archivos.forEach(archivo => {
-        // console.log(archivo);
+        console.log(archivo);
 
         var fileType = this.getFileType(archivo);
 
-        archivo.nombre += fileType.ending;
+        //archivo.nombre += fileType.ending;
+        console.log(archivo);
+
         //archivo.src = Buffer.from(archivo.src, 'base64').toString();
 
-        var blob = new Blob([archivo.src, { type: fileType.format }]);
-        var array = new Array<Blob>();
-        array.push(blob);
-        blob = new File(array, archivo.nombre, { type: fileType.format });
+        //var blob = new Blob([archivo.src, { type: fileType.format }]);
+
+        /*  var array = new Array<Blob>();
+         array.push(blob);
+         blob = new File(array, archivo.nombre, { type: fileType.format }); */
 
         /*  console.log(fileType);
          console.log(archivo);
          console.log(blob); */
-        archivo.src = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(blob));
+
+        // archivo.src = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(blob));
       });
 
       this.isLoading = false;
     });
+  }
+
+  descargar(archivo: any) {
+    var fileType = this.getFileType(archivo);
+    /* archivo.nombre += fileType.ending; */
+    console.log(archivo.momnre);
+    var blob = new Blob([archivo.src, { type: fileType.format }]);
+    archivo.src = Buffer.from(archivo.src, 'base64').toString();
+
+    const downloadLink = document.createElement('a');
+    const fileName = archivo.nombre;
+    console.log(archivo.src);
+    downloadLink.href = archivo.src;
+    downloadLink.download = fileName;
+    downloadLink.click();
   }
 
   crearArchivo() {
@@ -410,6 +407,7 @@ export class PbiDialogComponent implements OnInit {
 
   onFileSelected(event: any) {
     this.archivoSrcData = event.target.files[0];
+    this.archivoNombreData = event.target.files[0].name;
     //console.log(this.archivoSrcData);
     const reader = (file: any) => {
       return new Promise((resolve, reject) => {
@@ -436,13 +434,27 @@ export class PbiDialogComponent implements OnInit {
   }
 
   getFileType(file: any) {
-    let checkFileType = Buffer.from(file.src, 'base64').toString();
-    checkFileType = checkFileType.split(':').pop();
+    /*  let checkFileType = Buffer.from(file.src, 'base64').toString();
+    checkFileType = checkFileType.split(':').pop(); */
     //console.log(checkFileType);
-    if (checkFileType.includes('image/png')) return { format: 'image/png', ending: '.png' };
-    else if (checkFileType.includes('image/png')) return { format: 'application/pdf', ending: '.pdf' };
+    /* if (checkFileType.includes('image/png')) return { format: 'image/png', ending: '.png' };
+    else if (checkFileType.includes('application/pdf')) return { format: 'application/pdf', ending: '.pdf' };
     else {
       return { format: 'image/png', ending: '.png' };
+    } */
+    let checkFileType = file.nombre;
+    /* imagenes */
+    if (checkFileType.endsWith('.png')) return { format: 'image/png', ending: '.png' };
+    else if (checkFileType.endsWith('.jpg')) return { format: 'image/jpg', ending: '.jpg' };
+    else if (checkFileType.endsWith('.bmp')) return { format: 'image/bmp', ending: '.bmp' };
+    else if (checkFileType.endsWith('.jpeg')) return { format: 'image/jpeg', ending: '.jpeg' };
+    /* textos */ else if (checkFileType.endsWith('.json')) return { format: 'application/json', ending: '.json' };
+    /* audio */ else if (checkFileType.endsWith('.wav')) return { format: 'audio/wav', ending: '.wav' };
+    /* docs */ else if (checkFileType.endsWith('.pdf')) return { format: 'application/pdf', ending: '.pdf' };
+    else if (checkFileType.endsWith('.zip')) return { format: 'application/zip', ending: '.zip' };
+    else if (checkFileType.endsWith('.7z')) return { format: 'application/x-7z-compressed', ending: '.7z' };
+    else {
+      return { format: 'text/plain', ending: '.txt' };
     }
   }
 

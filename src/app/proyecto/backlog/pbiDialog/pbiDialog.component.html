@@ -108,7 +108,7 @@
         </div>
 
         <div fxLayout="row">
-          <h1 class="mat-h2" style="display: inline-block;;margin-right: 2%;">Dependencies:</h1>
+          <h1 class="mat-h2" style="display: inline-block;margin-right: 2%;">Dependencies:</h1>
 
           <mat-chip-list style="display: inline-block;margin-right: 2%;">
             <mat-chip
@@ -132,8 +132,8 @@
             </mat-select> -->
             <mat-select [(ngModel)]="dependenciaData" (selectionChange)="actualizarDependencia()">
               <mat-option *ngFor="let pbi of notSelectedPbis" [value]="pbi"
-                >#{{ pbi.idpbi }} {{ pbi.titulo }}</mat-option
-              >
+                >#{{ pbi.idpbi }} {{ pbi.titulo }}
+              </mat-option>
             </mat-select>
           </mat-form-field>
         </div>
@@ -192,8 +192,8 @@
             <mat-list-item role="listitem">
               <mat-checkbox class="checkbox" [(ngModel)]="crit.done" (change)="actualizarCriterio(crit)"></mat-checkbox>
               {{ crit.nombre }}&nbsp;<mat-icon class="borrar-criterio-icon" (click)="borrarCriterio(crit)"
-                >cancel</mat-icon
-              >
+                >cancel
+              </mat-icon>
             </mat-list-item>
           </mat-list>
 
@@ -282,8 +282,18 @@
       <br />
       <!-- <hr><br> -->
       <app-loader class="loader" [isLoading]="isLoading"></app-loader>
-      <div *ngFor="let ar of archivos">
-        <a [href]="ar.src" download="{{ ar.nombre }}">{{ ar.nombre }}</a>
+
+      <div fxLayout="row" *ngFor="let ar of archivos">
+        <!--   <a [href]="ar.src" download="{{ ar.nombre }}">{{ ar.nombre }}</a> -->
+        <mat-list role="list">
+          <mat-list-item role="listitem" (click)="descargar(ar)" style="cursor: pointer;">
+            <mat-icon class="icon-download">cloud_download</mat-icon>&nbsp;&nbsp;{{ ar.nombre }}</mat-list-item
+          >
+        </mat-list>
+
+        <!-- <p class="mat-typography" style="display: inline-block;margin-top: 5px;" >
+          
+        </p> -->
         <!-- (click)="download(ar)" -->
         <!-- <mat-card class="comentario">
           <mat-card-subtitle><b>{{ ar.nombre }}</b>
