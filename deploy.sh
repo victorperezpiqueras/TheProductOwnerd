@@ -25,7 +25,7 @@ echo "Key: $HEROKU_API_KEY"
 
 # Pushes to Heroku. This is forced so it will work even if the app is running.
 #yes | git push heroku master
-heroku login
+#heroku login
 heroku git:remote -a $HEROKU_APP
 git add .
 git commit -am "deploying"
