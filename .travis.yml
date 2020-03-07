@@ -13,7 +13,8 @@ branches:
 #   on_success: always
 #  on_failure: never
 before_script:
-  - npm i -g heroku
+  - gem install heroku
+  # - npm i -g heroku
   # - npm install -g @angular/cli
   # - npm i caniuse-lite@latest
   # - npm i jasmine-core@3.5
@@ -22,16 +23,12 @@ before_script:
   # - npm install
   # - cd ..
 script:
-  # - cd backend
+  - cd backend
   # - npm test
-  # - cd ..
+  - cd ..
   # - npm run test
-#deploy:
-# provider: heroku
-# api_key:
-#   secure: ATAw1X4lOPFa11krI/mjog5RSvZyimQgAWj/kTgFE7XWaK9rMsv25bG24S8wxTP5RtMHjNgf+T7DwFzdkYKnHthRE5lHCxKoLGnsXA6NryoArzPmDhiEtwaN37zZvlF2TzZn3PT1IUqoU+C5R8FaJzgVfT+Wi3ZNc7XmIJRBYcErfQlBylHaPiBz+gPEsb5K24rTdayE45Yi1pl3wxHQzUyiLc6qYx/SeBX1pvJ1RgxuG7bmiolGqz+JELIQILOHFBbmN6xLSIApJA+NM43mPDkZVajfVWi/dX/v4ypfGF8/58iGPJkZNloN7/NvwZJDJ/6vWg0lYiBV7ggdAgV+UiNJdkP3aEpTAD7Pi6vJ2jVqEvf+lIHerIx0+bknnmYeMGlOtnhTW8U+uj21cfzUowqpVPmvPHFkm9iSskaANKgL7XUb2dZ9sJ0SgWtOPiRcPDqagtSH2dz1oMXRMEaEDr6tsCKjGqBOeoiwiqf379KeGl8beG+j87IyO++W7FH0J6zmoU9P0GRRPAZEwvpfYOBhsSLjUNv0TUMtRhoyOAZW5/Vp02w+OcHfPPQuCmnRHpnnOsnpURvleEkfE4kRzdfjDwY/bN5k+NfvjCLbC1PVNr7vt4SK4q/pFlxwt0a/SREk3WfbMZmy+mlH55Kj+lGoQpnvKBW6krMraJFEg1k=
-#app: the-product-ownerd
-
-after_success:
-  #- heroku auth:token
-  - bash deploy.sh
+deploy:
+  provider: heroku
+  api_key:
+    secure: cjtHrD29ZcvloB/ARYh0WOCJH2j5VXUL+OAMXbF+Cym/7vqgwgZjszhxjVaHBw6ZkWXPDtbxK6vGix9wy3duLKO113beFfrwBRXqU3rSzgIb8m35kDr9W7lpwigfvjKaDiO3zYQwV/NCOgmmxHsWDY7o2Vsp4T4P/6uW6IDRkSMMirQ5W2GSt9c8RDIRik8SD7AnQ51M+bbBcptyP4RQrLLQnsxQgf3dJLsvQoqiFy01n4sOqx1EzO5xtAX/gqRIbwrQX3tn21TgfCRIpm+3cg4pY13pRDRc3FLdY2uzWE+P9m8fP8RX/4XUxfOH8KMyk3ZFnz29bbrX0lJq8MMRyUn/XGMuvzNggTKQXfS9lgDqObf+OXvED4CVTNWam2BuxD0WzeU3z7k3U2MKYU0QbMpRbO8eTJ3c2G3bQuWAU52gcHs/zw10wQeKpDWSLiu1shPM0qwXHjyHxk0J2PTeurlgPwgAiW/wvCPnpyFF+Ji38nbcgnYcEjUu5CG7yYggV8oVA0q2q3cIBM9cLrOcn3biMwoh+D4kj8j+/MN/6RScA8hMJOkoGW0nzlUKftomNPvjsdaNFOOHK+Yzx3d1tOi6VezMIpN1t33CEkhB/LwZpFUWpY+1Apc2tT9njDvK1tuCf9QGL1UfXl/0HvzsnsZMQv+niPCatyi4+zUtuEg=
+app: the-product-ownerd
