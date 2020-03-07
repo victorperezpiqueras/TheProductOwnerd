@@ -14,18 +14,18 @@ notifications:
     on_failure: never
 before_script:
   - npm i -g heroku
-    - npm install -g @angular/cli
-    - npm i caniuse-lite@latest
-    - npm i jasmine-core@3.5
-    - npm install
-    - cd backend
-    - npm install
-    - cd ..
+  - npm install -g @angular/cli
+  - npm i caniuse-lite@latest
+  - npm i jasmine-core@3.5
+  - npm install
+  - cd backend
+  - npm install
+  - cd ..
 script:
   - cd backend
-    - npm test
+  - npm test
   - cd ..
-    - npm run test
+  - npm run test
 deploy:
   provider: heroku
   skip_cleanup: true
