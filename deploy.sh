@@ -14,7 +14,7 @@
 # - HEROKU_APP: the name of the application on Heroku
 
 echo "Deploying site to $HEROKU_APP"
-
+echo "Key: $HEROKU_API_KEY"
 # The Heroku gem is installed
 #gem install heroku
 #git remote add heroku git@heroku.com:$HEROKU_APP.git
@@ -25,7 +25,7 @@ echo "Deploying site to $HEROKU_APP"
 
 # Pushes to Heroku. This is forced so it will work even if the app is running.
 #yes | git push heroku master
-
+heroku login
 heroku git:remote -a $HEROKU_APP
 git add .
 git commit -am "deploying"
