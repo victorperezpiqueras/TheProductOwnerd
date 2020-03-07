@@ -26,8 +26,12 @@ script:
   - npm test
   - cd ..
   - npm run test
-deploy:
-  provider: heroku
-  api_key:
-    secure: ATAw1X4lOPFa11krI/mjog5RSvZyimQgAWj/kTgFE7XWaK9rMsv25bG24S8wxTP5RtMHjNgf+T7DwFzdkYKnHthRE5lHCxKoLGnsXA6NryoArzPmDhiEtwaN37zZvlF2TzZn3PT1IUqoU+C5R8FaJzgVfT+Wi3ZNc7XmIJRBYcErfQlBylHaPiBz+gPEsb5K24rTdayE45Yi1pl3wxHQzUyiLc6qYx/SeBX1pvJ1RgxuG7bmiolGqz+JELIQILOHFBbmN6xLSIApJA+NM43mPDkZVajfVWi/dX/v4ypfGF8/58iGPJkZNloN7/NvwZJDJ/6vWg0lYiBV7ggdAgV+UiNJdkP3aEpTAD7Pi6vJ2jVqEvf+lIHerIx0+bknnmYeMGlOtnhTW8U+uj21cfzUowqpVPmvPHFkm9iSskaANKgL7XUb2dZ9sJ0SgWtOPiRcPDqagtSH2dz1oMXRMEaEDr6tsCKjGqBOeoiwiqf379KeGl8beG+j87IyO++W7FH0J6zmoU9P0GRRPAZEwvpfYOBhsSLjUNv0TUMtRhoyOAZW5/Vp02w+OcHfPPQuCmnRHpnnOsnpURvleEkfE4kRzdfjDwY/bN5k+NfvjCLbC1PVNr7vt4SK4q/pFlxwt0a/SREk3WfbMZmy+mlH55Kj+lGoQpnvKBW6krMraJFEg1k=
-app: the-product-ownerd
+#deploy:
+# provider: heroku
+# api_key:
+#   secure: ATAw1X4lOPFa11krI/mjog5RSvZyimQgAWj/kTgFE7XWaK9rMsv25bG24S8wxTP5RtMHjNgf+T7DwFzdkYKnHthRE5lHCxKoLGnsXA6NryoArzPmDhiEtwaN37zZvlF2TzZn3PT1IUqoU+C5R8FaJzgVfT+Wi3ZNc7XmIJRBYcErfQlBylHaPiBz+gPEsb5K24rTdayE45Yi1pl3wxHQzUyiLc6qYx/SeBX1pvJ1RgxuG7bmiolGqz+JELIQILOHFBbmN6xLSIApJA+NM43mPDkZVajfVWi/dX/v4ypfGF8/58iGPJkZNloN7/NvwZJDJ/6vWg0lYiBV7ggdAgV+UiNJdkP3aEpTAD7Pi6vJ2jVqEvf+lIHerIx0+bknnmYeMGlOtnhTW8U+uj21cfzUowqpVPmvPHFkm9iSskaANKgL7XUb2dZ9sJ0SgWtOPiRcPDqagtSH2dz1oMXRMEaEDr6tsCKjGqBOeoiwiqf379KeGl8beG+j87IyO++W7FH0J6zmoU9P0GRRPAZEwvpfYOBhsSLjUNv0TUMtRhoyOAZW5/Vp02w+OcHfPPQuCmnRHpnnOsnpURvleEkfE4kRzdfjDwY/bN5k+NfvjCLbC1PVNr7vt4SK4q/pFlxwt0a/SREk3WfbMZmy+mlH55Kj+lGoQpnvKBW6krMraJFEg1k=
+#app: the-product-ownerd
+
+after_success:
+  - heroku auth:token
+  - bash deploy.sh
