@@ -92,7 +92,10 @@
                 </mat-chip>
                 &nbsp;&nbsp;
                 <mat-chip *ngIf="pbi.valor" color="primary" selected>
-                  <p class="valor">{{ pbi.valor }}<mat-icon class="icon-valor">flash_on</mat-icon></p>
+                  <p class="valor">
+                    {{ pbi.valor }}
+                    <mat-icon class="icon-valor">offline_bolt</mat-icon>
+                  </p>
                 </mat-chip>
               </mat-chip-list>
 
@@ -129,7 +132,22 @@
           >
             <mat-card-header>
               <mat-card-title>#{{ pbi.idpbi }} - {{ pbi.titulo }}</mat-card-title>
-              <p style="color: rgb(119, 119, 119);font-size: 1.5vmin;">
+              &nbsp;
+              <mat-chip-list>
+                <mat-chip [ngStyle]="{ 'background-color': getLabelColor(pbi.label) }" color="accent" selected>
+                  {{ pbi.label }}
+                </mat-chip>
+                &nbsp;&nbsp;
+                <mat-chip *ngIf="pbi.valor" color="primary" selected>
+                  <p class="valor">
+                    {{ pbi.valor }}
+                    <mat-icon class="icon-valor">offline_bolt</mat-icon>
+                  </p>
+                </mat-chip>
+              </mat-chip-list>
+
+              &nbsp;&nbsp;
+              <p style="color: rgb(119, 119, 119);font-size: 1.5vmin;margin-left:2%;">
                 {{ pbi.descripcion | limitTo: 100 }}
               </p>
             </mat-card-header>

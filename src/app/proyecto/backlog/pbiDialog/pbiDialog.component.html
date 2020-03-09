@@ -81,7 +81,10 @@
         <!-- </div> -->
 
         <mat-form-field class="number-form form" appearance="outline">
-          <mat-label>Value <mat-icon class="icon-valor">flash_on</mat-icon> </mat-label>
+          <mat-label
+            >Value
+            <mat-icon class="icon-valor">offline_bolt</mat-icon>
+          </mat-label>
           <input
             matInput
             type="number"
@@ -286,7 +289,7 @@
       <div fxLayout="row" *ngFor="let ar of archivos">
         <!--   <a [href]="ar.src" download="{{ ar.nombre }}">{{ ar.nombre }}</a> -->
         <mat-list role="list">
-          <mat-list-item role="listitem" style="cursor: pointer;">
+          <mat-list-item role="listitem">
             <mat-icon class="icon-download" (click)="descargar(ar)">cloud_download</mat-icon>
             &nbsp;&nbsp;{{ ar.nombre }} &nbsp;
             <mat-icon class="borrar-criterio-icon" (click)="borrarArchivo(ar)">cancel</mat-icon>

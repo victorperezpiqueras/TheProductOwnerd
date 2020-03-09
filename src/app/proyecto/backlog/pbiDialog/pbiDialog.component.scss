@@ -47,6 +47,14 @@
   width: 100%;
 }
 
+.icon-valor {
+  position: relative;
+  /* Adjust these values accordingly */
+  top: 4px;
+  /*  left: 5px; */
+  font-size: 3vmin;
+}
+
 .criterio {
   width: 80%;
 }
@@ -54,6 +62,7 @@
   overflow-wrap: break-word;
 }
 .borrar-criterio-icon {
+  top: 5px;
   font-size: 2vmin;
   cursor: pointer;
 }
@@ -61,9 +70,11 @@
 .icon-download {
   position: relative;
   /* Adjust these values accordingly */
-  top: 5px;
-  left: 5px;
-  font-size: 2.5vmin;
+  /*  top: 3px; */
+  /* left: 5px; */
+  bottom: 5px;
+  font-size: 3vmin;
+  cursor: pointer;
 }
 
 .checkbox {

@@ -109,7 +109,7 @@ export class BacklogComponent implements OnInit, OnDestroy {
     this.filtrarLabel('none');
     this.showingPbis = this.pbis.filter((pbi: any) => pbi.done == 0);
     this.showingDonePbis = this.pbis.filter((pbi: any) => pbi.done == 1);
-    if (this.orderValueMode) {
+    if (!this.orderValueMode) {
       this.showingPbis.sort((pbi1, pbi2) => {
         return pbi2.valor - pbi1.valor;
       });
