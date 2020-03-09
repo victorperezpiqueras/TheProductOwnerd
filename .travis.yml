@@ -27,6 +27,8 @@ script:
   - npm test
   - cd ..
   - npm run test
+after_success:
+  - git fetch --all --unshallow
 deploy:
   provider: heroku
   strategy: git
