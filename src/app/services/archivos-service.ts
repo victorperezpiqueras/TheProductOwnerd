@@ -17,4 +17,7 @@ export class ArchivosService {
   crearArchivo(data: any): Observable<any> {
     return this.http.post<any>(this.url, JSON.stringify(data), httpOptions);
   }
+  borrarArchivo(id: number): Observable<any> {
+    return this.http.delete<any>(this.url + '/' + id, httpOptions);
+  }
 }

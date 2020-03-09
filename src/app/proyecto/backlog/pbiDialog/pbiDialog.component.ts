@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar, MatDialog, MatDialogConfig } from '@angular/material';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Proyecto } from '@app/models/proyectos';
 import { Pbi } from '@app/models/pbis';
@@ -15,6 +15,7 @@ import { Criterio } from '@app/models/criterios';
 import { CriteriosService } from '@app/services/criterios-service';
 import { DependenciasService } from '@app/services/dependencias-service';
 import { Dependencia } from '@app/models/dependencias';
+import { ConfirmDialogComponent } from '@app/shared/confirmDialog/confirmDialog.component';
 
 @Component({
   selector: 'app-pbiDialog',
@@ -65,6 +66,8 @@ export class PbiDialogComponent implements OnInit {
   disabled: boolean = false;
   uploadFileMode: boolean = false;
 
+  dialogRefConfirm: MatDialogRef<any>;
+
   constructor(
     public dialogRef: MatDialogRef<PbiDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -75,7 +78,8 @@ export class PbiDialogComponent implements OnInit {
     private archivosService: ArchivosService,
     private criteriosService: CriteriosService,
     private dependenciasService: DependenciasService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    public dialog: MatDialog
   ) {
     if (data.dialogMode == 'create') {
       this.dialogMode = 'Create new PBI';
@@ -192,8 +196,23 @@ export class PbiDialogComponent implements OnInit {
     });
   }
   borrarCriterio(criterio: Criterio) {
-    this.criteriosService.borrarCriterio(criterio.idcriterio).subscribe((res: any) => {
-      this.actualizarCriterios();
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.autoFocus = false;
+    /*  dialogConfig.height = '800px';
+     dialogConfig.width = '1920px'; */
+    dialogConfig.data = {
+      dialogMode: 'Acceptance Criteria',
+      descripcion: criterio.nombre
+    };
+    this.dialogRefConfirm = this.dialog.open(ConfirmDialogComponent, dialogConfig);
+    this.dialogRefConfirm.afterClosed().subscribe(data => {
+      if (data != undefined) {
+        this.isLoading = true;
+        this.criteriosService.borrarCriterio(criterio.idcriterio).subscribe((res: any) => {
+          this.actualizarCriterios();
+          this.isLoading = false;
+        });
+      }
     });
   }
 
@@ -289,6 +308,25 @@ export class PbiDialogComponent implements OnInit {
       this.archivoNombreData = '';
       this.openSnackBar('File successfully uploaded', 'Close');
       this.cargarImagen();
+    });
+  }
+
+  borrarArchivo(archivo: Archivo) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.autoFocus = false;
+    dialogConfig.data = {
+      dialogMode: 'File',
+      descripcion: archivo.nombre
+    };
+    this.dialogRefConfirm = this.dialog.open(ConfirmDialogComponent, dialogConfig);
+    this.dialogRefConfirm.afterClosed().subscribe(data => {
+      if (data != undefined) {
+        this.isLoading = true;
+        this.archivosService.borrarArchivo(archivo.idarchivo).subscribe((res: any) => {
+          this.actualizarArchivos();
+          this.isLoading = false;
+        });
+      }
     });
   }
 

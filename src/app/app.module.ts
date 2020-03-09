@@ -34,6 +34,7 @@ import { TruncatePipeModule } from './shared/truncatePipe/truncatePipe.module';
 import { ArchivosService } from './services/archivos-service';
 import { CriteriosService } from './services/criterios-service';
 import { DependenciasService } from './services/dependencias-service';
+import { ConfirmDialogComponent } from './shared/confirmDialog/confirmDialog.component';
 
 @NgModule({
   imports: [
@@ -60,7 +61,13 @@ import { DependenciasService } from './services/dependencias-service';
 
     AppRoutingModule // must be imported as the last module as it contains the fallback route
   ],
-  declarations: [AppComponent, ProyectoDialogComponent, FavoritosDialogComponent, PbiDialogComponent],
+  declarations: [
+    AppComponent,
+    ProyectoDialogComponent,
+    FavoritosDialogComponent,
+    PbiDialogComponent,
+    ConfirmDialogComponent
+  ],
   providers: [
     HolaMundoService,
     LoginService,
@@ -71,7 +78,7 @@ import { DependenciasService } from './services/dependencias-service';
     CriteriosService,
     DependenciasService
   ],
-  entryComponents: [ProyectoDialogComponent, FavoritosDialogComponent, PbiDialogComponent],
+  entryComponents: [ProyectoDialogComponent, FavoritosDialogComponent, PbiDialogComponent, ConfirmDialogComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

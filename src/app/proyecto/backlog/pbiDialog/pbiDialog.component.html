@@ -286,9 +286,11 @@
       <div fxLayout="row" *ngFor="let ar of archivos">
         <!--   <a [href]="ar.src" download="{{ ar.nombre }}">{{ ar.nombre }}</a> -->
         <mat-list role="list">
-          <mat-list-item role="listitem" (click)="descargar(ar)" style="cursor: pointer;">
-            <mat-icon class="icon-download">cloud_download</mat-icon>&nbsp;&nbsp;{{ ar.nombre }}</mat-list-item
-          >
+          <mat-list-item role="listitem" style="cursor: pointer;">
+            <mat-icon class="icon-download" (click)="descargar(ar)">cloud_download</mat-icon>
+            &nbsp;&nbsp;{{ ar.nombre }} &nbsp;
+            <mat-icon class="borrar-criterio-icon" (click)="borrarArchivo(ar)">cancel</mat-icon>
+          </mat-list-item>
         </mat-list>
 
         <!-- <p class="mat-typography" style="display: inline-block;margin-top: 5px;" >

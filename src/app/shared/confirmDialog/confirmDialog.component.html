@@ -1,0 +1,11 @@
+<div class="container" fxLayoutAlign="center center">
+  <h2 mat-dialog-title>Are you sure you want to remove the specified {{ dialogMode }}?</h2>
+  <!-- <mat-divider></mat-divider> -->
+  <mat-card class="mat-typography">{{ descripcion }}</mat-card>
+  <!--   <mat-divider></mat-divider> -->
+  <br />
+  <div mat-dialog-actions style="padding-bottom: 5%;" fxLayoutAlign="center center">
+    <button class="close-button" mat-raised-button (click)="close()" color="primary">Cancel</button>
+    <button class="save-button" mat-raised-button (click)="save()" color="warn">Remove</button>
+  </div>
+</div>
