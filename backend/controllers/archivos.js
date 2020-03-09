@@ -15,6 +15,20 @@ ControllerArchivos.crearArchivo = function(archivo) {
     });
   });
 };
+ControllerArchivos.borrarArchivo = function(id) {
+  return new Promise(function(resolve, reject) {
+    var sql = 'delete from archivos where idarchivo=?';
+    var array = [id];
+    connection.query(sql, array, function(err, result) {
+      if (err) {
+        reject({ error: 'Error inesperado en borrarArchivo' });
+      } else {
+        console.log(result);
+        resolve(result);
+      }
+    });
+  });
+};
 ControllerArchivos.obtenerArchivosPbi = function(idpbi) {
   return new Promise(function(resolve, reject) {
     var sql =

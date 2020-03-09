@@ -287,6 +287,17 @@ router.post('/archivos', function(req, res, next) {
       res.status(500).json(err);
     });
 });
+router.delete('/archivos/:id', function(req, res, next) {
+  console.log('borrarArchivo');
+  controllerArchivos
+    .borrarArchivo(req.params.id)
+    .then(function(archivo) {
+      res.json(archivo);
+    })
+    .catch(function(err) {
+      res.status(500).json(err);
+    });
+});
 
 /* CRITERIOS */
 router.post('/criterios', function(req, res, next) {
