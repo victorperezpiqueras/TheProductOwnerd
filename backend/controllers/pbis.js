@@ -28,9 +28,23 @@ ControllerPbis.crearPbi = function(pbi) {
 };
 ControllerPbis.editarPbi = function(id, pbi) {
   console.log(pbi);
+  console.log(pbi.valor);
+  if (pbi.sprint == 'null') pbi.sprint = null;
+  if (pbi.valor == 'null') pbi.valor = null;
   return new Promise(function(resolve, reject) {
-    var sql = 'update pbis set titulo=?,descripcion=?,done=?,label=?,estimacion=?, valor=?,prioridad=? where idpbi=?';
-    var array = [pbi.titulo, pbi.descripcion, pbi.done, pbi.label, pbi.estimacion, pbi.valor, pbi.prioridad, id];
+    var sql =
+      'update pbis set titulo=?,descripcion=?,done=?,label=?,estimacion=?,valor=?,prioridad=?,sprint=? where idpbi=?';
+    var array = [
+      pbi.titulo,
+      pbi.descripcion,
+      pbi.done,
+      pbi.label,
+      pbi.estimacion,
+      pbi.valor,
+      pbi.prioridad,
+      pbi.sprint,
+      id
+    ];
     connection.query(sql, array, function(err, result) {
       if (err) {
         reject({ error: 'Error inesperado en editarPbi' });
@@ -41,7 +55,6 @@ ControllerPbis.editarPbi = function(id, pbi) {
     });
   });
 };
-
 ControllerPbis.editarPrioridadesPbis = function(pbis) {
   return new Promise(function(resolve, reject) {
     console.log(pbi);

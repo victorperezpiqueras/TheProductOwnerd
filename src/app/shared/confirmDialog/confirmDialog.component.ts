@@ -24,7 +24,11 @@ import { Dependencia } from '@app/models/dependencias';
 export class ConfirmDialogComponent implements OnInit {
   dialogRefConfirm: MatDialogRef<any>;
   dialogMode: string;
+  dialogModeVerbo: string;
   descripcion: string;
+  botonConfirm: string;
+
+  sprint: number = null;
 
   constructor(
     public dialogRef: MatDialogRef<ConfirmDialogComponent>,
@@ -33,7 +37,12 @@ export class ConfirmDialogComponent implements OnInit {
     public dialog: MatDialog
   ) {
     this.dialogMode = data.dialogMode;
+    this.dialogModeVerbo = data.dialogModeVerbo;
     this.descripcion = data.descripcion;
+    if (this.dialogModeVerbo == 'remove') {
+      this.botonConfirm = 'Remove';
+    } else if (this.dialogModeVerbo == 'mark as done') this.botonConfirm = 'Mark as Done';
+    else if (this.dialogModeVerbo == 'unmark as done') this.botonConfirm = 'Unmark as Done';
   }
 
   ngOnInit() {}
@@ -45,13 +54,29 @@ export class ConfirmDialogComponent implements OnInit {
   }
 
   save() {
-    this.dialogRef.close({
-      remove: true
-    });
-    //show snackbar on success:
-    if (this.dialogMode == 'Acceptance Criteria')
-      this.openSnackBar('Acceptance criteria removed successfully', 'Close');
-    else if (this.dialogMode == 'File') this.openSnackBar('File removed successfully', 'Close');
+    console.log(this.dialogModeVerbo);
+    if (this.dialogModeVerbo == 'remove') {
+      this.dialogRef.close({
+        remove: true
+      });
+      if (this.dialogMode == 'Acceptance Criteria')
+        this.openSnackBar('Acceptance criteria removed successfully', 'Close');
+      else if (this.dialogMode == 'File') this.openSnackBar('File removed successfully', 'Close');
+    } else if (this.dialogMode == 'PBI') {
+      if (this.dialogModeVerbo == 'mark as done') {
+        this.dialogRef.close({
+          done: 1,
+          sprint: this.sprint
+        });
+        this.openSnackBar('PBI marked as done successfully', 'Close');
+      } else if (this.dialogModeVerbo == 'unmark as done') {
+        this.dialogRef.close({
+          done: 0,
+          sprint: null
+        });
+        this.openSnackBar('PBI unmarked as done successfully', 'Close');
+      }
+    }
   }
 
   close() {

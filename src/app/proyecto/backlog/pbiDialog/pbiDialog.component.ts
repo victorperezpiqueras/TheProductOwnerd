@@ -36,6 +36,7 @@ export class PbiDialogComponent implements OnInit {
   valor: number;
   idproyecto: number;
   prioridad: number;
+  sprint: number;
 
   /* archivos data */
   archivos: any[] = [];
@@ -107,6 +108,7 @@ export class PbiDialogComponent implements OnInit {
     this.valor = data.pbi.valor;
     this.idproyecto = data.pbi.idproyecto;
     this.prioridad = data.pbi.prioridad;
+    this.sprint = data.pbi.sprint;
 
     this.fibonacci.unshift(this.estimacion);
   }
@@ -202,6 +204,7 @@ export class PbiDialogComponent implements OnInit {
      dialogConfig.width = '1920px'; */
     dialogConfig.data = {
       dialogMode: 'Acceptance Criteria',
+      dialogModeVerbo: 'remove',
       descripcion: criterio.nombre
     };
     this.dialogRefConfirm = this.dialog.open(ConfirmDialogComponent, dialogConfig);
@@ -278,10 +281,9 @@ export class PbiDialogComponent implements OnInit {
   }
 
   descargar(archivo: any) {
-    var fileType = this.getFileType(archivo);
+    //var fileType = this.getFileType(archivo);
     /* archivo.nombre += fileType.ending; */
-    console.log(archivo.momnre);
-    var blob = new Blob([archivo.src, { type: fileType.format }]);
+    //var blob = new Blob([archivo.src, { type: fileType.format }]);
     archivo.src = Buffer.from(archivo.src, 'base64').toString();
 
     const downloadLink = document.createElement('a');
@@ -316,6 +318,7 @@ export class PbiDialogComponent implements OnInit {
     dialogConfig.autoFocus = false;
     dialogConfig.data = {
       dialogMode: 'File',
+      dialogModeVerbo: 'remove',
       descripcion: archivo.nombre
     };
     this.dialogRefConfirm = this.dialog.open(ConfirmDialogComponent, dialogConfig);
@@ -340,8 +343,29 @@ export class PbiDialogComponent implements OnInit {
   }
 
   markDone() {
-    if (this.done == 1) this.done = 0;
-    else this.done = 1;
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.autoFocus = false;
+    if (this.done == 0) {
+      dialogConfig.data = {
+        dialogMode: 'PBI',
+        dialogModeVerbo: 'mark as done',
+        descripcion: this.titulo
+      };
+    } else {
+      dialogConfig.data = {
+        dialogMode: 'PBI',
+        dialogModeVerbo: 'unmark as done',
+        descripcion: this.titulo
+      };
+    }
+    this.dialogRefConfirm = this.dialog.open(ConfirmDialogComponent, dialogConfig);
+    this.dialogRefConfirm.afterClosed().subscribe(data => {
+      if (data != undefined) {
+        console.log(data);
+        this.done = data.done;
+        this.sprint = data.sprint;
+      }
+    });
   }
 
   setColor() {
@@ -396,6 +420,18 @@ export class PbiDialogComponent implements OnInit {
   }
 
   save() {
+    /* console.log(new Pbi(
+    this.idpbi,
+    this.titulo,
+    this.descripcion,
+    this.done,
+    this.label,
+    this.estimacion,
+    this.valor,
+    this.prioridad,
+    this.sprint,
+    this.idproyecto
+  )) */
     this.dialogRef.close({
       //proyecto: new Proyecto(null, this.name, this.descripcion, [])
       pbi: new Pbi(
@@ -407,6 +443,7 @@ export class PbiDialogComponent implements OnInit {
         this.estimacion,
         this.valor,
         this.prioridad,
+        this.sprint,
         this.idproyecto
       )
     });

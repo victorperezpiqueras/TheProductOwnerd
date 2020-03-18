@@ -195,7 +195,7 @@ export class BacklogComponent implements OnInit, OnDestroy {
     dialogConfig.height = '800px';
     dialogConfig.width = '1920px';
     dialogConfig.data = {
-      pbi: new Pbi(null, null, null, null, null, null, null, this.pbis.length, this.proyecto.idproyecto),
+      pbi: new Pbi(null, null, null, null, null, null, null, this.pbis.length, null, this.proyecto.idproyecto),
       permisos: this.permisos,
       pbis: this.pbis,
       dialogMode: 'create'
@@ -243,6 +243,13 @@ export class BacklogComponent implements OnInit, OnDestroy {
       dialogMode: 'view'
     };
     this.dialogRef = this.dialog.open(PbiDialogComponent, dialogConfig);
+    this.dialogRef.afterClosed().subscribe(data => {
+      if (data != undefined) {
+        data.pbi.prioridad = this.showingPbis.length + 1;
+        this.editarPbi(data.pbi);
+        //console.log(data);
+      }
+    });
   }
 
   drop(event: CdkDragDrop<string[]>) {
@@ -306,6 +313,7 @@ export class BacklogComponent implements OnInit, OnDestroy {
   }
 
   editarPbi(pbi: Pbi) {
+    console.log(pbi);
     this.pbisService.editarPbi(pbi).subscribe((v: any) => {
       //console.log(v);
       /* var itemToUpdate = this.pbis.find((item) => item.idpbi == pbi.idpbi); //////////////////COMPROBAR

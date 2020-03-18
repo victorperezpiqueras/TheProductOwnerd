@@ -27,7 +27,7 @@ connection.connect(function(err) {
                   console.log('Tabla ROLESPERMISOS creada');
                   connection.query(
                     'create table pbis ( idpbi INT AUTO_INCREMENT PRIMARY key,titulo varchar(255) not null, descripcion text,done boolean not null, prioridad int not null' +
-                      'label varchar(255) not null, estimacion int, valor int  idproyecto int, foreign key(idproyecto) references proyectos(idproyecto) )',
+                      'label varchar(255) not null, estimacion int, valor int,sprint int, idproyecto int, foreign key(idproyecto) references proyectos(idproyecto) )',
                     function(err, result) {
                       if (err) throw err;
                       console.log('Tabla PBIS creada');

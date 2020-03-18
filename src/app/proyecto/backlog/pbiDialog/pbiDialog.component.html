@@ -118,22 +118,22 @@
               *ngFor="let dep of dependencias"
               [ngStyle]="{ 'background-color': getPbiColor(dep.idpbi2) }"
               color="accent"
-              [removable]="true"
+              [removable]="!disabled"
               (removed)="borrarDependencia(dep)"
               selected
               class="mat-typography"
             >
-              {{ getPbiTitulo(dep.idpbi2) }}<mat-icon matChipRemove>cancel</mat-icon>
+              {{ getPbiTitulo(dep.idpbi2) }}<mat-icon *ngIf="!disabled" matChipRemove>cancel</mat-icon>
             </mat-chip>
           </mat-chip-list>
 
-          <mat-form-field style="display: inline-block;margin-right: 2%;">
+          <mat-form-field style="display: inline-block;margin-right: 2%;" *ngIf="!disabled">
             <mat-label>Add Dependencies</mat-label>
             <!--  <mat-select multiple (selectionChange)="actualizarDependencia(pbi)">
               <mat-option *ngFor="let pbi of pbis" [value]="pbi">
                 #{{pbi.idpbi}} {{pbi.titulo}}</mat-option>
             </mat-select> -->
-            <mat-select [(ngModel)]="dependenciaData" (selectionChange)="actualizarDependencia()">
+            <mat-select [(ngModel)]="dependenciaData" (selectionChange)="actualizarDependencia()" [disabled]="disabled">
               <mat-option *ngFor="let pbi of notSelectedPbis" [value]="pbi"
                 >#{{ pbi.idpbi }} {{ pbi.titulo }}
               </mat-option>
@@ -166,6 +166,10 @@
           >
             &nbsp;Mark as Done&nbsp;
           </button>
+          &nbsp;&nbsp;&nbsp;
+          <mat-chip *ngIf="sprint" color="primary" [removable]="false" selected class="mat-typography">
+            Sprint {{ sprint }}</mat-chip
+          >
           <!--  </div>
         <div fxLayout="row" fxFlex="20"> -->
           <button
@@ -174,7 +178,7 @@
             (click)="save()"
             [color]="'success'"
             [disabled]="!filled()"
-            style="display: inline-block;margin-left: 80%;width: 9vmin;height: 5vmin;min-width: 100px;min-height: 50px;"
+            style="display: inline-block;margin-left: 70%;width: 9vmin;height: 5vmin;min-width: 100px;min-height: 50px;"
           >
             <mat-icon>save</mat-icon>&nbsp;&nbsp;Save
           </button>

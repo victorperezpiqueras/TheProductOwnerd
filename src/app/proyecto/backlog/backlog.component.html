@@ -100,7 +100,7 @@
               </mat-chip-list>
 
               &nbsp;&nbsp;
-              <p style="color: rgb(119, 119, 119);font-size: 1.5vmin;margin-left:2%;">
+              <p *ngIf="pbi.descripcion" style="color: rgb(119, 119, 119);font-size: 1.5vmin;margin-left:2%;">
                 {{ pbi.descripcion | limitTo: 100 }}
               </p>
             </mat-card-header>
@@ -147,7 +147,7 @@
               </mat-chip-list>
 
               &nbsp;&nbsp;
-              <p style="color: rgb(119, 119, 119);font-size: 1.5vmin;margin-left:2%;">
+              <p *ngIf="pbi.descripcion" style="color: rgb(119, 119, 119);font-size: 1.5vmin;margin-left:2%;">
                 {{ pbi.descripcion | limitTo: 100 }}
               </p>
             </mat-card-header>
