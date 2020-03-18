@@ -1,6 +1,21 @@
 <div class="container">
   <div *ngIf="proyecto" fxLayout="column" fxLayoutGap="2%">
     <app-loader class="loader" [isLoading]="isLoading"></app-loader>
+
+    <div fxLayout="row" fxLayoutGap="2%" fxFlex="40">
+      <mat-card fxFlex="70">
+        <highcharts-chart
+          [Highcharts]="Highcharts"
+          [options]="chartOptions"
+          style="width: 100%; height: 400px; display: block;"
+        ></highcharts-chart>
+      </mat-card>
+      <mat-card fxFlex="30">
+        <mat-card-title>{{ proyecto.nombre }}</mat-card-title>
+        <mat-card-subtitle>{{ proyecto.descripcion }}</mat-card-subtitle>
+      </mat-card>
+    </div>
+
     <mat-card fxFlex="40">
       <mat-card-subtitle>Equipo:</mat-card-subtitle>
       <table mat-table [dataSource]="proyecto.usuarios" class="mat-elevation-z8" fxFill>
@@ -16,18 +31,5 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
       </table>
     </mat-card>
-    <div fxLayout="row" fxLayoutGap="2%" fxFlex="40">
-      <mat-card fxFlex="50">
-        <highcharts-chart
-          [Highcharts]="Highcharts"
-          [options]="chartOptions"
-          style="width: 100%; height: 400px; display: block;"
-        ></highcharts-chart>
-      </mat-card>
-      <mat-card fxFlex="50">
-        <mat-card-title>{{ proyecto.nombre }}</mat-card-title>
-        <mat-card-subtitle>{{ proyecto.descripcion }}</mat-card-subtitle>
-      </mat-card>
-    </div>
   </div>
 </div>

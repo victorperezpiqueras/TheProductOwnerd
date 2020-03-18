@@ -10,6 +10,7 @@ import { Observable, forkJoin } from 'rxjs';
 import { MatDialogConfig, MatDialogRef, MatDialog } from '@angular/material/dialog';
 
 import * as Highcharts from 'highcharts';
+import { Pbi } from '@app/models/pbis';
 
 @Component({
   selector: 'app-overview',
@@ -20,7 +21,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
   @Input() proyecto: any;
 
   Highcharts: typeof Highcharts = Highcharts;
-  chartOptions: Highcharts.Options = {
+  chartOptions: Highcharts.Options /*  = {
     title: {
       text: 'Project Burndown Chart'
     },
@@ -33,7 +34,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
     credits: {
       enabled: false
     }
-  };
+  } */;
   /* --------------DIALOG ELEMENTS AND VARIABLES-------------- */
   dialogRef: MatDialogRef<any>;
 
@@ -48,6 +49,17 @@ export class OverviewComponent implements OnInit, OnDestroy {
   state$: Observable<object>;
   state: Proyecto;
 
+  pbis: Pbi[];
+
+  /* datos ejes */
+  listaSprints: string[] = [];
+  listaRestantes: number[] = [];
+  listaData: any[] = [];
+
+  puntosConsumidos: number;
+  puntosTotales: number;
+  ultimoSprint: number;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -60,12 +72,11 @@ export class OverviewComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    //this.proyecto = this.proyectosService.proyecto;
-    /* console.log(this.router.url.split('/')[2])
-    this.proyectosService.getProyecto(Number(this.router.url.split('/')[2]))
-      .subscribe((proyecto)=>{ 
-        this.proyecto=proyecto;
-      }) */
+    this.actualizar();
+  }
+
+  actualizar() {
+    console.log('actualizar');
     this.isLoading = true;
     this.activeRoute.params.subscribe(routeParams => {
       console.log(routeParams);
@@ -77,11 +88,133 @@ export class OverviewComponent implements OnInit, OnDestroy {
           this.isLoading = false;
           console.log(proyecto);
         });
+
+        this.proyectosService.getProyectosPBIs(proyecto.idproyecto).subscribe((pbis: []) => {
+          console.log(pbis);
+          this.pbis = pbis;
+          this.generarEjes();
+          this.generarExpectedAverage();
+          this.generarGrafico();
+        });
       });
     });
-    /* this.proyectosService.getProyectoUsuariosRoles(this.proyecto.idproyecto).subscribe((usuarios) => {
-      this.proyecto.usuarios = usuarios;
-    }) */
+  }
+
+  generarEjes() {
+    // obtener ultimo sprint:
+    this.ultimoSprint = 0;
+    this.pbis.forEach((pbi: Pbi) => {
+      if (pbi.sprint > this.ultimoSprint) this.ultimoSprint = pbi.sprint;
+    });
+    // generar suma pbis:
+    this.puntosTotales = 0;
+    this.pbis.forEach((pbi: Pbi) => {
+      this.puntosTotales += pbi.estimacion;
+    });
+
+    // generar lista sprints y estimaciones:
+    for (var i = 0; i <= this.ultimoSprint; i++) {
+      this.listaSprints.push('Sprint ' + i.toString());
+      if (i == 0) {
+        this.listaRestantes[i] = this.puntosTotales;
+      } else {
+        // sumar las estimaciones para cada sprint:
+        var sumpbis = 0;
+        this.pbis.forEach((pbi: Pbi) => {
+          if (pbi.sprint == i) sumpbis += pbi.estimacion;
+        });
+        // restar al total anterior las del sprint
+        this.listaRestantes[i] = this.listaRestantes[i - 1] - sumpbis;
+      }
+    }
+    console.log(this.listaSprints);
+    this.listaData = [];
+    for (var i = 0; i <= this.ultimoSprint; i++) {
+      this.listaData[i] = [this.listaSprints[i], this.listaRestantes[i]];
+    }
+  }
+
+  generarExpectedAverage() {
+    // obtenemos los puntos restantes para calcular los consumidos:
+
+    var restantes = this.listaRestantes[this.ultimoSprint];
+    console.log('restantes', restantes);
+
+    console.log('this.ultimoSprint', this.ultimoSprint);
+    var quemados = this.puntosTotales - restantes;
+    console.log('quemados', quemados);
+    // calculamos la media:
+    var media = quemados / this.ultimoSprint;
+
+    console.log('media', media);
+
+    /* var sprintAverage = this.ultimoSprint;
+    var quemadosActuales = quemados; */
+    /* var bool = true;
+    // calculamos cuantos sprints mas hacen falta:
+    while (bool) {
+      // si sobra mas de un sprint contamos uno:
+      if ( (quemadosActuales - media) >= 0) {
+        bool=true;
+        quemadosActuales = quemadosActuales-media;
+        sprintAverage++;
+      }
+      // si es menos de un sprint calculamos la proporcion de sprint en la que se acabaría:
+      else {
+        const resto = quemadosActuales / media;
+        sprintAverage += resto;
+        bool=false;
+      }
+      //if(sprintAverage>20)bool=false;
+      console.log("quemadosActuales", quemadosActuales)
+      console.log("sprintAverage", sprintAverage)
+    } */
+
+    // calculamos los sprints enteros esperados:
+    this.ultimoSprint += Math.trunc(restantes / media);
+    // calculamos la proporcion del ultimo sprint esperado:
+    this.ultimoSprint += (restantes % media) / media;
+
+    this.listaData.push([this.ultimoSprint, 0]);
+  }
+
+  generarGrafico() {
+    this.chartOptions = {
+      title: {
+        text: 'Project Burndown Chart'
+      },
+      xAxis: {
+        /* categories: this.listaSprints, */
+        title: {
+          text: 'Sprints'
+        }
+      },
+      yAxis: [
+        {
+          title: {
+            text: 'Story Points'
+          }
+        }
+      ],
+      series: [
+        {
+          name: 'Scope',
+          /* data: this.listaRestantes, */
+          data: this.listaData,
+          type: 'column',
+          pointWidth: 30
+        },
+        {
+          name: 'Projected Average',
+          data: this.listaData,
+          type: 'line'
+        }
+      ],
+      credits: {
+        enabled: false
+      }
+    };
+    console.log(this.chartOptions);
   }
 
   ngOnDestroy() {}

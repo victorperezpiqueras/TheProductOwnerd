@@ -65,6 +65,10 @@ export class BacklogComponent implements OnInit, OnDestroy {
       .subscribe((proyecto)=>{ 
         this.proyecto=proyecto;
       }) */
+    this.actualizar();
+  }
+
+  actualizar() {
     this.isLoading = true;
     this.activeRoute.params.subscribe(routeParams => {
       // console.log(routeParams);

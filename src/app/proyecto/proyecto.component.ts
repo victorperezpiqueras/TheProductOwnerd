@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { finalize, map } from 'rxjs/operators';
@@ -11,6 +11,10 @@ import { MatDialogConfig, MatDialogRef, MatDialog } from '@angular/material/dial
 
 import * as Highcharts from 'highcharts';
 import { Permisos } from '@app/models/permisos';
+import { Pbi } from '@app/models/pbis';
+import { OverviewComponent } from './overview/overview.component';
+import { MatTabChangeEvent } from '@angular/material';
+import { BacklogComponent } from './backlog/backlog.component';
 
 @Component({
   selector: 'app-proyecto',
@@ -18,21 +22,8 @@ import { Permisos } from '@app/models/permisos';
   styleUrls: ['./proyecto.component.scss']
 })
 export class ProyectoComponent implements OnInit, OnDestroy {
-  Highcharts: typeof Highcharts = Highcharts;
-  chartOptions: Highcharts.Options = {
-    title: {
-      text: 'Project Burndown Chart'
-    },
-    series: [
-      {
-        data: [1, 2, 3],
-        type: 'line'
-      }
-    ],
-    credits: {
-      enabled: false
-    }
-  };
+  @ViewChild('overview', { static: false }) overview: OverviewComponent;
+  @ViewChild('backlog', { static: false }) backlog: BacklogComponent;
   /* --------------DIALOG ELEMENTS AND VARIABLES-------------- */
   dialogRef: MatDialogRef<any>;
 
@@ -70,9 +61,7 @@ export class ProyectoComponent implements OnInit, OnDestroy {
       }) */
     this.isLoading = true;
     this.activeRoute.params.subscribe(routeParams => {
-      //console.log(routeParams);
       this.proyectosService.getProyecto(routeParams.id).subscribe(proyecto => {
-        //console.log(proyecto);
         this.proyecto = proyecto;
         this.proyectosService.getProyectoUsuariosRoles(proyecto.idproyecto).subscribe(usuarios => {
           this.proyecto.usuarios = usuarios;
@@ -86,9 +75,15 @@ export class ProyectoComponent implements OnInit, OnDestroy {
         });
       });
     });
-    /* this.proyectosService.getProyectoUsuariosRoles(this.proyecto.idproyecto).subscribe((usuarios) => {
-      this.proyecto.usuarios = usuarios;
-    }) */
+  }
+
+  onTabChanged(event: MatTabChangeEvent) {
+    if (event.index == 0) {
+      console.log('cargarpadre');
+      this.overview.actualizar();
+    } else if (event.index == 1) {
+      this.backlog.actualizar();
+    }
   }
 
   ngOnDestroy() {}
