@@ -11,6 +11,7 @@ import { MatDialogConfig, MatDialogRef, MatDialog } from '@angular/material/dial
 
 import * as Highcharts from 'highcharts';
 import { Pbi } from '@app/models/pbis';
+import { Sprint } from '@app/models/sprints';
 
 @Component({
   selector: 'app-overview',
@@ -56,9 +57,14 @@ export class OverviewComponent implements OnInit, OnDestroy {
   listaRestantes: number[] = [];
   listaData: any[] = [];
 
+  sprints: Sprint[] = [];
+
   puntosConsumidos: number;
   puntosTotales: number;
   ultimoSprint: number;
+
+  listaAverageBest: any[] = [];
+  listaAverageWorst: any[] = [];
 
   constructor(
     private router: Router,
@@ -79,21 +85,22 @@ export class OverviewComponent implements OnInit, OnDestroy {
     console.log('actualizar');
     this.isLoading = true;
     this.activeRoute.params.subscribe(routeParams => {
-      console.log(routeParams);
+      //console.log(routeParams);
       this.proyectosService.getProyecto(routeParams.id).subscribe(proyecto => {
-        console.log(proyecto);
+        //console.log(proyecto);
         this.proyecto = proyecto;
         this.proyectosService.getProyectoUsuariosRoles(proyecto.idproyecto).subscribe(usuarios => {
           this.proyecto.usuarios = usuarios;
           this.isLoading = false;
-          console.log(proyecto);
+          //console.log(proyecto);
         });
 
         this.proyectosService.getProyectosPBIs(proyecto.idproyecto).subscribe((pbis: []) => {
-          console.log(pbis);
+          //console.log(pbis);
           this.pbis = pbis;
           this.generarEjes();
           this.generarExpectedAverage();
+          this.generarBestWorstAverage();
           this.generarGrafico();
         });
       });
@@ -101,6 +108,8 @@ export class OverviewComponent implements OnInit, OnDestroy {
   }
 
   generarEjes() {
+    this.listaSprints = [];
+    this.sprints = [];
     // obtener ultimo sprint:
     this.ultimoSprint = 0;
     this.pbis.forEach((pbi: Pbi) => {
@@ -115,8 +124,10 @@ export class OverviewComponent implements OnInit, OnDestroy {
     // generar lista sprints y estimaciones:
     for (var i = 0; i <= this.ultimoSprint; i++) {
       this.listaSprints.push('Sprint ' + i.toString());
+      this.sprints.push(new Sprint('Sprint ' + i.toString(), i, 0, 0));
       if (i == 0) {
         this.listaRestantes[i] = this.puntosTotales;
+        this.sprints[i].restante = this.puntosTotales;
       } else {
         // sumar las estimaciones para cada sprint:
         var sumpbis = 0;
@@ -125,12 +136,15 @@ export class OverviewComponent implements OnInit, OnDestroy {
         });
         // restar al total anterior las del sprint
         this.listaRestantes[i] = this.listaRestantes[i - 1] - sumpbis;
+        this.sprints[i].restante = this.sprints[i - 1].restante - sumpbis;
+        this.sprints[i].quemado = sumpbis;
       }
     }
-    console.log(this.listaSprints);
+    //console.log(this.listaSprints);
     this.listaData = [];
     for (var i = 0; i <= this.ultimoSprint; i++) {
       this.listaData[i] = [this.listaSprints[i], this.listaRestantes[i]];
+      this.listaData[i] = [this.sprints[i].sprint, this.sprints[i].restante];
     }
   }
 
@@ -138,44 +152,65 @@ export class OverviewComponent implements OnInit, OnDestroy {
     // obtenemos los puntos restantes para calcular los consumidos:
 
     var restantes = this.listaRestantes[this.ultimoSprint];
-    console.log('restantes', restantes);
-
-    console.log('this.ultimoSprint', this.ultimoSprint);
+    var restantes = this.sprints[this.ultimoSprint].restante;
+    //console.log('restantes', restantes);
+    //console.log('this.ultimoSprint', this.ultimoSprint);
     var quemados = this.puntosTotales - restantes;
-    console.log('quemados', quemados);
+    //console.log('quemados', quemados);
     // calculamos la media:
     var media = quemados / this.ultimoSprint;
-
-    console.log('media', media);
-
-    /* var sprintAverage = this.ultimoSprint;
-    var quemadosActuales = quemados; */
-    /* var bool = true;
-    // calculamos cuantos sprints mas hacen falta:
-    while (bool) {
-      // si sobra mas de un sprint contamos uno:
-      if ( (quemadosActuales - media) >= 0) {
-        bool=true;
-        quemadosActuales = quemadosActuales-media;
-        sprintAverage++;
-      }
-      // si es menos de un sprint calculamos la proporcion de sprint en la que se acabaría:
-      else {
-        const resto = quemadosActuales / media;
-        sprintAverage += resto;
-        bool=false;
-      }
-      //if(sprintAverage>20)bool=false;
-      console.log("quemadosActuales", quemadosActuales)
-      console.log("sprintAverage", sprintAverage)
-    } */
+    //console.log('media', media);
 
     // calculamos los sprints enteros esperados:
-    this.ultimoSprint += Math.trunc(restantes / media);
+    var puntoFinal = this.ultimoSprint + Math.trunc(restantes / media);
     // calculamos la proporcion del ultimo sprint esperado:
-    this.ultimoSprint += (restantes % media) / media;
+    puntoFinal += (restantes % media) / media;
 
-    this.listaData.push([this.ultimoSprint, 0]);
+    this.listaData.push([puntoFinal, 0]);
+  }
+
+  generarBestWorstAverage() {
+    if (this.ultimoSprint >= 3 && this.sprints.length >= 4) {
+      //4 por el sprint 0->3+1
+      this.listaAverageWorst = [];
+      this.listaAverageBest = [];
+      // generar punto inicial:
+      //var puntoInicial = this.listaData[this.ultimoSprint];
+      var puntoInicial = [this.sprints[this.ultimoSprint].sprintNumber, this.sprints[this.ultimoSprint].restante];
+      // insertamos los puntos iniciales:
+      this.listaAverageWorst.push(puntoInicial);
+      this.listaAverageBest.push(puntoInicial);
+      // ordenar los sprints por quemado ascendente y descendente:
+      var sprints1 = [...this.sprints];
+      sprints1.splice(0, 1);
+      var orderedWorst = [
+        ...sprints1.sort((p1, p2) => {
+          return p1.quemado - p2.quemado;
+        })
+      ];
+      console.log(orderedWorst);
+      var orderedBest = [
+        ...sprints1.sort((p1, p2) => {
+          return p2.quemado - p1.quemado;
+        })
+      ];
+      console.log(orderedBest);
+      // obtener las medias de los mejores y peores quemados:
+      var mediaWorst = (orderedWorst[0].quemado + orderedWorst[1].quemado + orderedWorst[2].quemado) / 3;
+      var mediaBest = (orderedBest[0].quemado + orderedBest[1].quemado + orderedBest[2].quemado) / 3;
+      // generar los puntos finales:
+      // calculamos los sprints enteros esperados:
+      var restantes = this.sprints[this.ultimoSprint].restante;
+      var puntoFinalWorst = this.ultimoSprint + Math.trunc(restantes / mediaWorst);
+      var puntoFinalBest = this.ultimoSprint + Math.trunc(restantes / mediaBest);
+      // calculamos la proporcion del ultimo sprint esperado:
+      puntoFinalWorst += (restantes % mediaWorst) / mediaWorst;
+      puntoFinalBest += (restantes % mediaBest) / mediaBest;
+      // insertamos los puntos finales:
+      //por si alguna media diese 0:
+      if (mediaWorst > 0) this.listaAverageWorst.push([puntoFinalWorst, 0]);
+      if (mediaBest > 0) this.listaAverageBest.push([puntoFinalBest, 0]);
+    }
   }
 
   generarGrafico() {
@@ -187,7 +222,9 @@ export class OverviewComponent implements OnInit, OnDestroy {
         /* categories: this.listaSprints, */
         title: {
           text: 'Sprints'
-        }
+        },
+        /*  max: 5, */
+        tickInterval: 1
       },
       yAxis: [
         {
@@ -199,15 +236,28 @@ export class OverviewComponent implements OnInit, OnDestroy {
       series: [
         {
           name: 'Scope',
-          /* data: this.listaRestantes, */
           data: this.listaData,
           type: 'column',
-          pointWidth: 30
+          pointWidth: 20
         },
         {
           name: 'Projected Average',
           data: this.listaData,
           type: 'line'
+        },
+        {
+          name: 'Average Worst',
+          data: this.listaAverageWorst,
+          type: 'line',
+          dashStyle: 'LongDash',
+          color: '#FF0000'
+        },
+        {
+          name: 'Average Best',
+          data: this.listaAverageBest,
+          type: 'line',
+          dashStyle: 'ShortDash',
+          color: '#00FF00'
         }
       ],
       credits: {

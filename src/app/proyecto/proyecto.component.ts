@@ -69,7 +69,7 @@ export class ProyectoComponent implements OnInit, OnDestroy {
             .getUsuarioProyectoPermisos(this.idusuario, this.proyecto.idproyecto)
             .subscribe((permisos: Permisos) => {
               this.permisos = permisos;
-              console.log(this.permisos);
+              //console.log(this.permisos);
             });
           this.isLoading = false;
         });

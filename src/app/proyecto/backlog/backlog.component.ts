@@ -87,7 +87,7 @@ export class BacklogComponent implements OnInit, OnDestroy {
             .getUsuarioProyectoPermisos(this.idusuario, this.proyecto.idproyecto)
             .subscribe((permisos: Permisos) => {
               this.permisos = permisos;
-              console.log(this.permisos);
+              console.log('Permisos', this.permisos);
               this.isLoading = false;
             });
         });
