@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "ng": "ng",
-    "build": "npm run env -s && ng build",
-    "buildprod": "npm run env -s && ng build --aot --prod",
+    "build": "npm run env -s && ng build --aot --prod",
+    "builddev": "npm run env -s && ng build",
     "start": "cd backend && npm start",
     "dev": "cd backend && npm run dev",
     "serve:sw": "npm run build -s && npx http-server ./dist -p 4200",

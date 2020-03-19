@@ -30,9 +30,10 @@ script:
   # - npm test
   - cd ..
   # - npm run test
-  - npm run buildprod
+  - npm run build
 deploy:
   provider: heroku
+  skip_cleanup: true
   api_key:
     secure: cjtHrD29ZcvloB/ARYh0WOCJH2j5VXUL+OAMXbF+Cym/7vqgwgZjszhxjVaHBw6ZkWXPDtbxK6vGix9wy3duLKO113beFfrwBRXqU3rSzgIb8m35kDr9W7lpwigfvjKaDiO3zYQwV/NCOgmmxHsWDY7o2Vsp4T4P/6uW6IDRkSMMirQ5W2GSt9c8RDIRik8SD7AnQ51M+bbBcptyP4RQrLLQnsxQgf3dJLsvQoqiFy01n4sOqx1EzO5xtAX/gqRIbwrQX3tn21TgfCRIpm+3cg4pY13pRDRc3FLdY2uzWE+P9m8fP8RX/4XUxfOH8KMyk3ZFnz29bbrX0lJq8MMRyUn/XGMuvzNggTKQXfS9lgDqObf+OXvED4CVTNWam2BuxD0WzeU3z7k3U2MKYU0QbMpRbO8eTJ3c2G3bQuWAU52gcHs/zw10wQeKpDWSLiu1shPM0qwXHjyHxk0J2PTeurlgPwgAiW/wvCPnpyFF+Ji38nbcgnYcEjUu5CG7yYggV8oVA0q2q3cIBM9cLrOcn3biMwoh+D4kj8j+/MN/6RScA8hMJOkoGW0nzlUKftomNPvjsdaNFOOHK+Yzx3d1tOi6VezMIpN1t33CEkhB/LwZpFUWpY+1Apc2tT9njDvK1tuCf9QGL1UfXl/0HvzsnsZMQv+niPCatyi4+zUtuEg=
   app: the-product-ownerd
