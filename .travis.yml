@@ -29,7 +29,7 @@ script:
   # - npm test
   - cd ..
   # - npm run test
-  - npm run build
+  - npm run buildprod
 deploy:
   provider: heroku
   api_key:
