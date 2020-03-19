@@ -20,9 +20,9 @@ cache:
     - node_modules
 before_script:
   - npm install -g @angular/cli
-  - npm ci
+  - npm install
   - cd backend
-  - npm ci
+  - npm install
   - cd ..
 script:
   - cd backend
