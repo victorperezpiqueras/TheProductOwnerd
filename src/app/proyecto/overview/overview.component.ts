@@ -36,6 +36,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
       enabled: false
     }
   } */;
+  chartOptionsPoC: Highcharts.Options;
   /* --------------DIALOG ELEMENTS AND VARIABLES-------------- */
   dialogRef: MatDialogRef<any>;
 
@@ -63,6 +64,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
   puntosTotales: number;
   ultimoSprint: number;
 
+  listaAverage: any[] = [];
   listaAverageBest: any[] = [];
   listaAverageWorst: any[] = [];
 
@@ -96,12 +98,16 @@ export class OverviewComponent implements OnInit, OnDestroy {
         });
 
         this.proyectosService.getProyectosPBIs(proyecto.idproyecto).subscribe((pbis: []) => {
-          //console.log(pbis);
           this.pbis = pbis;
+          /* grafico PB */
           this.generarEjes();
           this.generarExpectedAverage();
           this.generarBestWorstAverage();
           this.generarGrafico();
+
+          /* grafico PoC */
+          this.generarEjesPoC();
+          this.generarGraficoPoC();
         });
       });
     });
@@ -124,7 +130,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
     // generar lista sprints y estimaciones:
     for (var i = 0; i <= this.ultimoSprint; i++) {
       this.listaSprints.push('Sprint ' + i.toString());
-      this.sprints.push(new Sprint('Sprint ' + i.toString(), i, 0, 0));
+      this.sprints.push(new Sprint('Sprint ' + i.toString(), i, 0, 0, 0, ''));
       if (i == 0) {
         this.listaRestantes[i] = this.puntosTotales;
         this.sprints[i].restante = this.puntosTotales;
@@ -149,8 +155,13 @@ export class OverviewComponent implements OnInit, OnDestroy {
   }
 
   generarExpectedAverage() {
-    // obtenemos los puntos restantes para calcular los consumidos:
+    // inicializamos la linea:
+    this.listaAverage = [];
 
+    // insertamos el punto inicial:
+    var puntoInicial = [this.sprints[this.ultimoSprint].sprintNumber, this.sprints[this.ultimoSprint].restante];
+    this.listaAverage.push(puntoInicial);
+    // obtenemos los puntos restantes para calcular los consumidos:
     var restantes = this.listaRestantes[this.ultimoSprint];
     var restantes = this.sprints[this.ultimoSprint].restante;
     //console.log('restantes', restantes);
@@ -166,7 +177,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
     // calculamos la proporcion del ultimo sprint esperado:
     puntoFinal += (restantes % media) / media;
 
-    this.listaData.push([puntoFinal, 0]);
+    this.listaAverage.push([puntoFinal, 0]);
   }
 
   generarBestWorstAverage() {
@@ -218,8 +229,12 @@ export class OverviewComponent implements OnInit, OnDestroy {
       title: {
         text: 'Project Burndown Chart'
       },
+      tooltip: {
+        formatter: function() {
+          return "<b style='font-size:10px'>Sprint " + this.x.toFixed(0) + '</b><br><b>Scope: ' + this.y + '</b>';
+        }
+      },
       xAxis: {
-        /* categories: this.listaSprints, */
         title: {
           text: 'Sprints'
         },
@@ -238,19 +253,14 @@ export class OverviewComponent implements OnInit, OnDestroy {
           name: 'Scope',
           data: this.listaData,
           type: 'column',
-          pointWidth: 20
+          pointWidth: 30,
+          color: '#80bfff'
         },
         {
-          name: 'Projected Average',
+          name: 'Scope Line',
           data: this.listaData,
-          type: 'line'
-        },
-        {
-          name: 'Average Worst',
-          data: this.listaAverageWorst,
           type: 'line',
-          dashStyle: 'LongDash',
-          color: '#FF0000'
+          color: '#4d4d4d'
         },
         {
           name: 'Average Best',
@@ -258,6 +268,20 @@ export class OverviewComponent implements OnInit, OnDestroy {
           type: 'line',
           dashStyle: 'ShortDash',
           color: '#00FF00'
+        },
+        {
+          name: 'Projected Average',
+          data: this.listaAverage,
+          type: 'line',
+          dashStyle: 'Dash',
+          color: '#ffa500'
+        },
+        {
+          name: 'Average Worst',
+          data: this.listaAverageWorst,
+          type: 'line',
+          dashStyle: 'LongDash',
+          color: '#FF0000'
         }
       ],
       credits: {
@@ -265,6 +289,92 @@ export class OverviewComponent implements OnInit, OnDestroy {
       }
     };
     console.log(this.chartOptions);
+  }
+
+  generarEjesPoC() {
+    //this.sprints = [];
+    // obtener ultimo sprint:
+    this.ultimoSprint = 0;
+    this.pbis.forEach((pbi: Pbi) => {
+      if (pbi.sprint > this.ultimoSprint) this.ultimoSprint = pbi.sprint;
+    });
+    // generar suma pbis:
+    this.puntosTotales = this.pbis.length;
+    // generar lista sprints y porcentajes:
+    for (var i = 0; i <= this.ultimoSprint; i++) {
+      //this.sprints.push(new Sprint('Sprint ' + i.toString(), i, 0, 0));
+      if (i == 0) {
+        this.sprints[i].quemadoRelativo = 0;
+      } else {
+        // sumar los pbis completados para cada sprint:
+        var sumpbis = 0;
+        this.pbis.forEach((pbi: Pbi) => {
+          if (pbi.sprint == i) sumpbis++;
+        });
+        // restar al total anterior las del sprint en forma de porcentaje
+        this.sprints[i].quemadoRelativo = Number(
+          (this.sprints[i - 1].quemadoRelativo + (sumpbis / this.puntosTotales) * 100).toFixed(2)
+        );
+      }
+    }
+    this.listaData = [];
+    // la metrica es el quemado por sprint en forma de porcentaje
+    for (var i = 0; i <= this.ultimoSprint; i++) {
+      this.listaData[i] = [this.sprints[i].sprint, this.sprints[i].quemadoRelativo];
+    }
+  }
+
+  generarGraficoPoC() {
+    this.chartOptionsPoC = {
+      title: {
+        text: 'Percentage of Completion'
+      },
+      tooltip: {
+        formatter: function() {
+          return this.y + '%';
+        }
+      },
+      xAxis: {
+        title: {
+          text: 'Sprints'
+        },
+        tickInterval: 1
+      },
+      yAxis: [
+        {
+          title: {
+            text: 'Completed PBIs'
+          },
+          labels: {
+            format: '{value}%'
+          }
+        }
+      ],
+      series: [
+        {
+          name: 'Completed',
+          data: this.listaData,
+          type: 'column',
+          pointWidth: 40,
+          color: '#98FB98',
+          dataLabels: {
+            enabled: true
+          },
+          enableMouseTracking: false
+        },
+        {
+          name: 'Completed Line',
+          data: this.listaData,
+          type: 'line',
+          color: '#4d4d4d',
+          enableMouseTracking: false
+        }
+      ],
+      credits: {
+        enabled: false
+      }
+    };
+    console.log(this.chartOptionsPoC);
   }
 
   ngOnDestroy() {}
