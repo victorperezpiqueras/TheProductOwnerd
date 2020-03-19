@@ -20,6 +20,7 @@ cache:
     - node_modules
 before_script:
   - npm install -g @angular/cli
+  - npm install -g @types/webpack-env
   - npm install
   - cd backend
   - npm install

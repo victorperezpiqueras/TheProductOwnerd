@@ -43,7 +43,8 @@
     "highcharts-angular": "^2.4.0",
     "material-design-icons-iconfont": "^5.0.1",
     "rxjs": "^6.5.4",
-    "zone.js": "^0.9.1"
+    "zone.js": "^0.9.1",
+    "@types/webpack-env": "^1.15.1"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.801.0",
