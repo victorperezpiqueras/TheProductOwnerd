@@ -15,6 +15,7 @@ import { Pbi } from '@app/models/pbis';
 import { OverviewComponent } from './overview/overview.component';
 import { MatTabChangeEvent } from '@angular/material';
 import { BacklogComponent } from './backlog/backlog.component';
+import { ForecastsComponent } from './forecasts/forecasts.component';
 
 @Component({
   selector: 'app-proyecto',
@@ -24,6 +25,7 @@ import { BacklogComponent } from './backlog/backlog.component';
 export class ProyectoComponent implements OnInit, OnDestroy {
   @ViewChild('overview', { static: false }) overview: OverviewComponent;
   @ViewChild('backlog', { static: false }) backlog: BacklogComponent;
+  @ViewChild('forecasts', { static: false }) forecasts: ForecastsComponent;
   /* --------------DIALOG ELEMENTS AND VARIABLES-------------- */
   dialogRef: MatDialogRef<any>;
 
@@ -82,6 +84,8 @@ export class ProyectoComponent implements OnInit, OnDestroy {
       console.log('cargarpadre');
       this.overview.actualizar();
     } else if (event.index == 1) {
+      this.backlog.actualizar();
+    } else if (event.index == 2) {
       this.backlog.actualizar();
     }
   }

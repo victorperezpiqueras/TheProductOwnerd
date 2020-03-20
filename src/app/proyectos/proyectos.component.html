@@ -6,7 +6,7 @@
       <button class="mat-button-create" mat-fab color="primary" (click)="crearProyectoDialog()">+</button>
     </div>
     <h1>
-      <mat-card-title class="title">Proyectos</mat-card-title>
+      <mat-card-title class="title">Projects</mat-card-title>
     </h1>
     <!-- <mat-divider></mat-divider> -->
     <br />
@@ -33,15 +33,18 @@
             </mat-panel-description>
           </mat-expansion-panel-header>
           <br />
-          Usuarios
+          Team
           <br />
           <table mat-table [dataSource]="proyecto.usuarios" class="mat-elevation-z8">
             <ng-container matColumnDef="Rol">
-              <th mat-header-cell *matHeaderCellDef>Rol</th>
-              <td mat-cell *matCellDef="let usuario">{{ usuario.rol }}</td>
+              <th mat-header-cell *matHeaderCellDef>Role</th>
+              <td mat-cell *matCellDef="let usuario">
+                <p *ngIf="usuario.rol == 'productOwner'">Product Owner</p>
+                <p *ngIf="usuario.rol == 'desarrollador'">Developer</p>
+              </td>
             </ng-container>
             <ng-container matColumnDef="Nombre">
-              <th mat-header-cell *matHeaderCellDef>Nombre</th>
+              <th mat-header-cell *matHeaderCellDef>Name</th>
               <td mat-cell *matCellDef="let usuario">{{ usuario.nombre }}</td>
             </ng-container>
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -64,7 +67,7 @@
             [state]="{ proyecto: proyecto }"
             (click)="proyectoSeleccionado(proyecto)"
           >
-            Abrir proyecto
+            Open project
           </button>
         </mat-expansion-panel>
         <br />

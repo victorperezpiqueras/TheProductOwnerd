@@ -17,6 +17,7 @@ import { PbisService } from '@app/services/pbis-service';
 import { TruncatePipeModule } from '@app/shared/truncatePipe/truncatePipe.module';
 import { ComentariosService } from '@app/services/comentarios-service';
 import { ArchivosService } from '@app/services/archivos-service';
+import { ForecastsComponent } from './forecasts/forecasts.component';
 
 @NgModule({
   imports: [
@@ -32,7 +33,7 @@ import { ArchivosService } from '@app/services/archivos-service';
     HighchartsChartModule,
     ProyectoRoutingModule
   ],
-  declarations: [ProyectoComponent, OverviewComponent, BacklogComponent],
+  declarations: [ProyectoComponent, OverviewComponent, BacklogComponent, ForecastsComponent],
   providers: [PbisService, ComentariosService, ArchivosService]
 })
 export class ProyectoModule {}
