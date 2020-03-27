@@ -86,7 +86,7 @@ export class ProyectoComponent implements OnInit, OnDestroy {
     } else if (event.index == 1) {
       this.backlog.actualizar();
     } else if (event.index == 2) {
-      this.backlog.actualizar();
+      this.forecasts.actualizar();
     }
   }
 

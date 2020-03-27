@@ -56,6 +56,11 @@ export class ForecastsComponent implements OnInit, OnDestroy {
   listaAverage: any[] = [];
   listaAverageBest: any[] = [];
   listaAverageWorst: any[] = [];
+  listaDeadline: any[] = [];
+  deadlineSprint: number = 0;
+  puntoCorteBest: any[] = [];
+  puntoCorteWorst: any[] = [];
+  puntoCorteAverage: any[] = [];
 
   /* medias */
   mediaAverage: number = 0;
@@ -105,7 +110,9 @@ export class ForecastsComponent implements OnInit, OnDestroy {
   actualizarGraficoVelocidad() {
     this.generarEjes();
     this.generarExpectedAverage(this.sprintNumber);
-    this.generarBestWorstAverage(this.sprintNumberBW);
+    this.generarBestWorstAverage(this.sprintNumber, this.sprintNumberBW);
+    this.generarDeadline(this.deadlineSprint);
+    this.generarPuntosCorte();
     this.generarGrafico();
   }
 
@@ -123,7 +130,9 @@ export class ForecastsComponent implements OnInit, OnDestroy {
     });
     // resets de numeros de inputs:
     if (this.sprintNumber == 0) this.sprintNumber = this.ultimoSprint;
-    if (this.sprintNumberBW == 0) this.sprintNumberBW = 3;
+    if (this.sprintNumberBW == 0 && this.sprintNumber - 3 > 0) this.sprintNumberBW = 3;
+    if (this.deadlineSprint == 0) this.deadlineSprint = this.ultimoSprint + 5; // 5 por poner un numero
+
     // generar suma pbis:
     this.puntosTotales = 0;
     this.pbis.forEach((pbi: Pbi) => {
@@ -132,7 +141,7 @@ export class ForecastsComponent implements OnInit, OnDestroy {
 
     // generar lista sprints y estimaciones:
     for (var i = 0; i <= this.ultimoSprint; i++) {
-      this.sprints.push(new Sprint('Sprint ' + i.toString(), i, 0, 0, 0, ''));
+      this.sprints.push(new Sprint(i.toString(), i, 0, 0, 0, ''));
       if (i == 0) {
         this.sprints[i].restante = this.puntosTotales;
       } else {
@@ -188,7 +197,7 @@ export class ForecastsComponent implements OnInit, OnDestroy {
     this.listaAverage.push([puntoFinal, 0]);
   }
 
-  generarBestWorstAverage(numeroSprints: number) {
+  generarBestWorstAverage(numeroSprints: number, sprintNumberBW: number) {
     // if (this.ultimoSprint >= 3 && this.sprints.length >= 4) {
     //4 por el sprint 0->3+1
     this.listaAverageWorst = [];
@@ -199,9 +208,16 @@ export class ForecastsComponent implements OnInit, OnDestroy {
     // insertamos los puntos iniciales:
     this.listaAverageWorst.push(puntoInicial);
     this.listaAverageBest.push(puntoInicial);
-    // ordenar los sprints por quemado ascendente y descendente:
+    // escoger solo los N ultimos:
     var sprints1 = [...this.sprints];
     sprints1.splice(0, 1);
+    var num = this.ultimoSprint - numeroSprints;
+    sprints1 = sprints1.slice(num);
+    console.log(sprints1);
+    console.log(this.ultimoSprint);
+    console.log(num);
+    console.log(numeroSprints);
+    // ordenar los sprints por quemado ascendente y descendente:
     var orderedWorst = [
       ...sprints1.sort((p1, p2) => {
         return p1.quemado - p2.quemado;
@@ -221,12 +237,12 @@ export class ForecastsComponent implements OnInit, OnDestroy {
      var mediaBest = 0 */
     this.mediaAverageWorst = 0;
     this.mediaAverageBest = 0;
-    for (var x = 0; x < numeroSprints; x++) {
+    for (var x = 0; x < sprintNumberBW; x++) {
       this.mediaAverageWorst += orderedWorst[x].quemado;
       this.mediaAverageBest += orderedBest[x].quemado;
     }
-    this.mediaAverageWorst /= numeroSprints;
-    this.mediaAverageBest /= numeroSprints;
+    this.mediaAverageWorst /= sprintNumberBW;
+    this.mediaAverageBest /= sprintNumberBW;
 
     // generar los puntos finales:
     // calculamos los sprints enteros esperados:
@@ -244,17 +260,44 @@ export class ForecastsComponent implements OnInit, OnDestroy {
     //  }
   }
 
+  generarDeadline(deadlineSprint: number) {
+    this.listaDeadline = [];
+    this.listaDeadline.push([deadlineSprint, 0]);
+    this.listaDeadline.push([deadlineSprint, this.sprints[0].restante]);
+  }
+
+  generarPuntosCorte() {
+    this.puntoCorteBest = [];
+    this.puntoCorteWorst = [];
+    this.puntoCorteAverage = [];
+
+    if (this.listaAverage[this.listaAverage.length - 1][0] >= this.deadlineSprint) {
+      // y - y0 = m·(x-x0) --> y - this.sprints[this.ultimoSprint].restante = media*(deadline-this.ultimoSprint)
+      var corteAverage =
+        this.sprints[this.ultimoSprint].restante - this.mediaAverage * (this.deadlineSprint - this.ultimoSprint);
+      this.puntoCorteAverage.push([this.deadlineSprint, corteAverage]);
+    }
+    /* console.log(this.sprints[this.ultimoSprint - this.sprintNumber + 1]);
+    console.log(this.mediaAverage);
+    console.log(this.puntoCorteAverage); */
+    if (this.listaAverageWorst[this.listaAverageWorst.length - 1][0] >= this.deadlineSprint) {
+      var corteAverageWorst =
+        this.sprints[this.ultimoSprint].restante - this.mediaAverageWorst * (this.deadlineSprint - this.ultimoSprint);
+      this.puntoCorteWorst.push([this.deadlineSprint, corteAverageWorst]);
+    }
+    if (this.listaAverageBest[this.listaAverageBest.length - 1][0] >= this.deadlineSprint) {
+      var corteAverageBest =
+        this.sprints[this.ultimoSprint].restante - this.mediaAverageBest * (this.deadlineSprint - this.ultimoSprint);
+      this.puntoCorteBest.push([this.deadlineSprint, corteAverageBest]);
+    }
+  }
+
   generarGrafico() {
     this.chartOptions = {
       title: {
         text: 'Forecast by Velocity',
         style: {
           fontSize: '30px'
-        }
-      },
-      tooltip: {
-        formatter: function() {
-          return "<b style='font-size:12px'>Sprint " + this.x.toFixed(0) + '</b><br><b>Scope: ' + this.y + '</b>';
         }
       },
       xAxis: {
@@ -277,34 +320,146 @@ export class ForecastsComponent implements OnInit, OnDestroy {
           data: this.listaData,
           type: 'column',
           pointWidth: 30,
-          color: '#80bfff'
+          color: '#80bfff',
+          tooltip: {
+            pointFormatter: function() {
+              return "<b style='font-size:12px'>Sprint " + this.x.toFixed(0) + '</b><br><b>Scope: ' + this.y + '</b>';
+            }
+          }
         },
         {
           name: 'Scope Line',
           data: this.listaData,
           type: 'line',
-          color: '#4d4d4d'
+          color: '#4d4d4d',
+          tooltip: {
+            pointFormatter: function() {
+              return "<b style='font-size:12px'>Sprint " + this.x.toFixed(0) + '</b><br><b>Scope: ' + this.y + '</b>';
+            }
+          }
         },
         {
           name: 'Average Best',
           data: this.listaAverageBest,
           type: 'line',
           dashStyle: 'ShortDash',
-          color: '#00FF00'
+          color: '#00FF00',
+          tooltip: {
+            pointFormatter: function() {
+              return "<b style='font-size:12px'>Sprint " + this.x.toFixed(0) + '</b><br><b>Scope: ' + this.y + '</b>';
+            }
+          }
         },
         {
           name: 'Projected Average',
           data: this.listaAverage,
           type: 'line',
           dashStyle: 'Dash',
-          color: '#ffa500'
+          color: '#ffa500',
+          tooltip: {
+            pointFormatter: function() {
+              return "<b style='font-size:12px'>Sprint " + this.x.toFixed(0) + '</b><br><b>Scope: ' + this.y + '</b>';
+            }
+          }
         },
         {
           name: 'Average Worst',
           data: this.listaAverageWorst,
           type: 'line',
           dashStyle: 'LongDash',
-          color: '#FF0000'
+          color: '#FF0000',
+          tooltip: {
+            pointFormatter: function() {
+              return "<b style='font-size:12px'>Sprint " + this.x.toFixed(0) + '</b><br><b>Scope: ' + this.y + '</b>';
+            }
+          }
+        },
+        {
+          name: 'Deadline',
+          data: this.listaDeadline,
+          type: 'line',
+          color: '#b20000',
+          lineWidth: 3,
+          tooltip: {
+            pointFormatter: function() {
+              return '<b>Sprint Deadline: ' + this.x.toFixed(0) + '</b>';
+            }
+          }
+        },
+        {
+          name: 'Worst Cut-off point',
+          data: this.puntoCorteWorst,
+          type: 'line',
+          color: '#000000',
+          lineWidth: 0,
+          marker: {
+            enabled: true,
+            radius: 4
+          },
+          states: {
+            hover: {
+              lineWidthPlus: 0
+            }
+          },
+          tooltip: {
+            pointFormatter: function() {
+              return (
+                "<b style='font-size:12px'>Worst Average Cut-off point</b><br><b>Remaining Story Points: " +
+                this.y.toFixed(0) +
+                '</b>'
+              );
+            }
+          }
+        },
+        {
+          name: 'Average Cut-off point',
+          data: this.puntoCorteAverage,
+          type: 'line',
+          color: '#000000',
+          lineWidth: 0,
+          marker: {
+            enabled: true,
+            radius: 4
+          },
+          states: {
+            hover: {
+              lineWidthPlus: 0
+            }
+          },
+          tooltip: {
+            pointFormatter: function() {
+              return (
+                "<b style='font-size:12px'>Average Cut-off point</b><br><b>Remaining Story Points: " +
+                this.y.toFixed(0) +
+                '</b>'
+              );
+            }
+          }
+        },
+        {
+          name: 'Best Cut-off point',
+          data: this.puntoCorteBest,
+          type: 'line',
+          color: '#000000',
+          lineWidth: 0,
+          marker: {
+            enabled: true,
+            radius: 4
+          },
+          states: {
+            hover: {
+              lineWidthPlus: 0
+            }
+          },
+          tooltip: {
+            pointFormatter: function() {
+              return (
+                "<b style='font-size:12px'>Best Average Cut-off point</b><br><b>Remaining Story Points: " +
+                this.y.toFixed(0) +
+                '</b>'
+              );
+            }
+          }
         }
       ],
       credits: {
@@ -350,7 +505,10 @@ export class ForecastsComponent implements OnInit, OnDestroy {
   generarGraficoPoC() {
     this.chartOptionsPoC = {
       title: {
-        text: 'Percentage of Completion'
+        text: 'Percentage of Completion',
+        style: {
+          fontSize: '30px'
+        }
       },
       tooltip: {
         formatter: function() {

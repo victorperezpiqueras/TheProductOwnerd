@@ -14,18 +14,33 @@
         <mat-card fxFlex="20" style="background-color: rgb(239, 255, 253);">
           <mat-card-title>Forecast Options</mat-card-title>
           <hr />
-          <h1 class="mat-h3">Projected Average Velocity</h1>
+          <h1 class="mat-h3">General</h1>
           <mat-form-field class="number-form form" appearance="outline">
             <mat-label>Last N Sprints</mat-label>
-            <input matInput type="number" [(ngModel)]="sprintNumber" min="1" [max]="sprints.length - 1" />
+            <input
+              matInput
+              type="number"
+              [(ngModel)]="sprintNumber"
+              [min]="sprintNumberBW"
+              [max]="sprints.length - 1"
+            />
           </mat-form-field>
+          <mat-form-field class="number-form form" appearance="outline">
+            <mat-label>Deadline Sprint</mat-label>
+            <input matInput type="number" [(ngModel)]="deadlineSprint" [min]="sprints.length - 1" />
+          </mat-form-field>
+          <hr />
+          <!-- <h1 class="mat-h3"><b>Projected Average Velocity</b></h1> -->
+          <h1 class="mat-h3">Projected Average Velocity</h1>
           <h1 class="mat-h4">Velocity: {{ mediaAverage.toFixed(2) }}</h1>
 
           <hr />
+
+          <!-- <h1 class="mat-h3"><b>Average Worst and Best Velocities</b></h1> -->
           <h1 class="mat-h3">Average Worst and Best Velocities</h1>
           <mat-form-field class="number-form form" appearance="outline">
-            <mat-label>Last N Sprints</mat-label>
-            <input matInput type="number" [(ngModel)]="sprintNumberBW" min="1" [max]="sprints.length - 1" />
+            <mat-label>X Worst and Best Sprints</mat-label>
+            <input matInput type="number" [(ngModel)]="sprintNumberBW" min="1" [max]="sprintNumber" />
           </mat-form-field>
           <h1 class="mat-h4">Worst Velocity: {{ mediaAverageWorst.toFixed(2) }}</h1>
           <h1 class="mat-h4">Best Velocity: {{ mediaAverageBest.toFixed(2) }}</h1>
