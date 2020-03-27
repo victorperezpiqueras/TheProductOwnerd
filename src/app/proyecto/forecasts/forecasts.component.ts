@@ -322,8 +322,9 @@ export class ForecastsComponent implements OnInit, OnDestroy {
           pointWidth: 30,
           color: '#80bfff',
           tooltip: {
+            headerFormat: null,
             pointFormatter: function() {
-              return "<b style='font-size:12px'>Sprint " + this.x.toFixed(0) + '</b><br><b>Scope: ' + this.y + '</b>';
+              return '<b>Sprint ' + this.x.toFixed(0) + '</b><br>Scope: ' + this.y;
             }
           }
         },
@@ -333,8 +334,9 @@ export class ForecastsComponent implements OnInit, OnDestroy {
           type: 'line',
           color: '#4d4d4d',
           tooltip: {
+            headerFormat: null,
             pointFormatter: function() {
-              return "<b style='font-size:12px'>Sprint " + this.x.toFixed(0) + '</b><br><b>Scope: ' + this.y + '</b>';
+              return '<b>Sprint ' + this.x.toFixed(0) + '</b><br>Scope: ' + this.y;
             }
           }
         },
@@ -345,8 +347,9 @@ export class ForecastsComponent implements OnInit, OnDestroy {
           dashStyle: 'ShortDash',
           color: '#00FF00',
           tooltip: {
+            headerFormat: null,
             pointFormatter: function() {
-              return "<b style='font-size:12px'>Sprint " + this.x.toFixed(0) + '</b><br><b>Scope: ' + this.y + '</b>';
+              return '<b>Sprint ' + this.x.toFixed(0) + '</b><br>Scope: ' + this.y;
             }
           }
         },
@@ -357,8 +360,9 @@ export class ForecastsComponent implements OnInit, OnDestroy {
           dashStyle: 'Dash',
           color: '#ffa500',
           tooltip: {
+            headerFormat: null,
             pointFormatter: function() {
-              return "<b style='font-size:12px'>Sprint " + this.x.toFixed(0) + '</b><br><b>Scope: ' + this.y + '</b>';
+              return '<b>Sprint ' + this.x.toFixed(0) + '</b><br>Scope: ' + this.y;
             }
           }
         },
@@ -369,8 +373,9 @@ export class ForecastsComponent implements OnInit, OnDestroy {
           dashStyle: 'LongDash',
           color: '#FF0000',
           tooltip: {
+            headerFormat: null,
             pointFormatter: function() {
-              return "<b style='font-size:12px'>Sprint " + this.x.toFixed(0) + '</b><br><b>Scope: ' + this.y + '</b>';
+              return '<b>Sprint ' + this.x.toFixed(0) + '</b><br>Scope: ' + this.y;
             }
           }
         },
@@ -381,13 +386,14 @@ export class ForecastsComponent implements OnInit, OnDestroy {
           color: '#b20000',
           lineWidth: 3,
           tooltip: {
+            headerFormat: null,
             pointFormatter: function() {
-              return '<b>Sprint Deadline: ' + this.x.toFixed(0) + '</b>';
+              return '<b>Sprint Deadline: ' + this.x.toFixed(0);
             }
           }
         },
         {
-          name: 'Worst Cut-off point',
+          name: 'Worst Cut-off Point',
           data: this.puntoCorteWorst,
           type: 'line',
           color: '#000000',
@@ -402,17 +408,18 @@ export class ForecastsComponent implements OnInit, OnDestroy {
             }
           },
           tooltip: {
+            headerFormat: null,
             pointFormatter: function() {
-              return (
-                "<b style='font-size:12px'>Worst Average Cut-off point</b><br><b>Remaining Story Points: " +
-                this.y.toFixed(0) +
-                '</b>'
-              );
+              return '<b>Worst-Average Cut-off Point</b><br/>Remaining Story Points: ' + this.y.toFixed(0);
             }
           }
+          /* tooltip: {
+            headerFormat: '<b>Worst-Average Cut-off Point</b><br/>',
+            pointFormat: 'Remaining Story Points: {point.y}'
+          } */
         },
         {
-          name: 'Average Cut-off point',
+          name: 'Average Cut-off Point',
           data: this.puntoCorteAverage,
           type: 'line',
           color: '#000000',
@@ -427,17 +434,14 @@ export class ForecastsComponent implements OnInit, OnDestroy {
             }
           },
           tooltip: {
+            headerFormat: null,
             pointFormatter: function() {
-              return (
-                "<b style='font-size:12px'>Average Cut-off point</b><br><b>Remaining Story Points: " +
-                this.y.toFixed(0) +
-                '</b>'
-              );
+              return '<b>Average Cut-off Point</b><br/>Remaining Story Points: ' + this.y.toFixed(0);
             }
           }
         },
         {
-          name: 'Best Cut-off point',
+          name: 'Best Cut-off Point',
           data: this.puntoCorteBest,
           type: 'line',
           color: '#000000',
@@ -452,12 +456,9 @@ export class ForecastsComponent implements OnInit, OnDestroy {
             }
           },
           tooltip: {
+            headerFormat: null,
             pointFormatter: function() {
-              return (
-                "<b style='font-size:12px'>Best Average Cut-off point</b><br><b>Remaining Story Points: " +
-                this.y.toFixed(0) +
-                '</b>'
-              );
+              return '<b>Best-Average Cut-off Point</b><br/>Remaining Story Points: ' + this.y.toFixed(0);
             }
           }
         }
