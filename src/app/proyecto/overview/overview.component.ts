@@ -38,9 +38,20 @@ export class OverviewComponent implements OnInit, OnDestroy {
   /* datos ejes */
   listaData: any[] = [];
 
+  listaFeatures: any[] = [];
+  listaInfrastructures: any[] = [];
+  listaTechDebt: any[] = [];
+  listaBugs: any[] = [];
+
   sprints: Sprint[] = [];
 
   puntosTotales: number;
+
+  puntosTotalesFeature: number;
+  puntosTotalesTechDebt: number;
+  puntosTotalesInfrastructure: number;
+  puntosTotalesBug: number;
+
   ultimoSprint: number;
 
   constructor(
@@ -72,6 +83,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
           this.pbis = pbis;
           /* grafico PB */
           this.generarEjes();
+          this.generarEjesPorLabel();
           this.generarGrafico();
         });
       });
@@ -114,42 +126,171 @@ export class OverviewComponent implements OnInit, OnDestroy {
     }
   }
 
+  generarEjesPorLabel() {
+    this.listaFeatures = [];
+    this.listaTechDebt = [];
+    this.listaInfrastructures = [];
+    this.listaBugs = [];
+    /*     // obtener ultimo sprint:
+        this.ultimoSprint = 0;
+        this.pbis.forEach((pbi: Pbi) => {
+          if (pbi.sprint > this.ultimoSprint) this.ultimoSprint = pbi.sprint;
+        }); */
+    // generar suma pbis:
+    this.puntosTotalesFeature = 0;
+    this.puntosTotalesTechDebt = 0;
+    this.puntosTotalesInfrastructure = 0;
+    this.puntosTotalesBug = 0;
+
+    this.pbis.forEach((pbi: Pbi) => {
+      if (pbi.label == 'feature') this.puntosTotalesFeature += pbi.estimacion;
+      else if (pbi.label == 'tech-debt') this.puntosTotalesTechDebt += pbi.estimacion;
+      else if (pbi.label == 'infrastructure') this.puntosTotalesInfrastructure += pbi.estimacion;
+      else if (pbi.label == 'bug') this.puntosTotalesBug += pbi.estimacion;
+    });
+
+    // generar lista sprints y estimaciones:
+    for (var i = 0; i <= this.ultimoSprint; i++) {
+      this.listaFeatures.push(new Sprint('Sprint ' + i.toString(), i, 0, 0, 0, ''));
+      this.listaInfrastructures.push(new Sprint('Sprint ' + i.toString(), i, 0, 0, 0, ''));
+      this.listaTechDebt.push(new Sprint('Sprint ' + i.toString(), i, 0, 0, 0, ''));
+      this.listaBugs.push(new Sprint('Sprint ' + i.toString(), i, 0, 0, 0, ''));
+      if (i == 0) {
+        this.listaFeatures[i].restante = this.puntosTotalesFeature;
+        this.listaTechDebt[i].restante = this.puntosTotalesTechDebt;
+        this.listaInfrastructures[i].restante = this.puntosTotalesInfrastructure;
+        this.listaBugs[i].restante = this.puntosTotalesBug;
+      } else {
+        // sumar las estimaciones para cada sprint:
+        var sumpbisFeatures = 0;
+        var sumpbisTechDebt = 0;
+        var sumpbisInfrastructure = 0;
+        var sumpbisBug = 0;
+        this.pbis.forEach((pbi: Pbi) => {
+          if (pbi.sprint == i) {
+            if (pbi.label == 'feature') sumpbisFeatures += pbi.estimacion;
+            else if (pbi.label == 'tech-debt') sumpbisTechDebt += pbi.estimacion;
+            else if (pbi.label == 'infrastructure') sumpbisInfrastructure += pbi.estimacion;
+            else if (pbi.label == 'bug') sumpbisBug += pbi.estimacion;
+          }
+        });
+        // restar al total anterior las del sprint
+        this.listaFeatures[i].restante = this.listaFeatures[i - 1].restante - sumpbisFeatures;
+        //this.listaFeatures[i].quemado = sumpbisFeatures;
+        this.listaTechDebt[i].restante = this.listaTechDebt[i - 1].restante - sumpbisTechDebt;
+        this.listaInfrastructures[i].restante = this.listaInfrastructures[i - 1].restante - sumpbisInfrastructure;
+        this.listaBugs[i].restante = this.listaBugs[i - 1].restante - sumpbisBug;
+      }
+    }
+    //console.log(this.listaSprints);
+    for (var i = 0; i <= this.ultimoSprint; i++) {
+      this.listaFeatures[i] = [this.listaFeatures[i].sprint, this.listaFeatures[i].restante];
+      this.listaTechDebt[i] = [this.listaTechDebt[i].sprint, this.listaTechDebt[i].restante];
+      this.listaInfrastructures[i] = [this.listaInfrastructures[i].sprint, this.listaInfrastructures[i].restante];
+      this.listaBugs[i] = [this.listaBugs[i].sprint, this.listaBugs[i].restante];
+    }
+  }
+
   generarGrafico() {
     this.chartOptions = {
       title: {
         text: 'Project Burndown Chart'
       },
       tooltip: {
-        formatter: function() {
-          return "<b style='font-size:12px'>Sprint " + this.x.toFixed(0) + '</b><br><b>Scope: ' + this.y + '</b>';
-        }
+        headerFormat: '<b>Sprint {point.x}</b><br>'
       },
       xAxis: {
         title: {
-          text: 'Sprints'
+          text: 'Sprints',
+          style: {
+            fontSize: '16px'
+          }
         },
         tickInterval: 1
       },
-      yAxis: [
-        {
-          title: {
-            text: 'Story Points'
+      yAxis: {
+        title: {
+          text: 'Story Points',
+          style: {
+            fontSize: '16px'
+          }
+        },
+        stackLabels: {
+          enabled: true,
+          style: {
+            fontWeight: 'bold',
+            color:
+              // theme
+              (Highcharts.defaultOptions.title.style && Highcharts.defaultOptions.title.style.color) ||
+              'gray'
           }
         }
-      ],
+      },
+      plotOptions: {
+        column: {
+          stacking: 'normal',
+          dataLabels: {
+            enabled: true
+          }
+        }
+        /* series: {
+          marker: {
+            enabled: true
+          }
+        } */
+      },
       series: [
         {
-          name: 'Scope',
-          data: this.listaData,
+          name: 'Features',
+          data: this.listaFeatures,
           type: 'column',
           pointWidth: 30,
-          color: '#80bfff'
+          color: '#00ad17',
+          dataLabels: {
+            enabled: false
+          }
+        },
+        {
+          name: 'Tech-debt',
+          data: this.listaTechDebt,
+          type: 'column',
+          pointWidth: 30,
+          color: '#ffbb00',
+          dataLabels: {
+            enabled: false
+          }
+        },
+        {
+          name: 'Infrastructure',
+          data: this.listaInfrastructures,
+          type: 'column',
+          pointWidth: 30,
+          color: '#2196f3',
+          dataLabels: {
+            enabled: false
+          }
+        },
+        {
+          name: 'Bugs',
+          data: this.listaBugs,
+          type: 'column',
+          pointWidth: 30,
+          color: '#ad0000',
+          dataLabels: {
+            enabled: false
+          }
         },
         {
           name: 'Scope Line',
           data: this.listaData,
           type: 'line',
-          color: '#4d4d4d'
+          color: '#4d4d4d',
+          tooltip: {
+            headerFormat: null,
+            pointFormatter: function() {
+              return '<b>Sprint ' + this.x.toFixed(0) + '</b><br>Scope: ' + this.y;
+            }
+          }
         }
       ],
       credits: {
