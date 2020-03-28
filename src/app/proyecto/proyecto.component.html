@@ -7,7 +7,7 @@
     </mat-card>
 
     <mat-card fxFlex="80">
-      <mat-tab-group mat-align-tabs="center" [selectedIndex]="2" (selectedTabChange)="onTabChanged($event)">
+      <mat-tab-group mat-align-tabs="center" [selectedIndex]="0" (selectedTabChange)="onTabChanged($event)">
         <mat-tab label="Reports">
           <app-overview #overview [proyecto]="proyecto"></app-overview>
         </mat-tab>
