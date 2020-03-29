@@ -35,6 +35,7 @@ import { ArchivosService } from './services/archivos-service';
 import { CriteriosService } from './services/criterios-service';
 import { DependenciasService } from './services/dependencias-service';
 import { ConfirmDialogComponent } from './shared/confirmDialog/confirmDialog.component';
+import { CuentaModule } from './cuenta/cuenta.module';
 
 @NgModule({
   imports: [
@@ -58,6 +59,7 @@ import { ConfirmDialogComponent } from './shared/confirmDialog/confirmDialog.com
     LoginModule,
     ProyectosModule,
     ProyectoModule,
+    CuentaModule,
 
     AppRoutingModule // must be imported as the last module as it contains the fallback route
   ],

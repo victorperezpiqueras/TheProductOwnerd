@@ -33,9 +33,9 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.createForm();
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
-  ngOnDestroy() { }
+  ngOnDestroy() {}
 
   login() {
     this.isLoading = true;
@@ -44,7 +44,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     const password = this.loginForm.value.password;
 
     //console.log(nombre, password)
-    this.loginService.login({ nombre: nombre, password: password })
+    this.loginService
+      .login({ nick: nombre, password: password })
       .pipe(
         finalize(() => {
           this.loginForm.markAsPristine();
@@ -53,19 +54,20 @@ export class LoginComponent implements OnInit, OnDestroy {
         untilDestroyed(this)
       )
       .subscribe(
-        (data) => {
+        data => {
           console.log(data);
           const cred = {
-            username: data[0].nombre,
+            username: data[0].nick,
             id: data[0].idusuario
           };
           this.credentialsService.setCredentials(cred, true);
           this.router.navigate([this.route.snapshot.queryParams.redirect || '/'], { replaceUrl: true });
         },
         error => {
-          console.log(error)
+          console.log(error);
           this.error = error.error.error;
-        });
+        }
+      );
 
     /*  const login$ = this.loginService.login({ nombre: nombre, password: password })
        .pipe(
@@ -88,7 +90,6 @@ export class LoginComponent implements OnInit, OnDestroy {
            }
          }
        ); */
-
 
     /*   this.isLoading = true;
       const login$ = this.authenticationService.login(this.loginForm.value);

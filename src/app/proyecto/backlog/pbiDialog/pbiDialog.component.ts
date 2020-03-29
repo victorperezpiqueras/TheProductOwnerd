@@ -376,7 +376,7 @@ export class PbiDialogComponent implements OnInit {
       case 'bug':
         this.labelColor = '#ad0000';
         break;
-      case 'infrastructre':
+      case 'infrastructure':
         this.labelColor = '#2196f3';
         break;
       case 'tech-debt':

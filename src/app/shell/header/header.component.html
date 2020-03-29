@@ -52,6 +52,8 @@
       </mat-list-item>
       <mat-divider></mat-divider>
     </mat-list>
+    <button mat-menu-item [routerLink]="['/cuenta', idusuario]" routerLinkActive="active">Account</button>
+    <mat-divider></mat-divider>
     <button mat-menu-item (click)="logout()" translate>Logout</button>
   </mat-menu>
 </mat-toolbar>

@@ -10,7 +10,7 @@ const routes: Routes = [
     {
       path: 'proyectos',
       component: ProyectosComponent,
-      data: { title: extract('Proyectos') }
+      data: { title: extract('Projects') }
     } /* ,
     { path: 'proyectos/:id', component: ProyectosComponent, data: { title: extract('Proyectossssssssssss') } } */
   ])

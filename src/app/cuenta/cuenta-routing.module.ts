@@ -3,10 +3,10 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { extract } from '@app/core';
 import { Shell } from '@app/shell/shell.service';
-import { ProyectoComponent } from './proyecto.component';
+import { CuentaComponent } from './cuenta.component';
 
 const routes: Routes = [
-  Shell.childRoutes([{ path: 'proyectos/:id', component: ProyectoComponent, data: { title: extract('Projects') } }])
+  Shell.childRoutes([{ path: 'cuenta/:id', component: CuentaComponent, data: { title: extract('Account') } }])
 ];
 
 @NgModule({
@@ -14,4 +14,4 @@ const routes: Routes = [
   exports: [RouterModule],
   providers: []
 })
-export class ProyectoRoutingModule {}
+export class CuentaRoutingModule {}

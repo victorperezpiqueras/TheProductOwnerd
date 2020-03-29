@@ -76,7 +76,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
         this.proyectosService.getProyectoUsuariosRoles(proyecto.idproyecto).subscribe(usuarios => {
           this.proyecto.usuarios = usuarios;
           this.isLoading = false;
-          //console.log(proyecto);
+          console.log(proyecto);
         });
 
         this.proyectosService.getProyectosPBIs(proyecto.idproyecto).subscribe((pbis: []) => {
@@ -194,7 +194,10 @@ export class OverviewComponent implements OnInit, OnDestroy {
   generarGrafico() {
     this.chartOptions = {
       title: {
-        text: 'Project Burndown Chart'
+        text: 'Project Burndown Chart',
+        style: {
+          fontSize: '30px'
+        }
       },
       tooltip: {
         headerFormat: '<b>Sprint {point.x}</b><br>'
@@ -221,8 +224,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
             fontWeight: 'bold',
             color:
               // theme
-              (Highcharts.defaultOptions.title.style && Highcharts.defaultOptions.title.style.color) ||
-              'gray'
+              (Highcharts.defaultOptions.title.style && Highcharts.defaultOptions.title.style.color) || 'gray'
           }
         }
       },
