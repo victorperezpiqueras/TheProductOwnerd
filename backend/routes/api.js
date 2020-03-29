@@ -22,6 +22,30 @@ router.get('/usuarios', function(req, res, next) {
     });
 });
 
+router.get('/usuarios/:id', function(req, res, next) {
+  console.log('getUsuario');
+  controllerUsuarios
+    .getUsuario(req.params.id)
+    .then(function(usuario) {
+      res.json(usuario);
+    })
+    .catch(function(err) {
+      res.status(500).json(err);
+    });
+});
+
+router.put('/usuarios/:id/actualizar', function(req, res, next) {
+  console.log('actualizarUsuario');
+  controllerUsuarios
+    .actualizarUsuario(req.body)
+    .then(function(usuario) {
+      res.json(usuario);
+    })
+    .catch(function(err) {
+      res.status(500).json(err);
+    });
+});
+
 router.get('/usuarios/:id/proyectos', function(req, res, next) {
   console.log('getUsuariosProyectos');
   controllerUsuarios

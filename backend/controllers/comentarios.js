@@ -17,7 +17,7 @@ ControllerComentarios.crearComentario = function(comentario) {
 };
 ControllerComentarios.obtenerComentariosPbi = function(idpbi) {
   return new Promise(function(resolve, reject) {
-    var sql = 'select c.*, u.nombre from comentarios c, usuarios u  where c.idpbi=? and c.idusuario=u.idusuario';
+    var sql = 'select c.*, u.nick from comentarios c, usuarios u  where c.idpbi=? and c.idusuario=u.idusuario';
     var array = [idpbi];
     connection.query(sql, array, function(err, result) {
       if (err) {

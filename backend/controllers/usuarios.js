@@ -22,6 +22,57 @@ ControllerUsuarios.getUsuarios = function() {
     });
   });
 };
+ControllerUsuarios.getUsuario = function(id) {
+  return new Promise(function(resolve, reject) {
+    var sql = 'select * from usuarios where idusuario=?';
+    connection.query(sql, [id], function(err, result) {
+      if (err) {
+        /* connection.end(function(err) {
+          console.log('Error DB');
+        }); */
+        reject({ error: 'Error inesperado' });
+      } else {
+        console.log(result);
+        /* connection.end(function(err) {
+          console.log('Close the database connection.');
+        }); */
+        resolve(result[0]);
+      }
+    });
+  });
+};
+ControllerUsuarios.actualizarUsuario = function(usuario) {
+  return new Promise(function(resolve, reject) {
+    if (usuario.password != '') {
+      var sql = 'update usuarios set nick=?,nombre=?,apellido1=?,apellido2=?,password=?,email=? where idusuario=?';
+      var values = [
+        usuario.nick,
+        usuario.nombre,
+        usuario.apellido1,
+        usuario.apellido2,
+        bcrypt.hashSync(usuario.password),
+        usuario.email,
+        usuario.idusuario
+      ];
+    } else {
+      var sql = 'update usuarios set nick=?,nombre=?,apellido1=?,apellido2=?,email=? where idusuario=?';
+      var values = [
+        usuario.nick,
+        usuario.nombre,
+        usuario.apellido1,
+        usuario.apellido2,
+        usuario.email,
+        usuario.idusuario
+      ];
+    }
+
+    connection.query(sql, values, function(err, result) {
+      if (err) throw err;
+      console.log(result);
+      resolve(result);
+    });
+  });
+};
 ControllerUsuarios.getUsuariosProyectos = function(id) {
   return new Promise(function(resolve, reject) {
     var sql =
@@ -76,9 +127,16 @@ ControllerUsuarios.registroUsuario = function(usuario) {
       } else {
         console.log(result);
         if (result.length <= 0) {
-          var sql = 'insert into usuarios(nombre,password,email) values ?';
-          var values = [[usuario.nombre, bcrypt.hashSync(usuario.password), usuario.email]];
-          connection.query(sql, [values], function(err, result) {
+          var sql = 'insert into usuarios(nick,nombre,apellido1,apellido2,password,email) values ?';
+          var values = [
+            usuario.nick,
+            usuario.nombre,
+            usuario.apellido1,
+            usuario.apellido2,
+            bcrypt.hashSync(usuario.password),
+            usuario.email
+          ];
+          connection.query(sql, values, function(err, result) {
             if (err) throw err;
             console.log(result);
             /* connection.end(function(err) {
@@ -98,8 +156,8 @@ ControllerUsuarios.registroUsuario = function(usuario) {
 };
 ControllerUsuarios.loginUsuario = function(usuario) {
   return new Promise(function(resolve, reject) {
-    var sql = 'select * from usuarios where nombre = ? ';
-    connection.query(sql, [usuario.nombre], function(err, result) {
+    var sql = 'select * from usuarios where nick = ? ';
+    connection.query(sql, [usuario.nick], function(err, result) {
       console.log(result);
       if (err) {
         /* connection.end(function(err) {

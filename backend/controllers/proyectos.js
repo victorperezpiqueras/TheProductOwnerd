@@ -57,7 +57,7 @@ ControllerProyectos.getProyectosUsuarios = function(id) {
 ControllerProyectos.getProyectoUsuariosRoles = function(id) {
   return new Promise(function(resolve, reject) {
     var sql =
-      'select u.idusuario, u.nombre, u.email, r.nombre as rol from usuarios u,' +
+      'select u.idusuario, u.nick, u.email, r.nombre as rol from usuarios u,' +
       'proyectos p, roles r where u.idusuario = r.idusuario and p.idproyecto = r.idproyecto and p.idproyecto = ?';
     connection.query(sql, [id], function(err, result) {
       if (err) {
@@ -78,7 +78,7 @@ ControllerProyectos.getProyectoUsuariosRoles = function(id) {
 ControllerProyectos.getProyectosUsuariosRoles = function() {
   return new Promise(function(resolve, reject) {
     var sql =
-      'select u.idusuario, u.nombre, u.email, r.nombre as rol, p.idproyecto from usuarios u, proyectos p, roles r where u.idusuario = r.idusuario and p.idproyecto = r.idproyecto';
+      'select u.idusuario, u.nick, u.email, r.nombre as rol, p.idproyecto from usuarios u, proyectos p, roles r where u.idusuario = r.idusuario and p.idproyecto = r.idproyecto';
     connection.query(sql, function(err, result) {
       if (err) {
         /* connection.end(function(err) {

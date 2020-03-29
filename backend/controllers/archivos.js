@@ -32,7 +32,7 @@ ControllerArchivos.borrarArchivo = function(id) {
 ControllerArchivos.obtenerArchivosPbi = function(idpbi) {
   return new Promise(function(resolve, reject) {
     var sql =
-      'select a.*, u.nombre as nombreUsuario from archivos a, usuarios u  where a.idpbi=? and a.idusuario=u.idusuario';
+      'select a.*, u.nick as nombreUsuario from archivos a, usuarios u  where a.idpbi=? and a.idusuario=u.idusuario';
     var array = [idpbi];
     connection.query(sql, array, function(err, result) {
       if (err) {

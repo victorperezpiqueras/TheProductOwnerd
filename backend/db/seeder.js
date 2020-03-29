@@ -4,7 +4,8 @@ connection.connect(function(err) {
   if (err) throw err;
   console.log('Conectado a MYSQL');
   connection.query(
-    'CREATE TABLE usuarios (idusuario INT AUTO_INCREMENT PRIMARY KEY,nombre VARCHAR(255) NOT NULL UNIQUE, password VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL )',
+    'CREATE TABLE usuarios (idusuario INT AUTO_INCREMENT PRIMARY KEY,nombre VARCHAR(255) NOT NULL UNIQUE, password VARCHAR(255) NOT NULL,' +
+      ' email VARCHAR(255) NOT NULL, nick VARCHAR(255) NOT NULL,apellido1 VARCHAR(255) NOT NULL, apellido2 VARCHAR(255) NOT NULL )',
     function(err, result) {
       if (err) throw err;
       console.log('Tabla USUARIOS creada');
