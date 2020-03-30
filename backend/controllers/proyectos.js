@@ -1,5 +1,38 @@
 var ControllerProyectos = {};
 var connection = require('../db/connection');
+/* configurar mailer */
+var nodemailer = require('nodemailer');
+async function enviarInvitacion(email, idproyecto) {
+  let transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: process.env.MAIL_USER,
+      pass: process.env.MAIL_PASSWORD
+    },
+    tls: {
+      rejectUnauthorized: false
+    }
+  });
+
+  var mailOptions = {
+    from: process.env.MAIL_USER,
+    to: email,
+    subject: 'Invitation to a project at The-Product-Ownerd website',
+    html:
+      '<p>Click the following link to create your account:</p><br><a href="' +
+      process.env.MAIL_INVITE_LINK +
+      idproyecto +
+      '">Create Account</a>'
+  };
+
+  transporter.sendMail(mailOptions, function(error, info) {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log('Email sent from ' + mailOptions.from + ' to: ' + mailOptions.to + ' Info: ' + info.response);
+    }
+  });
+}
 
 ControllerProyectos.getProyectos = function() {
   return new Promise(function(resolve, reject) {
@@ -250,6 +283,33 @@ ControllerProyectos.proyectoAgregarUsuario = function(id, data) {
             });
           }
         });
+      }
+    });
+  });
+};
+
+ControllerProyectos.proyectoInvitarUsuario = function(idproyecto, data) {
+  return new Promise(function(resolve, reject) {
+    var sql = 'select * from usuarios where email=?';
+    arr = [data.email];
+    connection.query(sql, arr, function(err, result) {
+      if (err) {
+        reject({ error: 'Error al buscar el email' });
+      } else {
+        console.log(result);
+        if (result.length > 0) {
+          /* existe el usuario --> agregar al proyecto */
+          var inviData = { rol: 'desarrollador', idusuario: result[0].idusuario };
+          ControllerProyectos.proyectoAgregarUsuario(idproyecto, inviData).then(res => {
+            resolve(res);
+          });
+        } else {
+          /* no existe el usuario --> crear usuario y entonces invitarlo */
+
+          enviarInvitacion(data.email, idproyecto);
+        }
+        console.log(result);
+        resolve(result);
       }
     });
   });

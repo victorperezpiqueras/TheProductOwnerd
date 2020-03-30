@@ -201,6 +201,18 @@ router.post('/proyectos/:id/agregarUsuario', function(req, res, next) {
     });
 });
 
+router.post('/proyectos/:id/invitar', function(req, res, next) {
+  console.log('proyectoInvitarUsuario');
+  controllerProyectos
+    .proyectoInvitarUsuario(req.params.id, req.body)
+    .then(function(proyecto) {
+      res.json(proyecto);
+    })
+    .catch(function(err) {
+      res.status(500).json(err);
+    });
+});
+
 /* PBIS */
 router.post('/pbis', function(req, res, next) {
   console.log('crearPbi');
