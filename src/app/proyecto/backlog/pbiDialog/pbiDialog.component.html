@@ -194,7 +194,7 @@
           <mat-card class="comments-card">
             <mat-card-title>Acceptance Criteria</mat-card-title>
           </mat-card>
-
+          <br />
           <mat-list role="list" *ngFor="let crit of criterios">
             <mat-list-item role="listitem">
               <mat-checkbox class="checkbox" [(ngModel)]="crit.done" (change)="actualizarCriterio(crit)"></mat-checkbox>

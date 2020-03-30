@@ -1,6 +1,7 @@
 <div fxFill fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1.5rem" class="mat-typography">
   <div>
-    <h1 fxLayoutAlign="center" translate>The Product Ownerd</h1>
+    <img class="logo" src="../../assets/po-icon.png" />
+    <h1 class="title" fxLayoutAlign="center" translate>The Product Ownerd</h1>
     <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="2rem">
       <h4 class="version">v{{ version }}</h4>
       <div class="language-selector">
@@ -17,6 +18,7 @@
   </div>
   <div class="login-container" fxLayout="row" fxLayoutAlign="center">
     <mat-card fxFlex="90%" fxFlex.sm="66%" fxFlex.md="50%" fxFlex.gt-md="33%" class="login-box">
+      <h1 class="mat-typography" style="text-align: center;">Login</h1>
       <form (ngSubmit)="login()" [formGroup]="loginForm" novalidate>
         <div class="login-error" [hidden]="!error || isLoading" translate>
           {{ error }}
@@ -29,11 +31,11 @@
               matInput
               formControlName="username"
               autocomplete="username"
-              [placeholder]="'Usuario' | translate"
+              [placeholder]="'Username' | translate"
               required
             />
             <mat-error *ngIf="loginForm.controls.username.invalid && loginForm.controls.username.touched">
-              <span translate>Se requiere un nombre de usuario</span>
+              <span translate>Username required</span>
             </mat-error>
           </mat-form-field>
           <mat-form-field [hideRequiredMarker]="true">
@@ -42,18 +44,27 @@
               matInput
               formControlName="password"
               autocomplete="current-password"
-              [placeholder]="'Contraseña' | translate"
+              [placeholder]="'Password' | translate"
               required
             />
             <mat-error *ngIf="loginForm.controls.password.invalid && loginForm.controls.password.touched">
-              <span translate>Se requiere una contraseña</span>
+              <span translate>Password required</span>
             </mat-error>
           </mat-form-field>
-          <mat-slide-toggle color="primary" formControlName="remember" translate>Recordarme</mat-slide-toggle>
+          <mat-slide-toggle color="primary" formControlName="remember" translate>Remember me</mat-slide-toggle>
           <br />
           <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid || isLoading">
             <app-loader class="inline-loader" [isLoading]="isLoading"></app-loader>
-            <span translate>Iniciar sesión</span>
+            <span translate>Login</span>
+          </button>
+          <br />
+          <button
+            mat-button
+            translate
+            [routerLink]="['/registro']"
+            style="align-self: flex-start; color: rgba(62, 113, 255, 0.822);"
+          >
+            &nbsp;&nbsp;Create an account
           </button>
         </div>
       </form>

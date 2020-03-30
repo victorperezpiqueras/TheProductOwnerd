@@ -12,6 +12,8 @@ import { MatDialogConfig, MatDialogRef, MatDialog } from '@angular/material/dial
 import * as Highcharts from 'highcharts';
 import { Pbi } from '@app/models/pbis';
 import { Sprint } from '@app/models/sprints';
+import { Permisos } from '@app/models/permisos';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-overview',
@@ -20,6 +22,7 @@ import { Sprint } from '@app/models/sprints';
 })
 export class OverviewComponent implements OnInit, OnDestroy {
   @Input() proyecto: any;
+  @Input() permisos: Permisos;
 
   Highcharts: typeof Highcharts = Highcharts;
   chartOptions: Highcharts.Options;
@@ -54,11 +57,15 @@ export class OverviewComponent implements OnInit, OnDestroy {
 
   ultimoSprint: number;
 
+  /* invite */
+  newEmail: string;
+
   constructor(
     private credentialsService: CredentialsService,
     private proyectosService: ProyectosService,
     public dialog: MatDialog,
-    private activeRoute: ActivatedRoute
+    private activeRoute: ActivatedRoute,
+    private _snackBar: MatSnackBar
   ) {}
 
   ngOnInit() {
@@ -300,6 +307,25 @@ export class OverviewComponent implements OnInit, OnDestroy {
       }
     };
     //console.log(this.chartOptions);
+  }
+
+  invitar() {
+    this.isLoading = true;
+    this.proyectosService.invitarUsuario(this.proyecto.idproyecto, { email: this.newEmail }).subscribe((data: any) => {
+      console.log(data);
+      this.newEmail = '';
+      if (data.existe) {
+        this._snackBar.open('Member successfully added!', 'Close', { duration: 3000 });
+        this.actualizar();
+      } else {
+        this._snackBar.open(
+          'This email does not have an account linked. An invitation has been sent instead!',
+          'Close',
+          { duration: 5000 }
+        );
+        this.isLoading = false;
+      }
+    });
   }
 
   ngOnDestroy() {}

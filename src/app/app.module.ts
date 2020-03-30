@@ -36,6 +36,8 @@ import { CriteriosService } from './services/criterios-service';
 import { DependenciasService } from './services/dependencias-service';
 import { ConfirmDialogComponent } from './shared/confirmDialog/confirmDialog.component';
 import { CuentaModule } from './cuenta/cuenta.module';
+import { RegistroModule } from './registro/registro.module';
+import { RegistroService } from './services/registro-service';
 
 @NgModule({
   imports: [
@@ -57,6 +59,7 @@ import { CuentaModule } from './cuenta/cuenta.module';
 
     HomeModule,
     LoginModule,
+    RegistroModule,
     ProyectosModule,
     ProyectoModule,
     CuentaModule,
@@ -78,7 +81,8 @@ import { CuentaModule } from './cuenta/cuenta.module';
     PbisService,
     ArchivosService,
     CriteriosService,
-    DependenciasService
+    DependenciasService,
+    RegistroService
   ],
   entryComponents: [ProyectoDialogComponent, FavoritosDialogComponent, PbiDialogComponent, ConfirmDialogComponent],
   bootstrap: [AppComponent]

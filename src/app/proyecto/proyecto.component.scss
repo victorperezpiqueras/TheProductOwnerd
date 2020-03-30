@@ -7,6 +7,11 @@ h1 {
   padding: 1rem;
   /* overflow-y: hidden; */
 }
+
+.main-card {
+  overflow-x: hidden;
+}
+
 .loader {
   position: relative;
   margin-left: 50%;

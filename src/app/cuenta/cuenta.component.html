@@ -45,7 +45,7 @@
     <form [formGroup]="myForm" fxLayout="row" fxLayoutGap="2%">
       <mat-form-field class="title form" appearance="outline">
         <mat-label>Password</mat-label>
-        <input matInput type="password" placeholder="Password" minlength="8" formControlName="password" />
+        <input matInput type="password" placeholder="New Password" minlength="8" formControlName="password" />
         <mat-error *ngIf="errorLength('password')">
           The password must be of minimum length 8 characters
         </mat-error>
@@ -59,7 +59,13 @@
 
       <mat-form-field class="title form" appearance="outline">
         <mat-label>Repeat Password</mat-label>
-        <input matInput type="password" placeholder="Repeat Password" minlength="8" formControlName="confirmPassword" />
+        <input
+          matInput
+          type="password"
+          placeholder="Repeat New Password"
+          minlength="8"
+          formControlName="confirmPassword"
+        />
         <mat-error *ngIf="errorLength('confirmPassword')">
           The password must be of minimum length 8 characters
         </mat-error>

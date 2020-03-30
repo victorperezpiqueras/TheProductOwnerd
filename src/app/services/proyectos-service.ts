@@ -36,4 +36,8 @@ export class ProyectosService {
   getProyectosPBIs(idproyecto: any): Observable<any> {
     return this.http.get<any>(this.url + '/' + idproyecto + '/pbis', httpOptions);
   }
+
+  invitarUsuario(idproyecto: number, email: any): Observable<any> {
+    return this.http.post<any>(this.url + '/' + idproyecto + '/invitar', JSON.stringify(email), httpOptions);
+  }
 }
