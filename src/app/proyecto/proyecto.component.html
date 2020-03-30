@@ -16,7 +16,7 @@
           <app-backlog #backlog [proyecto]="proyecto" [permisos]="permisos"></app-backlog>
         </mat-tab>
 
-        <mat-tab label="Forecasts" [disabled]="permisos.proyecciones">
+        <mat-tab label="Forecasts" [disabled]="permisos.proyecciones != 1">
           <app-forecasts #forecasts [proyecto]="proyecto" [permisos]="permisos"></app-forecasts>
         </mat-tab>
       </mat-tab-group>
