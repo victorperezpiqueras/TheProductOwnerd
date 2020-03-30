@@ -83,6 +83,18 @@ router.post('/usuarios/registro', function(req, res, next) {
     });
 });
 
+router.post('/usuarios/registro/invitar', function(req, res, next) {
+  console.log('registroInvitar');
+  controllerUsuarios
+    .registroUsuarioInvitar(req.body)
+    .then(function(usuario) {
+      res.json(usuario);
+    })
+    .catch(function(err) {
+      res.status(500).json(err);
+    });
+});
+
 router.post('/usuarios/login', function(req, res, next) {
   console.log('login');
   console.log(req.body);

@@ -2,6 +2,7 @@ var ControllerUsuarios = {};
 var connection = require('../db/connection');
 var bcrypt = require('bcryptjs');
 var mysql = require('mysql');
+var controllerProyectos = require('../controllers/proyectos');
 
 ControllerUsuarios.getUsuarios = function() {
   return new Promise(function(resolve, reject) {
@@ -117,8 +118,8 @@ ControllerUsuarios.getUsuariosProyectosPermisos = function(id, idp) {
 };
 ControllerUsuarios.registroUsuario = function(usuario) {
   return new Promise(function(resolve, reject) {
-    var sql = 'select * from usuarios where nombre = ?';
-    connection.query(sql, [usuario.nombre], function(err, result) {
+    var sql = 'select * from usuarios where email = ?';
+    connection.query(sql, [usuario.email], function(err, result) {
       if (err) {
         /* connection.end(function(err) {
           console.log('Error DB');
@@ -127,7 +128,7 @@ ControllerUsuarios.registroUsuario = function(usuario) {
       } else {
         console.log(result);
         if (result.length <= 0) {
-          var sql = 'insert into usuarios(nick,nombre,apellido1,apellido2,password,email) values ?';
+          var sql = 'insert into usuarios(nick,nombre,apellido1,apellido2,password,email) values (?,?,?,?,?,?)';
           var values = [
             usuario.nick,
             usuario.nombre,
@@ -154,6 +155,36 @@ ControllerUsuarios.registroUsuario = function(usuario) {
     });
   });
 };
+
+ControllerUsuarios.registroUsuarioInvitar = function(data) {
+  console.log('registroUsuarioInvitar', data);
+  return new Promise(function(resolve, reject) {
+    ControllerUsuarios.registroUsuario(data)
+      .then(usuario => {
+        /* obtener el id del usuario */
+        var sql = 'select * from usuarios where email = ? and nick = ?';
+        connection.query(sql, [data.email, data.nick], function(err, result) {
+          if (err) {
+            reject({ error: 'Error' });
+          } else {
+            if (result[0]) {
+              const dataProy = { rol: 'desarrollador', idusuario: result[0].idusuario };
+              console.log(dataProy);
+              return controllerProyectos.proyectoAgregarUsuario(data.idproyecto, dataProy);
+            }
+          }
+        });
+      })
+      .then(data => {
+        console.log(data);
+        resolve(data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  });
+};
+
 ControllerUsuarios.loginUsuario = function(usuario) {
   return new Promise(function(resolve, reject) {
     var sql = 'select * from usuarios where nick = ? ';

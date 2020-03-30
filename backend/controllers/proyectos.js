@@ -154,8 +154,13 @@ ControllerProyectos.crearProyecto = function(data) {
             console.log('idproyecto', result);
             var idProyecto = result[0].idproyecto;
 
-            var sql = 'insert into roles(nombre,idusuario,idproyecto) values(?, ?, ?)';
-            connection.query(sql, ['productOwner', data.idusuario, idProyecto], function(err, result) {
+            var sql =
+              'insert into roles(nombre,idusuario,idproyecto, ordenar, editarPBI,estimarTam,estimarValor, mantenerUsuarios, archivarProyecto, setDone, proyecciones)' +
+              ' values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+            connection.query(sql, ['productOwner', data.idusuario, idProyecto, 1, 1, 0, 1, 1, 1, 1, 1], function(
+              err,
+              result
+            ) {
               if (err) {
                 /* connection.end(function(err) {
                   console.log('Error DB');
@@ -164,55 +169,44 @@ ControllerProyectos.crearProyecto = function(data) {
                 //throw err;
               } else {
                 console.log('insertado rol');
-
-                var sql =
-                  'select r.idrol from roles r, proyectos p, usuarios u where u.idusuario = ? and u.idusuario = r.idusuario and p.idproyecto = r.idproyecto and p.nombre = ?';
-                connection.query(sql, [data.idusuario, data.nombre], function(err, result) {
-                  if (err) {
-                    /* connection.end(function(err) {
-                      console.log('Error DB');
-                    }); */
-                    reject('Error al buscar el rol');
-                    //throw err;
-                  } else {
-                    console.log(result);
-                    var idRol = result[0].idrol;
-                    var sql =
-                      'insert into rolespermisos(idrol,permiso) values(?, ?),(?, ?),(?, ?),(?, ?),(?, ?),(?, ?)';
-                    connection.query(
-                      sql,
-                      [
-                        idRol,
-                        'ordenar',
-                        idRol,
-                        'editarPBI',
-                        idRol,
-                        'mantenerUsuarios',
-                        idRol,
-                        'archivarProyecto',
-                        idRol,
-                        'setDone',
-                        idRol,
-                        'proyecciones'
-                      ],
-                      function(err, result) {
-                        if (err) {
-                          /* connection.end(function(err) {
-                            console.log('Error DB');
-                          }); */
-                          reject('Error al insertar los permisos');
-                          //throw err;
-                        } else {
-                          console.log('insertado rolespermisos');
-                          /*  connection.end(function(err) {
-                            console.log('Close the database connection.');
-                          }); */
-                          resolve(result);
-                        }
-                      }
-                    );
-                  }
-                });
+                resolve(result);
+                /*   var sql =
+                     'select r.idrol from roles r, proyectos p, usuarios u where u.idusuario = ? and u.idusuario = r.idusuario and p.idproyecto = r.idproyecto and p.nombre = ?';
+                   connection.query(sql, [data.idusuario, data.nombre], function(err, result) {
+                     if (err) {
+                       reject('Error al buscar el rol');
+                     } else {
+                       console.log(result);
+                       var idRol = result[0].idrol;
+                       var sql =
+                         'insert into rolespermisos(idrol,permiso) values(?, ?),(?, ?),(?, ?),(?, ?),(?, ?),(?, ?)';
+                       connection.query(
+                         sql,
+                         [
+                           idRol,
+                           'ordenar',
+                           idRol,
+                           'editarPBI',
+                           idRol,
+                           'mantenerUsuarios',
+                           idRol,
+                           'archivarProyecto',
+                           idRol,
+                           'setDone',
+                           idRol,
+                           'proyecciones'
+                         ],
+                         function(err, result) {
+                           if (err) {
+                             reject('Error al insertar los permisos');
+                           } else {
+                             console.log('insertado rolespermisos');
+                             resolve(result);
+                           }
+                         }
+                       );
+                     }
+                   }); */
               }
             });
           }
@@ -222,67 +216,24 @@ ControllerProyectos.crearProyecto = function(data) {
   });
 };
 
-ControllerProyectos.proyectoAgregarUsuario = function(id, data) {
+ControllerProyectos.proyectoAgregarUsuario = function(idProyecto, data) {
   return new Promise(function(resolve, reject) {
-    var sql = 'insert into roles(nombre,idusuario,idproyecto) values(?, ?, ?)';
-    connection.query(sql, [data.rol, data.idusuario, id], function(err, result) {
+    var sql =
+      'insert into roles(nombre,idusuario,idproyecto, ordenar, editarPBI,estimarTam,estimarValor, mantenerUsuarios, archivarProyecto, setDone, proyecciones)' +
+      ' values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    if (data.rol == 'productOwner') {
+      var list = ['productOwner', data.idusuario, idProyecto, 1, 1, 0, 1, 1, 1, 1, 1];
+    } else if (data.rol == 'desarrollador') {
+      var list = ['desarrollador', data.idusuario, idProyecto, 0, 1, 1, 0, 0, 0, 1, 0];
+    } else {
+      var list = ['stakeholder', data.idusuario, idProyecto, 0, 0, 0, 0, 0, 0, 0, 0];
+    }
+    connection.query(sql, list, function(err, result) {
       if (err) {
-        /* connection.end(function(err) {
-          console.log('Error DB');
-        }); */
         reject({ error: 'Error inesperado' });
       } else {
-        var sql =
-          'select r.idrol from roles r, proyectos p, usuarios u where u.idusuario = ? and u.idusuario = r.idusuario and p.idproyecto = r.idproyecto and p.idproyecto = ?';
-        connection.query(sql, [data.idusuario, id], function(err, result) {
-          if (err) {
-            /* connection.end(function(err) {
-              console.log('Error DB');
-            }); */
-            reject({ error: 'Error inesperado' });
-          } else {
-            console.log(result);
-            var idRol = result[0].idrol;
-
-            if (data.rol == 'desarrollador') {
-              var sql = 'insert into rolespermisos(idrol,permiso) values(?, ?),(?, ?),(?, ?)';
-              var list = [idRol, 'editarPBI', idRol, 'estimarTamaño', idRol, 'setDone'];
-            } else if (data.rol == 'productOwner') {
-              var sql = 'insert into rolespermisos(idrol,permiso) values(?, ?),(?, ?),(?, ?),(?, ?),(?, ?),(?, ?)';
-              var list = [
-                idRol,
-                'ordenar',
-                idRol,
-                'editarPBI',
-                idRol,
-                'mantenerUsuarios',
-                idRol,
-                'archivarProyecto',
-                idRol,
-                'setDone',
-                idRol,
-                'proyecciones'
-              ];
-            } else {
-              var sql = 'insert into rolespermisos(idrol,permiso) values(?, ?)';
-              var list = [idRol, 'proyecciones'];
-            }
-            connection.query(sql, list, function(err, result) {
-              if (err) {
-                /* connection.end(function(err) {
-                  console.log('Error DB');
-                }); */
-                reject({ error: 'Error inesperado' });
-              } else {
-                console.log('insertado rolespermisos');
-                /* connection.end(function(err) {
-                  console.log('Close the database connection.');
-                }); */
-                resolve(result);
-              }
-            });
-          }
-        });
+        console.log('insertado rol');
+        resolve(result);
       }
     });
   });
@@ -300,16 +251,14 @@ ControllerProyectos.proyectoInvitarUsuario = function(idproyecto, data) {
         if (result.length > 0) {
           /* existe el usuario --> agregar al proyecto */
           var inviData = { rol: 'desarrollador', idusuario: result[0].idusuario };
-          ControllerProyectos.proyectoAgregarUsuario(idproyecto, inviData).then(res => {
-            resolve(res);
+          ControllerProyectos.proyectoAgregarUsuario(idproyecto, inviData).then(data => {
+            resolve({ existe: true });
           });
         } else {
           /* no existe el usuario --> crear usuario y entonces invitarlo */
-
           enviarInvitacion(data.email, idproyecto);
+          resolve({ existe: false });
         }
-        console.log(result);
-        resolve(result);
       }
     });
   });
