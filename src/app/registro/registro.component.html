@@ -17,96 +17,104 @@
   </div>
   <div class="login-container" fxLayout="row" fxLayoutAlign="center">
     <mat-card fxFlex="90%" fxFlex.sm="66%" fxFlex.md="50%" fxFlex.gt-md="33%" class="login-box">
-      <h1 class="mat-typography" style="text-align: center;">Create an account</h1>
+      <h1 class="mat-typography" style="text-align: center;" *ngIf="!showErrorInvitacion && !showMsgInvitacion">
+        Create an account
+      </h1>
+      <h1 class="mat-typography" style="text-align: center;" *ngIf="!showErrorInvitacion && showMsgInvitacion">
+        Create your account to join the project!
+      </h1>
+      <h1 class="mat-typography" style="text-align: center;" *ngIf="showErrorInvitacion">Invitation expired</h1>
       <form (ngSubmit)="register()" [formGroup]="registerForm" novalidate>
         <div class="login-error" [hidden]="!error || isLoading" translate>
           {{ error }}
         </div>
         <br />
         <div class="login-fields" fxLayout="column">
-          <mat-form-field [hideRequiredMarker]="true">
-            <input
-              type="text"
-              matInput
-              formControlName="username"
-              autocomplete="username"
-              [placeholder]="'Username' | translate"
-              required
-            />
-            <mat-error *ngIf="registerForm.controls.username.invalid && registerForm.controls.username.touched">
-              <span translate>Username required</span>
-            </mat-error>
-          </mat-form-field>
-          <mat-form-field [hideRequiredMarker]="true">
-            <input
-              type="text"
-              matInput
-              formControlName="name"
-              autocomplete="name"
-              [placeholder]="'Name' | translate"
-              required
-            />
-            <mat-error *ngIf="registerForm.controls.name.invalid && registerForm.controls.name.touched">
-              <span translate>Name required</span>
-            </mat-error>
-          </mat-form-field>
-          <mat-form-field [hideRequiredMarker]="true">
-            <input
-              type="text"
-              matInput
-              formControlName="surname1"
-              autocomplete="surname1"
-              [placeholder]="'First Surname' | translate"
-              required
-            />
-            <mat-error *ngIf="registerForm.controls.surname1.invalid && registerForm.controls.surname1.touched">
-              <span translate>First surname required</span>
-            </mat-error>
-          </mat-form-field>
-          <mat-form-field [hideRequiredMarker]="true">
-            <input
-              type="text"
-              matInput
-              formControlName="surname2"
-              autocomplete="surname2"
-              [placeholder]="'Second Surname' | translate"
-              required
-            />
-            <mat-error *ngIf="registerForm.controls.surname2.invalid && registerForm.controls.surname2.touched">
-              <span translate>Second surname required</span>
-            </mat-error>
-          </mat-form-field>
-          <mat-form-field [hideRequiredMarker]="true">
-            <input
-              type="text"
-              matInput
-              formControlName="email"
-              autocomplete="email"
-              [placeholder]="'Email' | translate"
-              required
-            />
-            <mat-error *ngIf="registerForm.controls.email.invalid && registerForm.controls.email.touched">
-              <span translate>Email required</span>
-            </mat-error>
-          </mat-form-field>
-          <mat-form-field [hideRequiredMarker]="true">
-            <input
-              type="password"
-              matInput
-              formControlName="password"
-              autocomplete="current-password"
-              [placeholder]="'Password' | translate"
-              required
-            />
-            <mat-error *ngIf="registerForm.controls.password.invalid && registerForm.controls.password.touched">
-              <span translate>Password required</span>
-            </mat-error>
-          </mat-form-field>
-          <br />
-          <button mat-raised-button color="primary" type="submit" [disabled]="registerForm.invalid || isLoading">
-            <app-loader class="inline-loader" [isLoading]="isLoading"></app-loader>
-            <span translate>Register</span>
-          </button>
+          <div *ngIf="!showErrorInvitacion">
+            <mat-form-field [hideRequiredMarker]="true">
+              <input
+                type="text"
+                matInput
+                formControlName="username"
+                autocomplete="username"
+                [placeholder]="'Username' | translate"
+                required
+              />
+              <mat-error *ngIf="registerForm.controls.username.invalid && registerForm.controls.username.touched">
+                <span translate>Username required</span>
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field [hideRequiredMarker]="true">
+              <input
+                type="text"
+                matInput
+                formControlName="name"
+                autocomplete="name"
+                [placeholder]="'Name' | translate"
+                required
+              />
+              <mat-error *ngIf="registerForm.controls.name.invalid && registerForm.controls.name.touched">
+                <span translate>Name required</span>
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field [hideRequiredMarker]="true">
+              <input
+                type="text"
+                matInput
+                formControlName="surname1"
+                autocomplete="surname1"
+                [placeholder]="'First Surname' | translate"
+                required
+              />
+              <mat-error *ngIf="registerForm.controls.surname1.invalid && registerForm.controls.surname1.touched">
+                <span translate>First surname required</span>
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field [hideRequiredMarker]="true">
+              <input
+                type="text"
+                matInput
+                formControlName="surname2"
+                autocomplete="surname2"
+                [placeholder]="'Second Surname' | translate"
+                required
+              />
+              <mat-error *ngIf="registerForm.controls.surname2.invalid && registerForm.controls.surname2.touched">
+                <span translate>Second surname required</span>
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field [hideRequiredMarker]="true">
+              <input
+                type="text"
+                matInput
+                formControlName="email"
+                autocomplete="email"
+                [placeholder]="'Email' | translate"
+                required
+              />
+              <mat-error *ngIf="registerForm.controls.email.invalid && registerForm.controls.email.touched">
+                <span translate>Email required</span>
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field [hideRequiredMarker]="true">
+              <input
+                type="password"
+                matInput
+                formControlName="password"
+                autocomplete="current-password"
+                [placeholder]="'Password' | translate"
+                required
+              />
+              <mat-error *ngIf="registerForm.controls.password.invalid && registerForm.controls.password.touched">
+                <span translate>Password required</span>
+              </mat-error>
+            </mat-form-field>
+            <br />
+            <button mat-raised-button color="primary" type="submit" [disabled]="registerForm.invalid || isLoading">
+              <app-loader class="inline-loader" [isLoading]="isLoading"></app-loader>
+              <span translate>Register</span>
+            </button>
+          </div>
           <br />
           <button
             mat-button

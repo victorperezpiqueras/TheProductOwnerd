@@ -36,6 +36,11 @@ export class CuentaComponent implements OnInit, OnDestroy {
   ) {
     this.myForm = this.formBuilder.group(
       {
+        nick: ['', [Validators.required]],
+        email: ['', [Validators.required]],
+        nombre: ['', [Validators.required]],
+        apellido1: ['', [Validators.required]],
+        apellido2: ['', [Validators.required]],
         password: ['', [Validators.required]],
         confirmPassword: ['', [Validators.required]]
       },
@@ -46,14 +51,22 @@ export class CuentaComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.isLoading = true;
     this.activeRoute.params.subscribe(routeParams => {
-      this.usuariosService.getUsuario(routeParams.id).subscribe(usuario => {
+      /* this.usuariosService.getUsuario(routeParams.id).subscribe(usuario => { */
+      this.usuariosService.getUsuario(this.idusuario).subscribe(usuario => {
         this.usuario = usuario;
         /*         this.repeatPassword = this.usuario.password; */
         /* this.myForm.get('password').setValue(this.usuario.password);
         this.myForm.get('confirmPassword').setValue(this.usuario.password); */
-        console.log(usuario);
+        this.myForm.controls['nick'].setValue(usuario.nick);
+        this.myForm.controls['email'].setValue(usuario.email);
+        this.myForm.controls['nombre'].setValue(usuario.nombre);
+        this.myForm.controls['apellido1'].setValue(usuario.apellido1);
+        this.myForm.controls['apellido2'].setValue(usuario.apellido2);
+
+        /*  this.myForm.controls['email'].disable();
+         */
+        /*  console.log(usuario); */
         this.isLoading = false;
-        console.log(this.myForm.get('confirmPassword').value);
       });
     });
   }
@@ -81,6 +94,18 @@ export class CuentaComponent implements OnInit, OnDestroy {
     }
   }
 
+  checkFieldsOk() {
+    if (
+      this.errorLength('nick', 1) ||
+      this.errorLength('email', 1) ||
+      this.errorLength('nombre', 1) ||
+      this.errorLength('apellido1', 1) ||
+      this.errorLength('apellido2', 1)
+    )
+      return false;
+    else return true;
+  }
+
   checkPasswordOk() {
     if (
       this.myForm.get('password').value &&
@@ -94,8 +119,9 @@ export class CuentaComponent implements OnInit, OnDestroy {
     else return false;
   }
 
-  errorLength(st: string) {
-    if (this.myForm.get(st).value.length < 8 || this.myForm.get(st).value === null) return true;
+  errorLength(st: string, min: number) {
+    if (this.myForm.get(st).value.length < min || this.myForm.get(st).value === null) return true;
+    else return false;
   }
 
   errorSame() {

@@ -5,6 +5,7 @@
     <div fxLayout="row" fxLayoutGap="2%" fxFlex="40">
       <mat-card fxFlex="80">
         <highcharts-chart
+          *ngIf="chartOptions"
           [Highcharts]="Highcharts"
           [options]="chartOptions"
           style="width: 100%; height: 600px; display: block;"
@@ -32,15 +33,26 @@
           </table>
         </mat-card>
 
-        <mat-card fxFlex="20" fxLayout="column" *ngIf="permisos && permisos.mantenerUsuarios == 1">
-          <h1 class="mat-h2" fxFlex="20">Add New Member</h1>
-          <div fxLayout="row" fxLayoutGap="20px" fxFlex="80">
-            <mat-form-field appearance="outline" fxFlex="60">
+        <mat-card fxFlex="35" fxLayout="column" *ngIf="permisos && permisos.mantenerUsuarios == 1">
+          <h1 class="mat-h2" fxFlex="20">Invite New Member</h1>
+          <div fxLayout="row" fxLayoutGap="20px" fxFlex="40">
+            <mat-form-field appearance="outline" fxFlex="100">
               <mat-label>Introduce an email</mat-label>
               <input matInput class="form" placeholder="Introduce an email" [(ngModel)]="newEmail" />
             </mat-form-field>
-
+          </div>
+          <br />
+          <div fxLayout="row" fxLayoutGap="20px" fxFlex="60">
+            <mat-form-field fxFlex="60" appearance="outline">
+              <mat-label>Role</mat-label>
+              <mat-select [(value)]="selectedRol">
+                <mat-option *ngFor="let rol of roles" [value]="rol.value">
+                  {{ rol.viewValue }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
             <button
+              fxFlex="40"
               class="button-invite"
               mat-raised-button
               (click)="invitar()"

@@ -38,6 +38,7 @@ import { ConfirmDialogComponent } from './shared/confirmDialog/confirmDialog.com
 import { CuentaModule } from './cuenta/cuenta.module';
 import { RegistroModule } from './registro/registro.module';
 import { RegistroService } from './services/registro-service';
+import { InvitacionesService } from './services/invitaciones-service';
 
 @NgModule({
   imports: [
@@ -82,7 +83,8 @@ import { RegistroService } from './services/registro-service';
     ArchivosService,
     CriteriosService,
     DependenciasService,
-    RegistroService
+    RegistroService,
+    InvitacionesService
   ],
   entryComponents: [ProyectoDialogComponent, FavoritosDialogComponent, PbiDialogComponent, ConfirmDialogComponent],
   bootstrap: [AppComponent]

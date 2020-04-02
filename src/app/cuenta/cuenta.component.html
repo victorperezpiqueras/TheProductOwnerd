@@ -1,4 +1,4 @@
-<div class="container" fxLayout="column" fxLayoutGap="2%">
+<form [formGroup]="myForm" class="container" fxLayout="column" fxLayoutGap="2%">
   <app-loader class="loader" [isLoading]="isLoading"></app-loader>
 
   <mat-card class="account-card" fxFlex="20">
@@ -11,11 +11,22 @@
     <div fxLayout="row" fxLayoutGap="2%">
       <mat-form-field class="title form" appearance="outline">
         <mat-label>Nick</mat-label>
-        <input matInput placeholder="Nick" [(ngModel)]="usuario.nick" maxlength="20" />
+        <input matInput placeholder="Nick" maxlength="20" formControlName="nick" /><!-- [(ngModel)]="usuario.nick" -->
+        <mat-error *ngIf="errorLength('nick', 1)">
+          Nick cannot be empty
+        </mat-error>
       </mat-form-field>
       <mat-form-field class="title form" appearance="outline">
         <mat-label>Email</mat-label>
-        <input matInput placeholder="Email" [(ngModel)]="usuario.email" />
+        <input
+          matInput
+          placeholder="Email"
+          formControlName="email"
+          [readonly]="true"
+        /><!-- [(ngModel)]="usuario.email"  -->
+        <mat-error *ngIf="errorLength('email', 1)">
+          Email cannot be empty
+        </mat-error>
       </mat-form-field>
     </div>
     <hr />
@@ -25,28 +36,52 @@
     <div fxLayout="row" fxLayoutGap="2%">
       <mat-form-field class="title form" appearance="outline">
         <mat-label>Name</mat-label>
-        <input matInput placeholder="Name" [(ngModel)]="usuario.nombre" maxlength="20" />
+        <input
+          matInput
+          placeholder="Name"
+          maxlength="20"
+          formControlName="nombre"
+        /><!-- [(ngModel)]="usuario.nombre"  -->
+        <mat-error *ngIf="errorLength('nombre', 1)">
+          Name cannot be empty
+        </mat-error>
       </mat-form-field>
     </div>
     <div fxLayout="row" fxLayoutGap="2%">
       <mat-form-field class="title form" appearance="outline">
         <mat-label>First Surname</mat-label>
-        <input matInput placeholder="Surname" [(ngModel)]="usuario.apellido1" maxlength="30" />
+        <input
+          matInput
+          placeholder="First Surname"
+          maxlength="30"
+          formControlName="apellido1"
+        /><!-- [(ngModel)]="usuario.apellido1"  -->
+        <mat-error *ngIf="errorLength('apellido1', 1)">
+          First Surname cannot be empty
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field class="title form" appearance="outline">
         <mat-label>Second Surname</mat-label>
-        <input matInput placeholder="Surname" [(ngModel)]="usuario.apellido2" maxlength="30" />
+        <input
+          matInput
+          placeholder="Second Surname"
+          maxlength="30"
+          formControlName="apellido2"
+        /><!-- [(ngModel)]="usuario.apellido2"  -->
+        <mat-error *ngIf="errorLength('apellido2', 1)">
+          Second Surname cannot be empty
+        </mat-error>
       </mat-form-field>
     </div>
     <hr />
     <br />
     <h1 class="mat-h2">Change Password</h1>
-    <form [formGroup]="myForm" fxLayout="row" fxLayoutGap="2%">
+    <div fxLayout="row" fxLayoutGap="2%">
       <mat-form-field class="title form" appearance="outline">
         <mat-label>Password</mat-label>
         <input matInput type="password" placeholder="New Password" minlength="8" formControlName="password" />
-        <mat-error *ngIf="errorLength('password')">
+        <mat-error *ngIf="errorLength('password', 8)">
           The password must be of minimum length 8 characters
         </mat-error>
         <!-- <mat-error *ngIf="myForm.hasError('notSame')">
@@ -66,7 +101,7 @@
           minlength="8"
           formControlName="confirmPassword"
         />
-        <mat-error *ngIf="errorLength('confirmPassword')">
+        <mat-error *ngIf="errorLength('confirmPassword', 8)">
           The password must be of minimum length 8 characters
         </mat-error>
         <!-- <mat-error *ngIf="myForm.hasError('notSame')">
@@ -79,7 +114,7 @@
       <mat-error *ngIf="errorSame()">
         Passwords do not match
       </mat-error>
-    </form>
+    </div>
 
     <br />
     <button
@@ -87,9 +122,9 @@
       (click)="actualizarUsuario()"
       color="primary"
       style="float: right; width: 10vmin;height:6vmin; margin-right: 20px;margin-bottom: 20px;font-size: 2vmin;"
-      [disabled]="!checkPasswordOk()"
+      [disabled]="!checkPasswordOk() || !checkFieldsOk()"
     >
       Save
     </button>
   </mat-card>
-</div>
+</form>

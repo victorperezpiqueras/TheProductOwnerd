@@ -15,6 +15,11 @@ import { Sprint } from '@app/models/sprints';
 import { Permisos } from '@app/models/permisos';
 import { MatSnackBar } from '@angular/material';
 
+interface Rol {
+  value: string;
+  viewValue: string;
+}
+
 @Component({
   selector: 'app-overview',
   templateUrl: './overview.component.html',
@@ -26,6 +31,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
 
   Highcharts: typeof Highcharts = Highcharts;
   chartOptions: Highcharts.Options;
+  updateFlag: boolean = true;
   /* --------------DIALOG ELEMENTS AND VARIABLES-------------- */
   dialogRef: MatDialogRef<any>;
 
@@ -59,6 +65,12 @@ export class OverviewComponent implements OnInit, OnDestroy {
 
   /* invite */
   newEmail: string;
+  roles: Rol[] = [
+    { value: 'desarrollador', viewValue: 'Developer' },
+    { value: 'productOwner', viewValue: 'Product Owner' },
+    { value: 'stakeholder', viewValue: 'Stakeholder' }
+  ];
+  selectedRol = this.roles[0].value;
 
   constructor(
     private credentialsService: CredentialsService,
@@ -311,21 +323,23 @@ export class OverviewComponent implements OnInit, OnDestroy {
 
   invitar() {
     this.isLoading = true;
-    this.proyectosService.invitarUsuario(this.proyecto.idproyecto, { email: this.newEmail }).subscribe((data: any) => {
-      console.log(data);
-      this.newEmail = '';
-      if (data.existe) {
-        this._snackBar.open('Member successfully added!', 'Close', { duration: 3000 });
-        this.actualizar();
-      } else {
-        this._snackBar.open(
-          'This email does not have an account linked. An invitation has been sent instead!',
-          'Close',
-          { duration: 5000 }
-        );
-        this.isLoading = false;
-      }
-    });
+    this.proyectosService
+      .invitarUsuario(this.proyecto.idproyecto, { email: this.newEmail, rol: this.selectedRol })
+      .subscribe((data: any) => {
+        console.log(data);
+        this.newEmail = '';
+        if (data.existe) {
+          this._snackBar.open('Member successfully added!', 'Close', { duration: 3000 });
+          this.actualizar();
+        } else {
+          this._snackBar.open(
+            'This email does not have an account linked. An invitation has been sent instead!',
+            'Close',
+            { duration: 5000 }
+          );
+          this.isLoading = false;
+        }
+      });
   }
 
   ngOnDestroy() {}

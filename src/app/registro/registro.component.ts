@@ -9,6 +9,7 @@ import { Observable, forkJoin } from 'rxjs';
 import { MatDialogConfig, MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { RegistroService } from '@app/services/registro-service';
 import { environment } from '@env/environment';
+import { InvitacionesService } from '@app/services/invitaciones-service';
 
 const log = new Logger('Register');
 
@@ -23,7 +24,9 @@ export class RegistroComponent implements OnInit, OnDestroy {
   error: string | undefined;
   isLoading = false;
 
-  invitacionProyecto: number = null;
+  invitacionProyecto: string = null;
+  showErrorInvitacion: boolean = false;
+  showMsgInvitacion: boolean = false;
 
   constructor(
     private router: Router,
@@ -32,7 +35,8 @@ export class RegistroComponent implements OnInit, OnDestroy {
     private credentialsService: CredentialsService,
     public dialog: MatDialog,
     private activeRoute: ActivatedRoute,
-    private registroService: RegistroService
+    private registroService: RegistroService,
+    private invitacionesService: InvitacionesService
   ) {
     this.createForm();
   }
@@ -43,6 +47,10 @@ export class RegistroComponent implements OnInit, OnDestroy {
       /* comprobar codigo invitacion */
       if (routeParams.id) {
         this.invitacionProyecto = routeParams.id;
+        this.showMsgInvitacion = true;
+        this.invitacionesService.obtenerInvitacion(this.invitacionProyecto).subscribe((res: any) => {
+          if (res == null) this.showErrorInvitacion = true;
+        });
       }
       console.log(this.invitacionProyecto);
       this.isLoading = false;
@@ -89,7 +97,7 @@ export class RegistroComponent implements OnInit, OnDestroy {
     } else {
       this.registroService
         .registrarPorInvitacion({
-          idproyecto: this.invitacionProyecto,
+          token: this.invitacionProyecto,
           nick: nick,
           nombre: name,
           apellido1: surname1,
