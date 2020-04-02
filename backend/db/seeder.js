@@ -56,8 +56,17 @@ connection.connect(function(err) {
                                     function(err, result) {
                                       if (err) throw err;
                                       console.log('Tabla Dependencias creada');
-                                      connection.end();
-                                      console.log('Desconectado de MYSQL');
+                                      connection.query(
+                                        'create table invitaciones (' +
+                                          'token text not null, idproyecto int not null, email VARCHAR(255) NOT NULL,rol VARCHAR(255) NOT NULL,' +
+                                          'foreign key(idproyecto) references proyectos(idproyecto) on delete cascade, primary key (idproyecto,email))',
+                                        function(err, result) {
+                                          if (err) throw err;
+                                          console.log('Tabla Invitaciones creada');
+                                          connection.end();
+                                          console.log('Desconectado de MYSQL');
+                                        }
+                                      );
                                     }
                                   );
                                 }

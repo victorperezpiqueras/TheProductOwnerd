@@ -2,7 +2,11 @@ var ControllerUsuarios = {};
 var connection = require('../db/connection');
 var bcrypt = require('bcryptjs');
 var mysql = require('mysql');
+const jwt = require('jsonwebtoken');
+const jwtKey = require('../config/config');
+
 var controllerProyectos = require('../controllers/proyectos');
+var controllerInvitaciones = require('../controllers/invitaciones');
 
 ControllerUsuarios.getUsuarios = function() {
   return new Promise(function(resolve, reject) {
@@ -159,28 +163,46 @@ ControllerUsuarios.registroUsuario = function(usuario) {
 ControllerUsuarios.registroUsuarioInvitar = function(data) {
   console.log('registroUsuarioInvitar', data);
   return new Promise(function(resolve, reject) {
+    var idproyecto, rol, email;
     ControllerUsuarios.registroUsuario(data)
       .then(usuario => {
-        /* obtener el id del usuario */
-        var sql = 'select * from usuarios where email = ? and nick = ?';
-        connection.query(sql, [data.email, data.nick], function(err, result) {
-          if (err) {
-            reject({ error: 'Error' });
-          } else {
-            if (result[0]) {
-              const dataProy = { rol: 'desarrollador', idusuario: result[0].idusuario };
+        /*  var sql = 'select * from usuarios where email = ? and nick = ?';
+         connection.query(sql, [data.email, data.nick], function (err, result) {
+           if (err) { reject({ error: 'error in select' }); }
+           if (result[0]) { */
+        jwt.verify(data.token, jwtKey, function(err, decoded) {
+          if (err) reject({ error: 'authentication failed' });
+          controllerInvitaciones.obtenerInvitacion(data.token).then(result => {
+            if (result != null) {
+              idproyecto = decoded.idproyecto;
+              rol = decoded.rol;
+              email = decoded.email;
+              const dataProy = { rol: rol, idusuario: usuario.insertId };
               console.log(dataProy);
-              return controllerProyectos.proyectoAgregarUsuario(data.idproyecto, dataProy);
-            }
-          }
+              controllerProyectos
+                .proyectoAgregarUsuario(idproyecto, dataProy)
+                .then(data => {
+                  return controllerInvitaciones.borrarInvitacion({ idproyecto: idproyecto, email: email });
+                })
+                .then(data => {
+                  console.log(data);
+                  resolve(data);
+                })
+                .catch(err => {
+                  console.log(err);
+                  reject(err);
+                });
+            } else reject({ error: 'invitation_expired' });
+          });
         });
-      })
-      .then(data => {
-        console.log(data);
-        resolve(data);
+
+        /*   }
+          reject({ error: "user not found" })
+        }); */
       })
       .catch(err => {
         console.log(err);
+        reject(err);
       });
   });
 };

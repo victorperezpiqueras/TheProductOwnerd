@@ -1,8 +1,12 @@
 var ControllerProyectos = {};
 var connection = require('../db/connection');
+const jwt = require('jsonwebtoken');
+const jwtKey = require('../config/config');
+var controllerInvitaciones = require('../controllers/invitaciones');
+
 /* configurar mailer */
 var nodemailer = require('nodemailer');
-async function enviarInvitacion(email, idproyecto) {
+async function enviarInvitacion(email, tokenUrl) {
   let transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -21,7 +25,7 @@ async function enviarInvitacion(email, idproyecto) {
     html:
       '<p>Click the following link to create your account:</p><br><a href="' +
       process.env.MAIL_INVITE_LINK +
-      idproyecto +
+      tokenUrl +
       '">Create Account</a>'
   };
 
@@ -250,14 +254,23 @@ ControllerProyectos.proyectoInvitarUsuario = function(idproyecto, data) {
         console.log(result);
         if (result.length > 0) {
           /* existe el usuario --> agregar al proyecto */
-          var inviData = { rol: 'desarrollador', idusuario: result[0].idusuario };
+          /* var inviData = { rol: 'desarrollador', idusuario: result[0].idusuario }; */
+          var inviData = { rol: data.rol, idusuario: result[0].idusuario };
           ControllerProyectos.proyectoAgregarUsuario(idproyecto, inviData).then(data => {
             resolve({ existe: true });
           });
         } else {
-          /* no existe el usuario --> crear usuario y entonces invitarlo */
-          enviarInvitacion(data.email, idproyecto);
-          resolve({ existe: false });
+          /* no existe el usuario --> crear invitacion */
+          var tokenUrl = jwt.sign({ idproyecto: idproyecto, email: data.email, rol: data.rol }, jwtKey);
+          console.log(tokenUrl);
+          controllerInvitaciones
+            .crearInvitacion({ token: tokenUrl, rol: data.rol, idproyecto: idproyecto, email: data.email })
+            .then(res => {
+              console.log(res);
+              enviarInvitacion(data.email, tokenUrl);
+              resolve({ existe: false });
+            })
+            .catch(err => console.log(err));
         }
       }
     });

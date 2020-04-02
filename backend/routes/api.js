@@ -10,7 +10,39 @@ var controllerCriterios = require('../controllers/criterios');
 var controllerDependencias = require('../controllers/dependencias');
 
 /* USUARIOS */
-router.get('/usuarios', function(req, res, next) {
+var apiUsuarios = require('./usuarios');
+router.use('/usuarios', apiUsuarios);
+
+/* PROYECTOS */
+var apiProyectos = require('./proyectos');
+router.use('/proyectos', apiProyectos);
+
+/* PBIS */
+var apiPbis = require('./pbis');
+router.use('/pbis', apiPbis);
+
+/* COMENTARIOS */
+var apiComentarios = require('./comentarios');
+router.use('/comentarios', apiComentarios);
+
+/* ARCHIVOS */
+var apiArchivos = require('./archivos');
+router.use('/archivos', apiArchivos);
+
+/* CRITERIOS */
+var apiCriterios = require('./criterios');
+router.use('/criterios', apiCriterios);
+
+/* DEPENDENCIAS */
+var apiDependencias = require('./dependencias');
+router.use('/dependencias', apiDependencias);
+
+/* INVITACIONES */
+var apiInvitaciones = require('./invitaciones');
+router.use('/invitaciones', apiInvitaciones);
+
+/* USUARIOS */
+/* router.get('/usuarios', function(req, res, next) {
   console.log('getUsuarios');
   controllerUsuarios
     .getUsuarios()
@@ -106,10 +138,10 @@ router.post('/usuarios/login', function(req, res, next) {
     .catch(function(err) {
       res.status(500).json(err);
     });
-});
+}); */
 
 /* PROYECTOS */
-router.get('/proyectos', function(req, res, next) {
+/* router.get('/proyectos', function(req, res, next) {
   console.log('getProyectos');
   controllerProyectos
     .getProyectos()
@@ -179,11 +211,7 @@ router.get('/proyectos/usuarios/roles', function(req, res, next) {
       res.status(500).json(err);
     });
 });
-/*  body: 
-    nombre, 
-    descripcion, 
-    idusuario
- */
+
 router.post('/proyectos', function(req, res, next) {
   console.log('crearProyecto');
   controllerProyectos
@@ -196,11 +224,6 @@ router.post('/proyectos', function(req, res, next) {
     });
 });
 
-/* :id=idproyecto 
-    body: 
-    rol="desarrollador || productOwner || stakeholder"
-    idusuario = idusuario a agregar
- */
 router.post('/proyectos/:id/agregarUsuario', function(req, res, next) {
   console.log('proyectoAgregarUsuario');
   controllerProyectos
@@ -223,10 +246,10 @@ router.post('/proyectos/:id/invitar', function(req, res, next) {
     .catch(function(err) {
       res.status(500).json(err);
     });
-});
+}); */
 
 /* PBIS */
-router.post('/pbis', function(req, res, next) {
+/* router.post('/pbis', function(req, res, next) {
   console.log('crearPbi');
   controllerPbis
     .crearPbi(req.body)
@@ -308,10 +331,10 @@ router.get('/pbis/:id/dependencias', function(req, res, next) {
     .catch(function(err) {
       res.status(500).json(err);
     });
-});
+}); */
 
 /* COMENTARIOS */
-router.post('/comentarios', function(req, res, next) {
+/* router.post('/comentarios', function(req, res, next) {
   console.log('crearComentario');
   controllerComentarios
     .crearComentario(req.body)
@@ -321,10 +344,10 @@ router.post('/comentarios', function(req, res, next) {
     .catch(function(err) {
       res.status(500).json(err);
     });
-});
+}); */
 
 /* ARCHIVOS */
-router.post('/archivos', function(req, res, next) {
+/* router.post('/archivos', function(req, res, next) {
   console.log('crearArchivo');
   controllerArchivos
     .crearArchivo(req.body)
@@ -345,10 +368,10 @@ router.delete('/archivos/:id', function(req, res, next) {
     .catch(function(err) {
       res.status(500).json(err);
     });
-});
+}); */
 
 /* CRITERIOS */
-router.post('/criterios', function(req, res, next) {
+/* router.post('/criterios', function(req, res, next) {
   console.log('crearCriterio');
   controllerCriterios
     .crearCriterio(req.body)
@@ -380,10 +403,10 @@ router.delete('/criterios/:id', function(req, res, next) {
     .catch(function(err) {
       res.status(500).json(err);
     });
-});
+}); */
 
 /* DEPENDENCIAS */
-router.post('/dependencias', function(req, res, next) {
+/* router.post('/dependencias', function(req, res, next) {
   console.log('crearDependencia');
   controllerDependencias
     .crearDependencia(req.body)
@@ -404,6 +427,6 @@ router.delete('/dependencias/:id/:id2', function(req, res, next) {
     .catch(function(err) {
       res.status(500).json(err);
     });
-});
+}); */
 
 module.exports = router;
