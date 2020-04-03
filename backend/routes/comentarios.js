@@ -1,9 +1,10 @@
 var express = require('express');
 var router = express.Router();
 var controllerComentarios = require('../controllers/comentarios');
+var verifyToken = require('../controllers/middleware');
 
 /* COMENTARIOS */
-router.post('/', function(req, res, next) {
+router.post('/', verifyToken, function(req, res, next) {
   console.log('crearComentario');
   controllerComentarios
     .crearComentario(req.body)

@@ -1,9 +1,10 @@
 var express = require('express');
 var router = express.Router();
 var controllerUsuarios = require('../controllers/usuarios');
+var verifyToken = require('../controllers/middleware');
 
 /* USUARIOS */
-router.get('/', function(req, res, next) {
+router.get('/', verifyToken, function(req, res, next) {
   console.log('getUsuarios');
   controllerUsuarios
     .getUsuarios()
@@ -15,7 +16,7 @@ router.get('/', function(req, res, next) {
     });
 });
 
-router.get('/:id', function(req, res, next) {
+router.get('/:id', verifyToken, function(req, res, next) {
   console.log('getUsuario');
   controllerUsuarios
     .getUsuario(req.params.id)
@@ -27,7 +28,7 @@ router.get('/:id', function(req, res, next) {
     });
 });
 
-router.put('/:id/actualizar', function(req, res, next) {
+router.put('/:id/actualizar', verifyToken, function(req, res, next) {
   console.log('actualizarUsuario');
   controllerUsuarios
     .actualizarUsuario(req.body)
@@ -39,7 +40,7 @@ router.put('/:id/actualizar', function(req, res, next) {
     });
 });
 
-router.get('/:id/proyectos', function(req, res, next) {
+router.get('/:id/proyectos', verifyToken, function(req, res, next) {
   console.log('getUsuariosProyectos');
   controllerUsuarios
     .getUsuariosProyectos(req.params.id)
@@ -51,7 +52,7 @@ router.get('/:id/proyectos', function(req, res, next) {
     });
 });
 
-router.get('/:id/proyectos/:idp/permisos', function(req, res, next) {
+router.get('/:id/proyectos/:idp/permisos', verifyToken, function(req, res, next) {
   console.log('getUsuariosProyectosPermisos');
   controllerUsuarios
     .getUsuariosProyectosPermisos(req.params.id, req.params.idp)

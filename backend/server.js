@@ -6,7 +6,7 @@ var logger = require('morgan');
 var cors = require('cors');
 //const http = require('http');
 
-var viewsRouter = require('./routes/views');
+/* var viewsRouter = require('./routes/views'); */
 var apiRouter = require('./routes/api');
 
 var app = express();
@@ -31,13 +31,16 @@ app.get('/api/holamundo', (req, res) => {
     holamundo: 'hola mundo'
   });
 });
-
 app.use('/api', apiRouter);
-app.use('/views', viewsRouter);
-
-app.use('*', (req, res) => {
-  res.redirect('/');
+/* app.use('*', viewsRouter); */
+app.get('*', function(req, res, next) {
+  //console.log("*")
+  res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
+
+/* app.use('*', (req, res) => {
+  res.redirect('/');
+}); */
 
 app.listen(port, () => {
   console.log('Servidor iniciado en el puerto', port);

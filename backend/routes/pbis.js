@@ -5,8 +5,9 @@ var controllerComentarios = require('../controllers/comentarios');
 var controllerArchivos = require('../controllers/archivos');
 var controllerCriterios = require('../controllers/criterios');
 var controllerDependencias = require('../controllers/dependencias');
+var verifyToken = require('../controllers/middleware');
 
-router.post('/', function(req, res, next) {
+router.post('/', verifyToken, function(req, res, next) {
   console.log('crearPbi');
   controllerPbis
     .crearPbi(req.body)
@@ -18,7 +19,7 @@ router.post('/', function(req, res, next) {
     });
 });
 
-router.put('/:id', function(req, res, next) {
+router.put('/:id', verifyToken, function(req, res, next) {
   console.log('editarPbi');
   controllerPbis
     .editarPbi(req.params.id, req.body)
@@ -30,7 +31,7 @@ router.put('/:id', function(req, res, next) {
     });
 });
 
-router.put('/', function(req, res, next) {
+router.put('/', verifyToken, function(req, res, next) {
   console.log('editarPrioridadesPbis');
   controllerPbis
     .editarPrioridadesPbis(req.body)
@@ -42,7 +43,7 @@ router.put('/', function(req, res, next) {
     });
 });
 
-router.get('/:id/comentarios', function(req, res, next) {
+router.get('/:id/comentarios', verifyToken, function(req, res, next) {
   console.log('obtenerComentariosPbi');
   controllerComentarios
     .obtenerComentariosPbi(req.params.id)
@@ -54,7 +55,7 @@ router.get('/:id/comentarios', function(req, res, next) {
     });
 });
 
-router.get('/:id/archivos', function(req, res, next) {
+router.get('/:id/archivos', verifyToken, function(req, res, next) {
   console.log('obtenerArchivosPbi');
   controllerArchivos
     .obtenerArchivosPbi(req.params.id)
@@ -66,7 +67,7 @@ router.get('/:id/archivos', function(req, res, next) {
     });
 });
 
-router.get('/:id/criterios', function(req, res, next) {
+router.get('/:id/criterios', verifyToken, function(req, res, next) {
   console.log('obtenerCriteriosPbi');
   controllerCriterios
     .obtenerCriteriosPbi(req.params.id)
@@ -78,7 +79,7 @@ router.get('/:id/criterios', function(req, res, next) {
     });
 });
 
-router.get('/:id/dependencias', function(req, res, next) {
+router.get('/:id/dependencias', verifyToken, function(req, res, next) {
   console.log('obtenerDependenciasPbi');
   controllerDependencias
     .obtenerDependenciasPbi(req.params.id)

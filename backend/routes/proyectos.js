@@ -1,9 +1,10 @@
 var express = require('express');
 var router = express.Router();
 var controllerProyectos = require('../controllers/proyectos');
+var verifyToken = require('../controllers/middleware');
 
 /* PROYECTOS */
-router.get('/', function(req, res, next) {
+router.get('/', verifyToken, function(req, res, next) {
   console.log('getProyectos');
   controllerProyectos
     .getProyectos()
@@ -14,7 +15,7 @@ router.get('/', function(req, res, next) {
       res.status(500).json(err);
     });
 });
-router.get('/:id', function(req, res, next) {
+router.get('/:id', verifyToken, function(req, res, next) {
   console.log('getProyecto');
   controllerProyectos
     .getProyecto(req.params.id)
@@ -26,7 +27,7 @@ router.get('/:id', function(req, res, next) {
     });
 });
 
-router.get('/:id/usuarios', function(req, res, next) {
+router.get('/:id/usuarios', verifyToken, function(req, res, next) {
   console.log('getProyectosUsuarios');
   controllerProyectos
     .getProyectosUsuarios(req.params.id)
@@ -38,7 +39,7 @@ router.get('/:id/usuarios', function(req, res, next) {
     });
 });
 
-router.get('/:id/usuarios/roles', function(req, res, next) {
+router.get('/:id/usuarios/roles', verifyToken, function(req, res, next) {
   console.log('getProyectoUsuariosRoles');
   controllerProyectos
     .getProyectoUsuariosRoles(req.params.id)
@@ -50,7 +51,7 @@ router.get('/:id/usuarios/roles', function(req, res, next) {
     });
 });
 
-router.get('/:id/pbis', function(req, res, next) {
+router.get('/:id/pbis', verifyToken, function(req, res, next) {
   console.log('getProyectoPBIs');
   controllerProyectos
     .getProyectoPBIs(req.params.id)
@@ -62,8 +63,9 @@ router.get('/:id/pbis', function(req, res, next) {
     });
 });
 
-router.get('/usuarios/roles', function(req, res, next) {
+router.get('/usuarios/roles', verifyToken, function(req, res, next) {
   console.log('getProyectosUsuariosRoles');
+  console.log(req.headers);
   controllerProyectos
     .getProyectosUsuariosRoles()
     .then(function(usuariosRoles) {
@@ -78,7 +80,7 @@ router.get('/usuarios/roles', function(req, res, next) {
       descripcion, 
       idusuario
    */
-router.post('/', function(req, res, next) {
+router.post('/', verifyToken, function(req, res, next) {
   console.log('crearProyecto');
   controllerProyectos
     .crearProyecto(req.body)
@@ -95,7 +97,7 @@ router.post('/', function(req, res, next) {
       rol="desarrollador || productOwner || stakeholder"
       idusuario = idusuario a agregar
    */
-router.post('/:id/agregarUsuario', function(req, res, next) {
+router.post('/:id/agregarUsuario', verifyToken, function(req, res, next) {
   console.log('proyectoAgregarUsuario');
   controllerProyectos
     .proyectoAgregarUsuario(req.params.id, req.body)
@@ -107,7 +109,7 @@ router.post('/:id/agregarUsuario', function(req, res, next) {
     });
 });
 
-router.post('/:id/invitar', function(req, res, next) {
+router.post('/:id/invitar', verifyToken, function(req, res, next) {
   console.log('proyectoInvitarUsuario');
   controllerProyectos
     .proyectoInvitarUsuario(req.params.id, req.body)

@@ -1,9 +1,10 @@
 var express = require('express');
 var router = express.Router();
 var controllerCriterios = require('../controllers/criterios');
+var verifyToken = require('../controllers/middleware');
 
 /* CRITERIOS */
-router.post('/', function(req, res, next) {
+router.post('/', verifyToken, function(req, res, next) {
   console.log('crearCriterio');
   controllerCriterios
     .crearCriterio(req.body)
@@ -14,7 +15,7 @@ router.post('/', function(req, res, next) {
       res.status(500).json(err);
     });
 });
-router.put('/:id', function(req, res, next) {
+router.put('/:id', verifyToken, function(req, res, next) {
   console.log('actualizarCriterio');
   controllerCriterios
     .actualizarCriterio(req.params.id, req.body)
@@ -25,7 +26,7 @@ router.put('/:id', function(req, res, next) {
       res.status(500).json(err);
     });
 });
-router.delete('/:id', function(req, res, next) {
+router.delete('/:id', verifyToken, function(req, res, next) {
   console.log('borrarCriterio');
   controllerCriterios
     .borrarCriterio(req.params.id)

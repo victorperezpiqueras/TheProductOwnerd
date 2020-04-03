@@ -3,7 +3,7 @@ var connection = require('../db/connection');
 var bcrypt = require('bcryptjs');
 var mysql = require('mysql');
 const jwt = require('jsonwebtoken');
-const jwtKey = require('../config/config');
+const config = require('../config/config');
 
 var controllerProyectos = require('../controllers/proyectos');
 var controllerInvitaciones = require('../controllers/invitaciones');
@@ -170,7 +170,7 @@ ControllerUsuarios.registroUsuarioInvitar = function(data) {
          connection.query(sql, [data.email, data.nick], function (err, result) {
            if (err) { reject({ error: 'error in select' }); }
            if (result[0]) { */
-        jwt.verify(data.token, jwtKey, function(err, decoded) {
+        jwt.verify(data.token, config.jwtKey, function(err, decoded) {
           if (err) reject({ error: 'authentication failed' });
           controllerInvitaciones.obtenerInvitacion(data.token).then(result => {
             if (result != null) {
@@ -232,7 +232,16 @@ ControllerUsuarios.loginUsuario = function(usuario) {
           /*  connection.end(function(err) {
             console.log('Close the database connection.');
           }); */
-          resolve(result);
+          const token = jwt.sign(
+            { idusuario: result[0].idusuario },
+            config.jwtKey /* , { expiresIn: config.expirationTime } */
+          ); //////////////////
+          const credentials = {
+            nick: result[0].nick,
+            idusuario: result[0].idusuario,
+            token: token
+          };
+          resolve(credentials);
         }
       }
     });

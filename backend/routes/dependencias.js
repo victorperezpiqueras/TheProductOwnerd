@@ -1,8 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var controllerDependencias = require('../controllers/dependencias');
+var verifyToken = require('../controllers/middleware');
 
-router.post('/', function(req, res, next) {
+router.post('/', verifyToken, function(req, res, next) {
   console.log('crearDependencia');
   controllerDependencias
     .crearDependencia(req.body)
@@ -13,7 +14,7 @@ router.post('/', function(req, res, next) {
       res.status(500).json(err);
     });
 });
-router.delete('/:id/:id2', function(req, res, next) {
+router.delete('/:id/:id2', verifyToken, function(req, res, next) {
   console.log('borrarDependencia');
   controllerDependencias
     .borrarDependencia(req.params.id, req.params.id2)

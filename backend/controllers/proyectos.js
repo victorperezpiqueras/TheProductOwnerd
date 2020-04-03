@@ -1,7 +1,7 @@
 var ControllerProyectos = {};
 var connection = require('../db/connection');
 const jwt = require('jsonwebtoken');
-const jwtKey = require('../config/config');
+const config = require('../config/config');
 var controllerInvitaciones = require('../controllers/invitaciones');
 
 /* configurar mailer */
@@ -261,7 +261,7 @@ ControllerProyectos.proyectoInvitarUsuario = function(idproyecto, data) {
           });
         } else {
           /* no existe el usuario --> crear invitacion */
-          var tokenUrl = jwt.sign({ idproyecto: idproyecto, email: data.email, rol: data.rol }, jwtKey);
+          var tokenUrl = jwt.sign({ idproyecto: idproyecto, email: data.email, rol: data.rol }, config.jwtKey);
           console.log(tokenUrl);
           controllerInvitaciones
             .crearInvitacion({ token: tokenUrl, rol: data.rol, idproyecto: idproyecto, email: data.email })
