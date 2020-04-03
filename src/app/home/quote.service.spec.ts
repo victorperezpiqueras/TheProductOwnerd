@@ -1,4 +1,4 @@
-import { Type } from '@angular/core';
+/* import { Type } from '@angular/core';
 import { TestBed, async } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
@@ -57,3 +57,4 @@ describe('QuoteService', () => {
     });
   });
 });
+ */

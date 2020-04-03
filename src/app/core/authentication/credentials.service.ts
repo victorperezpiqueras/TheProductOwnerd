@@ -4,7 +4,7 @@ export interface Credentials {
   // Customize received credentials here
   username: string;
   id: number;
-  //token: string;
+  token: string;
 }
 
 const credentialsKey = 'credentials';
@@ -33,6 +33,10 @@ export class CredentialsService {
   isAuthenticated(): boolean {
     return !!this.credentials;
   }
+
+  /*   getCredentials(){
+    return localStorage.getItem("credentials")
+  } */
 
   /**
    * Gets the user credentials.

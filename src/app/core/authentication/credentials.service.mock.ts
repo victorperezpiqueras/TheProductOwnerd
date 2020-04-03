@@ -3,7 +3,8 @@ import { Credentials } from './credentials.service';
 export class MockCredentialsService {
   credentials: Credentials | null = {
     username: 'test',
-    id: 1 
+    id: 1,
+    token: '1'
   };
 
   isAuthenticated(): boolean {
