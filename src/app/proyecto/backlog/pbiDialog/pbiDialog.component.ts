@@ -461,22 +461,22 @@ export class PbiDialogComponent implements OnInit {
     date = new Date(date);
     var h = date.getHours();
     var m = date.getMinutes();
-    var D = date.getDay();
+    var D = date.getDate();
     var M = date.getMonth();
     var Y = date.getFullYear();
 
-    if (M == 1) M = 'Jan';
-    else if (M == 2) M = 'Feb';
-    else if (M == 3) M = 'Mar';
-    else if (M == 4) M = 'Apr';
-    else if (M == 5) M = 'May';
-    else if (M == 6) M = 'Jun';
-    else if (M == 7) M = 'Jul';
-    else if (M == 8) M = 'Aug';
-    else if (M == 9) M = 'Sep';
-    else if (M == 10) M = 'Oct';
-    else if (M == 11) M = 'Nov';
-    else if (M == 12) M = 'Dec';
+    if (M == 0) M = 'Jan';
+    else if (M == 1) M = 'Feb';
+    else if (M == 2) M = 'Mar';
+    else if (M == 3) M = 'Apr';
+    else if (M == 4) M = 'May';
+    else if (M == 5) M = 'Jun';
+    else if (M == 6) M = 'Jul';
+    else if (M == 7) M = 'Aug';
+    else if (M == 8) M = 'Sep';
+    else if (M == 9) M = 'Oct';
+    else if (M == 10) M = 'Nov';
+    else if (M == 11) M = 'Dec';
     return h + ':' + m + ' - ' + D + ' ' + M + ' of ' + Y;
   }
 

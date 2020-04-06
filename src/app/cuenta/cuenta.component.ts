@@ -75,6 +75,11 @@ export class CuentaComponent implements OnInit, OnDestroy {
     /* if (this.myForm.get('password').value == this.myForm.get('confirmPassword').value && this.myForm.get('password').value.length > 8) { */
     if (this.checkPasswordOk()) {
       this.isLoading = true;
+      this.usuario.nick = this.myForm.get('nick').value;
+      this.usuario.email = this.myForm.get('email').value;
+      this.usuario.nombre = this.myForm.get('nombre').value;
+      this.usuario.apellido1 = this.myForm.get('apellido1').value;
+      this.usuario.apellido2 = this.myForm.get('apellido2').value;
       this.usuario.password = this.myForm.get('password').value;
       this.usuariosService.actualizarUsuario(this.usuario).subscribe(data => {
         this.myForm.get('password').setValue('');
