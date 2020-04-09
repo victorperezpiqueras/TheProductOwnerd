@@ -1,44 +1,44 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 
-var controllerUsuarios = require('../controllers/usuarios');
-var controllerProyectos = require('../controllers/proyectos');
-var controllerPbis = require('../controllers/pbis');
-var controllerComentarios = require('../controllers/comentarios');
-var controllerArchivos = require('../controllers/archivos');
-var controllerCriterios = require('../controllers/criterios');
-var controllerDependencias = require('../controllers/dependencias');
+const controllerUsuarios = require('../controllers/usuarios');
+const controllerProyectos = require('../controllers/proyectos');
+const controllerPbis = require('../controllers/pbis');
+const controllerComentarios = require('../controllers/comentarios');
+const controllerArchivos = require('../controllers/archivos');
+const controllerCriterios = require('../controllers/criterios');
+const controllerDependencias = require('../controllers/dependencias');
 
 /* USUARIOS */
-var apiUsuarios = require('./usuarios');
+const apiUsuarios = require('./usuarios');
 router.use('/usuarios', apiUsuarios);
 
 /* PROYECTOS */
-var apiProyectos = require('./proyectos');
+const apiProyectos = require('./proyectos');
 router.use('/proyectos', apiProyectos);
 
 /* PBIS */
-var apiPbis = require('./pbis');
+const apiPbis = require('./pbis');
 router.use('/pbis', apiPbis);
 
 /* COMENTARIOS */
-var apiComentarios = require('./comentarios');
+const apiComentarios = require('./comentarios');
 router.use('/comentarios', apiComentarios);
 
 /* ARCHIVOS */
-var apiArchivos = require('./archivos');
+const apiArchivos = require('./archivos');
 router.use('/archivos', apiArchivos);
 
 /* CRITERIOS */
-var apiCriterios = require('./criterios');
+const apiCriterios = require('./criterios');
 router.use('/criterios', apiCriterios);
 
 /* DEPENDENCIAS */
-var apiDependencias = require('./dependencias');
+const apiDependencias = require('./dependencias');
 router.use('/dependencias', apiDependencias);
 
 /* INVITACIONES */
-var apiInvitaciones = require('./invitaciones');
+const apiInvitaciones = require('./invitaciones');
 router.use('/invitaciones', apiInvitaciones);
 
 /* USUARIOS */

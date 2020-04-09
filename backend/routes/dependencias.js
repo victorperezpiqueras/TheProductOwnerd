@@ -1,10 +1,16 @@
-var express = require('express');
-var router = express.Router();
-var controllerDependencias = require('../controllers/dependencias');
-var verifyToken = require('../controllers/middleware');
+const express = require('express');
+const router = express.Router();
+const controllerDependencias = require('../controllers/dependencias');
+const verifyToken = require('../controllers/middleware');
+const { ErrorHandler } = require('../helpers/error');
+const { propertyChecker } = require('../helpers/propertyChecker');
 
 router.post('/', verifyToken, function(req, res, next) {
   console.log('crearDependencia');
+  /* const data = { idpbi: req.body.idpbi, idpbi2: req.body.idpbi2 };
+  if (!data.idpbi || !data.idpbi2)  */
+  if (!propertyChecker(req.body, ['idpbi', 'idpbi2']))
+    throw new ErrorHandler(422, 'Missing required fields: idpbi, idpbi2');
   controllerDependencias
     .crearDependencia(req.body)
     .then(function(dependencia) {

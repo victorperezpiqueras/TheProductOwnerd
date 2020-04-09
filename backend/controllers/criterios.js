@@ -1,10 +1,10 @@
 var ControllerCriterios = {};
-var connection = require('../db/connection');
+const connection = require('../db/connection');
 
 ControllerCriterios.crearCriterio = function(criterio) {
   return new Promise(function(resolve, reject) {
-    var sql = 'insert into criterios(nombre, idpbi, done) values ' + '(?,?,?)';
-    var array = [criterio.nombre, criterio.idpbi, criterio.done];
+    const sql = 'insert into criterios(nombre, idpbi, done) values ' + '(?,?,?)';
+    const array = [criterio.nombre, criterio.idpbi, criterio.done];
     connection.query(sql, array, function(err, result) {
       if (err) {
         reject({ error: 'Error inesperado en crearCriterio' });
@@ -17,8 +17,8 @@ ControllerCriterios.crearCriterio = function(criterio) {
 };
 ControllerCriterios.actualizarCriterio = function(id, criterio) {
   return new Promise(function(resolve, reject) {
-    var sql = 'update criterios set nombre=?,done=? where idcriterio=?';
-    var array = [criterio.nombre, criterio.done, id];
+    const sql = 'update criterios set nombre=?,done=? where idcriterio=?';
+    const array = [criterio.nombre, criterio.done, id];
     connection.query(sql, array, function(err, result) {
       if (err) {
         reject({ error: 'Error inesperado en actualizarCriterio' });
@@ -31,8 +31,8 @@ ControllerCriterios.actualizarCriterio = function(id, criterio) {
 };
 ControllerCriterios.borrarCriterio = function(id) {
   return new Promise(function(resolve, reject) {
-    var sql = 'delete from criterios where idcriterio=?';
-    var array = [id];
+    const sql = 'delete from criterios where idcriterio=?';
+    const array = [id];
     connection.query(sql, array, function(err, result) {
       if (err) {
         reject({ error: 'Error inesperado en borrarCriterio' });
@@ -45,8 +45,8 @@ ControllerCriterios.borrarCriterio = function(id) {
 };
 ControllerCriterios.obtenerCriteriosPbi = function(idpbi) {
   return new Promise(function(resolve, reject) {
-    var sql = 'select * from criterios where idpbi=?';
-    var array = [idpbi];
+    const sql = 'select * from criterios where idpbi=?';
+    const array = [idpbi];
     connection.query(sql, array, function(err, result) {
       if (err) {
         reject({ error: 'Error inesperado en obtenerCriteriosPbi' });

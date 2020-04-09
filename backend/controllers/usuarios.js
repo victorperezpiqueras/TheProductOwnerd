@@ -1,27 +1,20 @@
 var ControllerUsuarios = {};
-var connection = require('../db/connection');
-var bcrypt = require('bcryptjs');
-var mysql = require('mysql');
+const connection = require('../db/connection');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('../config/config');
 
-var controllerProyectos = require('../controllers/proyectos');
-var controllerInvitaciones = require('../controllers/invitaciones');
+const controllerProyectos = require('../controllers/proyectos');
+const controllerInvitaciones = require('../controllers/invitaciones');
 
 ControllerUsuarios.getUsuarios = function() {
   return new Promise(function(resolve, reject) {
-    var sql = 'select * from usuarios';
+    const sql = 'select * from usuarios';
     connection.query(sql, function(err, result) {
       if (err) {
-        /* connection.end(function(err) {
-          console.log('Error DB');
-        }); */
         reject({ error: 'Error inesperado' });
       } else {
         console.log(result);
-        /* connection.end(function(err) {
-          console.log('Close the database connection.');
-        }); */
         resolve(result);
       }
     });
@@ -29,18 +22,12 @@ ControllerUsuarios.getUsuarios = function() {
 };
 ControllerUsuarios.getUsuario = function(id) {
   return new Promise(function(resolve, reject) {
-    var sql = 'select * from usuarios where idusuario=?';
+    const sql = 'select * from usuarios where idusuario=?';
     connection.query(sql, [id], function(err, result) {
       if (err) {
-        /* connection.end(function(err) {
-          console.log('Error DB');
-        }); */
         reject({ error: 'Error inesperado' });
       } else {
         console.log(result);
-        /* connection.end(function(err) {
-          console.log('Close the database connection.');
-        }); */
         resolve(result[0]);
       }
     });
@@ -70,7 +57,6 @@ ControllerUsuarios.actualizarUsuario = function(usuario) {
         usuario.idusuario
       ];
     }
-
     connection.query(sql, values, function(err, result) {
       if (err) throw err;
       console.log(result);
@@ -80,19 +66,13 @@ ControllerUsuarios.actualizarUsuario = function(usuario) {
 };
 ControllerUsuarios.getUsuariosProyectos = function(id) {
   return new Promise(function(resolve, reject) {
-    var sql =
+    const sql =
       'select p.idproyecto, p.nombre, p.descripcion from proyectos p, usuarios u, roles r where u.idusuario = ? and u.idusuario = r.idusuario and p.idproyecto = r.idproyecto';
     connection.query(sql, [id], function(err, result) {
       if (err) {
-        /* connection.end(function(err) {
-          console.log('Error DB');
-        }); */
         reject({ error: 'Error inesperado' });
       } else {
         console.log(result);
-        /* connection.end(function(err) {
-          console.log('Close the database connection.');
-        }); */
         resolve(result);
       }
     });
@@ -100,21 +80,15 @@ ControllerUsuarios.getUsuariosProyectos = function(id) {
 };
 ControllerUsuarios.getUsuariosProyectosPermisos = function(id, idp) {
   return new Promise(function(resolve, reject) {
-    var sql =
+    const sql =
       //'select r2.permiso from proyectos p, usuarios u, roles r, rolespermisos r2  where u.idusuario = ? and p.idproyecto = ? and u.idusuario = r.idusuario and p.idproyecto = r.idproyecto and r2.idrol =r.idrol';
       'select ordenar, editarPBI,estimarTam,estimarValor, mantenerUsuarios, archivarProyecto, setDone, proyecciones from proyectos p, usuarios u, roles r where u.idusuario = ? and p.idproyecto = ? ' +
       'and u.idusuario = r.idusuario and p.idproyecto = r.idproyecto';
     connection.query(sql, [id, idp], function(err, result) {
       if (err) {
-        /*  connection.end(function(err) {
-          console.log('Error DB');
-        }); */
         reject({ error: 'Error inesperado' });
       } else {
         console.log(result[0]);
-        /* connection.end(function(err) {
-          console.log('Close the database connection.');
-        }); */
         resolve(result[0]);
       }
     });
@@ -122,18 +96,15 @@ ControllerUsuarios.getUsuariosProyectosPermisos = function(id, idp) {
 };
 ControllerUsuarios.registroUsuario = function(usuario) {
   return new Promise(function(resolve, reject) {
-    var sql = 'select * from usuarios where email = ?';
+    const sql = 'select * from usuarios where email = ?';
     connection.query(sql, [usuario.email], function(err, result) {
       if (err) {
-        /* connection.end(function(err) {
-          console.log('Error DB');
-        }); */
         reject({ error: 'Error' });
       } else {
         console.log(result);
         if (result.length <= 0) {
-          var sql = 'insert into usuarios(nick,nombre,apellido1,apellido2,password,email) values (?,?,?,?,?,?)';
-          var values = [
+          const sql = 'insert into usuarios(nick,nombre,apellido1,apellido2,password,email) values (?,?,?,?,?,?)';
+          const values = [
             usuario.nick,
             usuario.nombre,
             usuario.apellido1,
@@ -144,16 +115,10 @@ ControllerUsuarios.registroUsuario = function(usuario) {
           connection.query(sql, values, function(err, result) {
             if (err) throw err;
             console.log(result);
-            /* connection.end(function(err) {
-              console.log('Error DB');
-            }); */
             resolve(result);
           });
         } else {
-          /*  connection.end(function(err) {
-            console.log('Close the database connection.');
-          }); */
-          reject({ error: 'Usuario ya existente' });
+          reject({ error: 'user_exists' });
         }
       }
     });
@@ -171,7 +136,7 @@ ControllerUsuarios.registroUsuarioInvitar = function(data) {
            if (err) { reject({ error: 'error in select' }); }
            if (result[0]) { */
         jwt.verify(data.token, config.jwtKey, function(err, decoded) {
-          if (err) reject({ error: 'authentication failed' });
+          if (err) reject({ error: 'token_authentication_failed' });
           controllerInvitaciones.obtenerInvitacion(data.token).then(result => {
             if (result != null) {
               idproyecto = decoded.idproyecto;
@@ -201,7 +166,6 @@ ControllerUsuarios.registroUsuarioInvitar = function(data) {
         }); */
       })
       .catch(err => {
-        console.log(err);
         reject(err);
       });
   });
@@ -209,29 +173,17 @@ ControllerUsuarios.registroUsuarioInvitar = function(data) {
 
 ControllerUsuarios.loginUsuario = function(usuario) {
   return new Promise(function(resolve, reject) {
-    var sql = 'select * from usuarios where nick = ? ';
-    connection.query(sql, [usuario.nick], function(err, result) {
+    const sql = 'select * from usuarios where email = ? ';
+    connection.query(sql, [usuario.email], function(err, result) {
       console.log(result);
       if (err) {
-        /* connection.end(function(err) {
-          console.log('Error DB');
-        }); */
         reject({ error: 'Error inesperado' });
       } else {
         if (result.length <= 0) {
-          /* connection.end(function(err) {
-            console.log('Close the database connection.');
-          }); */
-          reject({ error: 'El usuario no existe' });
+          reject({ error: 'user_not_found' });
         } else if (!bcrypt.compareSync(usuario.password, result[0].password)) {
-          /* connection.end(function(err) {
-            console.log('Close the database connection.');
-          }); */
-          reject({ error: 'Las contraseñas no coinciden' });
+          reject({ error: 'password_missmatch' });
         } else {
-          /*  connection.end(function(err) {
-            console.log('Close the database connection.');
-          }); */
           const token = jwt.sign(
             { idusuario: result[0].idusuario },
             config.jwtKey /* , { expiresIn: config.expirationTime } */

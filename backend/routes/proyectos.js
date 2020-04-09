@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var controllerProyectos = require('../controllers/proyectos');
 var verifyToken = require('../controllers/middleware');
+const { ErrorHandler } = require('../helpers/error');
+const { propertyChecker } = require('../helpers/propertyChecker');
 
 /* PROYECTOS */
 router.get('/', verifyToken, function(req, res, next) {
@@ -75,20 +77,21 @@ router.get('/usuarios/roles', verifyToken, function(req, res, next) {
       res.status(500).json(err);
     });
 });
-/*  body: 
-      nombre, 
-      descripcion, 
-      idusuario
-   */
+
 router.post('/', verifyToken, function(req, res, next) {
   console.log('crearProyecto');
+  /*  const data = { nombre: req.body.nombre, descripcion: req.body.descripcion, idusuario: req.body.idusuario };
+   if (!data.nombre || !data.descripcion || !data.idusuario) */
+  if (!propertyChecker(req.body, ['nombre', 'descripcion', 'idusuario']))
+    throw new ErrorHandler(422, 'Missing required fields: nombre, descripcion, idusuario');
   controllerProyectos
     .crearProyecto(req.body)
     .then(function(proyecto) {
       res.json(proyecto);
     })
     .catch(function(err) {
-      res.status(500).json(err);
+      if (err.error === 'project_name_exists') res.status(409).json(err);
+      else res.status(500).json(err);
     });
 });
 
@@ -99,6 +102,10 @@ router.post('/', verifyToken, function(req, res, next) {
    */
 router.post('/:id/agregarUsuario', verifyToken, function(req, res, next) {
   console.log('proyectoAgregarUsuario');
+  /* const data = { idusuario: req.body.idusuario, rol: req.body.rol };
+  if (!data.idusuario || !data.rol) */
+  if (!propertyChecker(req.body, ['idusuario', 'rol']))
+    throw new ErrorHandler(422, 'Missing required fields: idusuario, rol');
   controllerProyectos
     .proyectoAgregarUsuario(req.params.id, req.body)
     .then(function(proyecto) {
@@ -111,6 +118,10 @@ router.post('/:id/agregarUsuario', verifyToken, function(req, res, next) {
 
 router.post('/:id/invitar', verifyToken, function(req, res, next) {
   console.log('proyectoInvitarUsuario');
+  /* const data = { email: req.body.email, rol: req.body.rol };
+  if (!data.email || !data.rol) */
+  if (!propertyChecker(req.body, ['email', 'rol', 'nombreProyecto', 'invitadoPor']))
+    throw new ErrorHandler(422, 'Missing required fields: email, rol, nombreProyecto, invitadoPor');
   controllerProyectos
     .proyectoInvitarUsuario(req.params.id, req.body)
     .then(function(proyecto) {

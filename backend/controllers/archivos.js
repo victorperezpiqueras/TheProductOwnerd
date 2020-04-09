@@ -1,10 +1,10 @@
 var ControllerArchivos = {};
-var connection = require('../db/connection');
+const connection = require('../db/connection');
 
 ControllerArchivos.crearArchivo = function(archivo) {
   return new Promise(function(resolve, reject) {
-    var sql = 'insert into archivos(nombre,src,idpbi,idusuario) values ' + '(?,?,?,?)';
-    var array = [archivo.nombre, archivo.src, archivo.idpbi, archivo.idusuario];
+    const sql = 'insert into archivos(nombre,src,idpbi,idusuario) values ' + '(?,?,?,?)';
+    const array = [archivo.nombre, archivo.src, archivo.idpbi, archivo.idusuario];
     connection.query(sql, array, function(err, result) {
       if (err) {
         reject({ error: 'Error inesperado en crearArchivo' });
@@ -17,8 +17,8 @@ ControllerArchivos.crearArchivo = function(archivo) {
 };
 ControllerArchivos.borrarArchivo = function(id) {
   return new Promise(function(resolve, reject) {
-    var sql = 'delete from archivos where idarchivo=?';
-    var array = [id];
+    const sql = 'delete from archivos where idarchivo=?';
+    const array = [id];
     connection.query(sql, array, function(err, result) {
       if (err) {
         reject({ error: 'Error inesperado en borrarArchivo' });
@@ -31,9 +31,9 @@ ControllerArchivos.borrarArchivo = function(id) {
 };
 ControllerArchivos.obtenerArchivosPbi = function(idpbi) {
   return new Promise(function(resolve, reject) {
-    var sql =
+    const sql =
       'select a.*, u.nick as nombreUsuario from archivos a, usuarios u  where a.idpbi=? and a.idusuario=u.idusuario';
-    var array = [idpbi];
+    const array = [idpbi];
     connection.query(sql, array, function(err, result) {
       if (err) {
         reject({ error: 'Error inesperado en obtenerArchivosPbi' });

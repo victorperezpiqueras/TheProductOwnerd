@@ -1,12 +1,12 @@
 var ControllerPbis = {};
-var connection = require('../db/connection');
+const connection = require('../db/connection');
 
 ControllerPbis.crearPbi = function(pbi) {
   return new Promise(function(resolve, reject) {
-    var sql =
+    const sql =
       'insert into pbis(titulo,descripcion ,done,label ,estimacion, valor ,idproyecto ,prioridad) values ' +
       '(?,?,?,?,?,?,?,?)';
-    var array = [
+    const array = [
       pbi.titulo,
       pbi.descripcion,
       pbi.done,
@@ -32,9 +32,9 @@ ControllerPbis.editarPbi = function(id, pbi) {
   if (pbi.sprint == 'null') pbi.sprint = null;
   if (pbi.valor == 'null') pbi.valor = null;
   return new Promise(function(resolve, reject) {
-    var sql =
+    const sql =
       'update pbis set titulo=?,descripcion=?,done=?,label=?,estimacion=?,valor=?,prioridad=?,sprint=? where idpbi=?';
-    var array = [
+    const array = [
       pbi.titulo,
       pbi.descripcion,
       pbi.done,
@@ -57,11 +57,11 @@ ControllerPbis.editarPbi = function(id, pbi) {
 };
 ControllerPbis.editarPrioridadesPbis = function(pbis) {
   return new Promise(function(resolve, reject) {
-    console.log(pbi);
+    console.log(pbis);
     var promises = [];
-    for (var pbi of pbis) {
+    for (let pbi of pbis) {
       var promise = new Promise(function(resolve, reject) {
-        var sql = 'update pbis set prioridad=? where idpbi=?';
+        const sql = 'update pbis set prioridad=? where idpbi=?';
         var array = [pbi.prioridad, pbi.idpbi];
         connection.query(sql, array, function(err, result) {
           if (err) {
@@ -75,6 +75,7 @@ ControllerPbis.editarPrioridadesPbis = function(pbis) {
       promises.push(promise);
     }
     Promise.all(promises).then(pbis => {
+      console.log(pbis);
       resolve(pbis);
     });
   });

@@ -1,11 +1,17 @@
-var express = require('express');
-var router = express.Router();
-var controllerComentarios = require('../controllers/comentarios');
-var verifyToken = require('../controllers/middleware');
+const express = require('express');
+const router = express.Router();
+const controllerComentarios = require('../controllers/comentarios');
+const verifyToken = require('../controllers/middleware');
+const { ErrorHandler } = require('../helpers/error');
+const { propertyChecker } = require('../helpers/propertyChecker');
 
 /* COMENTARIOS */
 router.post('/', verifyToken, function(req, res, next) {
   console.log('crearComentario');
+  /* const data = { comentario: req.body.comentario, idpbi: req.body.idpbi, idusuario: req.body.idusuario, fecha: req.body.fecha };
+  if (!data.nombre || !data.idpbi || !data.done)  */
+  if (!propertyChecker(req.body, ['comentario', 'idpbi', 'idusuario', 'fecha']))
+    throw new ErrorHandler(422, 'Missing required fields: comentario, idpbi, idusuario, fecha');
   controllerComentarios
     .crearComentario(req.body)
     .then(function(comentario) {

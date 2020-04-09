@@ -1,12 +1,12 @@
 var ControllerProyectos = {};
-var connection = require('../db/connection');
+const connection = require('../db/connection');
 const jwt = require('jsonwebtoken');
 const config = require('../config/config');
-var controllerInvitaciones = require('../controllers/invitaciones');
-
+const controllerInvitaciones = require('../controllers/invitaciones');
 /* configurar mailer */
-var nodemailer = require('nodemailer');
-async function enviarInvitacion(email, tokenUrl) {
+const nodemailer = require('nodemailer');
+
+async function enviarInvitacion(data, tokenUrl) {
   let transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -18,15 +18,36 @@ async function enviarInvitacion(email, tokenUrl) {
     }
   });
 
-  var mailOptions = {
+  switch (data.rol) {
+    case 'desarrollador':
+      data.rol = 'Developer';
+      break;
+    case 'productOwner':
+      data.rol = 'Product Owner';
+      break;
+    case 'stakeholder':
+      data.rol = 'Stakeholder';
+      break;
+  }
+
+  const mailOptions = {
     from: process.env.MAIL_USER,
-    to: email,
-    subject: 'Invitation to a project at The-Product-Ownerd website',
+    to: data.email,
+    subject: 'You were invited to a project at TheProductOwnerd website',
     html:
-      '<p>Click the following link to create your account:</p><br><a href="' +
+      '<p>You were invited by <b>' +
+      data.invitadoPor +
+      '</b> to join the project <b>"' +
+      data.proyecto +
+      '"</b>.<br>' +
+      ' By clicking the following link and registering an account you will be joined the project and assigned the <b>' +
+      data.rol +
+      "'s</b> role.</p>" +
+      '<a href="' +
       process.env.MAIL_INVITE_LINK +
       tokenUrl +
-      '">Create Account</a>'
+      '">Create Account</a><br><br>' +
+      'Happy Forecasting!'
   };
 
   transporter.sendMail(mailOptions, function(error, info) {
@@ -40,7 +61,7 @@ async function enviarInvitacion(email, tokenUrl) {
 
 ControllerProyectos.getProyectos = function() {
   return new Promise(function(resolve, reject) {
-    var sql = 'select * from proyectos';
+    const sql = 'select * from proyectos';
     connection.query(sql, function(err, result) {
       if (err) {
         /* connection.end(function(err) {
@@ -59,7 +80,7 @@ ControllerProyectos.getProyectos = function() {
 };
 ControllerProyectos.getProyecto = function(id) {
   return new Promise(function(resolve, reject) {
-    var sql = 'select * from proyectos where idproyecto = ?';
+    const sql = 'select * from proyectos where idproyecto = ?';
     connection.query(sql, [id], function(err, result) {
       if (err) {
         reject({ error: 'Error inesperado' });
@@ -73,7 +94,7 @@ ControllerProyectos.getProyecto = function(id) {
 
 ControllerProyectos.getProyectosUsuarios = function(id) {
   return new Promise(function(resolve, reject) {
-    var sql =
+    const sql =
       'select u.idusuario, u.nombre, u.email from usuarios u, proyectos p, roles r where p.idproyecto = ? and u.idusuario = r.idusuario and p.idproyecto =r.idproyecto';
     connection.query(sql, [id], function(err, result) {
       if (err) {
@@ -93,20 +114,14 @@ ControllerProyectos.getProyectosUsuarios = function(id) {
 };
 ControllerProyectos.getProyectoUsuariosRoles = function(id) {
   return new Promise(function(resolve, reject) {
-    var sql =
+    const sql =
       'select u.idusuario, u.nick, u.email, r.nombre as rol from usuarios u,' +
       'proyectos p, roles r where u.idusuario = r.idusuario and p.idproyecto = r.idproyecto and p.idproyecto = ?';
     connection.query(sql, [id], function(err, result) {
       if (err) {
-        /* connection.end(function(err) {
-          console.log('Error DB');
-        }); */
         reject({ error: 'Error inesperado' });
       } else {
         console.log(result /* [0] */);
-        /* connection.end(function(err) {
-          console.log('Close the database connection.');
-        }); */
         resolve(result /* [0] */);
       }
     });
@@ -114,19 +129,13 @@ ControllerProyectos.getProyectoUsuariosRoles = function(id) {
 };
 ControllerProyectos.getProyectosUsuariosRoles = function() {
   return new Promise(function(resolve, reject) {
-    var sql =
+    const sql =
       'select u.idusuario, u.nick, u.email, r.nombre as rol, p.idproyecto from usuarios u, proyectos p, roles r where u.idusuario = r.idusuario and p.idproyecto = r.idproyecto';
     connection.query(sql, function(err, result) {
       if (err) {
-        /* connection.end(function(err) {
-          console.log('Error DB');
-        }); */
         reject({ error: 'Error inesperado' });
       } else {
         console.log(result);
-        /* connection.end(function(err) {
-          console.log('Close the database connection.');
-        }); */
         resolve(result);
       }
     });
@@ -135,13 +144,10 @@ ControllerProyectos.getProyectosUsuariosRoles = function() {
 
 ControllerProyectos.crearProyecto = function(data) {
   return new Promise(function(resolve, reject) {
-    var sql = 'insert into proyectos(nombre,descripcion) values(?, ?)';
+    const sql = 'insert into proyectos(nombre,descripcion) values(?, ?)';
     connection.query(sql, [data.nombre, data.descripcion], function(err, result) {
       if (err) {
-        /* connection.end(function(err) {
-          console.log('Error DB');
-        }); */
-        reject('Ya existe un proyecto con ese nombre');
+        reject({ error: 'project_name_exists' });
         //throw err;
       } else {
         console.log('insertado proyecto');
@@ -149,16 +155,12 @@ ControllerProyectos.crearProyecto = function(data) {
         var sql = 'select idproyecto from proyectos where nombre = ?';
         connection.query(sql, [data.nombre], function(err, result) {
           if (err) {
-            /* connection.end(function(err) {
-              console.log('Error DB');
-            }); */
             reject('Error al buscar el proyecto');
             //throw err;
           } else {
             console.log('idproyecto', result);
-            var idProyecto = result[0].idproyecto;
-
-            var sql =
+            const idProyecto = result[0].idproyecto;
+            const sql =
               'insert into roles(nombre,idusuario,idproyecto, ordenar, editarPBI,estimarTam,estimarValor, mantenerUsuarios, archivarProyecto, setDone, proyecciones)' +
               ' values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
             connection.query(sql, ['productOwner', data.idusuario, idProyecto, 1, 1, 0, 1, 1, 1, 1, 1], function(
@@ -166,9 +168,6 @@ ControllerProyectos.crearProyecto = function(data) {
               result
             ) {
               if (err) {
-                /* connection.end(function(err) {
-                  console.log('Error DB');
-                }); */
                 reject('Error al insertar los roles');
                 //throw err;
               } else {
@@ -222,7 +221,7 @@ ControllerProyectos.crearProyecto = function(data) {
 
 ControllerProyectos.proyectoAgregarUsuario = function(idProyecto, data) {
   return new Promise(function(resolve, reject) {
-    var sql =
+    const sql =
       'insert into roles(nombre,idusuario,idproyecto, ordenar, editarPBI,estimarTam,estimarValor, mantenerUsuarios, archivarProyecto, setDone, proyecciones)' +
       ' values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
     if (data.rol == 'productOwner') {
@@ -245,29 +244,33 @@ ControllerProyectos.proyectoAgregarUsuario = function(idProyecto, data) {
 
 ControllerProyectos.proyectoInvitarUsuario = function(idproyecto, data) {
   return new Promise(function(resolve, reject) {
-    var sql = 'select * from usuarios where email=?';
+    const sql = 'select * from usuarios where email=?';
     arr = [data.email];
+    var proyectoInvitado;
     connection.query(sql, arr, function(err, result) {
       if (err) {
-        reject({ error: 'Error al buscar el email' });
+        reject({ error: 'email_searching_error' });
       } else {
         console.log(result);
         if (result.length > 0) {
           /* existe el usuario --> agregar al proyecto */
           /* var inviData = { rol: 'desarrollador', idusuario: result[0].idusuario }; */
-          var inviData = { rol: data.rol, idusuario: result[0].idusuario };
+          const inviData = { rol: data.rol, idusuario: result[0].idusuario };
           ControllerProyectos.proyectoAgregarUsuario(idproyecto, inviData).then(data => {
             resolve({ existe: true });
           });
         } else {
           /* no existe el usuario --> crear invitacion */
-          var tokenUrl = jwt.sign({ idproyecto: idproyecto, email: data.email, rol: data.rol }, config.jwtKey);
+          const tokenUrl = jwt.sign({ idproyecto: idproyecto, email: data.email, rol: data.rol }, config.jwtKey);
           console.log(tokenUrl);
           controllerInvitaciones
             .crearInvitacion({ token: tokenUrl, rol: data.rol, idproyecto: idproyecto, email: data.email })
             .then(res => {
               console.log(res);
-              enviarInvitacion(data.email, tokenUrl);
+              enviarInvitacion(
+                { email: data.email, proyecto: data.nombreProyecto, rol: data.rol, invitadoPor: data.invitadoPor },
+                tokenUrl
+              );
               resolve({ existe: false });
             })
             .catch(err => console.log(err));
@@ -279,7 +282,7 @@ ControllerProyectos.proyectoInvitarUsuario = function(idproyecto, data) {
 
 ControllerProyectos.getProyectoPBIs = function(id) {
   return new Promise(function(resolve, reject) {
-    var sql = 'select p.* from pbis p, proyectos pr where pr.idproyecto=p.idproyecto and p.idproyecto = ?';
+    const sql = 'select p.* from pbis p, proyectos pr where pr.idproyecto=p.idproyecto and p.idproyecto = ?';
     connection.query(sql, [id], function(err, result) {
       if (err) {
         reject({ error: 'Error inesperado' });
