@@ -221,21 +221,45 @@ ControllerProyectos.crearProyecto = function(data) {
 
 ControllerProyectos.proyectoAgregarUsuario = function(idProyecto, data) {
   return new Promise(function(resolve, reject) {
-    const sql =
-      'insert into roles(nombre,idusuario,idproyecto, ordenar, editarPBI,estimarTam,estimarValor, mantenerUsuarios, archivarProyecto, setDone, proyecciones)' +
-      ' values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-    if (data.rol == 'productOwner') {
-      var list = ['productOwner', data.idusuario, idProyecto, 1, 1, 0, 1, 1, 1, 1, 1];
-    } else if (data.rol == 'desarrollador') {
-      var list = ['desarrollador', data.idusuario, idProyecto, 0, 1, 1, 0, 0, 0, 1, 0];
-    } else {
-      var list = ['stakeholder', data.idusuario, idProyecto, 0, 0, 0, 0, 0, 0, 0, 0];
-    }
-    connection.query(sql, list, function(err, result) {
+    var sql = 'select * from roles where idusuario=? and idproyecto=?';
+    connection.query(sql, [data.idusuario, idProyecto], function(err, result) {
       if (err) {
-        reject({ error: 'Error inesperado' });
+        reject({ error: 'Error inesperado en proyectoAgregarUsuario' });
       } else {
-        console.log('insertado rol');
+        if (result && result.length > 0) {
+          reject({ error: 'error_already_in_project' });
+        } else {
+          var sql =
+            'insert into roles(nombre,idusuario,idproyecto, ordenar, editarPBI,estimarTam,estimarValor, mantenerUsuarios, archivarProyecto, setDone, proyecciones)' +
+            ' values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+          if (data.rol == 'productOwner') {
+            var list = ['productOwner', data.idusuario, idProyecto, 1, 1, 0, 1, 1, 1, 1, 1];
+          } else if (data.rol == 'desarrollador') {
+            var list = ['desarrollador', data.idusuario, idProyecto, 0, 1, 1, 0, 0, 0, 1, 0];
+          } else {
+            var list = ['stakeholder', data.idusuario, idProyecto, 0, 0, 0, 0, 0, 0, 0, 0];
+          }
+          connection.query(sql, list, function(err, result) {
+            if (err) {
+              reject({ error: 'Error inesperado' });
+            } else {
+              console.log('insertado rol');
+              resolve(result);
+            }
+          });
+        }
+      }
+    });
+  });
+};
+
+ControllerProyectos.proyectoEliminarUsuario = function(idProyecto, data) {
+  return new Promise(function(resolve, reject) {
+    const sql = 'delete from roles where idusuario=? and idproyecto=?';
+    connection.query(sql, [data.idusuario, idProyecto], function(err, result) {
+      if (err) {
+        reject({ error: 'Error inesperado en proyectoEliminarUsuario' });
+      } else {
         resolve(result);
       }
     });

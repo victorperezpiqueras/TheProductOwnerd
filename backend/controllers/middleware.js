@@ -15,8 +15,8 @@ function verifyToken(req, res, next) {
   if (!payload) {
     return res.status(401).json({ error: 'unauthorized_request' });
   }
-  console.log(req.headers);
-  console.log(payload);
+  /*  console.log(req.headers);
+  console.log(payload); */
   req.userId = payload.idusuario;
   next();
 }
