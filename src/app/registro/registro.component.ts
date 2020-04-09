@@ -87,6 +87,7 @@ export class RegistroComponent implements OnInit, OnDestroy {
         )
         .subscribe(
           data => {
+            console.log(data);
             this.router.navigate(['/login'], { replaceUrl: true });
           },
           error => {

@@ -40,12 +40,12 @@ export class LoginComponent implements OnInit, OnDestroy {
   login() {
     this.isLoading = true;
 
-    const nombre = this.loginForm.value.username;
+    const email = this.loginForm.value.email;
     const password = this.loginForm.value.password;
 
     //console.log(nombre, password)
     this.loginService
-      .login({ nick: nombre, password: password })
+      .login({ email: email, password: password })
       .pipe(
         finalize(() => {
           this.loginForm.markAsPristine();
@@ -128,7 +128,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   private createForm() {
     this.loginForm = this.formBuilder.group({
-      username: ['', Validators.required],
+      email: ['', Validators.required],
       password: ['', Validators.required],
       remember: true
     });

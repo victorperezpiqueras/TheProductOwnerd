@@ -30,13 +30,13 @@
             <input
               type="text"
               matInput
-              formControlName="username"
-              autocomplete="username"
-              [placeholder]="'Username' | translate"
+              formControlName="email"
+              autocomplete="email"
+              [placeholder]="'Email' | translate"
               required
             />
-            <mat-error *ngIf="loginForm.controls.username.invalid && loginForm.controls.username.touched">
-              <span translate>Username required</span>
+            <mat-error *ngIf="loginForm.controls.email.invalid && loginForm.controls.email.touched">
+              <span translate>Email required</span>
             </mat-error>
           </mat-form-field>
           <mat-form-field [hideRequiredMarker]="true">

@@ -81,21 +81,34 @@ export class CuentaComponent implements OnInit, OnDestroy {
       this.usuario.apellido1 = this.myForm.get('apellido1').value;
       this.usuario.apellido2 = this.myForm.get('apellido2').value;
       this.usuario.password = this.myForm.get('password').value;
-      this.usuariosService.actualizarUsuario(this.usuario).subscribe(data => {
-        this.myForm.get('password').setValue('');
-        this.myForm.get('password').markAsPristine();
-        this.myForm.get('password').markAsUntouched();
-        this.myForm.get('password').updateValueAndValidity();
+      this.usuariosService.actualizarUsuario(this.usuario).subscribe(
+        data => {
+          this.myForm.get('password').setValue('');
+          this.myForm.get('password').markAsPristine();
+          this.myForm.get('password').markAsUntouched();
+          this.myForm.get('password').updateValueAndValidity();
 
-        this.myForm.get('confirmPassword').setValue('');
-        this.myForm.get('confirmPassword').markAsPristine();
-        this.myForm.get('confirmPassword').markAsUntouched();
-        this.myForm.get('confirmPassword').updateValueAndValidity();
+          this.myForm.get('confirmPassword').setValue('');
+          this.myForm.get('confirmPassword').markAsPristine();
+          this.myForm.get('confirmPassword').markAsUntouched();
+          this.myForm.get('confirmPassword').updateValueAndValidity();
 
-        this.isLoading = false;
-        this.openSnackBar('Account edited successfully', 'Close');
-        console.log(data);
-      });
+          /* actualizar nick de credenciales */
+          const cred = {
+            username: this.usuario.nick,
+            id: this.idusuario,
+            token: this.token
+          };
+          this.credentialsService.setCredentials(cred, true);
+
+          this.isLoading = false;
+          this.openSnackBar('Account edited successfully', 'Close');
+          console.log(data);
+        },
+        error => {
+          console.log(error);
+        }
+      );
     }
   }
 
@@ -155,6 +168,11 @@ export class CuentaComponent implements OnInit, OnDestroy {
   get idusuario(): number | null {
     const credentials = this.credentialsService.credentials;
     return credentials ? credentials.id : null;
+  }
+
+  get token(): string | null {
+    const credentials = this.credentialsService.credentials;
+    return credentials ? credentials.token : null;
   }
 
   openSnackBar(message: string, action: string) {
