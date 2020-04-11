@@ -253,10 +253,10 @@ ControllerProyectos.proyectoAgregarUsuario = function(idProyecto, data) {
   });
 };
 
-ControllerProyectos.proyectoEliminarUsuario = function(idProyecto, data) {
+ControllerProyectos.proyectoEliminarUsuario = function(idproyecto, idusuario) {
   return new Promise(function(resolve, reject) {
     const sql = 'delete from roles where idusuario=? and idproyecto=?';
-    connection.query(sql, [data.idusuario, idProyecto], function(err, result) {
+    connection.query(sql, [idusuario, idproyecto], function(err, result) {
       if (err) {
         reject({ error: 'Error inesperado en proyectoEliminarUsuario' });
       } else {

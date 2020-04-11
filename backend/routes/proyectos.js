@@ -117,11 +117,10 @@ router.post('/:id/agregarUsuario', verifyToken, function(req, res, next) {
     });
 });
 
-router.delete('/:id/eliminarUsuario', verifyToken, function(req, res, next) {
+router.delete('/:id/eliminarUsuario/:idusuario', verifyToken, function(req, res, next) {
   console.log('proyectoEliminarUsuario');
-  if (!propertyChecker(req.body, ['idusuario'])) throw new ErrorHandler(422, 'Missing required fields: idusuario');
   controllerProyectos
-    .proyectoEliminarUsuario(req.params.id, req.body)
+    .proyectoEliminarUsuario(req.params.id, req.params.idusuario)
     .then(function(proyecto) {
       res.json(proyecto);
     })

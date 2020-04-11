@@ -14,6 +14,9 @@ import { Pbi } from '@app/models/pbis';
 import { Sprint } from '@app/models/sprints';
 import { Permisos } from '@app/models/permisos';
 import { MatSnackBar, MatPaginator, MatTableDataSource } from '@angular/material';
+import { Usuario } from '@app/models/usuarios';
+import { ConfirmDialogComponent } from '@app/shared/confirmDialog/confirmDialog.component';
+import { formatRoles } from '@app/shared/helperRoles';
 
 interface Rol {
   value: string;
@@ -46,6 +49,8 @@ export class OverviewComponent implements OnInit, OnDestroy {
 
   displayedColumns: string[] = ['Name', 'Role'];
   dataSource: any[] = [];
+  pageSizeOptions: number[];
+  pageSize: number;
 
   pbis: Pbi[];
 
@@ -77,50 +82,68 @@ export class OverviewComponent implements OnInit, OnDestroy {
   ];
   selectedRol = this.roles[0].value;
 
+  dialogRefConfirm: MatDialogRef<any>;
+
   constructor(
     private credentialsService: CredentialsService,
     private proyectosService: ProyectosService,
-    public dialog: MatDialog,
+    private usuariosService: UsuariosService,
     private activeRoute: ActivatedRoute,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit() {
-    this.actualizar();
-  }
-
-  actualizar() {
-    console.log('actualizar');
     this.isLoading = true;
+    // modificar la UI en función del rol para ajustarla a los cards
+    if (this.permisos.mantenerUsuarios === 1) {
+      this.displayedColumns = ['Actions', 'Name', 'Role'];
+      this.pageSizeOptions = [5];
+      this.pageSize = 5;
+    } else {
+      this.displayedColumns = ['Name', 'Role'];
+      this.pageSizeOptions = [8];
+      this.pageSize = 8;
+    }
     this.activeRoute.params.subscribe(routeParams => {
       //console.log(routeParams);
       this.proyectosService.getProyecto(routeParams.id).subscribe(proyecto => {
         //console.log(proyecto);
         this.proyecto = proyecto;
-        this.proyectosService.getProyectoUsuariosRoles(proyecto.idproyecto).subscribe(usuarios => {
-          this.proyecto.usuarios = usuarios;
-
-          /*   this.proyecto.usuarios.push({ nick: "aaaaaaa", rol: "stakeholder" })
-          this.proyecto.usuarios.push({ nick: "aaaaaaa", rol: "stakeholder" })
-          this.proyecto.usuarios.push({ nick: "aaaaaaa", rol: "stakeholder" })
-          this.proyecto.usuarios.push({ nick: "aaaaaaa", rol: "stakeholder" })
-          this.proyecto.usuarios.push({ nick: "aaaaaaa", rol: "stakeholder" })
-          this.proyecto.usuarios.push({ nick: "aaaaaaa", rol: "stakeholder" })
-          this.proyecto.usuarios.push({ nick: "aaaaaaa", rol: "stakeholder" })
-          this.proyecto.usuarios.push({ nick: "aaaaaaa", rol: "stakeholder" })
-          this.proyecto.usuarios.push({ nick: "aaaaaaa", rol: "stakeholder" }) */
-          this.dataTable = new MatTableDataSource(this.proyecto.usuarios);
-          this.dataTable.paginator = this.paginator;
-          this.isLoading = false;
-          console.log(proyecto);
-        });
-
-        this.proyectosService.getProyectosPBIs(proyecto.idproyecto).subscribe((pbis: []) => {
-          this.pbis = pbis;
-          this.actualizarGraficoPBC();
-          this.actualizarGraficoPoC();
-        });
+        this.actualizar();
       });
+    });
+  }
+
+  actualizar() {
+    console.log('actualizar');
+    this.actualizarUsuarios();
+    this.actualizarGraficos();
+  }
+
+  actualizarUsuarios() {
+    this.proyectosService.getProyectoUsuariosRoles(this.proyecto.idproyecto).subscribe(usuarios => {
+      this.proyecto.usuarios = usuarios;
+      /* this.proyecto.usuarios.push({ nick: "aaaaaaa", rol: "stakeholder" })
+      this.proyecto.usuarios.push({ nick: "aaaaaaa", rol: "stakeholder" })
+      this.proyecto.usuarios.push({ nick: "aaaaaaa", rol: "stakeholder" })
+      this.proyecto.usuarios.push({ nick: "aaaaaaa", rol: "stakeholder" })
+      this.proyecto.usuarios.push({ nick: "aaaaaaa", rol: "stakeholder" })
+      this.proyecto.usuarios.push({ nick: "aaaaaaa", rol: "stakeholder" })
+      this.proyecto.usuarios.push({ nick: "aaaaaaa", rol: "stakeholder" })
+      this.proyecto.usuarios.push({ nick: "aaaaaaa", rol: "stakeholder" })
+      this.proyecto.usuarios.push({ nick: "aaaaaaa", rol: "stakeholder" }) */
+      this.dataTable = new MatTableDataSource(this.proyecto.usuarios);
+      this.dataTable.paginator = this.paginator;
+      this.isLoading = false;
+    });
+  }
+
+  actualizarGraficos() {
+    this.proyectosService.getProyectosPBIs(this.proyecto.idproyecto).subscribe((pbis: []) => {
+      this.pbis = pbis;
+      this.actualizarGraficoPBC();
+      this.actualizarGraficoPoC();
     });
   }
 
@@ -565,7 +588,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
         enabled: false
       }
     };
-    console.log(this.chartOptionsPoC);
+    // console.log(this.chartOptionsPoC);
   }
 
   invitar() {
@@ -578,11 +601,11 @@ export class OverviewComponent implements OnInit, OnDestroy {
         invitadoPor: this.username
       })
       .subscribe((data: any) => {
-        console.log(data);
+        // console.log(data);
         this.newEmail = '';
         if (data.existe) {
           this._snackBar.open('Member successfully added!', 'Close', { duration: 3000 });
-          this.actualizar();
+          this.actualizarUsuarios();
         } else {
           this._snackBar.open(
             'This email does not have an account linked. An invitation has been sent instead!',
@@ -592,6 +615,33 @@ export class OverviewComponent implements OnInit, OnDestroy {
           this.isLoading = false;
         }
       });
+  }
+
+  async eliminarUsuario(us: any) {
+    const rol = formatRoles(us.rol);
+    const usuario = await this.usuariosService.getUsuario(us.idusuario).toPromise();
+
+    console.log(usuario);
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.autoFocus = false;
+    dialogConfig.data = {
+      dialogMode: 'User',
+      dialogModeVerbo: 'kick out from the project',
+      descripcion:
+        '[' + rol + '] ' + usuario.nick + ' - ' + usuario.apellido1 + ' ' + usuario.apellido2 + ', ' + usuario.nombre,
+      botonConfirm: 'Kick'
+    };
+    this.dialogRefConfirm = this.dialog.open(ConfirmDialogComponent, dialogConfig);
+    this.dialogRefConfirm.afterClosed().subscribe(data => {
+      if (data != undefined) {
+        console.log(data);
+        this.isLoading = true;
+        this.proyectosService.eliminarUsuario(this.proyecto.idproyecto, us.idusuario).subscribe(res => {
+          this.isLoading = false;
+          this.actualizarUsuarios();
+        });
+      }
+    });
   }
 
   ngOnDestroy() {}

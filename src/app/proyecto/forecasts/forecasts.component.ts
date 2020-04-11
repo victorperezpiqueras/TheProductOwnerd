@@ -166,21 +166,21 @@ export class ForecastsComponent implements OnInit, OnDestroy {
     // obtenemos los puntos restantes para calcular los consumidos:
     var restantes = this.sprints[this.ultimoSprint].restante;
     //console.log('restantes', restantes);
-    console.log('this.ultimoSprint', this.ultimoSprint);
+    // console.log('this.ultimoSprint', this.ultimoSprint);
     var quemados = this.puntosTotales - restantes;
-    console.log('quemados', quemados);
+    // console.log('quemados', quemados);
 
     // calculamos los quemados de los sprints que no se tienen en cuenta:
     var indexSinContar = this.ultimoSprint - numeroSprints; /*  + 1; */
-    console.log('indexSinContar', indexSinContar);
+    // console.log('indexSinContar', indexSinContar);
     var restantesSinContar = this.sprints[indexSinContar].restante;
     var quemadosSinContar = this.puntosTotales - restantesSinContar;
     // los restamos a los totales para sacar los quemados en la franja:
     var quemadosCalculados = quemados - quemadosSinContar;
-    console.log('quemadosCalculados', quemadosCalculados);
+    // console.log('quemadosCalculados', quemadosCalculados);
     // calculamos la media:
     this.mediaAverage = quemadosCalculados / numeroSprints;
-    console.log('this.mediaAverage', this.mediaAverage);
+    // console.log('this.mediaAverage', this.mediaAverage);
 
     // calculamos los sprints enteros esperados:
     var puntoFinal = this.ultimoSprint + Math.trunc(restantes / this.mediaAverage);
@@ -206,23 +206,23 @@ export class ForecastsComponent implements OnInit, OnDestroy {
     sprints1.splice(0, 1);
     var num = this.ultimoSprint - numeroSprints;
     sprints1 = sprints1.slice(num);
-    console.log(sprints1);
-    console.log(this.ultimoSprint);
-    console.log(num);
-    console.log(numeroSprints);
+    // console.log(sprints1);
+    // console.log(this.ultimoSprint);
+    // console.log(num);
+    // console.log(numeroSprints);
     // ordenar los sprints por quemado ascendente y descendente:
     var orderedWorst = [
       ...sprints1.sort((p1, p2) => {
         return p1.quemado - p2.quemado;
       })
     ];
-    console.log(orderedWorst);
+    // console.log(orderedWorst);
     var orderedBest = [
       ...sprints1.sort((p1, p2) => {
         return p2.quemado - p1.quemado;
       })
     ];
-    console.log(orderedBest);
+    // console.log(orderedBest);
     // obtener las medias de los mejores y peores quemados:
     /* var mediaWorst = (orderedWorst[0].quemado + orderedWorst[1].quemado + orderedWorst[2].quemado) / 3;
     var mediaBest = (orderedBest[0].quemado + orderedBest[1].quemado + orderedBest[2].quemado) / 3; */
@@ -466,7 +466,7 @@ export class ForecastsComponent implements OnInit, OnDestroy {
         enabled: false
       }
     };
-    console.log(this.chartOptions);
+    // console.log(this.chartOptions);
   }
 
   /*  generarEjesPoC() {

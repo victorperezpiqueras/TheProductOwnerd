@@ -33,3 +33,20 @@ table {
   /*  width: 20vw; */
   margin-top: 2%;
 }
+
+.borrar-usuario {
+  display: none;
+  cursor: pointer;
+  color: red;
+}
+.borrar-hueco {
+}
+tr:hover .borrar-hueco {
+  display: none;
+}
+tr:hover {
+  background-color: rgb(241, 241, 241);
+}
+tr:hover .borrar-usuario {
+  display: block;
+}

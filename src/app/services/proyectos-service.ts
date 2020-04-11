@@ -17,13 +17,13 @@ export class ProyectosService {
     console.log('login', JSON.stringify(credenciales));
     return this.http.post<any>(this.url, JSON.stringify(credenciales), httpOptions);
   }
-  getProyecto(id: number): Observable<any> {
-    return this.http.get<any>(this.url + '/' + id, httpOptions);
+  getProyecto(idproyecto: number): Observable<any> {
+    return this.http.get<any>(this.url + '/' + idproyecto, httpOptions);
   }
-  getProyectosUsuarios(idproyecto: any): Observable<any> {
+  getProyectosUsuarios(idproyecto: number): Observable<any> {
     return this.http.get<any>(this.url + '/' + idproyecto + '/usuarios', httpOptions);
   }
-  getProyectoUsuariosRoles(idproyecto: any): Observable<any> {
+  getProyectoUsuariosRoles(idproyecto: number): Observable<any> {
     return this.http.get<any>(this.url + '/' + idproyecto + '/usuarios/roles', httpOptions);
   }
   getProyectosUsuariosRoles(): Observable<any> {
@@ -32,12 +32,13 @@ export class ProyectosService {
   crearProyecto(data: any): Observable<any> {
     return this.http.post<any>(this.url, JSON.stringify(data), httpOptions);
   }
-
-  getProyectosPBIs(idproyecto: any): Observable<any> {
+  getProyectosPBIs(idproyecto: number): Observable<any> {
     return this.http.get<any>(this.url + '/' + idproyecto + '/pbis', httpOptions);
   }
-
   invitarUsuario(idproyecto: number, email: any): Observable<any> {
     return this.http.post<any>(this.url + '/' + idproyecto + '/invitar', JSON.stringify(email), httpOptions);
+  }
+  eliminarUsuario(idproyecto: number, idusuario: number): Observable<any> {
+    return this.http.delete<any>(this.url + '/' + idproyecto + '/eliminarUsuario' + '/' + idusuario, httpOptions);
   }
 }

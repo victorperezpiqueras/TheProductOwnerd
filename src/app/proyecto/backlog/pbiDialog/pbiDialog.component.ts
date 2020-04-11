@@ -205,7 +205,8 @@ export class PbiDialogComponent implements OnInit {
     dialogConfig.data = {
       dialogMode: 'Acceptance Criteria',
       dialogModeVerbo: 'remove',
-      descripcion: criterio.nombre
+      descripcion: criterio.nombre,
+      botonConfirm: 'Remove'
     };
     this.dialogRefConfirm = this.dialog.open(ConfirmDialogComponent, dialogConfig);
     this.dialogRefConfirm.afterClosed().subscribe(data => {
@@ -319,7 +320,8 @@ export class PbiDialogComponent implements OnInit {
     dialogConfig.data = {
       dialogMode: 'File',
       dialogModeVerbo: 'remove',
-      descripcion: archivo.nombre
+      descripcion: archivo.nombre,
+      botonConfirm: 'Remove'
     };
     this.dialogRefConfirm = this.dialog.open(ConfirmDialogComponent, dialogConfig);
     this.dialogRefConfirm.afterClosed().subscribe(data => {
@@ -349,13 +351,15 @@ export class PbiDialogComponent implements OnInit {
       dialogConfig.data = {
         dialogMode: 'PBI',
         dialogModeVerbo: 'mark as done',
-        descripcion: this.titulo
+        descripcion: this.titulo,
+        botonConfirm: 'Mark as Done'
       };
     } else {
       dialogConfig.data = {
         dialogMode: 'PBI',
         dialogModeVerbo: 'unmark as done',
-        descripcion: this.titulo
+        descripcion: this.titulo,
+        botonConfirm: 'Unmark as Done'
       };
     }
     this.dialogRefConfirm = this.dialog.open(ConfirmDialogComponent, dialogConfig);

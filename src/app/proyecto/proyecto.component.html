@@ -8,7 +8,7 @@
 
     <mat-card class="main-card" fxFlex="80" *ngIf="permisos && proyecto">
       <mat-tab-group mat-align-tabs="center" [selectedIndex]="0" (selectedTabChange)="onTabChanged($event)">
-        <mat-tab label="Reports">
+        <mat-tab label="Overview">
           <app-overview #overview [proyecto]="proyecto" [permisos]="permisos"></app-overview>
         </mat-tab>
 

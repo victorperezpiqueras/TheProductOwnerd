@@ -13,10 +13,26 @@
       </mat-card>
 
       <div fxFlex="20" fxLayout="column" fxLayoutGap="30px">
-        <mat-card fxFlex="80">
+        <mat-card fxFlex>
           <mat-card-title>Team</mat-card-title>
-          <!--  <hr> -->
           <table mat-table [dataSource]="dataTable" style="overflow-y: scroll;">
+            <ng-container matColumnDef="Actions">
+              <th mat-header-cell *matHeaderCellDef></th>
+              <td mat-cell *matCellDef="let usuario">
+                <div class="borrar-hueco">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                <mat-icon
+                  *ngIf="usuario.idusuario !== idusuario"
+                  class="borrar-usuario"
+                  (click)="eliminarUsuario(usuario)"
+                >
+                  remove_circle</mat-icon
+                >
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="Name">
+              <th mat-header-cell *matHeaderCellDef>Nick</th>
+              <td mat-cell *matCellDef="let usuario">{{ usuario.nick }}</td>
+            </ng-container>
             <ng-container matColumnDef="Role">
               <th mat-header-cell *matHeaderCellDef>Role</th>
               <td mat-cell *matCellDef="let usuario">
@@ -25,15 +41,11 @@
                 <p *ngIf="usuario.rol == 'stakeholder'">Stakeholder</p>
               </td>
             </ng-container>
-            <ng-container matColumnDef="Name">
-              <th mat-header-cell *matHeaderCellDef>Nick</th>
-              <td mat-cell *matCellDef="let usuario">{{ usuario.nick }}</td>
-            </ng-container>
             <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
           </table>
 
-          <mat-paginator [pageSizeOptions]="[5]" [pageIndex]="0"></mat-paginator>
+          <mat-paginator [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" [pageIndex]="0"></mat-paginator>
         </mat-card>
 
         <!--  <h1 class="mat-h2" fxFlex="20">Invite New Member</h1> -->

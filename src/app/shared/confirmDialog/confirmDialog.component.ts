@@ -39,22 +39,23 @@ export class ConfirmDialogComponent implements OnInit {
     this.dialogMode = data.dialogMode;
     this.dialogModeVerbo = data.dialogModeVerbo;
     this.descripcion = data.descripcion;
-    if (this.dialogModeVerbo == 'remove') {
-      this.botonConfirm = 'Remove';
-    } else if (this.dialogModeVerbo == 'mark as done') this.botonConfirm = 'Mark as Done';
-    else if (this.dialogModeVerbo == 'unmark as done') this.botonConfirm = 'Unmark as Done';
+    this.botonConfirm = data.botonConfirm;
+    /*   if (this.dialogModeVerbo == 'remove') {
+        this.botonConfirm = 'Remove';
+      } else if (this.dialogModeVerbo == 'mark as done') this.botonConfirm = 'Mark as Done';
+      else if (this.dialogModeVerbo == 'unmark as done') this.botonConfirm = 'Unmark as Done'; */
   }
 
   ngOnInit() {}
 
   openSnackBar(message: string, action: string) {
     this._snackBar.open(message, action, {
-      duration: 2500 //miliseconds
+      duration: 3000 //miliseconds
     });
   }
 
   save() {
-    console.log(this.dialogModeVerbo);
+    /* console.log(this.dialogModeVerbo); */
     if (this.dialogModeVerbo == 'remove') {
       this.dialogRef.close({
         remove: true
@@ -76,6 +77,11 @@ export class ConfirmDialogComponent implements OnInit {
         });
         this.openSnackBar('PBI unmarked as done successfully', 'Close');
       }
+    } else if (this.dialogMode == 'User') {
+      this.dialogRef.close({
+        remove: true
+      });
+      this.openSnackBar('User kicked from the project!', 'Close');
     }
   }
 
