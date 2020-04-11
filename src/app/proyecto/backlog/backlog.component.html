@@ -2,7 +2,7 @@
   <div *ngIf="proyecto" fxLayout="column" fxLayoutGap="2%">
     <app-loader class="loader" [isLoading]="isLoading"></app-loader>
     <div fxLayout="row">
-      <h2 fxFlex="20">{{ itemListTitle }}</h2>
+      <h2 class="mat-h1" fxFlex="20">{{ itemListTitle }}</h2>
 
       <div class="example-form" fxLayoutAlign="center center" fxFlex="50">
         <mat-form-field class="example-full-width" style="width: 30%;">
@@ -34,7 +34,7 @@
           <button mat-menu-item (click)="filtrarLabel('infrastructure')">Infrastructure</button>
         </mat-menu>
 
-        <button
+        <!-- <button
           mat-raised-button
           (click)="ordenarValor()"
           [color]="viewDone ? 'accent' : 'primary'"
@@ -42,7 +42,28 @@
         >
           Order by Value <mat-icon *ngIf="orderValueMode">arrow_drop_up</mat-icon>
           <mat-icon *ngIf="!orderValueMode">arrow_drop_down</mat-icon>
+        </button> -->
+
+        <button
+          mat-raised-button
+          [matMenuTriggerFor]="menu2"
+          style="margin-left: 5%;"
+          [color]="viewDone ? 'accent' : 'primary'"
+        >
+          <div *ngIf="botonOrder === 'priority'">Manual</div>
+          <div *ngIf="botonOrder === 'valueup'">Value<mat-icon class="mat-order-icon">arrow_upward</mat-icon></div>
+          <div *ngIf="botonOrder === 'valuedown'">Value<mat-icon class="mat-order-icon">arrow_downward</mat-icon></div>
+          <div *ngIf="botonOrder === 'default'">Order by</div>
         </button>
+        <mat-menu #menu2="matMenu">
+          <button mat-menu-item (click)="orderBy('priority')">Manual</button>
+          <button mat-menu-item (click)="orderBy('valueup')">
+            Value<mat-icon class="mat-order-icon">arrow_upward </mat-icon>
+          </button>
+          <button mat-menu-item (click)="orderBy('valuedown')">
+            Value<mat-icon class="mat-order-icon">arrow_downward </mat-icon>
+          </button>
+        </mat-menu>
 
         <button
           mat-raised-button
@@ -69,42 +90,42 @@
         cdkDropList
         [cdkDropListData]="showingPbis"
         (cdkDropListDropped)="drop($event)"
-        [cdkDropListDisabled]="permisos?.ordenar == 0"
+        [cdkDropListDisabled]="permisos?.ordenar == 0 || !priorityOn"
       >
         <!-- cdkDragBoundary=".droplist" -->
         <div *ngFor="let pbi of showingPbis">
-          <mat-card
-            *ngIf="pbi.done == 0"
-            class="card"
-            matBadge="{{ pbi.estimacion }}"
-            matBadgeOverlap="true"
-            matBadgeSize="medium"
-            matBadgeColor="primary"
-            cdkDrag
-            (click)="editarPbiDialog(pbi)"
-          >
+          <mat-card *ngIf="pbi.done == 0" class="card" cdkDrag (click)="editarPbiDialog(pbi)">
+            <!-- matBadge="{{ pbi.estimacion }}" matBadgeOverlap="true" matBadgeSize="medium" matBadgeColor="primary" -->
             <mat-card-header>
               <mat-card-title>#{{ pbi.idpbi }} - {{ pbi.titulo }}</mat-card-title>
-              &nbsp;
-              <mat-chip-list>
-                <mat-chip [ngStyle]="{ 'background-color': getLabelColor(pbi.label) }" color="accent" selected>
-                  {{ pbi.label }}
-                </mat-chip>
-                &nbsp;&nbsp;
-                <mat-chip *ngIf="pbi.valor" color="primary" selected>
-                  <p class="valor">
-                    {{ pbi.valor }}
-                    <mat-icon class="icon-valor">offline_bolt</mat-icon>
-                  </p>
-                </mat-chip>
-              </mat-chip-list>
-
-              &nbsp;&nbsp;
+              <div fxLayout="row" fxLayoutGap="10px" style="float:right;margin-left:auto; margin-right:0;">
+                <mat-chip-list>
+                  <mat-chip
+                    [ngStyle]="{ 'background-color': getLabelColor(pbi.label) }"
+                    color="accent"
+                    selected
+                    style="white-space:nowrap;"
+                  >
+                    {{ pbi.label }}
+                  </mat-chip>
+                </mat-chip-list>
+                <button
+                  *ngIf="pbi.estimacion != null"
+                  class="estimacion"
+                  mat-mini-fab
+                  color="accent"
+                  [disableRipple]="true"
+                >
+                  {{ pbi.estimacion }}
+                </button>
+                <mat-icon *ngIf="!(permisos?.ordenar == 0 || !priorityOn)" cdkDragHandle>drag_indicator</mat-icon>
+              </div>
+            </mat-card-header>
+            <mat-card-content>
               <p *ngIf="pbi.descripcion" style="color: rgb(119, 119, 119);font-size: 1.5vmin;margin-left:2%;">
                 {{ pbi.descripcion | limitTo: 100 }}
               </p>
-            </mat-card-header>
-            <mat-card-content></mat-card-content>
+            </mat-card-content>
           </mat-card>
           <br />
         </div>
@@ -121,15 +142,40 @@
     <div class="div-list" *ngIf="viewDone">
       <div class="droplist">
         <div *ngFor="let pbi of showingDonePbis">
-          <mat-card
-            *ngIf="pbi.done == 1"
-            class="card"
-            matBadge="{{ pbi.estimacion }}"
-            matBadgeOverlap="true"
-            matBadgeSize="medium"
-            matBadgeColor="accent"
-            (click)="verPbiDialog(pbi)"
-          >
+          <mat-card *ngIf="pbi.done == 1" class="card" (click)="verPbiDialog(pbi)">
+            <!-- matBadge="{{ pbi.estimacion }}" matBadgeOverlap="true" matBadgeSize="medium" matBadgeColor="primary" -->
+            <mat-card-header>
+              <mat-card-title>#{{ pbi.idpbi }} - {{ pbi.titulo }}</mat-card-title>
+              <div fxLayout="row" fxLayoutGap="10px" style="float:right;margin-left:auto; margin-right:0;">
+                <mat-chip-list>
+                  <mat-chip
+                    [ngStyle]="{ 'background-color': getLabelColor(pbi.label) }"
+                    color="accent"
+                    selected
+                    style="white-space:nowrap;"
+                  >
+                    {{ pbi.label }}
+                  </mat-chip>
+                </mat-chip-list>
+                <button
+                  *ngIf="pbi.estimacion != null"
+                  class="estimacion"
+                  mat-mini-fab
+                  color="accent"
+                  [disableRipple]="true"
+                >
+                  {{ pbi.estimacion }}
+                </button>
+              </div>
+            </mat-card-header>
+            <mat-card-content>
+              <p *ngIf="pbi.descripcion" style="color: rgb(119, 119, 119);font-size: 1.5vmin;margin-left:2%;">
+                {{ pbi.descripcion | limitTo: 100 }}
+              </p>
+            </mat-card-content>
+          </mat-card>
+          <!-- <mat-card *ngIf="pbi.done == 1" class="card" matBadge="{{ pbi.estimacion }}" matBadgeOverlap="true"
+            matBadgeSize="medium" matBadgeColor="accent" (click)="verPbiDialog(pbi)">
             <mat-card-header>
               <mat-card-title>#{{ pbi.idpbi }} - {{ pbi.titulo }}</mat-card-title>
               &nbsp;
@@ -151,7 +197,7 @@
                 {{ pbi.descripcion | limitTo: 100 }}
               </p>
             </mat-card-header>
-          </mat-card>
+          </mat-card> -->
           <br />
         </div>
       </div>

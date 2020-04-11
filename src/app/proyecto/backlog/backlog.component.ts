@@ -44,7 +44,10 @@ export class BacklogComponent implements OnInit, OnDestroy {
   botonLabel: string = 'Filter by Label';
   botonLabelColor: string = '#2196F3';
 
-  orderValueMode: boolean = false;
+  botonOrder: string = 'default';
+  priorityOn: boolean = true;
+
+  /*   orderValueMode: boolean = false; */
 
   constructor(
     private router: Router,
@@ -96,20 +99,24 @@ export class BacklogComponent implements OnInit, OnDestroy {
   }
 
   actualizarFiltro() {
-    this.showingPbis = this.pbis.filter(pbi => {
+    if (this.searchword == '') {
+      this.priorityOn = true;
+      this.clearSearch();
+    } else this.priorityOn = false;
+    this.showingPbis = this.showingPbis.filter(pbi => {
       if (pbi.titulo.includes(this.searchword) || (pbi.descripcion.includes(this.searchword) && pbi.done == 0))
         return true;
     });
     this.showingPbis.sort((pbi1, pbi2) => {
       return pbi1.prioridad - pbi2.prioridad;
     });
-    this.showingDonePbis = this.pbis.filter(pbi => {
+    this.showingDonePbis = this.showingDonePbis.filter(pbi => {
       if (pbi.titulo.includes(this.searchword) || (pbi.descripcion.includes(this.searchword) && pbi.done == 1))
         return true;
     });
   }
 
-  ordenarValor() {
+  /* ordenarValor() {
     this.filtrarLabel('none');
     this.showingPbis = this.pbis.filter((pbi: any) => pbi.done == 0);
     this.showingDonePbis = this.pbis.filter((pbi: any) => pbi.done == 1);
@@ -129,16 +136,43 @@ export class BacklogComponent implements OnInit, OnDestroy {
       });
     }
     this.orderValueMode = !this.orderValueMode;
+  } */
+
+  orderBy(modo: string) {
+    this.botonOrder = modo;
+    if (modo === 'priority') {
+      this.priorityOn = true;
+      this.showingPbis.sort((pbi1, pbi2) => {
+        return pbi1.prioridad - pbi2.prioridad;
+      });
+    } else if (modo === 'valueup') {
+      this.priorityOn = false;
+      this.showingPbis.sort((pbi1, pbi2) => {
+        return pbi2.valor - pbi1.valor;
+      });
+      this.showingDonePbis.sort((pbi1, pbi2) => {
+        return pbi2.valor - pbi1.valor;
+      });
+    } else if (modo === 'valuedown') {
+      this.priorityOn = false;
+      this.showingPbis.sort((pbi1, pbi2) => {
+        return pbi1.valor - pbi2.valor;
+      });
+      this.showingDonePbis.sort((pbi1, pbi2) => {
+        return pbi1.valor - pbi2.valor;
+      });
+    }
   }
 
   filtrarLabel(label: string) {
+    this.priorityOn = false;
     if (label == 'none') {
       this.botonLabel = 'Filter by Label';
       //this.showingPbis = this.pbis;
       this.showingPbis = this.pbis.filter((pbi: any) => pbi.done == 0);
-      this.showingPbis.sort((pbi1, pbi2) => {
-        return pbi1.prioridad - pbi2.prioridad;
-      });
+      /*  this.showingPbis.sort((pbi1, pbi2) => {
+         return pbi1.prioridad - pbi2.prioridad;
+       }); */
       this.showingDonePbis = this.pbis.filter((pbi: any) => pbi.done == 1);
     } else {
       this.botonLabel = label.charAt(0).toUpperCase() + label.substring(1);
@@ -153,7 +187,11 @@ export class BacklogComponent implements OnInit, OnDestroy {
   }
 
   clearSearch() {
+    this.priorityOn = true;
+    this.botonOrder = 'default';
     this.searchword = '';
+    this.botonLabel = 'Filter by Label';
+    this.botonLabelColor = this.getLabelButtonColor();
     this.showingPbis = this.pbis.filter((pbi: any) => pbi.done == 0);
     this.showingPbis.sort((pbi1, pbi2) => {
       return pbi1.prioridad - pbi2.prioridad;

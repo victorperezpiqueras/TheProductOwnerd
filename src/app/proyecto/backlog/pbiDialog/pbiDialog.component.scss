@@ -52,7 +52,7 @@
   /* Adjust these values accordingly */
   top: 4px;
   /*  left: 5px; */
-  font-size: 3vmin;
+  font-size: 2vmin;
 }
 
 .criterio {
@@ -87,6 +87,9 @@
   align-items: center;
   justify-content: center;
   vertical-align: middle;
+}
+.estimacion:hover {
+  cursor: default;
 }
 
 /* .save-button {
