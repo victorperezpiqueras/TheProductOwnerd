@@ -29,6 +29,18 @@ router.get('/:id', verifyToken, function(req, res, next) {
     });
 });
 
+router.get('/:id/sprintgoals', verifyToken, function(req, res, next) {
+  console.log('getProyecto');
+  controllerProyectos
+    .getSprintGoals(req.params.id)
+    .then(function(sprintgoals) {
+      res.json(sprintgoals);
+    })
+    .catch(function(err) {
+      res.status(500).json(err);
+    });
+});
+
 router.get('/:id/usuarios', verifyToken, function(req, res, next) {
   console.log('getProyectosUsuarios');
   controllerProyectos
@@ -95,11 +107,20 @@ router.post('/', verifyToken, function(req, res, next) {
     });
 });
 
-/* :id=idproyecto 
-      body: 
-      rol="desarrollador || productOwner || stakeholder"
-      idusuario = idusuario a agregar
-   */
+router.put('/:id', verifyToken, function(req, res, next) {
+  console.log('actualizarProyecto');
+  if (!propertyChecker(req.body, ['nombre', 'descripcion', 'sprintActual']))
+    throw new ErrorHandler(422, 'Missing required fields: nombre, descripcion, sprintActual');
+  controllerProyectos
+    .actualizarProyecto(req.params.id, req.body)
+    .then(function(proyecto) {
+      res.json(proyecto);
+    })
+    .catch(function(err) {
+      res.status(500).json(err);
+    });
+});
+
 router.post('/:id/agregarUsuario', verifyToken, function(req, res, next) {
   console.log('proyectoAgregarUsuario');
   /* const data = { idusuario: req.body.idusuario, rol: req.body.rol };

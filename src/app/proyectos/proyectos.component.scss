@@ -1,24 +1,27 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
-h1{
-  font-family: 'Roboto', sans-serif;
+@import url("https://fonts.googleapis.com/css?family=Roboto&display=swap");
+h1 {
+  font-family: "Roboto", sans-serif;
 }
 .container {
   text-align: left;
   padding: 1rem;
+
+  background: radial-gradient(circle, rgba(174, 238, 186, 1) 0%, rgba(148, 187, 233, 1) 100%);
 }
-.loader{
+.loader {
   position: relative;
-    margin-left: 50%;
+  margin-left: 50%;
 }
 .mat-icon {
   vertical-align: middle;
 }
 
-.proyectos-card{
-  background-color: #ffffff;
+.proyectos-card {
+  /* background-color: #ffffff; */
+  background: radial-gradient(circle, rgba(174, 238, 186, 1) 0%, rgba(148, 187, 233, 1) 100%);
 }
 
-.proyecto-card{
+.proyecto-card {
   background-color: #dfeeff;
 }
 

@@ -95,7 +95,7 @@ export class ForecastsComponent implements OnInit, OnDestroy {
           //console.log(proyecto);
         });
 
-        this.proyectosService.getProyectosPBIs(proyecto.idproyecto).subscribe((pbis: []) => {
+        this.proyectosService.getProyectosPBI(proyecto.idproyecto).subscribe((pbis: []) => {
           this.pbis = pbis;
           /* grafico Velocidad */
           this.actualizarGraficoVelocidad();

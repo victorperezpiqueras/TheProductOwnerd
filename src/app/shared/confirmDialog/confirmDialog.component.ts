@@ -27,6 +27,7 @@ export class ConfirmDialogComponent implements OnInit {
   dialogModeVerbo: string;
   descripcion: string;
   botonConfirm: string;
+  sprintActual: number;
 
   sprint: number = null;
 
@@ -40,13 +41,16 @@ export class ConfirmDialogComponent implements OnInit {
     this.dialogModeVerbo = data.dialogModeVerbo;
     this.descripcion = data.descripcion;
     this.botonConfirm = data.botonConfirm;
+    this.sprintActual = data.sprintActual;
     /*   if (this.dialogModeVerbo == 'remove') {
         this.botonConfirm = 'Remove';
       } else if (this.dialogModeVerbo == 'mark as done') this.botonConfirm = 'Mark as Done';
       else if (this.dialogModeVerbo == 'unmark as done') this.botonConfirm = 'Unmark as Done'; */
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    if (this.sprintActual) this.sprint = this.sprintActual;
+  }
 
   openSnackBar(message: string, action: string) {
     this._snackBar.open(message, action, {
@@ -82,6 +86,11 @@ export class ConfirmDialogComponent implements OnInit {
         remove: true
       });
       this.openSnackBar('User kicked from the project!', 'Close');
+    } else if (this.dialogMode == 'Sprint') {
+      this.dialogRef.close({
+        remove: true
+      });
+      this.openSnackBar('Sprint switched successfully!', 'Close');
     }
   }
 

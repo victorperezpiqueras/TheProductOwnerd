@@ -26,6 +26,7 @@ export class PbiDialogComponent implements OnInit {
   isLoading = false;
   form: FormGroup;
 
+  /* pbi data */
   idpbi: number;
   titulo: string;
   descripcion: string;
@@ -37,6 +38,7 @@ export class PbiDialogComponent implements OnInit {
   idproyecto: number;
   prioridad: number;
   sprint: number;
+  sprintActual: number;
 
   /* archivos data */
   archivos: any[] = [];
@@ -109,6 +111,7 @@ export class PbiDialogComponent implements OnInit {
     this.idproyecto = data.pbi.idproyecto;
     this.prioridad = data.pbi.prioridad;
     this.sprint = data.pbi.sprint;
+    this.sprintActual = data.sprintActual;
 
     this.fibonacci.unshift(this.estimacion);
   }
@@ -352,6 +355,7 @@ export class PbiDialogComponent implements OnInit {
         dialogMode: 'PBI',
         dialogModeVerbo: 'mark as done',
         descripcion: this.titulo,
+        sprintActual: this.sprintActual,
         botonConfirm: 'Mark as Done'
       };
     } else {

@@ -3,7 +3,7 @@
     <app-loader class="loader" [isLoading]="isLoading"></app-loader>
 
     <div fxLayout="row" fxLayoutGap="2%" fxFlex="40">
-      <mat-card fxFlex="80">
+      <mat-card fxFlex="80" class="mat-elevation-z3">
         <highcharts-chart
           *ngIf="chartOptions"
           [Highcharts]="Highcharts"
@@ -13,7 +13,7 @@
       </mat-card>
 
       <div fxFlex="20" fxLayout="column" fxLayoutGap="30px">
-        <mat-card fxFlex>
+        <mat-card fxFlex class="mat-elevation-z3">
           <mat-card-title>Team</mat-card-title>
           <table mat-table [dataSource]="dataTable" style="overflow-y: scroll;">
             <ng-container matColumnDef="Actions">
@@ -50,8 +50,8 @@
 
         <!--  <h1 class="mat-h2" fxFlex="20">Invite New Member</h1> -->
         <mat-accordion *ngIf="permisos && permisos.mantenerUsuarios == 1">
-          <mat-expansion-panel style="background-color: rgb(239, 255, 253);">
-            <mat-expansion-panel-header style="background-color:rgb(239, 255, 253);">
+          <mat-expansion-panel style="background-color: rgb(239, 255, 253);" class="test mat-elevation-z3">
+            <mat-expansion-panel-header style="background-color:rgb(239, 255, 253);" class="test">
               <mat-panel-title>
                 <h1 class="mat-h2" style="margin: 5px;;">Invite New Member</h1>
               </mat-panel-title>
@@ -96,7 +96,7 @@
     </div>
 
     <div fxLayout="row" fxLayoutGap="2%" fxFlex="40">
-      <mat-card fxFlex="100">
+      <mat-card fxFlex="100" class="mat-elevation-z3">
         <highcharts-chart
           *ngIf="chartOptionsPoC"
           [Highcharts]="Highcharts"

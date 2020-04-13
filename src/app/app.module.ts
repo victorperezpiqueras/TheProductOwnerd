@@ -39,6 +39,7 @@ import { CuentaModule } from './cuenta/cuenta.module';
 import { RegistroModule } from './registro/registro.module';
 import { RegistroService } from './services/registro-service';
 import { InvitacionesService } from './services/invitaciones-service';
+import { SprintGoalsService } from './services/sprintgoals-service';
 
 @NgModule({
   imports: [
@@ -84,7 +85,8 @@ import { InvitacionesService } from './services/invitaciones-service';
     CriteriosService,
     DependenciasService,
     RegistroService,
-    InvitacionesService
+    InvitacionesService,
+    SprintGoalsService
   ],
   entryComponents: [ProyectoDialogComponent, FavoritosDialogComponent, PbiDialogComponent, ConfirmDialogComponent],
   bootstrap: [AppComponent]

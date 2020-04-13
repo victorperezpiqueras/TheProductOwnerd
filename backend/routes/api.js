@@ -41,6 +41,10 @@ router.use('/dependencias', apiDependencias);
 const apiInvitaciones = require('./invitaciones');
 router.use('/invitaciones', apiInvitaciones);
 
+/* SPRINTGOALS */
+const apiSprintGoals = require('./sprintgoals');
+router.use('/sprintgoals', apiSprintGoals);
+
 /* USUARIOS */
 /* router.get('/usuarios', function(req, res, next) {
   console.log('getUsuarios');

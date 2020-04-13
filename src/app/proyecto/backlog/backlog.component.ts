@@ -78,7 +78,7 @@ export class BacklogComponent implements OnInit, OnDestroy {
       this.proyectosService.getProyecto(routeParams.id).subscribe(proyecto => {
         //console.log(proyecto);
         this.proyecto = proyecto;
-        this.proyectosService.getProyectosPBIs(proyecto.idproyecto).subscribe((pbis: []) => {
+        this.proyectosService.getProyectosPBI(proyecto.idproyecto).subscribe((pbis: []) => {
           this.pbis = pbis;
           this.showingPbis = pbis.filter((pbi: any) => pbi.done == 0);
           this.showingPbis.sort((pbi1, pbi2) => {
@@ -218,7 +218,7 @@ export class BacklogComponent implements OnInit, OnDestroy {
 
   actualizarPbis() {
     this.isLoading = true;
-    this.proyectosService.getProyectosPBIs(this.proyecto.idproyecto).subscribe((pbis: any) => {
+    this.proyectosService.getProyectosPBI(this.proyecto.idproyecto).subscribe((pbis: any) => {
       this.pbis = pbis;
       // this.showingPbis = pbis;
       this.showingPbis = this.pbis.filter((pbi: any) => pbi.done == 0);
@@ -240,6 +240,7 @@ export class BacklogComponent implements OnInit, OnDestroy {
       pbi: new Pbi(null, null, null, null, null, null, null, this.pbis.length, null, this.proyecto.idproyecto),
       permisos: this.permisos,
       pbis: this.pbis,
+      sprintActual: this.proyecto.sprintActual,
       dialogMode: 'create'
     };
     this.dialogRef = this.dialog.open(PbiDialogComponent, dialogConfig);
@@ -261,6 +262,7 @@ export class BacklogComponent implements OnInit, OnDestroy {
       pbi: pbi,
       permisos: this.permisos,
       pbis: this.pbis,
+      sprintActual: this.proyecto.sprintActual,
       dialogMode: 'edit'
     };
     this.dialogRef = this.dialog.open(PbiDialogComponent, dialogConfig);

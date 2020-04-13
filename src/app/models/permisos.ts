@@ -7,6 +7,7 @@ export class Permisos {
     public mantenerUsuarios: number,
     public archivarProyecto: number,
     public setDone: number,
-    public proyecciones: number
+    public proyecciones: number,
+    public sprintGoals: number
   ) {}
 }

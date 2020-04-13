@@ -140,7 +140,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
   }
 
   actualizarGraficos() {
-    this.proyectosService.getProyectosPBIs(this.proyecto.idproyecto).subscribe((pbis: []) => {
+    this.proyectosService.getProyectosPBI(this.proyecto.idproyecto).subscribe((pbis: []) => {
       this.pbis = pbis;
       this.actualizarGraficoPBC();
       this.actualizarGraficoPoC();

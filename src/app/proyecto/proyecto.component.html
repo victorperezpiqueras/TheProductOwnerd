@@ -1,13 +1,86 @@
-<div class="container">
+<div class="container" fxFlex="100">
   <app-loader class="loader" [isLoading]="isLoading"></app-loader>
   <div *ngIf="proyecto" fxLayout="column" fxLayoutGap="1%">
-    <mat-card fxFlex="20">
-      <mat-card-title>{{ proyecto.nombre }}</mat-card-title>
-      <mat-card-subtitle>{{ proyecto.descripcion }}</mat-card-subtitle>
-    </mat-card>
+    <div fxFlex="20" fxLayout="row" fxLayoutGap="2%">
+      <mat-card fxFlex="20" class="title-card mat-elevation-z3">
+        <mat-card-header>
+          <mat-card-title style="font-size: x-large">{{ proyecto.nombre }}</mat-card-title>
+          <mat-card-subtitle style="text-align: justify;">{{ proyecto.descripcion }}</mat-card-subtitle>
+        </mat-card-header>
+      </mat-card>
 
-    <mat-card class="main-card" fxFlex="80" *ngIf="permisos && proyecto">
-      <mat-tab-group mat-align-tabs="center" [selectedIndex]="1" (selectedTabChange)="onTabChanged($event)">
+      <mat-card fxFlex="80" class="sprint-card mat-elevation-z3">
+        <mat-card-header>
+          <mat-card-title style="font-size: x-large">Sprint: </mat-card-title>
+          <mat-icon
+            class="arrow-icon"
+            (click)="previousSprint()"
+            *ngIf="permisos && permisos.sprintGoals === 1"
+            matTooltip="Switch to the previous sprint (requires confirmation)"
+            matTooltipPosition="below"
+            [ngStyle]="{ color: isFirstSprint ? '#cacaca' : '#000000' }"
+            >chevron_left</mat-icon
+          >
+          <h1 class="mat-h1" style="font-size: xx-large">{{ proyecto.sprintActual }}</h1>
+          <mat-icon
+            class="arrow-icon"
+            (click)="nextSprint()"
+            *ngIf="permisos && permisos.sprintGoals === 1"
+            matTooltip="Switch to the next sprint (requires confirmation)"
+            matTooltipPosition="below"
+            >chevron_right
+          </mat-icon>
+        </mat-card-header>
+        <mat-card-content>
+          <div style="margin-left: 15px;">
+            <!-- <b>Sprint Goal: </b><br> -->
+            <div *ngIf="showingGoal && permisos && permisos.sprintGoals === 1">
+              <mat-form-field appearance="outline" style="width: 90%;">
+                <mat-label class="mat-h2">Sprint Goal</mat-label>
+                <textarea matInput [(ngModel)]="showingGoal.goal" (change)="switchSaveButton()"></textarea>
+              </mat-form-field>
+              <button
+                mat-raised-button
+                (click)="guardarSprintGoal()"
+                [color]="'success'"
+                [disabled]="buttonDisabled"
+                style="margin-left: 2%;display: inline-block;width: 9vmin;height: 5vmin;min-width: 100px;min-height: 50px;"
+              >
+                <mat-icon>save</mat-icon>&nbsp;&nbsp;Save
+              </button>
+            </div>
+
+            <p
+              *ngIf="showingGoal && permisos && permisos.sprintGoals === 0"
+              style="color: rgb(119, 119, 119);display: inline-block;margin-top: 5px; text-align: justify;"
+            >
+              {{ showingGoal.goal }}
+            </p>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <!--  <mat-card fxFlex="20">
+      <mat-card-header>
+        <mat-card-title style="font-size: x-large">{{ proyecto.nombre }}</mat-card-title>
+        <mat-card-subtitle>{{ proyecto.descripcion }}</mat-card-subtitle>
+        <mat-card fxLayout="row" fxLayoutGap="10px" style="float:right;margin-left:auto; margin-right:0;background-color: #f5f5f5;">
+          <h1 class="mat-h2">Sprint: </h1>
+          <mat-icon class="arrow-icon" (click)="previousSprint();" [ngStyle]="{ 'color': isFirstSprint ? '#cacaca' : '#000000' }">chevron_left</mat-icon>
+          <h1 class="mat-h1">{{proyecto.sprintActual}}</h1>
+          <mat-icon class="arrow-icon" (click)="nextSprint();">chevron_right</mat-icon>
+        </mat-card>
+      </mat-card-header>
+    </mat-card> -->
+
+    <mat-card class="main-card test" fxFlex="80" *ngIf="permisos && proyecto">
+      <mat-tab-group
+        class="test"
+        mat-align-tabs="center"
+        [selectedIndex]="0"
+        (selectedTabChange)="onTabChanged($event)"
+      >
         <mat-tab label="Overview">
           <app-overview #overview [proyecto]="proyecto" [permisos]="permisos"></app-overview>
         </mat-tab>

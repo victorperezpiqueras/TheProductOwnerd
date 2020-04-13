@@ -161,9 +161,9 @@ ControllerProyectos.crearProyecto = function(data) {
             console.log('idproyecto', result);
             const idProyecto = result[0].idproyecto;
             const sql =
-              'insert into roles(nombre,idusuario,idproyecto, ordenar, editarPBI,estimarTam,estimarValor, mantenerUsuarios, archivarProyecto, setDone, proyecciones)' +
+              'insert into roles(nombre,idusuario,idproyecto, ordenar, editarPBI,estimarTam,estimarValor, mantenerUsuarios, archivarProyecto, setDone, proyecciones, sprintGoals)' +
               ' values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-            connection.query(sql, ['productOwner', data.idusuario, idProyecto, 1, 1, 0, 1, 1, 1, 1, 1], function(
+            connection.query(sql, ['productOwner', data.idusuario, idProyecto, 1, 1, 0, 1, 1, 1, 1, 1, 1], function(
               err,
               result
             ) {
@@ -219,6 +219,22 @@ ControllerProyectos.crearProyecto = function(data) {
   });
 };
 
+ControllerProyectos.actualizarProyecto = function(idproyecto, proyecto) {
+  return new Promise(function(resolve, reject) {
+    const sql = 'update proyectos set nombre=?, descripcion=?, sprintActual=? where idproyecto=?';
+    connection.query(sql, [proyecto.nombre, proyecto.descripcion, proyecto.sprintActual, idproyecto], function(
+      err,
+      result
+    ) {
+      if (err) {
+        reject({ error: 'Error inesperado en actualizarProyecto' });
+      } else {
+        resolve(result);
+      }
+    });
+  });
+};
+
 ControllerProyectos.proyectoAgregarUsuario = function(idProyecto, data) {
   return new Promise(function(resolve, reject) {
     var sql = 'select * from roles where idusuario=? and idproyecto=?';
@@ -230,14 +246,14 @@ ControllerProyectos.proyectoAgregarUsuario = function(idProyecto, data) {
           reject({ error: 'error_already_in_project' });
         } else {
           var sql =
-            'insert into roles(nombre,idusuario,idproyecto, ordenar, editarPBI,estimarTam,estimarValor, mantenerUsuarios, archivarProyecto, setDone, proyecciones)' +
+            'insert into roles(nombre,idusuario,idproyecto, ordenar, editarPBI,estimarTam,estimarValor, mantenerUsuarios, archivarProyecto, setDone, proyecciones, sprintGoals)' +
             ' values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
           if (data.rol == 'productOwner') {
-            var list = ['productOwner', data.idusuario, idProyecto, 1, 1, 0, 1, 1, 1, 1, 1];
+            var list = ['productOwner', data.idusuario, idProyecto, 1, 1, 0, 1, 1, 1, 1, 1, 1];
           } else if (data.rol == 'desarrollador') {
-            var list = ['desarrollador', data.idusuario, idProyecto, 0, 1, 1, 0, 0, 0, 1, 0];
+            var list = ['desarrollador', data.idusuario, idProyecto, 0, 1, 1, 0, 0, 0, 1, 0, 0];
           } else {
-            var list = ['stakeholder', data.idusuario, idProyecto, 0, 0, 0, 0, 0, 0, 0, 0];
+            var list = ['stakeholder', data.idusuario, idProyecto, 0, 0, 0, 0, 0, 0, 0, 0, 0];
           }
           connection.query(sql, list, function(err, result) {
             if (err) {
@@ -304,12 +320,26 @@ ControllerProyectos.proyectoInvitarUsuario = function(idproyecto, data) {
   });
 };
 
-ControllerProyectos.getProyectoPBIs = function(id) {
+ControllerProyectos.getProyectoPBIs = function(idproyecto) {
   return new Promise(function(resolve, reject) {
     const sql = 'select p.* from pbis p, proyectos pr where pr.idproyecto=p.idproyecto and p.idproyecto = ?';
-    connection.query(sql, [id], function(err, result) {
+    connection.query(sql, [idproyecto], function(err, result) {
       if (err) {
         reject({ error: 'Error inesperado' });
+      } else {
+        console.log(result);
+        resolve(result);
+      }
+    });
+  });
+};
+
+ControllerProyectos.getSprintGoals = function(idproyecto) {
+  return new Promise(function(resolve, reject) {
+    const sql = 'select * from sprintgoals where idproyecto = ?';
+    connection.query(sql, [idproyecto], function(err, result) {
+      if (err) {
+        reject({ error: 'Error inesperado en getSprintGoals' });
       } else {
         console.log(result);
         resolve(result);

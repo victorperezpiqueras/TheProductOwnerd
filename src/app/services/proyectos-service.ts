@@ -32,7 +32,10 @@ export class ProyectosService {
   crearProyecto(data: any): Observable<any> {
     return this.http.post<any>(this.url, JSON.stringify(data), httpOptions);
   }
-  getProyectosPBIs(idproyecto: number): Observable<any> {
+  actualizarProyecto(idproyecto: number, data: any): Observable<any> {
+    return this.http.put<any>(this.url + '/' + idproyecto, JSON.stringify(data), httpOptions);
+  }
+  getProyectosPBI(idproyecto: number): Observable<any> {
     return this.http.get<any>(this.url + '/' + idproyecto + '/pbis', httpOptions);
   }
   invitarUsuario(idproyecto: number, email: any): Observable<any> {
@@ -40,5 +43,8 @@ export class ProyectosService {
   }
   eliminarUsuario(idproyecto: number, idusuario: number): Observable<any> {
     return this.http.delete<any>(this.url + '/' + idproyecto + '/eliminarUsuario' + '/' + idusuario, httpOptions);
+  }
+  getProyectoSprintGoals(idproyecto: number): Observable<any> {
+    return this.http.get<any>(this.url + '/' + idproyecto + '/sprintgoals', httpOptions);
   }
 }
