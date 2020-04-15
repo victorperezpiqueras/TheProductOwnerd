@@ -50,7 +50,7 @@ export class ProyectosComponent implements OnInit, OnDestroy {
     /* dialogConfig.height = '400px';
     dialogConfig.width = '600px'; */
     dialogConfig.data = {
-      proyecto: new Proyecto(null, null, null, 0, null),
+      proyecto: new Proyecto(null, null, null, null, 0, null),
       dialogMode: 'create'
     };
     this.dialogRef = this.dialog.open(ProyectoDialogComponent, dialogConfig);
@@ -78,7 +78,7 @@ export class ProyectosComponent implements OnInit, OnDestroy {
 
     forkJoin([proyectos$, usuariosTotales$]).subscribe(results => {
       results[0].forEach((element: any) => {
-        var pr = new Proyecto(element.idproyecto, element.nombre, element.descripcion, 0, []);
+        var pr = new Proyecto(element.idproyecto, element.nombre, element.descripcion, element.vision, 0, []);
         this.proyectos.push(pr);
       });
 

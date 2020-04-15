@@ -82,7 +82,7 @@ ControllerUsuarios.getUsuariosProyectosPermisos = function(id, idp) {
   return new Promise(function(resolve, reject) {
     const sql =
       //'select r2.permiso from proyectos p, usuarios u, roles r, rolespermisos r2  where u.idusuario = ? and p.idproyecto = ? and u.idusuario = r.idusuario and p.idproyecto = r.idproyecto and r2.idrol =r.idrol';
-      'select ordenar, editarPBI,estimarTam,estimarValor, mantenerUsuarios, archivarProyecto, setDone, proyecciones, sprintGoals from proyectos p, usuarios u, roles r where u.idusuario = ? and p.idproyecto = ? ' +
+      'select r.ordenar, r.editarPBI,r.estimarTam, r.estimarValor, r.mantenerUsuarios, r.archivarProyecto, r.setDone, r.proyecciones, r.vision, r.sprintGoals from proyectos p, usuarios u, roles r where u.idusuario = ? and p.idproyecto = ? ' +
       'and u.idusuario = r.idusuario and p.idproyecto = r.idproyecto';
     connection.query(sql, [id, idp], function(err, result) {
       if (err) {

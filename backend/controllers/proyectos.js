@@ -161,9 +161,9 @@ ControllerProyectos.crearProyecto = function(data) {
             console.log('idproyecto', result);
             const idProyecto = result[0].idproyecto;
             const sql =
-              'insert into roles(nombre,idusuario,idproyecto, ordenar, editarPBI,estimarTam,estimarValor, mantenerUsuarios, archivarProyecto, setDone, proyecciones, sprintGoals)' +
+              'insert into roles(nombre,idusuario,idproyecto, ordenar, editarPBI,estimarTam,estimarValor, mantenerUsuarios, archivarProyecto, setDone, proyecciones, sprintGoals, vision)' +
               ' values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-            connection.query(sql, ['productOwner', data.idusuario, idProyecto, 1, 1, 0, 1, 1, 1, 1, 1, 1], function(
+            connection.query(sql, ['productOwner', data.idusuario, idProyecto, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1], function(
               err,
               result
             ) {
@@ -221,17 +221,18 @@ ControllerProyectos.crearProyecto = function(data) {
 
 ControllerProyectos.actualizarProyecto = function(idproyecto, proyecto) {
   return new Promise(function(resolve, reject) {
-    const sql = 'update proyectos set nombre=?, descripcion=?, sprintActual=? where idproyecto=?';
-    connection.query(sql, [proyecto.nombre, proyecto.descripcion, proyecto.sprintActual, idproyecto], function(
-      err,
-      result
-    ) {
-      if (err) {
-        reject({ error: 'Error inesperado en actualizarProyecto' });
-      } else {
-        resolve(result);
+    const sql = 'update proyectos set nombre=?, descripcion=?, vision=?, sprintActual=? where idproyecto=?';
+    connection.query(
+      sql,
+      [proyecto.nombre, proyecto.descripcion, proyecto.vision, proyecto.sprintActual, idproyecto],
+      function(err, result) {
+        if (err) {
+          reject({ error: 'Error inesperado en actualizarProyecto' });
+        } else {
+          resolve(result);
+        }
       }
-    });
+    );
   });
 };
 
@@ -246,14 +247,14 @@ ControllerProyectos.proyectoAgregarUsuario = function(idProyecto, data) {
           reject({ error: 'error_already_in_project' });
         } else {
           var sql =
-            'insert into roles(nombre,idusuario,idproyecto, ordenar, editarPBI,estimarTam,estimarValor, mantenerUsuarios, archivarProyecto, setDone, proyecciones, sprintGoals)' +
+            'insert into roles(nombre,idusuario,idproyecto, ordenar, editarPBI,estimarTam,estimarValor, mantenerUsuarios, archivarProyecto, setDone, proyecciones, sprintGoals, vision)' +
             ' values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
           if (data.rol == 'productOwner') {
-            var list = ['productOwner', data.idusuario, idProyecto, 1, 1, 0, 1, 1, 1, 1, 1, 1];
+            var list = ['productOwner', data.idusuario, idProyecto, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1];
           } else if (data.rol == 'desarrollador') {
-            var list = ['desarrollador', data.idusuario, idProyecto, 0, 1, 1, 0, 0, 0, 1, 0, 0];
+            var list = ['desarrollador', data.idusuario, idProyecto, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0];
           } else {
-            var list = ['stakeholder', data.idusuario, idProyecto, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+            var list = ['stakeholder', data.idusuario, idProyecto, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
           }
           connection.query(sql, list, function(err, result) {
             if (err) {

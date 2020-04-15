@@ -10,13 +10,13 @@ connection.connect(function(err) {
       if (err) throw err;
       console.log('Tabla USUARIOS creada');
       connection.query(
-        'CREATE TABLE proyectos(idproyecto INT AUTO_INCREMENT PRIMARY KEY,nombre VARCHAR(255) NOT NULL, descripcion text, sprintActual int not null default 0)',
+        'CREATE TABLE proyectos(idproyecto INT AUTO_INCREMENT PRIMARY KEY,nombre VARCHAR(255) NOT NULL, descripcion text, vision text, sprintActual int not null default 0)',
         function(err, result) {
           if (err) throw err;
           console.log('Tabla PROYECTOS creada');
           connection.query(
             'CREATE TABLE roles (nombre VARCHAR(255) NOT NULL,idusuario int, idproyecto int,' +
-              ' ordenar boolean,  editarPBI boolean, estimarTam boolean,estimarValor boolean, sprintGoals boolean, mantenerUsuarios boolean,archivarProyecto boolean,setDone boolean, proyecciones boolean, ' +
+              ' ordenar boolean,  editarPBI boolean, estimarTam boolean,estimarValor boolean, sprintGoals boolean, mantenerUsuarios boolean, vision boolean ,archivarProyecto boolean,setDone boolean, proyecciones boolean, ' +
               'foreign key(idusuario) references usuarios(idusuario),foreign key(idproyecto) references proyectos(idproyecto),idrol INT AUTO_INCREMENT PRIMARY KEY)',
             function(err, result) {
               if (err) throw err;

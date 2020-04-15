@@ -49,13 +49,12 @@
                 <mat-icon>save</mat-icon>&nbsp;&nbsp;Save
               </button>
             </div>
-
-            <p
-              *ngIf="showingGoal && permisos && permisos.sprintGoals === 0"
-              style="color: rgb(119, 119, 119);display: inline-block;margin-top: 5px; text-align: justify;"
-            >
-              {{ showingGoal.goal }}
-            </p>
+            <div *ngIf="showingGoal && permisos && permisos.sprintGoals === 0">
+              <b class="mat-h3"><b>Goal: </b></b>
+              <p style="color: rgb(119, 119, 119);display: inline-block;margin-top: 5px; text-align: justify;">
+                {{ showingGoal.goal }}
+              </p>
+            </div>
           </div>
         </mat-card-content>
       </mat-card>

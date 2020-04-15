@@ -21,12 +21,12 @@
           <div fxLayout="row" fxLayoutGap="20px">
             <div>
               <b class="body-2" style="display:inline-block;">Average Sprint Throughput:</b>&nbsp;
-              <h1 class="mat-typography" style="display:inline-block;">{{ averageThroughput }}</h1>
+              <h1 class="mat-h4" style="display:inline-block;">{{ averageThroughput }}</h1>
             </div>
 
             <div>
               <b class="body-2" style="display:inline-block;">Average Sprint Velocity:</b>&nbsp;
-              <h1 class="mat-typography" style="display:inline-block;">{{ averageVelocity }}</h1>
+              <h1 class="mat-h4" style="display:inline-block;">{{ averageVelocity }}</h1>
             </div>
           </div>
         </div>
@@ -124,6 +124,32 @@
           [options]="chartOptionsPoC"
           style="width: 100%; height: 550px; display: block;"
         ></highcharts-chart>
+      </mat-card>
+    </div>
+
+    <div fxLayout="row" fxLayoutGap="2%" fxFlex="20">
+      <mat-card fxFlex="100" class="mat-elevation-z3">
+        <div *ngIf="permisos && permisos.vision === 1">
+          <mat-form-field appearance="outline" style="width: 90%;">
+            <mat-label class="mat-h1">Vision</mat-label>
+            <textarea matInput [(ngModel)]="proyecto.vision" (change)="switchSaveButton()"></textarea>
+          </mat-form-field>
+          <button
+            mat-raised-button
+            (click)="actualizarProyecto()"
+            [color]="'success'"
+            [disabled]="buttonDisabled"
+            style="margin-left: 2%;display: inline-block;width: 9vmin;height: 5vmin;min-width: 100px;min-height: 50px;"
+          >
+            <mat-icon>save</mat-icon>&nbsp;&nbsp;Save
+          </button>
+        </div>
+        <div *ngIf="permisos && permisos.vision === 0">
+          <mat-card-title>Vision</mat-card-title>
+          <p style="color: rgb(119, 119, 119);display: inline-block;margin-top: 5px; text-align: justify;">
+            {{ proyecto.vision }}
+          </p>
+        </div>
       </mat-card>
 
       <!--  <mat-card fxFlex="20"> </mat-card> -->

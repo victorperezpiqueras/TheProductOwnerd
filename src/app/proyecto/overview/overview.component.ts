@@ -97,6 +97,8 @@ export class OverviewComponent implements OnInit, OnDestroy {
 
   dialogRefConfirm: MatDialogRef<any>;
 
+  buttonDisabled: boolean = true;
+
   constructor(
     private credentialsService: CredentialsService,
     private proyectosService: ProyectosService,
@@ -756,6 +758,18 @@ export class OverviewComponent implements OnInit, OnDestroy {
         });
       }
     });
+  }
+
+  actualizarProyecto() {
+    this.isLoading = true;
+    this.proyectosService.actualizarProyecto(this.proyecto.idproyecto, this.proyecto).subscribe(data => {
+      this.isLoading = false;
+      this._snackBar.open('Vision edited successfully!', 'Close', { duration: 3000 });
+    });
+  }
+
+  switchSaveButton() {
+    if (this.buttonDisabled) this.buttonDisabled = false;
   }
 
   ngOnDestroy() {}

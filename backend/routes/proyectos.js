@@ -109,8 +109,8 @@ router.post('/', verifyToken, function(req, res, next) {
 
 router.put('/:id', verifyToken, function(req, res, next) {
   console.log('actualizarProyecto');
-  if (!propertyChecker(req.body, ['nombre', 'descripcion', 'sprintActual']))
-    throw new ErrorHandler(422, 'Missing required fields: nombre, descripcion, sprintActual');
+  if (!propertyChecker(req.body, ['nombre', 'descripcion', 'vision', 'sprintActual']))
+    throw new ErrorHandler(422, 'Missing required fields: nombre, descripcion, vision, sprintActual');
   controllerProyectos
     .actualizarProyecto(req.params.id, req.body)
     .then(function(proyecto) {
