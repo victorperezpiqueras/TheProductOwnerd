@@ -6,7 +6,7 @@ h1 {
   text-align: left;
   padding: 1rem;
 
-  background: radial-gradient(circle, rgba(174, 238, 186, 1) 0%, rgba(148, 187, 233, 1) 100%);
+  /*   background: radial-gradient(circle, rgba(174, 238, 186, 1) 0%, rgba(148, 187, 233, 1) 100%); */
 }
 .loader {
   position: relative;
@@ -16,9 +16,13 @@ h1 {
   vertical-align: middle;
 }
 
+.gradient {
+  background: rgba(255, 255, 255, 0.75);
+}
+
 .proyectos-card {
   /* background-color: #ffffff; */
-  background: radial-gradient(circle, rgba(174, 238, 186, 1) 0%, rgba(148, 187, 233, 1) 100%);
+  /* background: radial-gradient(circle, rgba(174, 238, 186, 1) 0%, rgba(148, 187, 233, 1) 100%); */
 }
 
 .proyecto-card {

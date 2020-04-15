@@ -65,8 +65,8 @@ export class ConfirmDialogComponent implements OnInit {
         remove: true
       });
       if (this.dialogMode == 'Acceptance Criteria')
-        this.openSnackBar('Acceptance criteria removed successfully', 'Close');
-      else if (this.dialogMode == 'File') this.openSnackBar('File removed successfully', 'Close');
+        this.openSnackBar('Acceptance criteria removed successfully!', 'Close');
+      else if (this.dialogMode == 'File') this.openSnackBar('File removed successfully!', 'Close');
     } else if (this.dialogMode == 'PBI') {
       if (this.dialogModeVerbo == 'mark as done') {
         this.dialogRef.close({
@@ -79,7 +79,7 @@ export class ConfirmDialogComponent implements OnInit {
           done: 0,
           sprint: null
         });
-        this.openSnackBar('PBI unmarked as done successfully', 'Close');
+        this.openSnackBar('PBI unmarked as done successfully!', 'Close');
       }
     } else if (this.dialogMode == 'User') {
       this.dialogRef.close({

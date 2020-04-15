@@ -26,6 +26,11 @@
   }
 }
 
+.gradient {
+  background: rgb(174, 238, 186);
+  background: radial-gradient(circle, rgba(174, 238, 186, 1) 0%, rgba(148, 187, 233, 1) 100%);
+}
+
 .mat-sidenav,
 .mat-drawer-content,
 // Force style down to child components

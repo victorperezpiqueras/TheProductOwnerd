@@ -7,16 +7,27 @@ h1 {
   padding: 1rem;
   /*   background-color:  #f3f3f3;*/
 
-  background: radial-gradient(circle, rgba(174, 238, 186, 1) 0%, rgba(148, 187, 233, 1) 100%);
+  /*  background: radial-gradient(circle, rgba(174, 238, 186, 1) 0%, rgba(148, 187, 233, 1) 100%); */
 }
 
-.test {
-  background: linear-gradient(
+.gradient {
+  /* background: linear-gradient(
     90deg,
     rgba(131, 58, 180, 0.3841737378545168) 0%,
     rgba(253, 29, 29, 0.1600841020001751) 50%,
     rgba(252, 176, 69, 0.3841737378545168) 100%
+  ); */
+  background: rgba(255, 255, 255, 0);
+}
+
+.gradient-invite {
+  background: linear-gradient(
+    150deg,
+    rgba(163, 110, 199, 0.384) 0%,
+    rgba(224, 97, 97, 0.16) 50%,
+    rgba(240, 184, 105, 0.384) 100%
   );
+  background-color: rgb(239, 255, 253);
 }
 
 .loader {
@@ -57,6 +68,28 @@ tr:hover .borrar-hueco {
 }
 tr:hover {
   background-color: rgb(241, 241, 241);
+  /* background: linear-gradient(90deg, #ff65367e, #6d77ff60);
+  background-size: 400% 400%;
+  
+  -webkit-animation: animacion 2s ease infinite;
+  -moz-animation: animacion 2s ease infinite;
+  animation: animacion 2s ease infinite;
+  
+  @-webkit-keyframes animacion {
+      0%{background-position:0% 50%}
+      50%{background-position:100% 50%}
+      100%{background-position:0% 50%}
+  }
+  @-moz-keyframes animacion {
+      0%{background-position:0% 50%}
+      50%{background-position:100% 50%}
+      100%{background-position:0% 50%}
+  }
+  @keyframes animacion {
+      0%{background-position:0% 50%}
+      50%{background-position:100% 50%}
+      100%{background-position:0% 50%}
+  } */
 }
 tr:hover .borrar-usuario {
   display: block;

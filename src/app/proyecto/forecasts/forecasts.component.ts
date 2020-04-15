@@ -10,6 +10,12 @@ import { Observable, forkJoin } from 'rxjs';
 import { MatDialogConfig, MatDialogRef, MatDialog } from '@angular/material/dialog';
 
 import * as Highcharts from 'highcharts';
+import HC_exporting from 'highcharts/modules/exporting';
+// import HC_exportData from 'highcharts/modules/export-data';
+
+HC_exporting(Highcharts);
+// HC_exportData(Highcharts);
+
 import { Pbi } from '@app/models/pbis';
 import { Sprint } from '@app/models/sprints';
 import { Permisos } from '@app/models/permisos';
@@ -293,6 +299,9 @@ export class ForecastsComponent implements OnInit, OnDestroy {
           fontSize: '30px'
         }
       },
+      /*  tooltip: {
+        shared: true
+      }, */
       xAxis: {
         title: {
           text: 'Sprints',
@@ -464,6 +473,10 @@ export class ForecastsComponent implements OnInit, OnDestroy {
       ],
       credits: {
         enabled: false
+      },
+      exporting: {
+        enabled: true
+        // showTable: true
       }
     };
     // console.log(this.chartOptions);

@@ -1,4 +1,4 @@
-<div class="container" fxFlex="100">
+<div class="container">
   <div *ngIf="proyecto" fxLayout="column" fxLayoutGap="2%">
     <app-loader class="loader" [isLoading]="isLoading"></app-loader>
     <div fxLayout="row">
@@ -25,6 +25,7 @@
           style="margin-left: 5%;"
         >
           {{ botonLabel }}
+          <!-- <mat-icon class="mat-order-icon">arrow_drop_down</mat-icon> -->
         </button>
         <mat-menu #menu="matMenu">
           <button mat-menu-item (click)="filtrarLabel('none')">All</button>
@@ -50,11 +51,20 @@
           style="margin-left: 5%;"
           [color]="viewDone ? 'accent' : 'primary'"
         >
-          <div *ngIf="botonOrder === 'priority'">Manual</div>
-          <div *ngIf="botonOrder === 'valueup'">Value<mat-icon class="mat-order-icon">arrow_upward</mat-icon></div>
-          <div *ngIf="botonOrder === 'valuedown'">Value<mat-icon class="mat-order-icon">arrow_downward</mat-icon></div>
-          <div *ngIf="botonOrder === 'default'">Order by</div>
+          <div style="display:inline-block;">
+            <div *ngIf="botonOrder === 'priority'" style="display:inline-block;">Manual</div>
+            <div *ngIf="botonOrder === 'valueup'" style="display:inline-block;">
+              Value<mat-icon class="mat-order-icon"> arrow_upward</mat-icon>
+            </div>
+            <div *ngIf="botonOrder === 'valuedown'" style="display:inline-block;">
+              Value<mat-icon class="mat-order-icon"> arrow_downward</mat-icon>
+            </div>
+            <div *ngIf="botonOrder === 'default'" style="display:inline-block;">Order by</div>
+
+            <mat-icon class="mat-order-icon">arrow_drop_down</mat-icon>
+          </div>
         </button>
+
         <mat-menu #menu2="matMenu">
           <button mat-menu-item (click)="orderBy('priority')">Manual</button>
           <button mat-menu-item (click)="orderBy('valueup')">
@@ -77,7 +87,13 @@
       </div>
 
       <div fxLayoutAlign="end center" fxFlex>
-        <button *ngIf="!viewDone" class="mat-button-create" mat-fab color="primary" (click)="crearPbiDialog()">
+        <button
+          *ngIf="!viewDone"
+          class="mat-button-create mat-elevation-z9"
+          mat-fab
+          color="primary"
+          (click)="crearPbiDialog()"
+        >
           +
         </button>
       </div>

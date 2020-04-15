@@ -10,6 +10,9 @@ import { Observable, forkJoin } from 'rxjs';
 import { MatDialogConfig, MatDialogRef, MatDialog } from '@angular/material/dialog';
 
 import * as Highcharts from 'highcharts';
+import HC_exporting from 'highcharts/modules/exporting';
+HC_exporting(Highcharts);
+
 import { Pbi } from '@app/models/pbis';
 import { Sprint } from '@app/models/sprints';
 import { Permisos } from '@app/models/permisos';
@@ -33,13 +36,14 @@ export class OverviewComponent implements OnInit, OnDestroy {
   @Input() permisos: Permisos;
 
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
+
   dataTable: any;
 
   Highcharts: typeof Highcharts = Highcharts;
   chartOptions: Highcharts.Options;
   chartOptionsPoC: Highcharts.Options;
 
-  updateFlag: boolean = true;
+  updateFlag: boolean = false;
   /* --------------DIALOG ELEMENTS AND VARIABLES-------------- */
   dialogRef: MatDialogRef<any>;
 
@@ -56,11 +60,15 @@ export class OverviewComponent implements OnInit, OnDestroy {
 
   /* datos ejes */
   listaData: any[] = [];
-
   listaFeatures: any[] = [];
   listaInfrastructures: any[] = [];
   listaTechDebt: any[] = [];
   listaBugs: any[] = [];
+
+  listaFeaturesSC: any[] = [];
+  listaInfrastructuresSC: any[] = [];
+  listaTechDebtSC: any[] = [];
+  listaBugsSC: any[] = [];
 
   sprints: Sprint[] = [];
 
@@ -71,7 +79,12 @@ export class OverviewComponent implements OnInit, OnDestroy {
   puntosTotalesInfrastructure: number;
   puntosTotalesBug: number;
 
+  showScopeCreep: boolean = false;
+
   ultimoSprint: number;
+
+  averageThroughput: number = 0;
+  averageVelocity: number = 0;
 
   /* invite */
   newEmail: string;
@@ -144,13 +157,24 @@ export class OverviewComponent implements OnInit, OnDestroy {
       this.pbis = pbis;
       this.actualizarGraficoPBC();
       this.actualizarGraficoPoC();
+      this.calcularMedias();
     });
   }
 
   actualizarGraficoPBC() {
+    // console.log("actualizar")
     this.generarEjes();
     this.generarEjesPorLabel();
-    this.generarGrafico();
+    this.generarGraficoSC();
+    // console.log(this.chartOptions.series)
+  }
+
+  showSC() {
+    this.chartOptions.series[4].visible = this.showScopeCreep;
+    this.chartOptions.series[5].visible = this.showScopeCreep;
+    this.chartOptions.series[6].visible = this.showScopeCreep;
+    this.chartOptions.series[7].visible = this.showScopeCreep;
+    this.updateFlag = true;
   }
 
   actualizarGraficoPoC() {
@@ -195,10 +219,16 @@ export class OverviewComponent implements OnInit, OnDestroy {
   }
 
   generarEjesPorLabel() {
+    // inicializar:
     this.listaFeatures = [];
     this.listaTechDebt = [];
     this.listaInfrastructures = [];
     this.listaBugs = [];
+
+    this.listaFeaturesSC = [];
+    this.listaTechDebtSC = [];
+    this.listaInfrastructuresSC = [];
+    this.listaBugsSC = [];
     /*     // obtener ultimo sprint:
         this.ultimoSprint = 0;
         this.pbis.forEach((pbi: Pbi) => {
@@ -244,12 +274,34 @@ export class OverviewComponent implements OnInit, OnDestroy {
         });
         // restar al total anterior las del sprint
         this.listaFeatures[i].restante = this.listaFeatures[i - 1].restante - sumpbisFeatures;
-        //this.listaFeatures[i].quemado = sumpbisFeatures;
         this.listaTechDebt[i].restante = this.listaTechDebt[i - 1].restante - sumpbisTechDebt;
         this.listaInfrastructures[i].restante = this.listaInfrastructures[i - 1].restante - sumpbisInfrastructure;
         this.listaBugs[i].restante = this.listaBugs[i - 1].restante - sumpbisBug;
+
+        // sumar datos de Scope Creep:
+        sumpbisFeatures = 0;
+        sumpbisTechDebt = 0;
+        sumpbisInfrastructure = 0;
+        sumpbisBug = 0;
+        this.pbis.forEach((pbi: Pbi) => {
+          if (pbi.sprintCreacion == i) {
+            if (pbi.label == 'feature') sumpbisFeatures += pbi.estimacion;
+            else if (pbi.label == 'tech-debt') sumpbisTechDebt += pbi.estimacion;
+            else if (pbi.label == 'infrastructure') sumpbisInfrastructure += pbi.estimacion;
+            else if (pbi.label == 'bug') sumpbisBug += pbi.estimacion;
+          }
+        });
+        if (sumpbisFeatures === 0) sumpbisFeatures = undefined;
+        if (sumpbisTechDebt === 0) sumpbisTechDebt = undefined;
+        if (sumpbisInfrastructure === 0) sumpbisInfrastructure = undefined;
+        if (sumpbisBug === 0) sumpbisBug = undefined;
+        this.listaFeaturesSC[i - 1] = [this.listaFeatures[i - 1].sprint, -Math.abs(sumpbisFeatures)];
+        this.listaTechDebtSC[i - 1] = [this.listaFeatures[i - 1].sprint, -Math.abs(sumpbisTechDebt)];
+        this.listaInfrastructuresSC[i - 1] = [this.listaFeatures[i - 1].sprint, -Math.abs(sumpbisInfrastructure)];
+        this.listaBugsSC[i - 1] = [this.listaFeatures[i - 1].sprint, -Math.abs(sumpbisBug)];
       }
     }
+
     //console.log(this.listaSprints);
     for (var i = 0; i <= this.ultimoSprint; i++) {
       this.listaFeatures[i] = [this.listaFeatures[i].sprint, this.listaFeatures[i].restante];
@@ -259,7 +311,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
     }
   }
 
-  generarGrafico() {
+  generarGraficoSC() {
     this.chartOptions = {
       title: {
         text: 'Project Burndown Chart',
@@ -268,7 +320,8 @@ export class OverviewComponent implements OnInit, OnDestroy {
         }
       },
       tooltip: {
-        headerFormat: '<b>Sprint {point.x}</b><br>'
+        headerFormat: '<b>Sprint {point.x}</b><br>',
+        shared: true
       },
       xAxis: {
         title: {
@@ -277,7 +330,9 @@ export class OverviewComponent implements OnInit, OnDestroy {
             fontSize: '16px'
           }
         },
-        tickInterval: 1
+        tickInterval: 1,
+        min: 0,
+        startOnTick: true
       },
       yAxis: {
         title: {
@@ -294,7 +349,8 @@ export class OverviewComponent implements OnInit, OnDestroy {
               // theme
               (Highcharts.defaultOptions.title.style && Highcharts.defaultOptions.title.style.color) || 'gray'
           }
-        }
+        },
+        allowDecimals: false
       },
       plotOptions: {
         column: {
@@ -303,11 +359,6 @@ export class OverviewComponent implements OnInit, OnDestroy {
             enabled: true
           }
         }
-        /* series: {
-          marker: {
-            enabled: true
-          }
-        } */
       },
       series: [
         {
@@ -351,23 +402,69 @@ export class OverviewComponent implements OnInit, OnDestroy {
           }
         },
         {
+          name: 'Scope Creep Features',
+          data: this.listaFeaturesSC,
+          type: 'column',
+          pointWidth: 30,
+          color: '#c1ffc0',
+          dataLabels: {
+            enabled: false
+          },
+          visible: false
+        },
+        {
+          name: 'Scope Creep Tech-debt',
+          data: this.listaTechDebtSC,
+          type: 'column',
+          pointWidth: 30,
+          color: '#ffecc0',
+          dataLabels: {
+            enabled: false
+          },
+          visible: false
+        },
+        {
+          name: 'Scope Creep Infrastructure',
+          data: this.listaInfrastructuresSC,
+          type: 'column',
+          pointWidth: 30,
+          color: '#c0e9ff',
+          dataLabels: {
+            enabled: false
+          },
+          visible: false
+        },
+        {
+          name: 'Scope Creep Bugs',
+          data: this.listaBugsSC,
+          type: 'column',
+          pointWidth: 30,
+          color: '#ffc0c0',
+          dataLabels: {
+            enabled: false
+          },
+          visible: false
+        },
+        {
           name: 'Scope Line',
           data: this.listaData,
           type: 'line',
-          color: '#4d4d4d',
-          tooltip: {
+          color: '#4d4d4d'
+          /* tooltip: {
             headerFormat: null,
-            pointFormatter: function() {
+            pointFormatter: function () {
               return '<b>Sprint ' + this.x.toFixed(0) + '</b><br>Scope: ' + this.y;
             }
-          }
+          } */
         }
       ],
       credits: {
         enabled: false
+      },
+      exporting: {
+        enabled: true
       }
     };
-    //console.log(this.chartOptions);
   }
 
   generarEjesPocPorLabel() {
@@ -465,9 +562,11 @@ export class OverviewComponent implements OnInit, OnDestroy {
           fontSize: '30px'
         }
       },
-      /* tooltip: {
-        headerFormat: "<b>Sprint {point.x}</b><br>"
-      }, */
+      tooltip: {
+        headerFormat: '<b>Sprint {point.x}</b><br>',
+        valueSuffix: ' %',
+        shared: true
+      },
       xAxis: {
         title: {
           text: 'Sprints',
@@ -516,10 +615,10 @@ export class OverviewComponent implements OnInit, OnDestroy {
             enabled: false
           },
           tooltip: {
-            headerFormat: null,
-            pointFormatter: function() {
+            /* headerFormat: null, */
+            /* pointFormatter: function () {
               return '<b>Features</b><br>Completion: ' + this.y.toFixed(2) + '%';
-            }
+            } */
           }
         },
         {
@@ -530,13 +629,13 @@ export class OverviewComponent implements OnInit, OnDestroy {
           color: '#ffbb00',
           dataLabels: {
             enabled: false
-          },
-          tooltip: {
-            headerFormat: null,
-            pointFormatter: function() {
-              return '<b>Tech-debt</b><br>Completion: ' + this.y.toFixed(2) + '%';
-            }
           }
+          /*  tooltip: {
+             headerFormat: null,
+             pointFormatter: function () {
+               return '<b>Tech-debt</b><br>Completion: ' + this.y.toFixed(2) + '%';
+             }
+           } */
         },
         {
           name: 'Infrastructure',
@@ -546,13 +645,13 @@ export class OverviewComponent implements OnInit, OnDestroy {
           color: '#2196f3',
           dataLabels: {
             enabled: false
-          },
-          tooltip: {
-            headerFormat: null,
-            pointFormatter: function() {
-              return '<b>Infrastructure</b><br>Completion: ' + this.y.toFixed(2) + '%';
-            }
           }
+          /*  tooltip: {
+             headerFormat: null,
+             pointFormatter: function () {
+               return '<b>Infrastructure</b><br>Completion: ' + this.y.toFixed(2) + '%';
+             }
+           } */
         },
         {
           name: 'Bugs',
@@ -562,26 +661,26 @@ export class OverviewComponent implements OnInit, OnDestroy {
           color: '#ad0000',
           dataLabels: {
             enabled: false
-          },
-          tooltip: {
-            headerFormat: null,
-            pointFormatter: function() {
-              return '<b>Bugs</b><br>Completion: ' + this.y.toFixed(2) + '%';
-            }
           }
+          /*  tooltip: {
+             headerFormat: null,
+             pointFormatter: function () {
+               return '<b>Bugs</b><br>Completion: ' + this.y.toFixed(2) + '%';
+             }
+           } */
         },
         {
           name: 'Total',
           data: this.listaData,
           type: 'line',
           color: '#4d4d4d',
-          enableMouseTracking: false,
-          tooltip: {
+          enableMouseTracking: false
+          /* tooltip: {
             headerFormat: null,
-            pointFormatter: function() {
+            pointFormatter: function () {
               return '<b>Sprint ' + this.x.toFixed(0) + '</b><br>Completion: ' + this.y.toFixed(2) + '%';
             }
-          }
+          } */
         }
       ],
       credits: {
@@ -589,6 +688,21 @@ export class OverviewComponent implements OnInit, OnDestroy {
       }
     };
     // console.log(this.chartOptionsPoC);
+  }
+
+  calcularMedias() {
+    this.averageThroughput = 0;
+    this.averageVelocity = 0;
+    this.pbis.forEach((pbi: Pbi) => {
+      if (pbi.done) {
+        this.averageThroughput++;
+        this.averageVelocity += pbi.estimacion;
+      }
+    });
+    console.log(this.averageVelocity);
+    // ultimo sprint debe estar calculado
+    this.averageThroughput /= this.ultimoSprint;
+    this.averageVelocity /= this.ultimoSprint;
   }
 
   invitar() {

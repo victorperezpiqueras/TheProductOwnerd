@@ -1,7 +1,7 @@
-<div class="container" fxFill>
+<div class="container">
   <app-loader class="loader" [isLoading]="isLoading"></app-loader>
 
-  <mat-card class="proyectos-card">
+  <mat-card class="proyectos-card gradient">
     <div>
       <button class="mat-button-create" mat-fab color="primary" (click)="crearProyectoDialog()">+</button>
     </div>
@@ -22,9 +22,13 @@
           </p>
         </mat-card-content>
       </mat-card> -->
-        <mat-expansion-panel class="proyecto-card" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+        <mat-expansion-panel
+          class="proyecto-card mat-elevation-z3"
+          (opened)="panelOpenState = true"
+          (closed)="panelOpenState = false"
+        >
           <mat-expansion-panel-header>
-            <mat-panel-title
+            <mat-panel-title style="font-size: 16px;"
               >[{{ proyecto.idproyecto }}]
               {{ proyecto.nombre }}
             </mat-panel-title>
@@ -33,8 +37,7 @@
             </mat-panel-description>
           </mat-expansion-panel-header>
           <br />
-          Team
-          <br />
+          <h1 class="mat-h4">Team</h1>
           <table mat-table [dataSource]="proyecto.usuarios" class="mat-elevation-z1">
             <ng-container matColumnDef="Rol">
               <th mat-header-cell *matHeaderCellDef>Role</th>

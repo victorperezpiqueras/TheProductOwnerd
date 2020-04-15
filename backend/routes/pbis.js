@@ -26,12 +26,13 @@ router.post('/', verifyToken, function(req, res, next) {
       'estimacion',
       'valor',
       'idproyecto',
-      'prioridad'
+      'prioridad',
+      'sprintCreacion'
     ])
   )
     throw new ErrorHandler(
       422,
-      'Missing required fields: titulo,descripcion,done,label,estimacion,valor,idproyecto,prioridad'
+      'Missing required fields: titulo,descripcion,done,label,estimacion,valor,idproyecto,prioridad,sprintCreacion'
     );
   controllerPbis
     .crearPbi(req.body)
@@ -62,12 +63,13 @@ router.put('/:id', verifyToken, function(req, res, next) {
       'valor',
       'idproyecto',
       'prioridad',
-      'sprint'
+      'sprint',
+      'sprintCreacion'
     ])
   )
     throw new ErrorHandler(
       422,
-      'Missing required fields: titulo,descripcion,done,label,estimacion,valor,idproyecto,prioridad, sprint'
+      'Missing required fields: titulo,descripcion,done,label,estimacion,valor,idproyecto,prioridad,sprint, printCreacion'
     );
   controllerPbis
     .editarPbi(req.params.id, req.body)

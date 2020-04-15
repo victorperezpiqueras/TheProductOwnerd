@@ -38,6 +38,8 @@ export class PbiDialogComponent implements OnInit {
   idproyecto: number;
   prioridad: number;
   sprint: number;
+  sprintCreacion: number;
+
   sprintActual: number;
 
   /* archivos data */
@@ -111,6 +113,8 @@ export class PbiDialogComponent implements OnInit {
     this.idproyecto = data.pbi.idproyecto;
     this.prioridad = data.pbi.prioridad;
     this.sprint = data.pbi.sprint;
+    this.sprintCreacion = data.pbi.sprintCreacion;
+
     this.sprintActual = data.sprintActual;
 
     this.fibonacci.unshift(this.estimacion);
@@ -428,20 +432,7 @@ export class PbiDialogComponent implements OnInit {
   }
 
   save() {
-    /* console.log(new Pbi(
-    this.idpbi,
-    this.titulo,
-    this.descripcion,
-    this.done,
-    this.label,
-    this.estimacion,
-    this.valor,
-    this.prioridad,
-    this.sprint,
-    this.idproyecto
-  )) */
     this.dialogRef.close({
-      //proyecto: new Proyecto(null, this.name, this.descripcion, [])
       pbi: new Pbi(
         this.idpbi,
         this.titulo,
@@ -452,7 +443,8 @@ export class PbiDialogComponent implements OnInit {
         this.valor,
         this.prioridad,
         this.sprint,
-        this.idproyecto
+        this.idproyecto,
+        this.sprintCreacion
       )
     });
     //show snackbar on success:

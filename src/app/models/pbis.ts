@@ -9,6 +9,7 @@ export class Pbi {
     public valor: number,
     public prioridad: number,
     public sprint: number,
-    public idproyecto: number
+    public idproyecto: number,
+    public sprintCreacion: number
   ) {}
 }

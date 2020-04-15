@@ -22,7 +22,7 @@ import { Permisos } from '@app/models/permisos';
   styleUrls: ['./backlog.component.scss']
 })
 export class BacklogComponent implements OnInit, OnDestroy {
-  @Input() proyecto: any;
+  @Input() proyecto: Proyecto;
   @Input() permisos: Permisos;
 
   /* --------------DIALOG ELEMENTS AND VARIABLES-------------- */
@@ -237,7 +237,19 @@ export class BacklogComponent implements OnInit, OnDestroy {
     dialogConfig.height = '800px';
     dialogConfig.width = '1920px';
     dialogConfig.data = {
-      pbi: new Pbi(null, null, null, null, null, null, null, this.pbis.length, null, this.proyecto.idproyecto),
+      pbi: new Pbi(
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        this.pbis.length,
+        null,
+        this.proyecto.idproyecto,
+        this.proyecto.sprintActual
+      ),
       permisos: this.permisos,
       pbis: this.pbis,
       sprintActual: this.proyecto.sprintActual,
@@ -284,6 +296,7 @@ export class BacklogComponent implements OnInit, OnDestroy {
       pbi: pbi,
       permisos: this.permisos,
       pbis: this.pbis,
+      sprintActual: this.proyecto.sprintActual,
       dialogMode: 'view'
     };
     this.dialogRef = this.dialog.open(PbiDialogComponent, dialogConfig);

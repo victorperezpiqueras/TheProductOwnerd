@@ -96,6 +96,17 @@
           </mat-select> -->
         </mat-form-field>
 
+        <mat-form-field class="number-form form" appearance="outline">
+          <mat-label>Created at Sprint</mat-label>
+          <input
+            matInput
+            type="number"
+            [(ngModel)]="sprintCreacion"
+            min="1"
+            [disabled]="disabled || permisos.editarPBI == 0"
+          />
+        </mat-form-field>
+
         <br />
 
         <div fxLayout="row">

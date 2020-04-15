@@ -68,14 +68,22 @@ export class ProyectoComponent implements OnInit, OnDestroy {
     private _snackBar: MatSnackBar
   ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     //this.proyecto = this.proyectosService.proyecto;
     /* console.log(this.router.url.split('/')[2])
     this.proyectosService.getProyecto(Number(this.router.url.split('/')[2]))
       .subscribe((proyecto)=>{
         this.proyecto=proyecto;
       }) */
-    this.isLoading = true;
+    /* this.isLoading = true;
+    const routeParams = await this.activeRoute.params.toPromise();
+    this.proyecto = await this.proyectosService.getProyecto(routeParams.id).toPromise();
+    this.checkSprintZero();
+    this.proyecto.usuarios = await this.proyectosService.getProyectoUsuariosRoles(this.proyecto.idproyecto).toPromise();
+    this.permisos = await this.usuariosService.getUsuarioProyectoPermisos(this.idusuario, this.proyecto.idproyecto).toPromise();
+    this.sprintGoals = await this.proyectosService.getProyectoSprintGoals(this.proyecto.idproyecto).toPromise();
+    this.updateSprintGoal();
+    this.isLoading = false; */
     this.activeRoute.params.subscribe(routeParams => {
       this.proyectosService.getProyecto(routeParams.id).subscribe(proyecto => {
         this.proyecto = proyecto;
