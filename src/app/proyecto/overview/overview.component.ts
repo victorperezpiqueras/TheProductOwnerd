@@ -1,13 +1,14 @@
-import { Component, OnInit, OnDestroy, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, ViewChild, NgZone } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { finalize, map, takeUntil } from 'rxjs/operators';
+import { finalize, map, takeUntil, take } from 'rxjs/operators';
 import { UsuariosService } from '@app/services/usuarios-service';
 import { CredentialsService, untilDestroyed } from '@app/core';
 import { Proyecto } from '@app/models/proyectos';
 import { ProyectosService } from '@app/services/proyectos-service';
 import { Observable, forkJoin } from 'rxjs';
 import { MatDialogConfig, MatDialogRef, MatDialog } from '@angular/material/dialog';
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 
 import * as Highcharts from 'highcharts';
 import HC_exporting from 'highcharts/modules/exporting';
@@ -36,6 +37,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
   @Input() permisos: Permisos;
 
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
+  @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;
 
   dataTable: any;
 
@@ -105,7 +107,8 @@ export class OverviewComponent implements OnInit, OnDestroy {
     private usuariosService: UsuariosService,
     private activeRoute: ActivatedRoute,
     private _snackBar: MatSnackBar,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private _ngZone: NgZone
   ) {}
 
   ngOnInit() {
@@ -783,6 +786,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
       .actualizarProyecto(this.proyecto.idproyecto, this.proyecto)
       .pipe(untilDestroyed(this))
       .subscribe(data => {
+        console.log(this.proyecto);
         this.isLoading = false;
         this._snackBar.open('Vision edited successfully!', 'Close', { duration: 3000 });
       });
@@ -790,6 +794,11 @@ export class OverviewComponent implements OnInit, OnDestroy {
 
   switchSaveButton() {
     if (this.buttonDisabled) this.buttonDisabled = false;
+  }
+
+  triggerResize() {
+    // Wait for changes to be applied, then trigger textarea resize.
+    this._ngZone.onStable.pipe(take(1)).subscribe(() => this.autosize.resizeToFitContent(true));
   }
 
   ngOnDestroy() {}

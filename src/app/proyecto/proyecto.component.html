@@ -4,8 +4,47 @@
     <div fxFlex="20" fxLayout="row" fxLayoutGap="2%">
       <mat-card fxFlex="20" class="title-card mat-elevation-z3">
         <mat-card-header>
-          <mat-card-title style="font-size: x-large">{{ proyecto.nombre }}</mat-card-title>
-          <mat-card-subtitle style="text-align: justify;">{{ proyecto.descripcion }}</mat-card-subtitle>
+          <mat-card-title style="font-size: x-large">
+            <span *ngIf="(permisos && permisos.archivarProyecto === 0) || !editProjectMode">{{ proyecto.nombre }}</span>
+
+            <mat-form-field *ngIf="permisos && permisos.archivarProyecto === 1 && editProjectMode">
+              <input matInput [(ngModel)]="proyecto.nombre" />
+            </mat-form-field>
+            &nbsp;
+
+            <button
+              *ngIf="permisos && permisos.archivarProyecto === 1 && !editProjectMode"
+              mat-raised-button
+              (click)="editMode()"
+              color="primary"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
+
+            <button
+              *ngIf="permisos && permisos.archivarProyecto === 1 && editProjectMode"
+              mat-raised-button
+              (click)="guardarProyecto()"
+              [color]="'success'"
+            >
+              <mat-icon>save</mat-icon>
+            </button>
+          </mat-card-title>
+
+          <mat-card-subtitle style="text-align: justify;">
+            <span class="descripcion" *ngIf="(permisos && permisos.archivarProyecto === 0) || !editProjectMode">{{
+              proyecto.descripcion
+            }}</span>
+
+            <mat-form-field
+              *ngIf="permisos && permisos.archivarProyecto === 1 && editProjectMode"
+              appearance="outline"
+              style="width: 120%;"
+            >
+              <mat-label class="mat-h2">Description</mat-label>
+              <textarea matInput [(ngModel)]="proyecto.descripcion" style="height: 200px;"></textarea>
+            </mat-form-field>
+          </mat-card-subtitle>
         </mat-card-header>
       </mat-card>
 

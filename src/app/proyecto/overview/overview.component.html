@@ -132,7 +132,13 @@
         <div *ngIf="permisos && permisos.vision === 1">
           <mat-form-field appearance="outline" style="width: 90%;">
             <mat-label class="mat-h1">Vision</mat-label>
-            <textarea matInput [(ngModel)]="proyecto.vision" (change)="switchSaveButton()"></textarea>
+            <textarea
+              matInput
+              [(ngModel)]="proyecto.vision"
+              (change)="switchSaveButton()"
+              cdkTextareaAutosize
+              #autosize="cdkTextareaAutosize"
+            ></textarea>
           </mat-form-field>
           <button
             mat-raised-button

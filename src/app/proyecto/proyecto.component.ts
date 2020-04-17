@@ -55,6 +55,8 @@ export class ProyectoComponent implements OnInit, OnDestroy {
 
   buttonDisabled: boolean = true;
 
+  editProjectMode: boolean = false;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -120,6 +122,21 @@ export class ProyectoComponent implements OnInit, OnDestroy {
     this.overview.proyecto = this.proyecto;
     this.backlog.proyecto = this.proyecto;
     this.forecasts.proyecto = this.proyecto;
+  }
+
+  editMode() {
+    this.editProjectMode = !this.editProjectMode;
+  }
+  guardarProyecto() {
+    this.isLoading = true;
+    this.proyectosService
+      .actualizarProyecto(this.proyecto.idproyecto, this.proyecto)
+      .pipe(untilDestroyed(this))
+      .subscribe(data => {
+        this.isLoading = false;
+        this.editMode();
+        this._snackBar.open('Project edited successfully!', 'Close', { duration: 3000 });
+      });
   }
 
   checkSprintZero() {
