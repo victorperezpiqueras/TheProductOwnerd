@@ -37,18 +37,31 @@ router.put('/:id/actualizar', verifyToken, function(req, res, next) {
      apellido2: req.body.apellido2, email: req.body.email, password: req.body.password, idusuario:req.body.idusuario
    };
     if (!data.nick || !data.nombre || !data.apellido1 || !data.apellido2 || !data.email || !data.password|| !data.idusuario) */
-  if (!propertyChecker(req.body, ['nick', 'nombre', 'apellido1', 'apellido2', 'email', 'password', 'idusuario']))
-    throw new ErrorHandler(
-      422,
-      'Missing required fields: nick, nombre, apellido1, apellido2, email, password, idusuario'
-    );
+  if (!propertyChecker(req.body, ['nick', 'nombre', 'apellido1', 'apellido2', 'email', 'password']))
+    throw new ErrorHandler(422, 'Missing required fields: nick, nombre, apellido1, apellido2, email, password');
   controllerUsuarios
-    .actualizarUsuario(req.body)
+    .actualizarUsuario(req.params.id, req.body)
     .then(function(usuario) {
       res.json(usuario);
     })
     .catch(function(err) {
       res.status(500).json(err);
+    });
+});
+
+router.put('/:id/actualizarpassword', verifyToken, function(req, res, next) {
+  console.log('actualizarUsuarioPassword');
+  if (!propertyChecker(req.body, ['password', 'newPassword']))
+    throw new ErrorHandler(422, 'Missing required fields: password, newPassword');
+  controllerUsuarios
+    .actualizarUsuarioPassword(req.params.id, req.body)
+    .then(function(usuario) {
+      res.json(usuario);
+    })
+    .catch(function(err) {
+      if (err.error === 'user_not_found') res.status(404).json(err);
+      if (err.error === 'password_missmatch') res.json({ error: 'password_missmatch' });
+      else res.status(500).json(err);
     });
 });
 

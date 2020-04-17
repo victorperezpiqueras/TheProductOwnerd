@@ -503,8 +503,8 @@ export class PbiDialogComponent implements OnInit, OnDestroy {
     });
     console.log(this.dialogMode);
     //show snackbar on success:
-    if (this.dialogMode == 'Edit') this.openSnackBar('PBI edited successfully', 'Close');
-    else if (this.dialogMode == 'Create new PBI') this.openSnackBar('PBI created successfully', 'Close');
+    if (this.dialogMode == 'Edit') this.openSnackBar('PBI edited successfully!', 'Close');
+    else if (this.dialogMode == 'Create new PBI') this.openSnackBar('PBI created successfully!', 'Close');
   }
 
   close() {

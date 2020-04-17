@@ -161,6 +161,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
   }
 
   actualizarGraficos() {
+    this.showScopeCreep = false;
     this.proyectosService
       .getProyectosPBI(this.proyecto.idproyecto)
       .pipe(untilDestroyed(this))

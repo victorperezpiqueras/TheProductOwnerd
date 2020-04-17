@@ -33,34 +33,52 @@ ControllerUsuarios.getUsuario = function(id) {
     });
   });
 };
-ControllerUsuarios.actualizarUsuario = function(usuario) {
+ControllerUsuarios.actualizarUsuario = function(idusuario, data) {
   return new Promise(function(resolve, reject) {
-    if (usuario.password != '') {
-      var sql = 'update usuarios set nick=?,nombre=?,apellido1=?,apellido2=?,password=?,email=? where idusuario=?';
-      var values = [
-        usuario.nick,
-        usuario.nombre,
-        usuario.apellido1,
-        usuario.apellido2,
-        bcrypt.hashSync(usuario.password),
-        usuario.email,
-        usuario.idusuario
-      ];
-    } else {
-      var sql = 'update usuarios set nick=?,nombre=?,apellido1=?,apellido2=?,email=? where idusuario=?';
-      var values = [
-        usuario.nick,
-        usuario.nombre,
-        usuario.apellido1,
-        usuario.apellido2,
-        usuario.email,
-        usuario.idusuario
-      ];
-    }
+    /*     if (usuario.password != '') {
+          var sql = 'update usuarios set nick=?,nombre=?,apellido1=?,apellido2=?,password=?,email=? where idusuario=?';
+          var values = [
+            usuario.nick,
+            usuario.nombre,
+            usuario.apellido1,
+            usuario.apellido2,
+            bcrypt.hashSync(usuario.password),
+            usuario.email,
+            usuario.idusuario
+          ];
+        } else { */
+    var sql = 'update usuarios set nick=?,nombre=?,apellido1=?,apellido2=?,email=? where idusuario=?';
+    var values = [data.nick, data.nombre, data.apellido1, data.apellido2, data.email, idusuario];
+    /* } */
     connection.query(sql, values, function(err, result) {
       if (err) throw err;
       console.log(result);
       resolve(result);
+    });
+  });
+};
+ControllerUsuarios.actualizarUsuarioPassword = function(idusuario, data) {
+  return new Promise(function(resolve, reject) {
+    var sql = 'select * from usuarios where idusuario=?';
+    var values = [idusuario];
+    connection.query(sql, values, function(err, result) {
+      if (err) throw err;
+      console.log(result);
+      if (result.length <= 0) reject({ error: 'user_not_found' });
+      else {
+        console.log(result[0].password);
+        console.log(bcrypt.hashSync(data.password));
+        if (!bcrypt.compareSync(data.password, result[0].password)) reject({ error: 'password_missmatch' });
+        else {
+          var sql = 'update usuarios set password=? where idusuario=?';
+          var values = [bcrypt.hashSync(data.newPassword), idusuario];
+          connection.query(sql, values, function(err, result) {
+            if (err) throw err;
+            console.log(result);
+            resolve(result);
+          });
+        }
+      }
     });
   });
 };

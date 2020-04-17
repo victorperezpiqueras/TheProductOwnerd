@@ -29,6 +29,14 @@ export class UsuariosService {
     return this.http.put<any>(this.url + '/' + usuario.idusuario + '/actualizar', JSON.stringify(usuario), httpOptions);
   }
 
+  actualizarUsuarioPassword(data: any): Observable<any> {
+    return this.http.put<any>(
+      this.url + '/' + data.idusuario + '/actualizarpassword',
+      JSON.stringify(data),
+      httpOptions
+    );
+  }
+
   getUsuarioProyectosFavoritos(idusuario: number): Observable<any> {
     return this.http.get<any>(this.url + '/' + idusuario + '/proyectosfavoritos', httpOptions);
   }
