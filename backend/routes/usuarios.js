@@ -135,4 +135,41 @@ router.post('/login', function(req, res, next) {
     });
 });
 
+router.get('/:id/proyectosfavoritos', verifyToken, function(req, res, next) {
+  console.log('getUsuarioProyectosFavoritos');
+  controllerUsuarios
+    .getUsuarioProyectosFavoritos(req.params.id)
+    .then(function(proyectosfavoritos) {
+      res.json(proyectosfavoritos);
+    })
+    .catch(function(err) {
+      res.status(500).json(err);
+    });
+});
+
+router.post('/:id/proyectosfavoritos', verifyToken, function(req, res, next) {
+  console.log('agregarUsuarioProyectosFavoritos');
+  if (!propertyChecker(req.body, ['idproyecto'])) throw new ErrorHandler(422, 'Missing required fields: idproyecto');
+  controllerUsuarios
+    .agregarUsuarioProyectosFavoritos(req.params.id, req.body)
+    .then(function(proyectosfavoritos) {
+      res.json(proyectosfavoritos);
+    })
+    .catch(function(err) {
+      res.status(500).json(err);
+    });
+});
+
+router.delete('/:id/proyectosfavoritos/:idproyecto', verifyToken, function(req, res, next) {
+  console.log('eliminarUsuarioProyectosFavoritos');
+  controllerUsuarios
+    .eliminarUsuarioProyectosFavoritos(req.params.id, req.params.idproyecto)
+    .then(function(proyectosfavoritos) {
+      res.json(proyectosfavoritos);
+    })
+    .catch(function(err) {
+      res.status(500).json(err);
+    });
+});
+
 module.exports = router;

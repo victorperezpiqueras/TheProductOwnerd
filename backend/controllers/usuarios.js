@@ -177,7 +177,7 @@ ControllerUsuarios.loginUsuario = function(usuario) {
     connection.query(sql, [usuario.email], function(err, result) {
       console.log(result);
       if (err) {
-        reject({ error: 'Error inesperado' });
+        reject({ error: 'Error inesperado en loginUsuario' });
       } else {
         if (result.length <= 0) {
           reject({ error: 'user_not_found' });
@@ -195,6 +195,49 @@ ControllerUsuarios.loginUsuario = function(usuario) {
           };
           resolve(credentials);
         }
+      }
+    });
+  });
+};
+
+ControllerUsuarios.getUsuarioProyectosFavoritos = function(idusuario) {
+  return new Promise(function(resolve, reject) {
+    const sql =
+      'select pr.*, p.nombre from proyectosfavoritos pr, proyectos p where idusuario=? and pr.idproyecto=p.idproyecto';
+    connection.query(sql, [idusuario], function(err, result) {
+      if (err) {
+        reject({ error: 'Error inesperado en getUsuarioProyectosFavoritos' });
+      } else {
+        console.log(result);
+        resolve(result);
+      }
+    });
+  });
+};
+
+ControllerUsuarios.agregarUsuarioProyectosFavoritos = function(idusuario, data) {
+  return new Promise(function(resolve, reject) {
+    const sql = 'insert into proyectosfavoritos(idusuario,idproyecto) values (?,?)';
+    connection.query(sql, [idusuario, data.idproyecto], function(err, result) {
+      if (err) {
+        reject({ error: 'Error inesperado en agregarUsuarioProyectosFavoritos' });
+      } else {
+        console.log(result);
+        resolve(result);
+      }
+    });
+  });
+};
+
+ControllerUsuarios.eliminarUsuarioProyectosFavoritos = function(idusuario, idproyecto) {
+  return new Promise(function(resolve, reject) {
+    const sql = 'delete from proyectosfavoritos where idusuario=? and idproyecto=?';
+    connection.query(sql, [idusuario, idproyecto], function(err, result) {
+      if (err) {
+        reject({ error: 'Error inesperado en eliminarUsuarioProyectosFavoritos' });
+      } else {
+        console.log(result);
+        resolve(result);
       }
     });
   });

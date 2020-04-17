@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar, MatDialog, MatDialogConfig } from '@angular/material';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Proyecto } from '@app/models/proyectos';
@@ -6,7 +6,7 @@ import { Pbi } from '@app/models/pbis';
 import { Comentario } from '@app/models/comentarios';
 import { PbisService } from '@app/services/pbis-service';
 import { ComentariosService } from '@app/services/comentarios-service';
-import { CredentialsService } from '@app/core';
+import { CredentialsService, untilDestroyed } from '@app/core';
 import { ArchivosService } from '@app/services/archivos-service';
 import { Archivo } from '@app/models/archivos';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -16,13 +16,14 @@ import { CriteriosService } from '@app/services/criterios-service';
 import { DependenciasService } from '@app/services/dependencias-service';
 import { Dependencia } from '@app/models/dependencias';
 import { ConfirmDialogComponent } from '@app/shared/confirmDialog/confirmDialog.component';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-pbiDialog',
   templateUrl: './pbiDialog.component.html',
   styleUrls: ['./pbiDialog.component.scss']
 })
-export class PbiDialogComponent implements OnInit {
+export class PbiDialogComponent implements OnInit, OnDestroy {
   isLoading = false;
   form: FormGroup;
 
@@ -131,28 +132,31 @@ export class PbiDialogComponent implements OnInit {
   /* DEPENDENCIAS */
   actualizarDependencias() {
     this.isLoading = true;
-    this.pbisService.obtenerDependencias(this.idpbi).subscribe((dependencias: Dependencia[]) => {
-      this.dependencias = dependencias;
-      this.notSelectedPbis = [...this.pbis];
-      //borrar los pbis que ya estan puestos
-      for (var d of this.dependencias) {
-        var p = false;
-        var pbi1;
-        this.notSelectedPbis.forEach((pbi: any) => {
-          if (pbi.idpbi == d.idpbi2) {
-            p = true;
-            pbi1 = pbi;
-          }
-        });
-        if (p) {
-          const index: number = this.notSelectedPbis.indexOf(pbi1);
-          if (index !== -1) {
-            this.notSelectedPbis.splice(index, 1);
+    this.pbisService
+      .obtenerDependencias(this.idpbi)
+      .pipe(untilDestroyed(this))
+      .subscribe((dependencias: Dependencia[]) => {
+        this.dependencias = dependencias;
+        this.notSelectedPbis = [...this.pbis];
+        //borrar los pbis que ya estan puestos
+        for (var d of this.dependencias) {
+          var p = false;
+          var pbi1;
+          this.notSelectedPbis.forEach((pbi: any) => {
+            if (pbi.idpbi == d.idpbi2) {
+              p = true;
+              pbi1 = pbi;
+            }
+          });
+          if (p) {
+            const index: number = this.notSelectedPbis.indexOf(pbi1);
+            if (index !== -1) {
+              this.notSelectedPbis.splice(index, 1);
+            }
           }
         }
-      }
-      this.isLoading = false;
-    });
+        this.isLoading = false;
+      });
   }
   actualizarDependencia() {
     var existe = false;
@@ -164,29 +168,43 @@ export class PbiDialogComponent implements OnInit {
         idpbi: this.idpbi,
         idpbi2: this.dependenciaData.idpbi
       };
-      this.dependenciasService.crearDependencia(dependencia).subscribe((res: any) => {
-        this.actualizarDependencias();
-      });
+      this.dependenciasService
+        .crearDependencia(dependencia)
+        .pipe(untilDestroyed(this))
+        .subscribe((res: any) => {
+          this.actualizarDependencias();
+          this.openSnackBar('Dependency created successfully!', 'Close');
+        });
     } else {
-      this.dependenciasService.borrarDependencia(this.idpbi, this.dependenciaData.idpbi).subscribe((res: any) => {
-        this.actualizarDependencias();
-      });
+      this.dependenciasService
+        .borrarDependencia(this.idpbi, this.dependenciaData.idpbi)
+        .pipe(untilDestroyed(this))
+        .subscribe((res: any) => {
+          this.actualizarDependencias();
+          this.openSnackBar('Dependency removed successfully!', 'Close');
+        });
     }
   }
   borrarDependencia(dep: Dependencia) {
-    this.dependenciasService.borrarDependencia(dep.idpbi, dep.idpbi2).subscribe((res: any) => {
-      this.actualizarDependencias();
-    });
+    this.dependenciasService
+      .borrarDependencia(dep.idpbi, dep.idpbi2)
+      .pipe(untilDestroyed(this))
+      .subscribe((res: any) => {
+        this.actualizarDependencias();
+      });
   }
 
   /* CRITERIOS */
   actualizarCriterios() {
     this.isLoading = true;
-    this.pbisService.obtenerCriterios(this.idpbi).subscribe((criterios: Criterio[]) => {
-      console.log(criterios);
-      this.criterios = criterios;
-      this.isLoading = false;
-    });
+    this.pbisService
+      .obtenerCriterios(this.idpbi)
+      .pipe(untilDestroyed(this))
+      .subscribe((criterios: Criterio[]) => {
+        console.log(criterios);
+        this.criterios = criterios;
+        this.isLoading = false;
+      });
   }
   crearCriterio() {
     var criterio = {
@@ -195,14 +213,22 @@ export class PbiDialogComponent implements OnInit {
       idpbi: this.idpbi
     };
     this.criterioData = '';
-    this.criteriosService.crearCriterio(criterio).subscribe((res: any) => {
-      this.actualizarCriterios();
-    });
+    this.criteriosService
+      .crearCriterio(criterio)
+      .pipe(untilDestroyed(this))
+      .subscribe((res: any) => {
+        this.actualizarCriterios();
+        this.openSnackBar('Acceptance Criteria created successfully!', 'Close');
+      });
   }
   actualizarCriterio(criterio: Criterio) {
-    this.criteriosService.actualizarCriterio(criterio).subscribe((res: any) => {
-      this.actualizarCriterios();
-    });
+    this.criteriosService
+      .actualizarCriterio(criterio)
+      .pipe(untilDestroyed(this))
+      .subscribe((res: any) => {
+        this.actualizarCriterios();
+        this.openSnackBar('Acceptance Criteria edited successfully!', 'Close');
+      });
   }
   borrarCriterio(criterio: Criterio) {
     const dialogConfig = new MatDialogConfig();
@@ -216,28 +242,38 @@ export class PbiDialogComponent implements OnInit {
       botonConfirm: 'Remove'
     };
     this.dialogRefConfirm = this.dialog.open(ConfirmDialogComponent, dialogConfig);
-    this.dialogRefConfirm.afterClosed().subscribe(data => {
-      if (data != undefined) {
-        this.isLoading = true;
-        this.criteriosService.borrarCriterio(criterio.idcriterio).subscribe((res: any) => {
-          this.actualizarCriterios();
-          this.isLoading = false;
-        });
-      }
-    });
+    this.dialogRefConfirm
+      .afterClosed()
+      .pipe(untilDestroyed(this))
+      .subscribe(data => {
+        if (data != undefined) {
+          this.isLoading = true;
+          this.criteriosService
+            .borrarCriterio(criterio.idcriterio)
+            .pipe(untilDestroyed(this))
+            .subscribe((res: any) => {
+              this.actualizarCriterios();
+              this.openSnackBar('Acceptance Criteria removed successfully!', 'Close');
+              this.isLoading = false;
+            });
+        }
+      });
   }
 
   /* COMENTARIOS */
   actualizarComentarios() {
     this.isLoading = true;
-    this.pbisService.obtenerComentarios(this.idpbi).subscribe((comentarios: Comentario[]) => {
-      this.comentarios = comentarios.sort((com1, com2) => {
-        if (new Date(com1.fecha) < new Date(com2.fecha)) return -1;
-        else return 1;
+    this.pbisService
+      .obtenerComentarios(this.idpbi)
+      .pipe(untilDestroyed(this))
+      .subscribe((comentarios: Comentario[]) => {
+        this.comentarios = comentarios.sort((com1, com2) => {
+          if (new Date(com1.fecha) < new Date(com2.fecha)) return -1;
+          else return 1;
+        });
+        /* this.comentarios = comentarios.reverse(); */
+        this.isLoading = false;
       });
-      /* this.comentarios = comentarios.reverse(); */
-      this.isLoading = false;
-    });
   }
   crearComentario() {
     this.isLoading = true;
@@ -247,45 +283,51 @@ export class PbiDialogComponent implements OnInit {
       idusuario: this.idusuario,
       fecha: Date.now()
     };
-    this.comentariosService.crearComentario(comentario).subscribe((res: any) => {
-      this.actualizarComentarios();
-      this.isLoading = false;
-      this.comentarioData = '';
-      this.openSnackBar('Comment successfully posted', 'Close');
-    });
+    this.comentariosService
+      .crearComentario(comentario)
+      .pipe(untilDestroyed(this))
+      .subscribe((res: any) => {
+        this.actualizarComentarios();
+        this.isLoading = false;
+        this.comentarioData = '';
+        this.openSnackBar('Comment posted successfully!', 'Close');
+      });
   }
 
   /* ARCHIVOS */
   actualizarArchivos() {
     this.isLoading = true;
-    this.pbisService.obtenerArchivos(this.idpbi).subscribe((archivos: any[]) => {
-      console.log(archivos);
-      this.archivos = archivos;
-      this.archivos.forEach(archivo => {
-        console.log(archivo);
+    this.pbisService
+      .obtenerArchivos(this.idpbi)
+      .pipe(untilDestroyed(this))
+      .subscribe((archivos: any[]) => {
+        console.log(archivos);
+        this.archivos = archivos;
+        this.archivos.forEach(archivo => {
+          console.log(archivo);
 
-        var fileType = this.getFileType(archivo);
+          var fileType = this.getFileType(archivo);
 
-        //archivo.nombre += fileType.ending;
-        console.log(archivo);
+          //archivo.nombre += fileType.ending;
+          console.log(archivo);
 
-        //archivo.src = Buffer.from(archivo.src, 'base64').toString();
+          //archivo.src = Buffer.from(archivo.src, 'base64').toString();
 
-        //var blob = new Blob([archivo.src, { type: fileType.format }]);
+          //var blob = new Blob([archivo.src, { type: fileType.format }]);
 
-        /*  var array = new Array<Blob>();
+          /*  var array = new Array<Blob>();
          array.push(blob);
          blob = new File(array, archivo.nombre, { type: fileType.format }); */
 
-        /*  console.log(fileType);
+          /*  console.log(fileType);
          console.log(archivo);
          console.log(blob); */
 
-        // archivo.src = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(blob));
-      });
+          // archivo.src = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(blob));
+        });
 
-      this.isLoading = false;
-    });
+        this.isLoading = false;
+      });
   }
 
   descargar(archivo: any) {
@@ -311,14 +353,17 @@ export class PbiDialogComponent implements OnInit {
       idusuario: this.idusuario
     };
     //console.log(archivo);
-    this.archivosService.crearArchivo(archivo).subscribe((res: any) => {
-      this.actualizarArchivos();
-      this.isLoading = false;
-      this.archivoSrcData = '';
-      this.archivoNombreData = '';
-      this.openSnackBar('File successfully uploaded', 'Close');
-      this.cargarImagen();
-    });
+    this.archivosService
+      .crearArchivo(archivo)
+      .pipe(untilDestroyed(this))
+      .subscribe((res: any) => {
+        this.actualizarArchivos();
+        this.isLoading = false;
+        this.archivoSrcData = '';
+        this.archivoNombreData = '';
+        this.openSnackBar('File uploaded successfully!', 'Close');
+        this.cargarImagen();
+      });
   }
 
   borrarArchivo(archivo: Archivo) {
@@ -331,15 +376,21 @@ export class PbiDialogComponent implements OnInit {
       botonConfirm: 'Remove'
     };
     this.dialogRefConfirm = this.dialog.open(ConfirmDialogComponent, dialogConfig);
-    this.dialogRefConfirm.afterClosed().subscribe(data => {
-      if (data != undefined) {
-        this.isLoading = true;
-        this.archivosService.borrarArchivo(archivo.idarchivo).subscribe((res: any) => {
-          this.actualizarArchivos();
-          this.isLoading = false;
-        });
-      }
-    });
+    this.dialogRefConfirm
+      .afterClosed()
+      .pipe(untilDestroyed(this))
+      .subscribe(data => {
+        if (data != undefined) {
+          this.isLoading = true;
+          this.archivosService
+            .borrarArchivo(archivo.idarchivo)
+            .pipe(untilDestroyed(this))
+            .subscribe((res: any) => {
+              this.actualizarArchivos();
+              this.isLoading = false;
+            });
+        }
+      });
   }
 
   filled(): boolean {
@@ -371,13 +422,16 @@ export class PbiDialogComponent implements OnInit {
       };
     }
     this.dialogRefConfirm = this.dialog.open(ConfirmDialogComponent, dialogConfig);
-    this.dialogRefConfirm.afterClosed().subscribe(data => {
-      if (data != undefined) {
-        console.log(data);
-        this.done = data.done;
-        this.sprint = data.sprint;
-      }
-    });
+    this.dialogRefConfirm
+      .afterClosed()
+      .pipe(untilDestroyed(this))
+      .subscribe(data => {
+        if (data != undefined) {
+          console.log(data);
+          this.done = data.done;
+          this.sprint = data.sprint;
+        }
+      });
   }
 
   setColor() {
@@ -447,9 +501,10 @@ export class PbiDialogComponent implements OnInit {
         this.sprintCreacion
       )
     });
+    console.log(this.dialogMode);
     //show snackbar on success:
-    if (this.dialogMode == 'edit') this.openSnackBar('PBI edited successfully', 'Close');
-    else if (this.dialogMode == 'create') this.openSnackBar('PBI created successfully', 'Close');
+    if (this.dialogMode == 'Edit') this.openSnackBar('PBI edited successfully', 'Close');
+    else if (this.dialogMode == 'Create new PBI') this.openSnackBar('PBI created successfully', 'Close');
   }
 
   close() {
@@ -537,4 +592,6 @@ export class PbiDialogComponent implements OnInit {
     const credentials = this.credentialsService.credentials;
     return credentials ? credentials.id : null;
   }
+
+  ngOnDestroy(): void {}
 }

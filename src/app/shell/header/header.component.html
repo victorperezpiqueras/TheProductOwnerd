@@ -29,7 +29,13 @@
       <mat-icon>star</mat-icon>
       <span>{{ proy.nombre }}</span>
     </button>
-    <button mat-button class="add" (click)="agregarFavorito()">
+    <button
+      mat-button
+      class="add"
+      (click)="agregarFavorito()"
+      matTooltip="Add projects to favourites"
+      matTooltipPosition="right"
+    >
       <mat-icon>add_circle_outline</mat-icon>
     </button>
   </div>

@@ -30,6 +30,7 @@ export class FavoritosDialogComponent implements OnInit {
   }
 
   toggleFavoritos(proyecto: any) {
+    proyecto.oldFav = proyecto.fav;
     proyecto.fav = !proyecto.fav;
   }
 
@@ -40,7 +41,7 @@ export class FavoritosDialogComponent implements OnInit {
       proyectos: this.proyectos
     });
     //show snackbar on success:
-    this.openSnackBar('Configuración guardada correctamente', 'Cerrar');
+    this.openSnackBar('Favourite projects saved successfully!', 'Close');
   }
 
   close() {

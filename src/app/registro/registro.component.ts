@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { finalize, map } from 'rxjs/operators';
+import { finalize, map, takeUntil } from 'rxjs/operators';
 import { UsuariosService } from '@app/services/usuarios-service';
 import { CredentialsService, Logger, untilDestroyed } from '@app/core';
 import { ProyectosService } from '@app/services/proyectos-service';
@@ -43,14 +43,17 @@ export class RegistroComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.isLoading = true;
-    this.activeRoute.params.subscribe(routeParams => {
+    this.activeRoute.params.pipe(untilDestroyed(this)).subscribe(routeParams => {
       /* comprobar codigo invitacion */
       if (routeParams.id) {
         this.invitacionProyecto = routeParams.id;
         this.showMsgInvitacion = true;
-        this.invitacionesService.obtenerInvitacion(this.invitacionProyecto).subscribe((res: any) => {
-          if (res == null) this.showErrorInvitacion = true;
-        });
+        this.invitacionesService
+          .obtenerInvitacion(this.invitacionProyecto)
+          .pipe(untilDestroyed(this))
+          .subscribe((res: any) => {
+            if (res == null) this.showErrorInvitacion = true;
+          });
       }
       console.log(this.invitacionProyecto);
       this.isLoading = false;

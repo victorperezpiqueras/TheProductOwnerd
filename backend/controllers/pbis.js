@@ -5,7 +5,7 @@ ControllerPbis.crearPbi = function(pbi) {
   return new Promise(function(resolve, reject) {
     const sql =
       'insert into pbis(titulo,descripcion ,done,label ,estimacion, valor ,idproyecto ,prioridad, sprintCreacion) values ' +
-      '(?,?,?,?,?,?,?,?)';
+      '(?,?,?,?,?,?,?,?,?)';
     const array = [
       pbi.titulo,
       pbi.descripcion,
@@ -19,7 +19,7 @@ ControllerPbis.crearPbi = function(pbi) {
     ];
     connection.query(sql, array, function(err, result) {
       if (err) {
-        reject({ error: 'Error inesperado en editarPbi' });
+        reject({ error: 'Error inesperado en crearPbi' });
       } else {
         console.log(result);
         resolve(result);

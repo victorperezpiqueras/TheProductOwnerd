@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { finalize, map } from 'rxjs/operators';
+import { finalize, map, takeUntil } from 'rxjs/operators';
 import { UsuariosService } from '@app/services/usuarios-service';
-import { CredentialsService } from '@app/core';
+import { CredentialsService, untilDestroyed } from '@app/core';
 import { Proyecto } from '@app/models/proyectos';
 import { ProyectosService } from '@app/services/proyectos-service';
 import { Observable, forkJoin } from 'rxjs';
@@ -92,31 +92,56 @@ export class ForecastsComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.activeRoute.params.subscribe(routeParams => {
       //console.log(routeParams);
-      this.proyectosService.getProyecto(routeParams.id).subscribe(proyecto => {
-        //console.log(proyecto);
-        this.proyecto = proyecto;
-        this.proyectosService.getProyectoUsuariosRoles(proyecto.idproyecto).subscribe(usuarios => {
-          this.proyecto.usuarios = usuarios;
-          this.isLoading = false;
+      this.proyectosService
+        .getProyecto(routeParams.id)
+        .pipe(untilDestroyed(this))
+        .subscribe(proyecto => {
           //console.log(proyecto);
-        });
+          this.proyecto = proyecto;
+          this.proyectosService
+            .getProyectoUsuariosRoles(proyecto.idproyecto)
+            .pipe(untilDestroyed(this))
+            .subscribe(usuarios => {
+              this.proyecto.usuarios = usuarios;
+              this.isLoading = false;
+              //console.log(proyecto);
+            });
 
-        this.proyectosService.getProyectosPBI(proyecto.idproyecto).subscribe((pbis: []) => {
-          this.pbis = pbis;
-          /* grafico Velocidad */
-          this.actualizarGraficoVelocidad();
-          /* grafico PoC */
+          this.proyectosService
+            .getProyectosPBI(proyecto.idproyecto)
+            .pipe(untilDestroyed(this))
+            .subscribe((pbis: []) => {
+              this.pbis = pbis;
+              this.reiniciarDatos();
+              /* grafico Velocidad */
+              this.actualizarGraficoVelocidad();
+            });
         });
-      });
     });
   }
 
+  reiniciarDatos() {
+    this.listaData = [];
+    this.listaDeadline = [];
+    this.listaAverageBest = [];
+    this.listaAverage = [];
+    this.listaAverageWorst = [];
+    this.puntoCorteWorst = [];
+    this.puntoCorteAverage = [];
+    this.puntoCorteBest = [];
+    this.mediaAverage = 0;
+    this.mediaAverageBest = 0;
+    this.mediaAverageWorst = 0;
+  }
+
   actualizarGraficoVelocidad() {
-    this.generarEjes();
-    this.generarExpectedAverage(this.sprintNumber);
-    this.generarBestWorstAverage(this.sprintNumber, this.sprintNumberBW);
-    this.generarDeadline(this.deadlineSprint);
-    this.generarPuntosCorte();
+    if (this.pbis.length > 0) {
+      this.generarEjes();
+      this.generarExpectedAverage(this.sprintNumber);
+      this.generarBestWorstAverage(this.sprintNumber, this.sprintNumberBW);
+      this.generarDeadline(this.deadlineSprint);
+      this.generarPuntosCorte();
+    }
     this.generarGrafico();
   }
 

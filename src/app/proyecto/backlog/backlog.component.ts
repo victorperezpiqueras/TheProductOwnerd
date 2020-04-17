@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { finalize, map } from 'rxjs/operators';
+import { finalize, map, takeUntil } from 'rxjs/operators';
 import { UsuariosService } from '@app/services/usuarios-service';
-import { CredentialsService } from '@app/core';
+import { CredentialsService, untilDestroyed } from '@app/core';
 import { Proyecto } from '@app/models/proyectos';
 import { ProyectosService } from '@app/services/proyectos-service';
 import { Observable, forkJoin } from 'rxjs';
@@ -75,26 +75,33 @@ export class BacklogComponent implements OnInit, OnDestroy {
     this.isLoading = true;
     this.activeRoute.params.subscribe(routeParams => {
       // console.log(routeParams);
-      this.proyectosService.getProyecto(routeParams.id).subscribe(proyecto => {
-        //console.log(proyecto);
-        this.proyecto = proyecto;
-        this.proyectosService.getProyectosPBI(proyecto.idproyecto).subscribe((pbis: []) => {
-          this.pbis = pbis;
-          this.showingPbis = pbis.filter((pbi: any) => pbi.done == 0);
-          this.showingPbis.sort((pbi1, pbi2) => {
-            return pbi1.prioridad - pbi2.prioridad;
-          });
+      this.proyectosService
+        .getProyecto(routeParams.id)
+        .pipe(untilDestroyed(this))
+        .subscribe(proyecto => {
+          //console.log(proyecto);
+          this.proyecto = proyecto;
+          this.proyectosService
+            .getProyectosPBI(proyecto.idproyecto)
+            .pipe(untilDestroyed(this))
+            .subscribe((pbis: []) => {
+              this.pbis = pbis;
+              this.showingPbis = pbis.filter((pbi: any) => pbi.done == 0);
+              this.showingPbis.sort((pbi1, pbi2) => {
+                return pbi1.prioridad - pbi2.prioridad;
+              });
 
-          this.showingDonePbis = this.pbis.filter((pbi: any) => pbi.done == 1);
-          this.usuariosService
-            .getUsuarioProyectoPermisos(this.idusuario, this.proyecto.idproyecto)
-            .subscribe((permisos: Permisos) => {
-              this.permisos = permisos;
-              console.log('Permisos', this.permisos);
-              this.isLoading = false;
+              this.showingDonePbis = this.pbis.filter((pbi: any) => pbi.done == 1);
+              this.usuariosService
+                .getUsuarioProyectoPermisos(this.idusuario, this.proyecto.idproyecto)
+                .pipe(untilDestroyed(this))
+                .subscribe((permisos: Permisos) => {
+                  this.permisos = permisos;
+                  console.log('Permisos', this.permisos);
+                  this.isLoading = false;
+                });
             });
         });
-      });
     });
   }
 
@@ -218,16 +225,19 @@ export class BacklogComponent implements OnInit, OnDestroy {
 
   actualizarPbis() {
     this.isLoading = true;
-    this.proyectosService.getProyectosPBI(this.proyecto.idproyecto).subscribe((pbis: any) => {
-      this.pbis = pbis;
-      // this.showingPbis = pbis;
-      this.showingPbis = this.pbis.filter((pbi: any) => pbi.done == 0);
-      this.showingPbis.sort((pbi1, pbi2) => {
-        return pbi1.prioridad - pbi2.prioridad;
+    this.proyectosService
+      .getProyectosPBI(this.proyecto.idproyecto)
+      .pipe(untilDestroyed(this))
+      .subscribe((pbis: any) => {
+        this.pbis = pbis;
+        // this.showingPbis = pbis;
+        this.showingPbis = this.pbis.filter((pbi: any) => pbi.done == 0);
+        this.showingPbis.sort((pbi1, pbi2) => {
+          return pbi1.prioridad - pbi2.prioridad;
+        });
+        this.showingDonePbis = this.pbis.filter((pbi: any) => pbi.done == 1);
+        this.isLoading = false;
       });
-      this.showingDonePbis = this.pbis.filter((pbi: any) => pbi.done == 1);
-      this.isLoading = false;
-    });
   }
 
   crearPbiDialog() {
@@ -256,12 +266,15 @@ export class BacklogComponent implements OnInit, OnDestroy {
       dialogMode: 'create'
     };
     this.dialogRef = this.dialog.open(PbiDialogComponent, dialogConfig);
-    this.dialogRef.afterClosed().subscribe(data => {
-      if (data != undefined) {
-        this.addPbi(data.pbi);
-        //console.log(data);
-      }
-    });
+    this.dialogRef
+      .afterClosed()
+      .pipe(untilDestroyed(this))
+      .subscribe(data => {
+        if (data != undefined) {
+          this.addPbi(data.pbi);
+          console.log(data);
+        }
+      });
   }
 
   editarPbiDialog(pbi: Pbi) {
@@ -278,12 +291,15 @@ export class BacklogComponent implements OnInit, OnDestroy {
       dialogMode: 'edit'
     };
     this.dialogRef = this.dialog.open(PbiDialogComponent, dialogConfig);
-    this.dialogRef.afterClosed().subscribe(data => {
-      if (data != undefined) {
-        this.editarPbi(data.pbi);
-        //console.log(data);
-      }
-    });
+    this.dialogRef
+      .afterClosed()
+      .pipe(untilDestroyed(this))
+      .subscribe(data => {
+        if (data != undefined) {
+          this.editarPbi(data.pbi);
+          //console.log(data);
+        }
+      });
   }
 
   verPbiDialog(pbi: Pbi) {
@@ -300,13 +316,16 @@ export class BacklogComponent implements OnInit, OnDestroy {
       dialogMode: 'view'
     };
     this.dialogRef = this.dialog.open(PbiDialogComponent, dialogConfig);
-    this.dialogRef.afterClosed().subscribe(data => {
-      if (data != undefined) {
-        data.pbi.prioridad = this.showingPbis.length + 1;
-        this.editarPbi(data.pbi);
-        //console.log(data);
-      }
-    });
+    this.dialogRef
+      .afterClosed()
+      .pipe(untilDestroyed(this))
+      .subscribe(data => {
+        if (data != undefined) {
+          data.pbi.prioridad = this.showingPbis.length + 1;
+          this.editarPbi(data.pbi);
+          //console.log(data);
+        }
+      });
   }
 
   drop(event: CdkDragDrop<string[]>) {
@@ -345,9 +364,12 @@ export class BacklogComponent implements OnInit, OnDestroy {
     for (var x = 0; x < this.showingPbis.length; x++) {
       this.showingPbis[x].prioridad = x + 1;
     }
-    this.pbisService.editarPrioridadesPbis(this.showingPbis).subscribe(pbis => {
-      //console.log(pbis);
-    });
+    this.pbisService
+      .editarPrioridadesPbis(this.showingPbis)
+      .pipe(untilDestroyed(this))
+      .subscribe(pbis => {
+        //console.log(pbis);
+      });
   }
 
   swapItemList() {
@@ -362,22 +384,28 @@ export class BacklogComponent implements OnInit, OnDestroy {
   }
 
   addPbi(pbi: Pbi) {
-    this.pbisService.crearPbi(pbi).subscribe((v: any) => {
-      //console.log(v);
-      //this.pbis.push(pbi);///////////////////COMPROBAR
-      this.actualizarPbis();
-    });
+    this.pbisService
+      .crearPbi(pbi)
+      .pipe(untilDestroyed(this))
+      .subscribe((v: any) => {
+        //console.log(v);
+        //this.pbis.push(pbi);///////////////////COMPROBAR
+        this.actualizarPbis();
+      });
   }
 
   editarPbi(pbi: Pbi) {
     console.log(pbi);
-    this.pbisService.editarPbi(pbi).subscribe((v: any) => {
-      //console.log(v);
-      /* var itemToUpdate = this.pbis.find((item) => item.idpbi == pbi.idpbi); //////////////////COMPROBAR
+    this.pbisService
+      .editarPbi(pbi)
+      .pipe(untilDestroyed(this))
+      .subscribe((v: any) => {
+        //console.log(v);
+        /* var itemToUpdate = this.pbis.find((item) => item.idpbi == pbi.idpbi); //////////////////COMPROBAR
       var index = this.pbis.indexOf(itemToUpdate);
       this.pbis[index] = pbi; */
-      this.actualizarPbis();
-    });
+        this.actualizarPbis();
+      });
   }
 
   ngOnDestroy() {}

@@ -70,8 +70,17 @@ connection.connect(function(err) {
                                             function(err, result) {
                                               if (err) throw err;
                                               console.log('Tabla SprintGoals creada');
-                                              connection.end();
-                                              console.log('Desconectado de MYSQL');
+                                              connection.query(
+                                                'create table proyectosfavoritos (' +
+                                                  'idproyecto int not null, idusuario int not null, foreign key(idproyecto) references proyectos(idproyecto) on delete cascade,' +
+                                                  'foreign key(idusuario) references usuarios(idusuario) on delete cascade, primary key (idproyecto,idusuario))',
+                                                function(err, result) {
+                                                  if (err) throw err;
+                                                  console.log('Tabla ProyectosFavoritos creada');
+                                                  connection.end();
+                                                  console.log('Desconectado de MYSQL');
+                                                }
+                                              );
                                             }
                                           );
                                         }

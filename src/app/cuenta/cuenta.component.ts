@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { finalize } from 'rxjs/operators';
+import { finalize, takeUntil } from 'rxjs/operators';
 import { UsuariosService } from '@app/services/usuarios-service';
-import { CredentialsService } from '@app/core';
+import { CredentialsService, untilDestroyed } from '@app/core';
 import { Proyecto } from '@app/models/proyectos';
 import { ProyectosService } from '@app/services/proyectos-service';
 import { Observable, forkJoin } from 'rxjs';
@@ -50,24 +50,27 @@ export class CuentaComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.isLoading = true;
-    this.activeRoute.params.subscribe(routeParams => {
+    this.activeRoute.params.pipe(untilDestroyed(this)).subscribe(routeParams => {
       /* this.usuariosService.getUsuario(routeParams.id).subscribe(usuario => { */
-      this.usuariosService.getUsuario(this.idusuario).subscribe(usuario => {
-        this.usuario = usuario;
-        /*         this.repeatPassword = this.usuario.password; */
-        /* this.myForm.get('password').setValue(this.usuario.password);
+      this.usuariosService
+        .getUsuario(this.idusuario)
+        .pipe(untilDestroyed(this))
+        .subscribe(usuario => {
+          this.usuario = usuario;
+          /*         this.repeatPassword = this.usuario.password; */
+          /* this.myForm.get('password').setValue(this.usuario.password);
         this.myForm.get('confirmPassword').setValue(this.usuario.password); */
-        this.myForm.controls['nick'].setValue(usuario.nick);
-        this.myForm.controls['email'].setValue(usuario.email);
-        this.myForm.controls['nombre'].setValue(usuario.nombre);
-        this.myForm.controls['apellido1'].setValue(usuario.apellido1);
-        this.myForm.controls['apellido2'].setValue(usuario.apellido2);
+          this.myForm.controls['nick'].setValue(usuario.nick);
+          this.myForm.controls['email'].setValue(usuario.email);
+          this.myForm.controls['nombre'].setValue(usuario.nombre);
+          this.myForm.controls['apellido1'].setValue(usuario.apellido1);
+          this.myForm.controls['apellido2'].setValue(usuario.apellido2);
 
-        /*  this.myForm.controls['email'].disable();
-         */
-        /*  console.log(usuario); */
-        this.isLoading = false;
-      });
+          /*  this.myForm.controls['email'].disable();
+           */
+          /*  console.log(usuario); */
+          this.isLoading = false;
+        });
     });
   }
 
@@ -81,34 +84,37 @@ export class CuentaComponent implements OnInit, OnDestroy {
       this.usuario.apellido1 = this.myForm.get('apellido1').value;
       this.usuario.apellido2 = this.myForm.get('apellido2').value;
       this.usuario.password = this.myForm.get('password').value;
-      this.usuariosService.actualizarUsuario(this.usuario).subscribe(
-        data => {
-          this.myForm.get('password').setValue('');
-          this.myForm.get('password').markAsPristine();
-          this.myForm.get('password').markAsUntouched();
-          this.myForm.get('password').updateValueAndValidity();
+      this.usuariosService
+        .actualizarUsuario(this.usuario)
+        .pipe(untilDestroyed(this))
+        .subscribe(
+          data => {
+            this.myForm.get('password').setValue('');
+            this.myForm.get('password').markAsPristine();
+            this.myForm.get('password').markAsUntouched();
+            this.myForm.get('password').updateValueAndValidity();
 
-          this.myForm.get('confirmPassword').setValue('');
-          this.myForm.get('confirmPassword').markAsPristine();
-          this.myForm.get('confirmPassword').markAsUntouched();
-          this.myForm.get('confirmPassword').updateValueAndValidity();
+            this.myForm.get('confirmPassword').setValue('');
+            this.myForm.get('confirmPassword').markAsPristine();
+            this.myForm.get('confirmPassword').markAsUntouched();
+            this.myForm.get('confirmPassword').updateValueAndValidity();
 
-          /* actualizar nick de credenciales */
-          const cred = {
-            username: this.usuario.nick,
-            id: this.idusuario,
-            token: this.token
-          };
-          this.credentialsService.setCredentials(cred, true);
+            /* actualizar nick de credenciales */
+            const cred = {
+              username: this.usuario.nick,
+              id: this.idusuario,
+              token: this.token
+            };
+            this.credentialsService.setCredentials(cred, true);
 
-          this.isLoading = false;
-          this.openSnackBar('Account edited successfully', 'Close');
-          console.log(data);
-        },
-        error => {
-          console.log(error);
-        }
-      );
+            this.isLoading = false;
+            this.openSnackBar('Account edited successfully', 'Close');
+            console.log(data);
+          },
+          error => {
+            console.log(error);
+          }
+        );
     }
   }
 

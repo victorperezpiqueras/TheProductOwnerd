@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy, Input, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { finalize, map } from 'rxjs/operators';
+import { finalize, map, takeUntil } from 'rxjs/operators';
 import { UsuariosService } from '@app/services/usuarios-service';
-import { CredentialsService } from '@app/core';
+import { CredentialsService, untilDestroyed } from '@app/core';
 import { Proyecto } from '@app/models/proyectos';
 import { ProyectosService } from '@app/services/proyectos-service';
 import { Observable, forkJoin } from 'rxjs';
@@ -122,11 +122,14 @@ export class OverviewComponent implements OnInit, OnDestroy {
     }
     this.activeRoute.params.subscribe(routeParams => {
       //console.log(routeParams);
-      this.proyectosService.getProyecto(routeParams.id).subscribe(proyecto => {
-        //console.log(proyecto);
-        this.proyecto = proyecto;
-        this.actualizar();
-      });
+      this.proyectosService
+        .getProyecto(routeParams.id)
+        .pipe(untilDestroyed(this))
+        .subscribe(proyecto => {
+          //console.log(proyecto);
+          this.proyecto = proyecto;
+          this.actualizar();
+        });
     });
   }
 
@@ -137,9 +140,12 @@ export class OverviewComponent implements OnInit, OnDestroy {
   }
 
   actualizarUsuarios() {
-    this.proyectosService.getProyectoUsuariosRoles(this.proyecto.idproyecto).subscribe(usuarios => {
-      this.proyecto.usuarios = usuarios;
-      /* this.proyecto.usuarios.push({ nick: "aaaaaaa", rol: "stakeholder" })
+    this.proyectosService
+      .getProyectoUsuariosRoles(this.proyecto.idproyecto)
+      .pipe(untilDestroyed(this))
+      .subscribe(usuarios => {
+        this.proyecto.usuarios = usuarios;
+        /* this.proyecto.usuarios.push({ nick: "aaaaaaa", rol: "stakeholder" })
       this.proyecto.usuarios.push({ nick: "aaaaaaa", rol: "stakeholder" })
       this.proyecto.usuarios.push({ nick: "aaaaaaa", rol: "stakeholder" })
       this.proyecto.usuarios.push({ nick: "aaaaaaa", rol: "stakeholder" })
@@ -148,19 +154,22 @@ export class OverviewComponent implements OnInit, OnDestroy {
       this.proyecto.usuarios.push({ nick: "aaaaaaa", rol: "stakeholder" })
       this.proyecto.usuarios.push({ nick: "aaaaaaa", rol: "stakeholder" })
       this.proyecto.usuarios.push({ nick: "aaaaaaa", rol: "stakeholder" }) */
-      this.dataTable = new MatTableDataSource(this.proyecto.usuarios);
-      this.dataTable.paginator = this.paginator;
-      this.isLoading = false;
-    });
+        this.dataTable = new MatTableDataSource(this.proyecto.usuarios);
+        this.dataTable.paginator = this.paginator;
+        this.isLoading = false;
+      });
   }
 
   actualizarGraficos() {
-    this.proyectosService.getProyectosPBI(this.proyecto.idproyecto).subscribe((pbis: []) => {
-      this.pbis = pbis;
-      this.actualizarGraficoPBC();
-      this.actualizarGraficoPoC();
-      this.calcularMedias();
-    });
+    this.proyectosService
+      .getProyectosPBI(this.proyecto.idproyecto)
+      .pipe(untilDestroyed(this))
+      .subscribe((pbis: []) => {
+        this.pbis = pbis;
+        this.actualizarGraficoPBC();
+        this.actualizarGraficoPoC();
+        this.calcularMedias();
+      });
   }
 
   actualizarGraficoPBC() {
@@ -716,6 +725,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
         nombreProyecto: this.proyecto.nombre,
         invitadoPor: this.username
       })
+      .pipe(untilDestroyed(this))
       .subscribe((data: any) => {
         // console.log(data);
         this.newEmail = '';
@@ -748,24 +758,33 @@ export class OverviewComponent implements OnInit, OnDestroy {
       botonConfirm: 'Kick'
     };
     this.dialogRefConfirm = this.dialog.open(ConfirmDialogComponent, dialogConfig);
-    this.dialogRefConfirm.afterClosed().subscribe(data => {
-      if (data != undefined) {
-        console.log(data);
-        this.isLoading = true;
-        this.proyectosService.eliminarUsuario(this.proyecto.idproyecto, us.idusuario).subscribe(res => {
-          this.isLoading = false;
-          this.actualizarUsuarios();
-        });
-      }
-    });
+    this.dialogRefConfirm
+      .afterClosed()
+      .pipe(untilDestroyed(this))
+      .subscribe(data => {
+        if (data != undefined) {
+          console.log(data);
+          this.isLoading = true;
+          this.proyectosService
+            .eliminarUsuario(this.proyecto.idproyecto, us.idusuario)
+            .pipe(untilDestroyed(this))
+            .subscribe(res => {
+              this.isLoading = false;
+              this.actualizarUsuarios();
+            });
+        }
+      });
   }
 
   actualizarProyecto() {
     this.isLoading = true;
-    this.proyectosService.actualizarProyecto(this.proyecto.idproyecto, this.proyecto).subscribe(data => {
-      this.isLoading = false;
-      this._snackBar.open('Vision edited successfully!', 'Close', { duration: 3000 });
-    });
+    this.proyectosService
+      .actualizarProyecto(this.proyecto.idproyecto, this.proyecto)
+      .pipe(untilDestroyed(this))
+      .subscribe(data => {
+        this.isLoading = false;
+        this._snackBar.open('Vision edited successfully!', 'Close', { duration: 3000 });
+      });
   }
 
   switchSaveButton() {

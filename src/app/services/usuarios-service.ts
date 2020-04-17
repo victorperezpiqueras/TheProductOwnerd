@@ -16,7 +16,7 @@ export class UsuariosService {
     return this.http.get<any>(this.url + '/' + idusuario, httpOptions);
   }
 
-  getUsuariosProyectos(idusuario: number): Observable<any> {
+  getUsuarioProyectos(idusuario: number): Observable<any> {
     return this.http.get<any>(this.url + '/' + idusuario + '/proyectos', httpOptions);
   }
 
@@ -29,13 +29,19 @@ export class UsuariosService {
     return this.http.put<any>(this.url + '/' + usuario.idusuario + '/actualizar', JSON.stringify(usuario), httpOptions);
   }
 
-  /* {
-    "ordenar": 0,
-    "editarPBI": 1,
-    "estimarTam": 1,
-    "mantenerUsuarios": 0,
-    "archivarProyecto": 0,
-    "setDone": 1,
-    "proyecciones": 0
-} */
+  getUsuarioProyectosFavoritos(idusuario: number): Observable<any> {
+    return this.http.get<any>(this.url + '/' + idusuario + '/proyectosfavoritos', httpOptions);
+  }
+
+  agregarUsuarioProyectosFavoritos(idusuario: number, idproyecto: number): Observable<any> {
+    return this.http.post<any>(
+      this.url + '/' + idusuario + '/proyectosfavoritos',
+      JSON.stringify({ idproyecto: idproyecto }),
+      httpOptions
+    );
+  }
+
+  eliminarUsuarioProyectosFavoritos(idusuario: number, idproyecto: number): Observable<any> {
+    return this.http.delete<any>(this.url + '/' + idusuario + '/proyectosfavoritos/' + idproyecto, httpOptions);
+  }
 }

@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { finalize } from 'rxjs/operators';
+import { finalize, takeUntil } from 'rxjs/operators';
 import { UsuariosService } from '@app/services/usuarios-service';
-import { CredentialsService } from '@app/core';
+import { CredentialsService, untilDestroyed } from '@app/core';
 import { Proyecto } from '@app/models/proyectos';
 import { ProyectosService } from '@app/services/proyectos-service';
 import { Observable, forkJoin } from 'rxjs';
@@ -54,9 +54,12 @@ export class ProyectosComponent implements OnInit, OnDestroy {
       dialogMode: 'create'
     };
     this.dialogRef = this.dialog.open(ProyectoDialogComponent, dialogConfig);
-    this.dialogRef.afterClosed().subscribe(data => {
-      if (data != undefined) this.addProyecto(data.proyecto);
-    });
+    this.dialogRef
+      .afterClosed()
+      .pipe(untilDestroyed(this))
+      .subscribe(data => {
+        if (data != undefined) this.addProyecto(data.proyecto);
+      });
   }
 
   addProyecto(proyecto: Proyecto) {
@@ -65,33 +68,38 @@ export class ProyectosComponent implements OnInit, OnDestroy {
       descripcion: proyecto.descripcion,
       idusuario: this.idusuario
     };
-    this.proyectosService.crearProyecto(data).subscribe(() => {
-      this.actualizarDatos();
-    });
+    this.proyectosService
+      .crearProyecto(data)
+      .pipe(untilDestroyed(this))
+      .subscribe(() => {
+        this.actualizarDatos();
+      });
   }
 
   actualizarDatos() {
     this.isLoading = true;
     this.proyectos = [];
-    var proyectos$ = this.usuariosService.getUsuariosProyectos(this.idusuario);
-    var usuariosTotales$ = this.proyectosService.getProyectosUsuariosRoles();
+    var proyectos$ = this.usuariosService.getUsuarioProyectos(this.idusuario).pipe(untilDestroyed(this));
+    var usuariosTotales$ = this.proyectosService.getProyectosUsuariosRoles().pipe(untilDestroyed(this));
 
-    forkJoin([proyectos$, usuariosTotales$]).subscribe(results => {
-      results[0].forEach((element: any) => {
-        var pr = new Proyecto(element.idproyecto, element.nombre, element.descripcion, element.vision, 0, []);
-        this.proyectos.push(pr);
-      });
+    forkJoin([proyectos$, usuariosTotales$])
+      .pipe(untilDestroyed(this))
+      .subscribe(results => {
+        results[0].forEach((element: any) => {
+          var pr = new Proyecto(element.idproyecto, element.nombre, element.descripcion, element.vision, 0, []);
+          this.proyectos.push(pr);
+        });
 
-      for (var proy of this.proyectos) {
-        for (var user of results[1]) {
-          if (user.idproyecto == proy.idproyecto) {
-            proy.usuarios.push(user);
-            console.log(user);
+        for (var proy of this.proyectos) {
+          for (var user of results[1]) {
+            if (user.idproyecto == proy.idproyecto) {
+              proy.usuarios.push(user);
+              console.log(user);
+            }
           }
         }
-      }
-      this.isLoading = false;
-    });
+        this.isLoading = false;
+      });
   }
 
   get idusuario(): number | null {

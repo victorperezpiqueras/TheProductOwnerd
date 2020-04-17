@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { finalize, map } from 'rxjs/operators';
+import { finalize, map, takeUntil } from 'rxjs/operators';
 import { UsuariosService } from '@app/services/usuarios-service';
-import { CredentialsService } from '@app/core';
+import { CredentialsService, untilDestroyed } from '@app/core';
 import { Proyecto } from '@app/models/proyectos';
 import { ProyectosService } from '@app/services/proyectos-service';
 import { Observable, forkJoin } from 'rxjs';
@@ -68,44 +68,40 @@ export class ProyectoComponent implements OnInit, OnDestroy {
     private _snackBar: MatSnackBar
   ) {}
 
-  async ngOnInit() {
-    //this.proyecto = this.proyectosService.proyecto;
-    /* console.log(this.router.url.split('/')[2])
-    this.proyectosService.getProyecto(Number(this.router.url.split('/')[2]))
-      .subscribe((proyecto)=>{
-        this.proyecto=proyecto;
-      }) */
-    /* this.isLoading = true;
-    const routeParams = await this.activeRoute.params.toPromise();
-    this.proyecto = await this.proyectosService.getProyecto(routeParams.id).toPromise();
-    this.checkSprintZero();
-    this.proyecto.usuarios = await this.proyectosService.getProyectoUsuariosRoles(this.proyecto.idproyecto).toPromise();
-    this.permisos = await this.usuariosService.getUsuarioProyectoPermisos(this.idusuario, this.proyecto.idproyecto).toPromise();
-    this.sprintGoals = await this.proyectosService.getProyectoSprintGoals(this.proyecto.idproyecto).toPromise();
-    this.updateSprintGoal();
-    this.isLoading = false; */
-    this.activeRoute.params.subscribe(routeParams => {
-      this.proyectosService.getProyecto(routeParams.id).subscribe(proyecto => {
-        this.proyecto = proyecto;
+  ngOnInit() {
+    this.isLoading = true;
+    this.activeRoute.params.pipe(untilDestroyed(this)).subscribe(routeParams => {
+      this.proyectosService
+        .getProyecto(routeParams.id)
+        .pipe(untilDestroyed(this))
+        .subscribe(proyecto => {
+          this.proyecto = proyecto;
 
-        this.checkSprintZero();
+          this.checkSprintZero();
 
-        this.proyectosService.getProyectoUsuariosRoles(proyecto.idproyecto).subscribe(usuarios => {
-          this.proyecto.usuarios = usuarios;
-          this.usuariosService
-            .getUsuarioProyectoPermisos(this.idusuario, this.proyecto.idproyecto)
-            .subscribe((permisos: Permisos) => {
-              this.permisos = permisos;
-              //console.log(this.permisos);
+          this.proyectosService
+            .getProyectoUsuariosRoles(proyecto.idproyecto)
+            .pipe(untilDestroyed(this))
+            .subscribe(usuarios => {
+              this.proyecto.usuarios = usuarios;
+              this.usuariosService
+                .getUsuarioProyectoPermisos(this.idusuario, this.proyecto.idproyecto)
+                .pipe(untilDestroyed(this))
+                .subscribe((permisos: Permisos) => {
+                  this.permisos = permisos;
+                  this.isLoading = false;
+                });
+
+              this.proyectosService
+                .getProyectoSprintGoals(this.proyecto.idproyecto)
+                .pipe(untilDestroyed(this))
+                .subscribe(sprintGoals => {
+                  this.sprintGoals = sprintGoals;
+                  this.updateSprintGoal();
+                  this.isLoading = false;
+                });
             });
-
-          this.proyectosService.getProyectoSprintGoals(this.proyecto.idproyecto).subscribe(sprintGoals => {
-            this.sprintGoals = sprintGoals;
-            this.updateSprintGoal();
-          });
-          this.isLoading = false;
         });
-      });
     });
   }
 
@@ -144,19 +140,25 @@ export class ProyectoComponent implements OnInit, OnDestroy {
       botonConfirm: 'Switch to Next Sprint'
     };
     this.dialogRefConfirm = this.dialog.open(ConfirmDialogComponent, dialogConfig);
-    this.dialogRefConfirm.afterClosed().subscribe(data => {
-      if (data != undefined) {
-        this.isLoading = true;
-        this.proyecto.sprintActual++;
-        this.proyectosService.actualizarProyecto(this.proyecto.idproyecto, this.proyecto).subscribe(res => {
-          this.updateSprintGoal();
-          this.checkSprintZero();
-          this.actualizarComponentes();
-          this.buttonDisabled = true;
-          this.isLoading = false;
-        });
-      }
-    });
+    this.dialogRefConfirm
+      .afterClosed()
+      .pipe(untilDestroyed(this))
+      .subscribe(data => {
+        if (data != undefined) {
+          this.isLoading = true;
+          this.proyecto.sprintActual++;
+          this.proyectosService
+            .actualizarProyecto(this.proyecto.idproyecto, this.proyecto)
+            .pipe(untilDestroyed(this))
+            .subscribe(res => {
+              this.updateSprintGoal();
+              this.checkSprintZero();
+              this.actualizarComponentes();
+              this.buttonDisabled = true;
+              this.isLoading = false;
+            });
+        }
+      });
   }
 
   previousSprint() {
@@ -170,19 +172,25 @@ export class ProyectoComponent implements OnInit, OnDestroy {
         botonConfirm: 'Switch to Previous Sprint'
       };
       this.dialogRefConfirm = this.dialog.open(ConfirmDialogComponent, dialogConfig);
-      this.dialogRefConfirm.afterClosed().subscribe(data => {
-        if (data != undefined) {
-          this.isLoading = true;
-          this.proyecto.sprintActual--;
-          this.proyectosService.actualizarProyecto(this.proyecto.idproyecto, this.proyecto).subscribe(res => {
-            this.updateSprintGoal();
-            this.checkSprintZero();
-            this.actualizarComponentes();
-            this.buttonDisabled = true;
-            this.isLoading = false;
-          });
-        }
-      });
+      this.dialogRefConfirm
+        .afterClosed()
+        .pipe(untilDestroyed(this))
+        .subscribe(data => {
+          if (data != undefined) {
+            this.isLoading = true;
+            this.proyecto.sprintActual--;
+            this.proyectosService
+              .actualizarProyecto(this.proyecto.idproyecto, this.proyecto)
+              .pipe(untilDestroyed(this))
+              .subscribe(res => {
+                this.updateSprintGoal();
+                this.checkSprintZero();
+                this.actualizarComponentes();
+                this.buttonDisabled = true;
+                this.isLoading = false;
+              });
+          }
+        });
     }
   }
 
@@ -195,18 +203,24 @@ export class ProyectoComponent implements OnInit, OnDestroy {
     // si no existía -> POST crear sprint goal
     if (this.showingGoal.idproyecto === null) {
       this.showingGoal = new SprintGoal(this.proyecto.idproyecto, this.showingGoal.goal, this.proyecto.sprintActual);
-      this.sprintGoalsService.crearSprintGoal(this.showingGoal).subscribe((data: any) => {
-        this.isLoading = false;
-        this.buttonDisabled = true;
-        this._snackBar.open('Sprint Goal created successfully!', 'Close', { duration: 3000 });
-      });
+      this.sprintGoalsService
+        .crearSprintGoal(this.showingGoal)
+        .pipe(untilDestroyed(this))
+        .subscribe((data: any) => {
+          this.isLoading = false;
+          this.buttonDisabled = true;
+          this._snackBar.open('Sprint Goal created successfully!', 'Close', { duration: 3000 });
+        });
     } // si ya existía -> PUT actualizar sprint goal
     else {
-      this.sprintGoalsService.actualizarSprintGoal(this.showingGoal).subscribe((data: any) => {
-        this.isLoading = false;
-        this.buttonDisabled = true;
-        this._snackBar.open('Sprint Goal edited successfully!', 'Close', { duration: 3000 });
-      });
+      this.sprintGoalsService
+        .actualizarSprintGoal(this.showingGoal)
+        .pipe(untilDestroyed(this))
+        .subscribe((data: any) => {
+          this.isLoading = false;
+          this.buttonDisabled = true;
+          this._snackBar.open('Sprint Goal edited successfully!', 'Close', { duration: 3000 });
+        });
     }
   }
 
