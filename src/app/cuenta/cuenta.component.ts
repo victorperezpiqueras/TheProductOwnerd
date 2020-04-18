@@ -34,7 +34,6 @@ export class CuentaComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private credentialsService: CredentialsService,
     private usuariosService: UsuariosService,
-    private loginService: LoginService,
     private activeRoute: ActivatedRoute,
     private _snackBar: MatSnackBar
   ) {
