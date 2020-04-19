@@ -7,8 +7,8 @@ import { AuthenticationService, CredentialsService, I18nService, CoreModule } fr
 import { MockAuthenticationService } from '@app/core/authentication/authentication.service.mock';
 import { MockCredentialsService } from '@app/core/authentication/credentials.service.mock';
 import { HeaderComponent } from './header.component';
-import { ProyectosService } from '@app/services/proyectos-service';
-import { UsuariosService } from '@app/services/usuarios-service';
+import { ProyectosService } from '@app/services/proyectos.service';
+import { UsuariosService } from '@app/services/usuarios.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { SharedModule } from '@app/shared';

@@ -10,14 +10,16 @@ const httpOptions = {
 };
 
 @Injectable()
-export class DependenciasService {
-  private url = '/dependencias';
+export class ComentariosService {
+  private url = '/comentarios';
   constructor(private http: HttpClient) {}
 
-  crearDependencia(dependencia: any): Observable<any> {
-    return this.http.post<any>(this.url, JSON.stringify(dependencia), httpOptions);
-  }
-  borrarDependencia(idpbi: number, idpbi2: number): Observable<any> {
-    return this.http.delete<any>(this.url + '/' + idpbi + '/' + idpbi2, httpOptions);
+  /**
+   * Crea un comentario
+   * @method POST
+   * @param comentario contiene los datos del comentario: comentario, idpbi, idusuario, fecha
+   */
+  crearComentario(data: any): Observable<any> {
+    return this.http.post<any>(this.url, JSON.stringify(data), httpOptions);
   }
 }

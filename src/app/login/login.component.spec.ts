@@ -9,7 +9,7 @@ import { CoreModule, AuthenticationService, CredentialsService } from '@app/core
 import { SharedModule } from '@app/shared';
 import { MaterialModule } from '@app/material.module';
 import { LoginComponent } from './login.component';
-import { LoginService } from '@app/services/login-service';
+import { LoginService } from '@app/services/login.service';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -28,7 +28,7 @@ describe('LoginComponent', () => {
         CoreModule
       ],
       declarations: [LoginComponent],
-      providers: [AuthenticationService,LoginService,CredentialsService]
+      providers: [AuthenticationService, LoginService, CredentialsService]
     }).compileComponents();
   }));
 

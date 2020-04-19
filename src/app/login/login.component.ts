@@ -5,7 +5,7 @@ import { finalize, takeUntil } from 'rxjs/operators';
 
 import { environment } from '@env/environment';
 import { Logger, I18nService, AuthenticationService, untilDestroyed, CredentialsService } from '@app/core';
-import { LoginService } from '@app/services/login-service';
+import { LoginService } from '@app/services/login.service';
 import { HolaMundoService } from '@app/hola-mundo-service/hola-mundo-service.service';
 
 const log = new Logger('Login');

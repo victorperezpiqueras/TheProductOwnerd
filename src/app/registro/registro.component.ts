@@ -2,14 +2,14 @@ import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { finalize, map, takeUntil } from 'rxjs/operators';
-import { UsuariosService } from '@app/services/usuarios-service';
+import { UsuariosService } from '@app/services/usuarios.service';
 import { CredentialsService, Logger, untilDestroyed } from '@app/core';
-import { ProyectosService } from '@app/services/proyectos-service';
+import { ProyectosService } from '@app/services/proyectos.service';
 import { Observable, forkJoin } from 'rxjs';
 import { MatDialogConfig, MatDialogRef, MatDialog } from '@angular/material/dialog';
-import { RegistroService } from '@app/services/registro-service';
+import { RegistroService } from '@app/services/registro.service';
 import { environment } from '@env/environment';
-import { InvitacionesService } from '@app/services/invitaciones-service';
+import { InvitacionesService } from '@app/services/invitaciones.service';
 
 const log = new Logger('Register');
 

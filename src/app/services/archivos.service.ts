@@ -14,9 +14,20 @@ export class ArchivosService {
   private url = '/archivos';
   constructor(private http: HttpClient) {}
 
-  crearArchivo(data: any): Observable<any> {
-    return this.http.post<any>(this.url, JSON.stringify(data), httpOptions);
+  /**
+   * Crea un archivo
+   * @method POST
+   * @param archivo contiene los datos del archivo: nombre, src, idpbi, idusuario
+   */
+  crearArchivo(archivo: any): Observable<any> {
+    return this.http.post<any>(this.url, JSON.stringify(archivo), httpOptions);
   }
+
+  /**
+   * Borra un archivo
+   * @method DELETE
+   * @param id id del archivo
+   */
   borrarArchivo(id: number): Observable<any> {
     return this.http.delete<any>(this.url + '/' + id, httpOptions);
   }

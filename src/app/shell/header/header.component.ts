@@ -5,8 +5,8 @@ import { MatSidenav } from '@angular/material/sidenav';
 
 import { AuthenticationService, CredentialsService, I18nService, untilDestroyed } from '@app/core';
 import { Proyecto } from '@app/models/proyectos';
-import { ProyectosService } from '@app/services/proyectos-service';
-import { UsuariosService } from '@app/services/usuarios-service';
+import { ProyectosService } from '@app/services/proyectos.service';
+import { UsuariosService } from '@app/services/usuarios.service';
 import { MatDialogRef, MatDialogConfig, MatDialog } from '@angular/material';
 import { ProyectoDialogComponent } from '@app/proyectos/proyectoDialog/proyectoDialog.component';
 import { FavoritosDialogComponent } from './favoritosDialog/favoritosDialog.component';

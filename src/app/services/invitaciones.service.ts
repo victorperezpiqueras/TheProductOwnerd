@@ -10,11 +10,16 @@ const httpOptions = {
 };
 
 @Injectable()
-export class ComentariosService {
-  private url = '/comentarios';
+export class InvitacionesService {
+  private url = '/invitaciones';
   constructor(private http: HttpClient) {}
 
-  crearComentario(data: any): Observable<any> {
-    return this.http.post<any>(this.url, JSON.stringify(data), httpOptions);
+  /**
+   * Obtiene una invitacion dado un token
+   * @method GET
+   * @param token token asignado a la invitacion
+   */
+  obtenerInvitacion(token: string): Observable<any> {
+    return this.http.get<any>(this.url + '/' + token, httpOptions);
   }
 }

@@ -7,11 +7,11 @@ import { SharedModule } from '@app/shared';
 import { MaterialModule } from '@app/material.module';
 import { HighchartsChartModule } from 'highcharts-angular';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { PbisService } from '@app/services/pbis-service';
+import { PbisService } from '@app/services/pbis.service';
 import { TruncatePipeModule } from '@app/shared/truncatePipe/truncatePipe.module';
 import { RegistroComponent } from './registro.component';
 import { RegistroRoutingModule } from './registro-routing.module';
-import { RegistroService } from '@app/services/registro-service';
+import { RegistroService } from '@app/services/registro.service';
 import { CredentialsService } from '@app/core';
 
 @NgModule({

@@ -7,15 +7,18 @@ const httpOptions = {
 };
 
 @Injectable()
-export class RegistroService {
-  private url = '/usuarios/registro';
+export class LoginService {
+  private url = '/usuarios/login';
   constructor(private http: HttpClient) {}
 
-  registrar(credenciales: any): Observable<any> {
+  /**
+   * Loguea a un usuario y le devuelve un token con sus credenciales
+   * @method POST
+   * @param usuario datos del usuario: email, password
+   * @returns credentials: { nick, idusuario, token }
+   */
+  login(credenciales: any): Observable<any> {
+    console.log('login', JSON.stringify(credenciales));
     return this.http.post<any>(this.url, JSON.stringify(credenciales), httpOptions);
-  }
-
-  registrarPorInvitacion(credenciales: any): Observable<any> {
-    return this.http.post<any>(this.url + '/invitar', JSON.stringify(credenciales), httpOptions);
   }
 }

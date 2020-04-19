@@ -20,26 +20,26 @@ import { LoginModule } from './login/login.module';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HolaMundoService } from './hola-mundo-service/hola-mundo-service.service';
-import { LoginService } from './services/login-service';
+import { LoginService } from './services/login.service';
 import { ProyectosModule } from './proyectos/proyectos.module';
-import { UsuariosService } from './services/usuarios-service';
-import { ProyectosService } from './services/proyectos-service';
+import { UsuariosService } from './services/usuarios.service';
+import { ProyectosService } from './services/proyectos.service';
 import { ProyectoDialogComponent } from './proyectos/proyectoDialog/proyectoDialog.component';
 import { ProyectoModule } from './proyecto/proyecto.module';
 import { FavoritosDialogComponent } from './shell/header/favoritosDialog/favoritosDialog.component';
 import { PbiDialogComponent } from './proyecto/backlog/pbiDialog/pbiDialog.component';
-import { PbisService } from './services/pbis-service';
+import { PbisService } from './services/pbis.service';
 import { TruncatePipe } from './shared/truncatePipe/truncatePipe';
 import { TruncatePipeModule } from './shared/truncatePipe/truncatePipe.module';
-import { ArchivosService } from './services/archivos-service';
-import { CriteriosService } from './services/criterios-service';
-import { DependenciasService } from './services/dependencias-service';
+import { ArchivosService } from './services/archivos.service';
+import { CriteriosService } from './services/criterios.service';
+import { DependenciasService } from './services/dependencias.service';
 import { ConfirmDialogComponent } from './shared/confirmDialog/confirmDialog.component';
 import { CuentaModule } from './cuenta/cuenta.module';
 import { RegistroModule } from './registro/registro.module';
-import { RegistroService } from './services/registro-service';
-import { InvitacionesService } from './services/invitaciones-service';
-import { SprintGoalsService } from './services/sprintgoals-service';
+import { RegistroService } from './services/registro.service';
+import { InvitacionesService } from './services/invitaciones.service';
+import { SprintGoalsService } from './services/sprintgoals.service';
 
 @NgModule({
   imports: [

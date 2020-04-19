@@ -13,10 +13,10 @@ import { HighchartsChartModule } from 'highcharts-angular';
 import { OverviewComponent } from './overview/overview.component';
 import { BacklogComponent } from './backlog/backlog.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { PbisService } from '@app/services/pbis-service';
+import { PbisService } from '@app/services/pbis.service';
 import { TruncatePipeModule } from '@app/shared/truncatePipe/truncatePipe.module';
-import { ComentariosService } from '@app/services/comentarios-service';
-import { ArchivosService } from '@app/services/archivos-service';
+import { ComentariosService } from '@app/services/comentarios.service';
+import { ArchivosService } from '@app/services/archivos.service';
 import { ForecastsComponent } from './forecasts/forecasts.component';
 
 @NgModule({

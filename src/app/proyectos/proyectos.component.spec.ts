@@ -9,8 +9,8 @@ import { CoreModule, AuthenticationService, CredentialsService } from '@app/core
 import { SharedModule } from '@app/shared';
 import { MaterialModule } from '@app/material.module';
 import { ProyectosComponent } from './proyectos.component';
-import { UsuariosService } from '@app/services/usuarios-service';
-import { ProyectosService } from '@app/services/proyectos-service';
+import { UsuariosService } from '@app/services/usuarios.service';
+import { ProyectosService } from '@app/services/proyectos.service';
 
 describe('ProyectosComponent', () => {
   let component: ProyectosComponent;

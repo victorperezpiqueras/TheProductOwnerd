@@ -14,12 +14,29 @@ export class CriteriosService {
   private url = '/criterios';
   constructor(private http: HttpClient) {}
 
+  /**
+   * Crea un criterio
+   * @method POST
+   * @param criterio contiene los datos del criterio: nombre, idpbi, done
+   */
   crearCriterio(criterio: any): Observable<any> {
     return this.http.post<any>(this.url, JSON.stringify(criterio), httpOptions);
   }
+
+  /**
+   * Actualiza un criterio
+   * @method PUT
+   * @param criterio contiene los nuevos datos del criterio: idcriterio, nombre, done
+   */
   actualizarCriterio(criterio: any): Observable<any> {
     return this.http.put<any>(this.url + '/' + criterio.idcriterio, JSON.stringify(criterio), httpOptions);
   }
+
+  /**
+   * Borra un criterio
+   * @method DELETE
+   * @param idcriterio id del criterio a borrar
+   */
   borrarCriterio(idcriterio: number): Observable<any> {
     return this.http.delete<any>(this.url + '/' + idcriterio, httpOptions);
   }

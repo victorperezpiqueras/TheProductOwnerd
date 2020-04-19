@@ -2,10 +2,10 @@ import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { finalize, map, takeUntil } from 'rxjs/operators';
-import { UsuariosService } from '@app/services/usuarios-service';
+import { UsuariosService } from '@app/services/usuarios.service';
 import { CredentialsService, untilDestroyed } from '@app/core';
 import { Proyecto } from '@app/models/proyectos';
-import { ProyectosService } from '@app/services/proyectos-service';
+import { ProyectosService } from '@app/services/proyectos.service';
 import { Observable, forkJoin } from 'rxjs';
 import { MatDialogConfig, MatDialogRef, MatDialog } from '@angular/material/dialog';
 
@@ -18,7 +18,7 @@ import { BacklogComponent } from './backlog/backlog.component';
 import { ForecastsComponent } from './forecasts/forecasts.component';
 import { SprintGoal } from '@app/models/sprintGoals';
 import { ConfirmDialogComponent } from '@app/shared/confirmDialog/confirmDialog.component';
-import { SprintGoalsService } from '@app/services/sprintgoals-service';
+import { SprintGoalsService } from '@app/services/sprintgoals.service';
 
 @Component({
   selector: 'app-proyecto',

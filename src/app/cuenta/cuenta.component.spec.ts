@@ -8,8 +8,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { CoreModule, AuthenticationService, CredentialsService } from '@app/core';
 import { SharedModule } from '@app/shared';
 import { MaterialModule } from '@app/material.module';
-import { UsuariosService } from '@app/services/usuarios-service';
-import { ProyectosService } from '@app/services/proyectos-service';
+import { UsuariosService } from '@app/services/usuarios.service';
+import { ProyectosService } from '@app/services/proyectos.service';
 import { CuentaComponent } from './cuenta.component';
 
 describe('CuentaComponent', () => {

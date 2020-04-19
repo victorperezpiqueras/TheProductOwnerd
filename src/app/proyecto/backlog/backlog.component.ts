@@ -2,10 +2,10 @@ import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { finalize, map, takeUntil } from 'rxjs/operators';
-import { UsuariosService } from '@app/services/usuarios-service';
+import { UsuariosService } from '@app/services/usuarios.service';
 import { CredentialsService, untilDestroyed } from '@app/core';
 import { Proyecto } from '@app/models/proyectos';
-import { ProyectosService } from '@app/services/proyectos-service';
+import { ProyectosService } from '@app/services/proyectos.service';
 import { Observable, forkJoin } from 'rxjs';
 import { MatDialogConfig, MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { Pbi } from '@app/models/pbis';
@@ -13,7 +13,7 @@ import { Pbi } from '@app/models/pbis';
 import { PbiDialogComponent } from './pbiDialog/pbiDialog.component';
 
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { PbisService } from '@app/services/pbis-service';
+import { PbisService } from '@app/services/pbis.service';
 import { Permisos } from '@app/models/permisos';
 
 @Component({

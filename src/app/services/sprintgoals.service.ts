@@ -12,9 +12,20 @@ export class SprintGoalsService {
   private url = '/sprintgoals';
   constructor(private http: HttpClient) {}
 
+  /**
+   * Crea un sprintgoal
+   * @method POST
+   * @param sprintGoal datos del sprintgoal: idproyecto, goal, sprintNumber
+   */
   crearSprintGoal(sprintgoal: SprintGoal): Observable<any> {
     return this.http.post<any>(this.url, JSON.stringify(sprintgoal), httpOptions);
   }
+
+  /**
+   * Actualiza el goal de un sprintgoal
+   * @method PUT
+   * @param sprintGoal datos del sprintgoal: idproyecto, goal, sprintNumber
+   */
   actualizarSprintGoal(sprintgoal: SprintGoal): Observable<any> {
     return this.http.put<any>(this.url, JSON.stringify(sprintgoal), httpOptions);
   }
