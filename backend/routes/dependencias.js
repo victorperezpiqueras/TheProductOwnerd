@@ -7,8 +7,6 @@ const { propertyChecker } = require('../helpers/propertyChecker');
 
 router.post('/', verifyToken, function(req, res, next) {
   console.log('crearDependencia');
-  /* const data = { idpbi: req.body.idpbi, idpbi2: req.body.idpbi2 };
-  if (!data.idpbi || !data.idpbi2)  */
   if (!propertyChecker(req.body, ['idpbi', 'idpbi2']))
     throw new ErrorHandler(422, 'Missing required fields: idpbi, idpbi2');
   controllerDependencias
@@ -20,6 +18,7 @@ router.post('/', verifyToken, function(req, res, next) {
       res.status(500).json(err);
     });
 });
+
 router.delete('/:id/:id2', verifyToken, function(req, res, next) {
   console.log('borrarDependencia');
   controllerDependencias

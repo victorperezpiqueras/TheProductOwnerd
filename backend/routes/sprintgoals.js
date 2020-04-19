@@ -18,6 +18,7 @@ router.post('/', verifyToken, function(req, res, next) {
       res.status(500).json(err);
     });
 });
+
 router.put('/', verifyToken, function(req, res, next) {
   console.log('actualizarSprintGoal');
   if (!propertyChecker(req.body, ['idproyecto', 'goal', 'sprintNumber']))

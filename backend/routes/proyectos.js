@@ -17,6 +17,7 @@ router.get('/', verifyToken, function(req, res, next) {
       res.status(500).json(err);
     });
 });
+
 router.get('/:id', verifyToken, function(req, res, next) {
   console.log('getProyecto');
   controllerProyectos
@@ -32,7 +33,7 @@ router.get('/:id', verifyToken, function(req, res, next) {
 router.get('/:id/sprintgoals', verifyToken, function(req, res, next) {
   console.log('getProyecto');
   controllerProyectos
-    .getSprintGoals(req.params.id)
+    .getProyectoSprintGoals(req.params.id)
     .then(function(sprintgoals) {
       res.json(sprintgoals);
     })
@@ -42,9 +43,9 @@ router.get('/:id/sprintgoals', verifyToken, function(req, res, next) {
 });
 
 router.get('/:id/usuarios', verifyToken, function(req, res, next) {
-  console.log('getProyectosUsuarios');
+  console.log('getProyectoUsuarios');
   controllerProyectos
-    .getProyectosUsuarios(req.params.id)
+    .getProyectoUsuarios(req.params.id)
     .then(function(usuarios) {
       res.json(usuarios);
     })
@@ -92,8 +93,6 @@ router.get('/usuarios/roles', verifyToken, function(req, res, next) {
 
 router.post('/', verifyToken, function(req, res, next) {
   console.log('crearProyecto');
-  /*  const data = { nombre: req.body.nombre, descripcion: req.body.descripcion, idusuario: req.body.idusuario };
-   if (!data.nombre || !data.descripcion || !data.idusuario) */
   if (!propertyChecker(req.body, ['nombre', 'descripcion', 'idusuario']))
     throw new ErrorHandler(422, 'Missing required fields: nombre, descripcion, idusuario');
   controllerProyectos
@@ -123,8 +122,6 @@ router.put('/:id', verifyToken, function(req, res, next) {
 
 router.post('/:id/agregarUsuario', verifyToken, function(req, res, next) {
   console.log('proyectoAgregarUsuario');
-  /* const data = { idusuario: req.body.idusuario, rol: req.body.rol };
-  if (!data.idusuario || !data.rol) */
   if (!propertyChecker(req.body, ['idusuario', 'rol']))
     throw new ErrorHandler(422, 'Missing required fields: idusuario, rol');
   controllerProyectos
@@ -152,8 +149,6 @@ router.delete('/:id/eliminarUsuario/:idusuario', verifyToken, function(req, res,
 
 router.post('/:id/invitar', verifyToken, function(req, res, next) {
   console.log('proyectoInvitarUsuario');
-  /* const data = { email: req.body.email, rol: req.body.rol };
-  if (!data.email || !data.rol) */
   if (!propertyChecker(req.body, ['email', 'rol', 'nombreProyecto', 'invitadoPor']))
     throw new ErrorHandler(422, 'Missing required fields: email, rol, nombreProyecto, invitadoPor');
   controllerProyectos

@@ -11,12 +11,6 @@ const { propertyChecker } = require('../helpers/propertyChecker');
 
 router.post('/', verifyToken, function(req, res, next) {
   console.log('crearPbi');
-  /* const data = {
-    titulo: req.body.titulo, descripcion: req.body.descripcion, done: req.body.done,
-    label: req.body.label, estimacion: req.body.estimacion, valor: req.body.valor, idproyecto: req.body.idproyecto,
-    prioridad: req.body.prioridad
-  }
-  if (!data.titulo || !data.descripcion || !data.done || !data.label || !data.estimacion || !data.valor || !data.idproyecto || !data.prioridad) */
   if (
     !propertyChecker(req.body, [
       'titulo',
@@ -46,13 +40,6 @@ router.post('/', verifyToken, function(req, res, next) {
 
 router.put('/:id', verifyToken, function(req, res, next) {
   console.log('editarPbi');
-  /* const data = {
-    titulo: req.body.titulo, descripcion: req.body.descripcion, done: req.body.done,
-    label: req.body.label, estimacion: req.body.estimacion, valor: req.body.valor, idproyecto: req.body.idproyecto,
-    prioridad: req.body.prioridad, sprint:req.body.sprint
-  }
-  if (!data.titulo || !data.descripcion || !data.done || !data.label || !data.estimacion || !data.valor || !data.idproyecto || !data.prioridad || !data.sprint)
-     */
   if (
     !propertyChecker(req.body, [
       'titulo',
@@ -83,9 +70,6 @@ router.put('/:id', verifyToken, function(req, res, next) {
 
 router.put('/', verifyToken, function(req, res, next) {
   console.log('editarPrioridadesPbis');
-  /* if (!data.prioridad) */
-  /* if (!propertyChecker(req.body, ["prioridad"]))
-    throw new ErrorHandler(400, 'Missing required fields: prioridad'); */
   controllerPbis
     .editarPrioridadesPbis(req.body)
     .then(function(pbis) {

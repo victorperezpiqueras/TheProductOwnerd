@@ -8,8 +8,6 @@ const { propertyChecker } = require('../helpers/propertyChecker');
 /* CRITERIOS */
 router.post('/', verifyToken, function(req, res, next) {
   console.log('crearCriterio');
-  /* const data = { nombre: req.body.nombre, idpbi: req.body.idpbi, done: req.body.done };
-  if (!data.nombre || !data.idpbi || !data.done )  */
   if (!propertyChecker(req.body, ['nombre', 'idpbi', 'done']))
     throw new ErrorHandler(422, 'Missing required fields: nombre, idpbi, done');
   controllerCriterios
@@ -21,10 +19,9 @@ router.post('/', verifyToken, function(req, res, next) {
       res.status(500).json(err);
     });
 });
+
 router.put('/:id', verifyToken, function(req, res, next) {
   console.log('actualizarCriterio');
-  /* const data = { nombre: req.body.nombre, idcriterio: req.body.idcriterio, done: req.body.done };
-  if (!data.nombre || !data.idpbi || !data.done)  */
   if (!propertyChecker(req.body, ['nombre', 'idcriterio', 'done']))
     throw new ErrorHandler(422, 'Missing required fields: nombre, idcriterio, done');
   controllerCriterios

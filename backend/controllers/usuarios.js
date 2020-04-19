@@ -7,6 +7,9 @@ const config = require('../config/config');
 const controllerProyectos = require('../controllers/proyectos');
 const controllerInvitaciones = require('../controllers/invitaciones');
 
+/**
+ * Obtiene todos los usuarios
+ */
 ControllerUsuarios.getUsuarios = function() {
   return new Promise(function(resolve, reject) {
     const sql = 'select * from usuarios';
@@ -20,12 +23,18 @@ ControllerUsuarios.getUsuarios = function() {
     });
   });
 };
+
+/**
+ * Obtiene un usuario por el id
+ * @param id id del usuario
+ * @returns (idusuario, nombre, password, email, nick, apellido1, apellido2)
+ */
 ControllerUsuarios.getUsuario = function(id) {
   return new Promise(function(resolve, reject) {
     const sql = 'select * from usuarios where idusuario=?';
     connection.query(sql, [id], function(err, result) {
       if (err) {
-        reject({ error: 'Error inesperado' });
+        reject({ error: 'Error inesperado en getUsuario' });
       } else {
         console.log(result);
         resolve(result[0]);
@@ -33,23 +42,16 @@ ControllerUsuarios.getUsuario = function(id) {
     });
   });
 };
+
+/**
+ * Actualiza los datos de un usuario
+ * @param idusuario id del usuario
+ * @param data datos del usuario: nick, nombre, apellido1, apellido2, email
+ */
 ControllerUsuarios.actualizarUsuario = function(idusuario, data) {
   return new Promise(function(resolve, reject) {
-    /*     if (usuario.password != '') {
-          var sql = 'update usuarios set nick=?,nombre=?,apellido1=?,apellido2=?,password=?,email=? where idusuario=?';
-          var values = [
-            usuario.nick,
-            usuario.nombre,
-            usuario.apellido1,
-            usuario.apellido2,
-            bcrypt.hashSync(usuario.password),
-            usuario.email,
-            usuario.idusuario
-          ];
-        } else { */
     var sql = 'update usuarios set nick=?,nombre=?,apellido1=?,apellido2=?,email=? where idusuario=?';
     var values = [data.nick, data.nombre, data.apellido1, data.apellido2, data.email, idusuario];
-    /* } */
     connection.query(sql, values, function(err, result) {
       if (err) throw err;
       console.log(result);
@@ -57,6 +59,12 @@ ControllerUsuarios.actualizarUsuario = function(idusuario, data) {
     });
   });
 };
+
+/**
+ * Actualiza la password de un usuario
+ * @param idusuario id del usuario
+ * @param data datos del usuario: password, newPassword
+ */
 ControllerUsuarios.actualizarUsuarioPassword = function(idusuario, data) {
   return new Promise(function(resolve, reject) {
     var sql = 'select * from usuarios where idusuario=?';
@@ -82,6 +90,12 @@ ControllerUsuarios.actualizarUsuarioPassword = function(idusuario, data) {
     });
   });
 };
+
+/**
+ * Obtiene los proyectos de un usuario
+ * @param id id del usuario
+ * @returns [ {idproyecto, nombre, descripcion} ]
+ */
 ControllerUsuarios.getUsuariosProyectos = function(id) {
   return new Promise(function(resolve, reject) {
     const sql =
@@ -96,13 +110,19 @@ ControllerUsuarios.getUsuariosProyectos = function(id) {
     });
   });
 };
-ControllerUsuarios.getUsuariosProyectosPermisos = function(id, idp) {
+
+/**
+ * Obtiene los permisos de un usuario para un proyecto
+ * @param id id del usuario
+ * @param idproyecto id del proyecto
+ */
+ControllerUsuarios.getUsuariosProyectosPermisos = function(id, idproyecto) {
   return new Promise(function(resolve, reject) {
     const sql =
       //'select r2.permiso from proyectos p, usuarios u, roles r, rolespermisos r2  where u.idusuario = ? and p.idproyecto = ? and u.idusuario = r.idusuario and p.idproyecto = r.idproyecto and r2.idrol =r.idrol';
       'select r.ordenar, r.editarPBI,r.estimarTam, r.estimarValor, r.mantenerUsuarios, r.archivarProyecto, r.setDone, r.proyecciones, r.vision, r.sprintGoals from proyectos p, usuarios u, roles r where u.idusuario = ? and p.idproyecto = ? ' +
       'and u.idusuario = r.idusuario and p.idproyecto = r.idproyecto';
-    connection.query(sql, [id, idp], function(err, result) {
+    connection.query(sql, [id, idproyecto], function(err, result) {
       if (err) {
         reject({ error: 'Error inesperado' });
       } else {
@@ -112,12 +132,17 @@ ControllerUsuarios.getUsuariosProyectosPermisos = function(id, idp) {
     });
   });
 };
+
+/**
+ * Registra a un usuario
+ * @param usuario datos del usuario: nick, nombre, apellido1, apellido2, password, email
+ */
 ControllerUsuarios.registroUsuario = function(usuario) {
   return new Promise(function(resolve, reject) {
     const sql = 'select * from usuarios where email = ?';
     connection.query(sql, [usuario.email], function(err, result) {
       if (err) {
-        reject({ error: 'Error' });
+        reject({ error: 'Error inesperado en registroUsuario' });
       } else {
         console.log(result);
         if (result.length <= 0) {
@@ -143,16 +168,16 @@ ControllerUsuarios.registroUsuario = function(usuario) {
   });
 };
 
+/**
+ * Registra a un usuario por invitacion. Si el token es correcto, ademas lo agrega al proyecto especificado
+ * @param usuario datos del usuario: token, nick, nombre, apellido1, apellido2, password, email
+ */
 ControllerUsuarios.registroUsuarioInvitar = function(data) {
   console.log('registroUsuarioInvitar', data);
   return new Promise(function(resolve, reject) {
     var idproyecto, rol, email;
     ControllerUsuarios.registroUsuario(data)
       .then(usuario => {
-        /*  var sql = 'select * from usuarios where email = ? and nick = ?';
-         connection.query(sql, [data.email, data.nick], function (err, result) {
-           if (err) { reject({ error: 'error in select' }); }
-           if (result[0]) { */
         jwt.verify(data.token, config.jwtKey, function(err, decoded) {
           if (err) reject({ error: 'token_authentication_failed' });
           controllerInvitaciones.obtenerInvitacion(data.token).then(result => {
@@ -178,10 +203,6 @@ ControllerUsuarios.registroUsuarioInvitar = function(data) {
             } else reject({ error: 'invitation_expired' });
           });
         });
-
-        /*   }
-          reject({ error: "user not found" })
-        }); */
       })
       .catch(err => {
         reject(err);
@@ -189,6 +210,11 @@ ControllerUsuarios.registroUsuarioInvitar = function(data) {
   });
 };
 
+/**
+ * Loguea a un usuario y le devuelve un token con sus credenciales
+ * @param usuario datos del usuario: email, password
+ * @returns credentials: { nick, idusuario, token }
+ */
 ControllerUsuarios.loginUsuario = function(usuario) {
   return new Promise(function(resolve, reject) {
     const sql = 'select * from usuarios where email = ? ';
@@ -218,6 +244,11 @@ ControllerUsuarios.loginUsuario = function(usuario) {
   });
 };
 
+/**
+ * Obtiene los proyectos favoritos de un usuario
+ * @param idusuario id del usuario
+ * @returns [ {idproyecto, idusuario, nombre} ]
+ */
 ControllerUsuarios.getUsuarioProyectosFavoritos = function(idusuario) {
   return new Promise(function(resolve, reject) {
     const sql =
@@ -233,6 +264,11 @@ ControllerUsuarios.getUsuarioProyectosFavoritos = function(idusuario) {
   });
 };
 
+/**
+ * Agrega un proyecto del usuario a sus favoritos
+ * @param idusuario id del usuario
+ * @param data contiene el id del proyecto
+ */
 ControllerUsuarios.agregarUsuarioProyectosFavoritos = function(idusuario, data) {
   return new Promise(function(resolve, reject) {
     const sql = 'insert into proyectosfavoritos(idusuario,idproyecto) values (?,?)';
@@ -247,6 +283,11 @@ ControllerUsuarios.agregarUsuarioProyectosFavoritos = function(idusuario, data) 
   });
 };
 
+/**
+ * Elimina un proyecto del usuario de sus favoritos
+ * @param idusuario id del usuario
+ * @param idproyecto id del proyecto
+ */
 ControllerUsuarios.eliminarUsuarioProyectosFavoritos = function(idusuario, idproyecto) {
   return new Promise(function(resolve, reject) {
     const sql = 'delete from proyectosfavoritos where idusuario=? and idproyecto=?';

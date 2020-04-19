@@ -1,6 +1,10 @@
 var ControllerComentarios = {};
 const connection = require('../db/connection');
 
+/**
+ * Crea un comentario
+ * @param comentario contiene los datos del comentario: comentario, idpbi, idusuario, fecha
+ */
 ControllerComentarios.crearComentario = function(comentario) {
   return new Promise(function(resolve, reject) {
     const sql = 'insert into comentarios(comentario,idpbi, idusuario,fecha) values ' + '(?,?,?,?)';
@@ -15,6 +19,12 @@ ControllerComentarios.crearComentario = function(comentario) {
     });
   });
 };
+
+/**
+ * Obtiene los comentarios de un pbi
+ * @param idpbi id del pbi
+ * @returns [ {idcomentario, comentario, fecha, idpbi, idusuario, nick} ]
+ */
 ControllerComentarios.obtenerComentariosPbi = function(idpbi) {
   return new Promise(function(resolve, reject) {
     const sql = 'select c.*, u.nick from comentarios c, usuarios u  where c.idpbi=? and c.idusuario=u.idusuario';

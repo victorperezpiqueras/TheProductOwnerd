@@ -32,11 +32,6 @@ router.get('/:id', verifyToken, function(req, res, next) {
 
 router.put('/:id/actualizar', verifyToken, function(req, res, next) {
   console.log('actualizarUsuario');
-  /* const data = {
-     nick: req.body.nick, nombre: req.body.nombre, apellido1: req.body.apellido1,
-     apellido2: req.body.apellido2, email: req.body.email, password: req.body.password, idusuario:req.body.idusuario
-   };
-    if (!data.nick || !data.nombre || !data.apellido1 || !data.apellido2 || !data.email || !data.password|| !data.idusuario) */
   if (!propertyChecker(req.body, ['nick', 'nombre', 'apellido1', 'apellido2', 'email', 'password']))
     throw new ErrorHandler(422, 'Missing required fields: nick, nombre, apellido1, apellido2, email, password');
   controllerUsuarios
@@ -91,11 +86,6 @@ router.get('/:id/proyectos/:idp/permisos', verifyToken, function(req, res, next)
 
 router.post('/registro', function(req, res, next) {
   console.log('registro');
-  /* const data = {
-    nick: req.body.nick, nombre: req.body.nombre, apellido1: req.body.apellido1,
-    apellido2: req.body.apellido2, email: req.body.email, password: req.body.password
-  };
-  if (!data.nick || !data.nombre || !data.apellido1 || !data.apellido2 || !data.email || !data.password) */
   if (!propertyChecker(req.body, ['nick', 'nombre', 'apellido1', 'apellido2', 'email', 'password']))
     throw new ErrorHandler(422, 'Missing required fields: nick, nombre, apellido1, apellido2, email, password');
   controllerUsuarios
@@ -111,11 +101,6 @@ router.post('/registro', function(req, res, next) {
 
 router.post('/registro/invitar', function(req, res, next) {
   console.log('registroUsuarioInvitar');
-  /* const data = {
-    nick: req.body.nick, nombre: req.body.nombre, apellido1: req.body.apellido1,
-    apellido2: req.body.apellido2, email: req.body.email, password: req.body.password, token: req.body.token
-  };
-  if (!data.nick || !data.nombre || !data.apellido1 || !data.apellido2 || !data.email || !data.password || !data.token) */
   if (!propertyChecker(req.body, ['nick', 'nombre', 'apellido1', 'apellido2', 'email', 'password', 'token']))
     throw new ErrorHandler(422, 'Missing required fields: nick, nombre, apellido1, apellido2, email, password, token');
   controllerUsuarios
@@ -130,6 +115,7 @@ router.post('/registro/invitar', function(req, res, next) {
       else res.status(500).json(err);
     });
 });
+
 router.post('/login', function(req, res, next) {
   console.log('login');
   console.log(req.body);

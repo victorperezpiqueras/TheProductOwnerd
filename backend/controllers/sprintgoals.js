@@ -1,6 +1,10 @@
 var ControllerSprintGoals = {};
 const connection = require('../db/connection');
 
+/**
+ * Crea un sprintgoal
+ * @param sprintGoal datos del sprintgoal: idproyecto, goal, sprintNumber
+ */
 ControllerSprintGoals.crearSprintGoal = function(sprintGoal) {
   return new Promise(function(resolve, reject) {
     const sql = 'insert into sprintgoals(idproyecto, goal, sprintNumber) values ' + '(?,?,?)';
@@ -15,6 +19,11 @@ ControllerSprintGoals.crearSprintGoal = function(sprintGoal) {
     });
   });
 };
+
+/**
+ * Actualiza el goal de un sprintgoal
+ * @param sprintGoal datos del sprintgoal: idproyecto, goal, sprintNumber
+ */
 ControllerSprintGoals.actualizarSprintGoal = function(sprintGoal) {
   return new Promise(function(resolve, reject) {
     const sql = 'update sprintgoals set goal=? where idproyecto=? and sprintNumber=?';

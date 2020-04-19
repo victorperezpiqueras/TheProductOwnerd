@@ -1,10 +1,14 @@
 var ControllerPbis = {};
 const connection = require('../db/connection');
 
+/**
+ * Crea un pbi
+ * @param pbi contiene los datos del pbi: titulo, descripcion, done, label, estimacion, valor, idproyecto, prioridad, sprintCreacion
+ */
 ControllerPbis.crearPbi = function(pbi) {
   return new Promise(function(resolve, reject) {
     const sql =
-      'insert into pbis(titulo,descripcion ,done,label ,estimacion, valor ,idproyecto ,prioridad, sprintCreacion) values ' +
+      'insert into pbis(titulo,descripcion,done,label,estimacion,valor,idproyecto,prioridad,sprintCreacion) values ' +
       '(?,?,?,?,?,?,?,?,?)';
     const array = [
       pbi.titulo,
@@ -27,6 +31,12 @@ ControllerPbis.crearPbi = function(pbi) {
     });
   });
 };
+
+/**
+ * Edita un pbi
+ * @param id id del pbi a editar
+ * @param pbi contiene los datos del pbi: titulo, descripcion, done, label, estimacion, valor, prioridad, sprintCreacion
+ */
 ControllerPbis.editarPbi = function(id, pbi) {
   console.log(pbi);
   console.log(pbi.valor);
@@ -57,6 +67,11 @@ ControllerPbis.editarPbi = function(id, pbi) {
     });
   });
 };
+
+/**
+ * Edita las prioridades de un pbi
+ * @param pbis contiene los datos de los pbis a editar: pbis[]=> prioridad, idpbi
+ */
 ControllerPbis.editarPrioridadesPbis = function(pbis) {
   return new Promise(function(resolve, reject) {
     console.log(pbis);

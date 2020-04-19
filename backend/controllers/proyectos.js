@@ -6,6 +6,11 @@ const controllerInvitaciones = require('../controllers/invitaciones');
 /* configurar mailer */
 const nodemailer = require('nodemailer');
 
+/**
+ * Envia una invitacion por correo
+ * @param data contiene los datos de la invitacion: rol, email, invitadoPor, proyecto
+ * @param tokenUrl token de la invitacion
+ */
 async function enviarInvitacion(data, tokenUrl) {
   let transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -59,6 +64,9 @@ async function enviarInvitacion(data, tokenUrl) {
   });
 }
 
+/**
+ * Obtiene todos los proyectos
+ */
 ControllerProyectos.getProyectos = function() {
   return new Promise(function(resolve, reject) {
     const sql = 'select * from proyectos';
@@ -78,12 +86,18 @@ ControllerProyectos.getProyectos = function() {
     });
   });
 };
+
+/**
+ * Obtiene un proyecto dado su id
+ * @param id id del proyecto
+ * @returns (idproyecto, nombre, descripcion, sprintActual, vision)
+ */
 ControllerProyectos.getProyecto = function(id) {
   return new Promise(function(resolve, reject) {
     const sql = 'select * from proyectos where idproyecto = ?';
     connection.query(sql, [id], function(err, result) {
       if (err) {
-        reject({ error: 'Error inesperado' });
+        reject({ error: 'Error inesperado en getProyecto' });
       } else {
         console.log(result[0]);
         resolve(result[0]);
@@ -92,7 +106,12 @@ ControllerProyectos.getProyecto = function(id) {
   });
 };
 
-ControllerProyectos.getProyectosUsuarios = function(id) {
+/**
+ * Obtiene los usuarios de un proyecto
+ * @param id id del proyecto
+ * @returns [ {idusuario, nombre, email} ]
+ */
+ControllerProyectos.getProyectoUsuarios = function(id) {
   return new Promise(function(resolve, reject) {
     const sql =
       'select u.idusuario, u.nombre, u.email from usuarios u, proyectos p, roles r where p.idproyecto = ? and u.idusuario = r.idusuario and p.idproyecto =r.idproyecto';
@@ -112,6 +131,12 @@ ControllerProyectos.getProyectosUsuarios = function(id) {
     });
   });
 };
+
+/**
+ * Obtiene los usuarios y roles de un proyecto
+ * @param id id del proyecto
+ * @returns [ {idusuario, nick, email, rol} ]
+ */
 ControllerProyectos.getProyectoUsuariosRoles = function(id) {
   return new Promise(function(resolve, reject) {
     const sql =
@@ -127,6 +152,10 @@ ControllerProyectos.getProyectoUsuariosRoles = function(id) {
     });
   });
 };
+
+/**
+ * Obtiene todos los usuarios y roles
+ */
 ControllerProyectos.getProyectosUsuariosRoles = function() {
   return new Promise(function(resolve, reject) {
     const sql =
@@ -142,6 +171,10 @@ ControllerProyectos.getProyectosUsuariosRoles = function() {
   });
 };
 
+/**
+ * Crea un proyecto y asigna el rol productOwner al usuario
+ * @param data contiene los datos del proyecto: nombre, descripcion; y del usuario: idusuario
+ */
 ControllerProyectos.crearProyecto = function(data) {
   return new Promise(function(resolve, reject) {
     const sql = 'insert into proyectos(nombre,descripcion) values(?, ?)';
@@ -219,6 +252,11 @@ ControllerProyectos.crearProyecto = function(data) {
   });
 };
 
+/**
+ * Actualiza los datos de un proyecto
+ * @param idproyecto id del proyecto
+ * @param proyecto contiene los datos del proyecto: nombre, descripcion, vision, sprintActual
+ */
 ControllerProyectos.actualizarProyecto = function(idproyecto, proyecto) {
   return new Promise(function(resolve, reject) {
     const sql = 'update proyectos set nombre=?, descripcion=?, vision=?, sprintActual=? where idproyecto=?';
@@ -236,10 +274,15 @@ ControllerProyectos.actualizarProyecto = function(idproyecto, proyecto) {
   });
 };
 
-ControllerProyectos.proyectoAgregarUsuario = function(idProyecto, data) {
+/**
+ * Agrega un usuario a un proyecto con el rol proporcionado
+ * @param idproyecto id del proyecto
+ * @param data contiene los datos del usuario: idusuario, rol
+ */
+ControllerProyectos.proyectoAgregarUsuario = function(idproyecto, data) {
   return new Promise(function(resolve, reject) {
     var sql = 'select * from roles where idusuario=? and idproyecto=?';
-    connection.query(sql, [data.idusuario, idProyecto], function(err, result) {
+    connection.query(sql, [data.idusuario, idproyecto], function(err, result) {
       if (err) {
         reject({ error: 'Error inesperado en proyectoAgregarUsuario' });
       } else {
@@ -250,11 +293,11 @@ ControllerProyectos.proyectoAgregarUsuario = function(idProyecto, data) {
             'insert into roles(nombre,idusuario,idproyecto, ordenar, editarPBI,estimarTam,estimarValor, mantenerUsuarios, archivarProyecto, setDone, proyecciones, sprintGoals, vision)' +
             ' values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
           if (data.rol == 'productOwner') {
-            var list = ['productOwner', data.idusuario, idProyecto, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1];
+            var list = ['productOwner', data.idusuario, idproyecto, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1];
           } else if (data.rol == 'desarrollador') {
-            var list = ['desarrollador', data.idusuario, idProyecto, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0];
+            var list = ['desarrollador', data.idusuario, idproyecto, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0];
           } else {
-            var list = ['stakeholder', data.idusuario, idProyecto, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+            var list = ['stakeholder', data.idusuario, idproyecto, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
           }
           connection.query(sql, list, function(err, result) {
             if (err) {
@@ -270,6 +313,11 @@ ControllerProyectos.proyectoAgregarUsuario = function(idProyecto, data) {
   });
 };
 
+/**
+ * Elimina un usuario del proyecto
+ * @param idproyecto id del proyecto
+ * @param idusuario id del usuario
+ */
 ControllerProyectos.proyectoEliminarUsuario = function(idproyecto, idusuario) {
   return new Promise(function(resolve, reject) {
     const sql = 'delete from roles where idusuario=? and idproyecto=?';
@@ -283,6 +331,11 @@ ControllerProyectos.proyectoEliminarUsuario = function(idproyecto, idusuario) {
   });
 };
 
+/**
+ * Invita un usuario al proyecto. Si existe lo agrega, si no, genera una invitacion
+ * @param idproyecto id del proyecto
+ * @param data datos de la invitacion: email, rol, nombreProyecto, invitadoPor
+ */
 ControllerProyectos.proyectoInvitarUsuario = function(idproyecto, data) {
   return new Promise(function(resolve, reject) {
     const sql = 'select * from usuarios where email=?';
@@ -321,12 +374,17 @@ ControllerProyectos.proyectoInvitarUsuario = function(idproyecto, data) {
   });
 };
 
+/**
+ * Obtiene los pbis de un proyecto
+ * @param idproyecto id del proyecto
+ * @returns [ {idpbi, titulo, descripcion, done, label, estimacion, idproyecto, prioridad, valor, sprint, sprintCreacion} ]
+ */
 ControllerProyectos.getProyectoPBIs = function(idproyecto) {
   return new Promise(function(resolve, reject) {
     const sql = 'select p.* from pbis p, proyectos pr where pr.idproyecto=p.idproyecto and p.idproyecto = ?';
     connection.query(sql, [idproyecto], function(err, result) {
       if (err) {
-        reject({ error: 'Error inesperado' });
+        reject({ error: 'Error inesperado en getProyectoPBIs' });
       } else {
         console.log(result);
         resolve(result);
@@ -335,12 +393,17 @@ ControllerProyectos.getProyectoPBIs = function(idproyecto) {
   });
 };
 
-ControllerProyectos.getSprintGoals = function(idproyecto) {
+/**
+ * Obtiene los sprintgoals de un proyecto
+ * @param idproyecto id del proyecto
+ * @returns [ {idproyecto, goal, sprintNumber} ]
+ */
+ControllerProyectos.getProyectoSprintGoals = function(idproyecto) {
   return new Promise(function(resolve, reject) {
     const sql = 'select * from sprintgoals where idproyecto = ?';
     connection.query(sql, [idproyecto], function(err, result) {
       if (err) {
-        reject({ error: 'Error inesperado en getSprintGoals' });
+        reject({ error: 'Error inesperado en getProyectoSprintGoals' });
       } else {
         console.log(result);
         resolve(result);

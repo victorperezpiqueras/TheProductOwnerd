@@ -21,6 +21,7 @@ router.post('/', verifyToken, function(req, res, next) {
       res.status(500).json(err);
     });
 });
+
 router.delete('/:id', verifyToken, function(req, res, next) {
   console.log('borrarArchivo');
   controllerArchivos

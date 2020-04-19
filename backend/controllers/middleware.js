@@ -1,6 +1,9 @@
 const jwt = require('jsonwebtoken');
 const config = require('../config/config');
 
+/**
+ * Verifica que el token es valido
+ */
 function verifyToken(req, res, next) {
   console.log(req.body);
   console.log('verify');

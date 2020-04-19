@@ -1,6 +1,10 @@
 var ControllerInvitaciones = {};
 const connection = require('../db/connection');
 
+/**
+ * Obtiene una invitacion dado un token
+ * @param token token asignado a la invitacion
+ */
 ControllerInvitaciones.obtenerInvitacion = function(token) {
   console.log('obtenerInvitacion');
   return new Promise(function(resolve, reject) {
@@ -16,6 +20,11 @@ ControllerInvitaciones.obtenerInvitacion = function(token) {
     });
   });
 };
+
+/**
+ * Crea una invitacion
+ * @param invitacion contiene los datos de la invitacion: token, idproyecto, email, rol
+ */
 ControllerInvitaciones.crearInvitacion = function(invitacion) {
   console.log('crearInvitacion');
   return new Promise(function(resolve, reject) {
@@ -36,6 +45,11 @@ ControllerInvitaciones.crearInvitacion = function(invitacion) {
       });
   });
 };
+
+/**
+ * Borra una invitacion
+ * @param invitacion contiene los datos de la invitacion: idproyecto, email
+ */
 ControllerInvitaciones.borrarInvitacion = function(invitacion) {
   return new Promise(function(resolve, reject) {
     const sql = 'delete from invitaciones where idproyecto=? and email=?';
