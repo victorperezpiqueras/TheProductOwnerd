@@ -6,17 +6,23 @@ const connection = require('../db/connection');
  * @param sprintGoal datos del sprintgoal: idproyecto, goal, sprintNumber
  */
 ControllerSprintGoals.crearSprintGoal = function(sprintGoal) {
-  return new Promise(function(resolve, reject) {
+  return new Promise(async function(resolve, reject) {
     const sql = 'insert into sprintgoals(idproyecto, goal, sprintNumber) values ' + '(?,?,?)';
     const array = [sprintGoal.idproyecto, sprintGoal.goal, sprintGoal.sprintNumber];
-    connection.query(sql, array, function(err, result) {
+    try {
+      let insertion = await connection.query(sql, array);
+      resolve(insertion[0]);
+    } catch (error) {
+      reject({ error: 'Error inesperado en crearSprintGoal' });
+    }
+    /* connection.query(sql, array, function(err, result) {
       if (err) {
         reject({ error: 'Error inesperado en crearSprintGoal' });
       } else {
         console.log(result);
         resolve(result);
       }
-    });
+    }); */
   });
 };
 
@@ -25,10 +31,16 @@ ControllerSprintGoals.crearSprintGoal = function(sprintGoal) {
  * @param sprintGoal datos del sprintgoal: idproyecto, goal, sprintNumber
  */
 ControllerSprintGoals.actualizarSprintGoal = function(sprintGoal) {
-  return new Promise(function(resolve, reject) {
+  return new Promise(async function(resolve, reject) {
     const sql = 'update sprintgoals set goal=? where idproyecto=? and sprintNumber=?';
     const array = [sprintGoal.goal, sprintGoal.idproyecto, sprintGoal.sprintNumber];
-    connection.query(sql, array, function(err, result) {
+    try {
+      let update = await connection.query(sql, array);
+      resolve(update[0]);
+    } catch (error) {
+      reject({ error: 'Error inesperado en actualizarSprintGoal' });
+    }
+    /* connection.query(sql, array, function (err, result) {
       if (err) {
         console.log(err);
         reject({ error: 'Error inesperado en actualizarSprintGoal' });
@@ -36,7 +48,7 @@ ControllerSprintGoals.actualizarSprintGoal = function(sprintGoal) {
         console.log(result);
         resolve(result);
       }
-    });
+    }); */
   });
 };
 

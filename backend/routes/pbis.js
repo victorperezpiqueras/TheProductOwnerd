@@ -5,7 +5,7 @@ const controllerComentarios = require('../controllers/comentarios');
 const controllerArchivos = require('../controllers/archivos');
 const controllerCriterios = require('../controllers/criterios');
 const controllerDependencias = require('../controllers/dependencias');
-const verifyToken = require('../controllers/middleware');
+const verifyToken = require('../middlewares/verify-token');
 const { ErrorHandler, handleError } = require('../helpers/error');
 const { propertyChecker } = require('../helpers/propertyChecker');
 

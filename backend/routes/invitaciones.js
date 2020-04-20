@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const controllerInvitaciones = require('../controllers/invitaciones');
-const verifyToken = require('../controllers/middleware');
+const verifyToken = require('../middlewares/verify-token');
 
 router.get('/:token', function(req, res, next) {
   console.log('getInvitacion');

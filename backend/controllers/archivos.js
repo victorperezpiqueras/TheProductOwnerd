@@ -6,57 +6,76 @@ const connection = require('../db/connection');
  * @param archivo contiene los datos del archivo: nombre, src, idpbi, idusuario
  */
 ControllerArchivos.crearArchivo = function(archivo) {
-  return new Promise(function(resolve, reject) {
+  return new Promise(async function(resolve, reject) {
     const sql = 'insert into archivos(nombre,src,idpbi,idusuario) values ' + '(?,?,?,?)';
     const array = [archivo.nombre, archivo.src, archivo.idpbi, archivo.idusuario];
-    connection.query(sql, array, function(err, result) {
+    try {
+      let insertion = await connection.query(sql, array);
+      resolve(insertion[0]);
+    } catch (error) {
+      reject({ error: 'Error inesperado en crearArchivo' });
+    }
+    /* const array = [archivo.nombre, archivo.src, archivo.idpbi, archivo.idusuario];
+    connection.query(sql, array, function (err, result) {
       if (err) {
         reject({ error: 'Error inesperado en crearArchivo' });
       } else {
         console.log(result);
         resolve(result);
       }
-    });
+    }); */
   });
 };
 
 /**
  * Borra un archivo
- * @param id id del archivo
+ * @param {number} idarchivo id del archivo
  */
-ControllerArchivos.borrarArchivo = function(id) {
-  return new Promise(function(resolve, reject) {
+ControllerArchivos.borrarArchivo = function(idarchivo) {
+  return new Promise(async function(resolve, reject) {
     const sql = 'delete from archivos where idarchivo=?';
-    const array = [id];
-    connection.query(sql, array, function(err, result) {
+    const array = [idarchivo];
+    try {
+      let deletion = await connection.query(sql, array);
+      resolve(deletion[0]);
+    } catch (error) {
+      reject({ error: 'Error inesperado en borrarArchivo' });
+    }
+    /* connection.query(sql, array, function (err, result) {
       if (err) {
         reject({ error: 'Error inesperado en borrarArchivo' });
       } else {
         console.log(result);
         resolve(result);
       }
-    });
+    }); */
   });
 };
 
 /**
  * Obtiene los archivos de un pbi
- * @param idpbi id del pbi
+ * @param {number} idpbi id del pbi
  * @returns [ {idarchivo, nombre, src, idpbi, idusuario, nombreUsuario} ]
  */
 ControllerArchivos.obtenerArchivosPbi = function(idpbi) {
-  return new Promise(function(resolve, reject) {
+  return new Promise(async function(resolve, reject) {
     const sql =
       'select a.*, u.nick as nombreUsuario from archivos a, usuarios u  where a.idpbi=? and a.idusuario=u.idusuario';
     const array = [idpbi];
-    connection.query(sql, array, function(err, result) {
+    try {
+      let archivos = await connection.query(sql, array);
+      resolve(archivos[0]);
+    } catch (error) {
+      reject({ error: 'Error inesperado en obtenerArchivosPbi' });
+    }
+    /* connection.query(sql, array, function (err, result) {
       if (err) {
         reject({ error: 'Error inesperado en obtenerArchivosPbi' });
       } else {
         console.log(result);
         resolve(result);
       }
-    });
+    }); */
   });
 };
 

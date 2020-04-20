@@ -6,7 +6,7 @@ const connection = require('../db/connection');
  * @param pbi contiene los datos del pbi: titulo, descripcion, done, label, estimacion, valor, idproyecto, prioridad, sprintCreacion
  */
 ControllerPbis.crearPbi = function(pbi) {
-  return new Promise(function(resolve, reject) {
+  return new Promise(async function(resolve, reject) {
     const sql =
       'insert into pbis(titulo,descripcion,done,label,estimacion,valor,idproyecto,prioridad,sprintCreacion) values ' +
       '(?,?,?,?,?,?,?,?,?)';
@@ -21,28 +21,34 @@ ControllerPbis.crearPbi = function(pbi) {
       pbi.prioridad,
       pbi.sprintCreacion
     ];
-    connection.query(sql, array, function(err, result) {
+    try {
+      let insertion = await connection.query(sql, array);
+      resolve(insertion[0]);
+    } catch (error) {
+      reject({ error: 'Error inesperado en crearPbi' });
+    }
+    /* connection.query(sql, array, function (err, result) {
       if (err) {
         reject({ error: 'Error inesperado en crearPbi' });
       } else {
         console.log(result);
         resolve(result);
       }
-    });
+    }); */
   });
 };
 
 /**
  * Edita un pbi
- * @param id id del pbi a editar
+ * @param {number} idpbi id del pbi a editar
  * @param pbi contiene los datos del pbi: titulo, descripcion, done, label, estimacion, valor, prioridad, sprintCreacion
  */
-ControllerPbis.editarPbi = function(id, pbi) {
-  console.log(pbi);
-  console.log(pbi.valor);
-  if (pbi.sprint == 'null') pbi.sprint = null;
-  if (pbi.valor == 'null') pbi.valor = null;
-  return new Promise(function(resolve, reject) {
+ControllerPbis.editarPbi = function(idpbi, pbi) {
+  return new Promise(async function(resolve, reject) {
+    console.log(pbi);
+    console.log(pbi.valor);
+    if (pbi.sprint == 'null') pbi.sprint = null;
+    if (pbi.valor == 'null') pbi.valor = null;
     const sql =
       'update pbis set titulo=?,descripcion=?,done=?,label=?,estimacion=?,valor=?,prioridad=?,sprint=?,sprintCreacion=? where idpbi=?';
     const array = [
@@ -55,16 +61,22 @@ ControllerPbis.editarPbi = function(id, pbi) {
       pbi.prioridad,
       pbi.sprint,
       pbi.sprintCreacion,
-      id
+      idpbi
     ];
-    connection.query(sql, array, function(err, result) {
+    try {
+      let update = await connection.query(sql, array);
+      resolve(update[0]);
+    } catch (error) {
+      reject({ error: 'Error inesperado en editarPbi' });
+    }
+    /* connection.query(sql, array, function (err, result) {
       if (err) {
         reject({ error: 'Error inesperado en editarPbi' });
       } else {
         console.log(result);
         resolve(result);
       }
-    });
+    }); */
   });
 };
 
@@ -73,14 +85,28 @@ ControllerPbis.editarPbi = function(id, pbi) {
  * @param pbis contiene los datos de los pbis a editar: pbis[]=> prioridad, idpbi
  */
 ControllerPbis.editarPrioridadesPbis = function(pbis) {
-  return new Promise(function(resolve, reject) {
-    console.log(pbis);
+  return new Promise(async function(resolve, reject) {
+    try {
+      var responses = [];
+      for (let pbi of pbis) {
+        var sql = 'update pbis set prioridad=? where idpbi=?';
+        var array = [pbi.prioridad, pbi.idpbi];
+        let update = await connection.query(sql, array);
+        responses.push(update);
+      }
+      resolve({ response: 'ok' });
+      /* resolve(responses); */
+    } catch (error) {
+      reject({ error: 'Error inesperado en editarPrioridadesPbis' });
+    }
+
+    /* console.log(pbis);
     var promises = [];
     for (let pbi of pbis) {
-      var promise = new Promise(function(resolve, reject) {
+      var promise = new Promise(function (resolve, reject) {
         const sql = 'update pbis set prioridad=? where idpbi=?';
         var array = [pbi.prioridad, pbi.idpbi];
-        connection.query(sql, array, function(err, result) {
+        connection.query(sql, array, function (err, result) {
           if (err) {
             reject({ error: 'Error inesperado en editarPrioridadesPbis' });
           } else {
@@ -94,7 +120,7 @@ ControllerPbis.editarPrioridadesPbis = function(pbis) {
     Promise.all(promises).then(pbis => {
       console.log(pbis);
       resolve(pbis);
-    });
+    }); */
   });
 };
 

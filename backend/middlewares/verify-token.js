@@ -5,7 +5,6 @@ const config = require('../config/config');
  * Verifica que el token es valido
  */
 function verifyToken(req, res, next) {
-  console.log(req.body);
   console.log('verify');
   if (!req.headers.authorization) {
     return res.status(401).json({ error: 'unauthorized_request' });

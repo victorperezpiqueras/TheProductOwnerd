@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const controllerSprintGoals = require('../controllers/sprintgoals');
-const verifyToken = require('../controllers/middleware');
+const verifyToken = require('../middlewares/verify-token');
 const { ErrorHandler } = require('../helpers/error');
 const { propertyChecker } = require('../helpers/propertyChecker');
 

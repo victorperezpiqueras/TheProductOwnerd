@@ -1,7 +1,8 @@
-var express = require('express');
-var router = express.Router();
-var controllerProyectos = require('../controllers/proyectos');
-var verifyToken = require('../controllers/middleware');
+const express = require('express');
+const router = express.Router();
+const controllerProyectos = require('../controllers/proyectos');
+const verifyToken = require('../middlewares/verify-token');
+const verifyProjectPermissions = require('../middlewares/proyecto-permisos');
 const { ErrorHandler } = require('../helpers/error');
 const { propertyChecker } = require('../helpers/propertyChecker');
 
@@ -18,10 +19,10 @@ router.get('/', verifyToken, function(req, res, next) {
     });
 });
 
-router.get('/:id', verifyToken, function(req, res, next) {
+router.get('/:idproyecto', verifyToken, verifyProjectPermissions, function(req, res, next) {
   console.log('getProyecto');
   controllerProyectos
-    .getProyecto(req.params.id)
+    .getProyecto(req.params.idproyecto)
     .then(function(proyecto) {
       res.json(proyecto);
     })
@@ -30,10 +31,10 @@ router.get('/:id', verifyToken, function(req, res, next) {
     });
 });
 
-router.get('/:id/sprintgoals', verifyToken, function(req, res, next) {
+router.get('/:idproyecto/sprintgoals', verifyToken, verifyProjectPermissions, function(req, res, next) {
   console.log('getProyecto');
   controllerProyectos
-    .getProyectoSprintGoals(req.params.id)
+    .getProyectoSprintGoals(req.params.idproyecto)
     .then(function(sprintgoals) {
       res.json(sprintgoals);
     })
@@ -42,10 +43,10 @@ router.get('/:id/sprintgoals', verifyToken, function(req, res, next) {
     });
 });
 
-router.get('/:id/usuarios', verifyToken, function(req, res, next) {
+router.get('/:idproyecto/usuarios', verifyToken, verifyProjectPermissions, function(req, res, next) {
   console.log('getProyectoUsuarios');
   controllerProyectos
-    .getProyectoUsuarios(req.params.id)
+    .getProyectoUsuarios(req.params.idproyecto)
     .then(function(usuarios) {
       res.json(usuarios);
     })
@@ -54,10 +55,10 @@ router.get('/:id/usuarios', verifyToken, function(req, res, next) {
     });
 });
 
-router.get('/:id/usuarios/roles', verifyToken, function(req, res, next) {
+router.get('/:idproyecto/usuarios/roles', verifyToken, verifyProjectPermissions, function(req, res, next) {
   console.log('getProyectoUsuariosRoles');
   controllerProyectos
-    .getProyectoUsuariosRoles(req.params.id)
+    .getProyectoUsuariosRoles(req.params.idproyecto)
     .then(function(usuarios) {
       res.json(usuarios);
     })
@@ -66,10 +67,10 @@ router.get('/:id/usuarios/roles', verifyToken, function(req, res, next) {
     });
 });
 
-router.get('/:id/pbis', verifyToken, function(req, res, next) {
+router.get('/:idproyecto/pbis', verifyToken, verifyProjectPermissions, function(req, res, next) {
   console.log('getProyectoPBIs');
   controllerProyectos
-    .getProyectoPBIs(req.params.id)
+    .getProyectoPBIs(req.params.idproyecto)
     .then(function(pbis) {
       res.json(pbis);
     })
@@ -106,12 +107,12 @@ router.post('/', verifyToken, function(req, res, next) {
     });
 });
 
-router.put('/:id', verifyToken, function(req, res, next) {
+router.put('/:idproyecto', verifyToken, verifyProjectPermissions, function(req, res, next) {
   console.log('actualizarProyecto');
   if (!propertyChecker(req.body, ['nombre', 'descripcion', 'vision', 'sprintActual']))
     throw new ErrorHandler(422, 'Missing required fields: nombre, descripcion, vision, sprintActual');
   controllerProyectos
-    .actualizarProyecto(req.params.id, req.body)
+    .actualizarProyecto(req.params.idproyecto, req.body)
     .then(function(proyecto) {
       res.json(proyecto);
     })
@@ -120,12 +121,12 @@ router.put('/:id', verifyToken, function(req, res, next) {
     });
 });
 
-router.post('/:id/agregarUsuario', verifyToken, function(req, res, next) {
+router.post('/:idproyecto/agregarUsuario', verifyToken, verifyProjectPermissions, function(req, res, next) {
   console.log('proyectoAgregarUsuario');
-  if (!propertyChecker(req.body, ['idusuario', 'rol']))
+  if (!propertyChecker(req.body, ['idproyectousuario', 'rol']))
     throw new ErrorHandler(422, 'Missing required fields: idusuario, rol');
   controllerProyectos
-    .proyectoAgregarUsuario(req.params.id, req.body)
+    .proyectoAgregarUsuario(req.params.idproyecto, req.body)
     .then(function(proyecto) {
       res.json(proyecto);
     })
@@ -135,10 +136,14 @@ router.post('/:id/agregarUsuario', verifyToken, function(req, res, next) {
     });
 });
 
-router.delete('/:id/eliminarUsuario/:idusuario', verifyToken, function(req, res, next) {
+router.delete('/:idproyecto/eliminarUsuario/:idusuario', verifyToken, verifyProjectPermissions, function(
+  req,
+  res,
+  next
+) {
   console.log('proyectoEliminarUsuario');
   controllerProyectos
-    .proyectoEliminarUsuario(req.params.id, req.params.idusuario)
+    .proyectoEliminarUsuario(req.params.idproyecto, req.params.idusuario)
     .then(function(proyecto) {
       res.json(proyecto);
     })
@@ -147,12 +152,12 @@ router.delete('/:id/eliminarUsuario/:idusuario', verifyToken, function(req, res,
     });
 });
 
-router.post('/:id/invitar', verifyToken, function(req, res, next) {
+router.post('/:idproyecto/invitar', verifyToken, verifyProjectPermissions, function(req, res, next) {
   console.log('proyectoInvitarUsuario');
   if (!propertyChecker(req.body, ['email', 'rol', 'nombreProyecto', 'invitadoPor']))
     throw new ErrorHandler(422, 'Missing required fields: email, rol, nombreProyecto, invitadoPor');
   controllerProyectos
-    .proyectoInvitarUsuario(req.params.id, req.body)
+    .proyectoInvitarUsuario(req.params.idproyecto, req.body)
     .then(function(proyecto) {
       res.json(proyecto);
     })
