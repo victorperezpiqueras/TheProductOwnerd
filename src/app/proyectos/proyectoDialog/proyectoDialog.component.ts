@@ -40,8 +40,8 @@ export class ProyectoDialogComponent implements OnInit {
       proyecto: new Proyecto(null, this.name, this.descripcion, null, 0, [])
     });
     //show snackbar on success:
-    if (this.dialogMode == 'edit') this.openSnackBar('Project edited successfully', 'Close');
-    else if (this.dialogMode == 'create') this.openSnackBar('Project created successfully', 'Close');
+    if (this.dialogMode == 'edit') this.openSnackBar('Project edited successfully!', 'Close');
+    else if (this.dialogMode == 'create') this.openSnackBar('Project created successfully!', 'Close');
   }
 
   close() {

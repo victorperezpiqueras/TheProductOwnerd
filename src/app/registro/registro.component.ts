@@ -10,6 +10,7 @@ import { MatDialogConfig, MatDialogRef, MatDialog } from '@angular/material/dial
 import { RegistroService } from '@app/services/registro.service';
 import { environment } from '@env/environment';
 import { InvitacionesService } from '@app/services/invitaciones.service';
+import { MatSnackBar } from '@angular/material';
 
 const log = new Logger('Register');
 
@@ -34,6 +35,7 @@ export class RegistroComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private credentialsService: CredentialsService,
     public dialog: MatDialog,
+    private _snackBar: MatSnackBar,
     private activeRoute: ActivatedRoute,
     private registroService: RegistroService,
     private invitacionesService: InvitacionesService
@@ -91,9 +93,11 @@ export class RegistroComponent implements OnInit, OnDestroy {
         .subscribe(
           data => {
             console.log(data);
+            this._snackBar.open('Account created successfully!', 'Close', { duration: 3000 });
             this.router.navigate(['/login'], { replaceUrl: true });
           },
           error => {
+            this._snackBar.open('There was an error registering your account. Try again later', 'Close');
             console.log(error);
             this.error = error.error.error;
           }
@@ -118,9 +122,13 @@ export class RegistroComponent implements OnInit, OnDestroy {
         )
         .subscribe(
           data => {
+            this._snackBar.open('Account created successfully! Login to join the project!', 'Close', {
+              duration: 3000
+            });
             this.router.navigate(['/login'], { replaceUrl: true });
           },
           error => {
+            this._snackBar.open('There was an error registering your account. Try again later', 'Close');
             console.log(error);
             this.error = error.error.error;
           }

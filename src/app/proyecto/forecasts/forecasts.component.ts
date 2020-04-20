@@ -72,6 +72,10 @@ export class ForecastsComponent implements OnInit, OnDestroy {
   mediaAverageBest: number = 0;
   mediaAverageWorst: number = 0;
 
+  /* max range */
+  maxValor: number = 0;
+  updateFlag: boolean = false;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -142,7 +146,9 @@ export class ForecastsComponent implements OnInit, OnDestroy {
       this.generarDeadline(this.deadlineSprint);
       this.generarPuntosCorte();
     }
+    this.calcularMaxValor();
     this.generarGrafico();
+    /* this.calcularMaxValor(); */
   }
 
   generarEjes() {
@@ -327,16 +333,21 @@ export class ForecastsComponent implements OnInit, OnDestroy {
       /*  tooltip: {
         shared: true
       }, */
-      xAxis: {
-        title: {
-          text: 'Sprints',
-          style: {
-            fontSize: '16px'
-          }
-        },
-        /*  max: 5, */
-        tickInterval: 1
-      },
+      xAxis: [
+        {
+          title: {
+            text: 'Sprints',
+            style: {
+              fontSize: '16px'
+            }
+          },
+          /*  max: 5, */
+          min: 0,
+          max: this.maxValor + 5,
+          tickInterval: 1
+          /*  tickAmount: 5 */
+        }
+      ],
       yAxis: [
         {
           title: {
@@ -505,40 +516,16 @@ export class ForecastsComponent implements OnInit, OnDestroy {
       }
     };
     // console.log(this.chartOptions);
+    //this.updateFlag = true;
   }
 
-  /*  generarEjesPoC() {
-    //this.sprints = [];
-    // obtener ultimo sprint:
-    this.ultimoSprint = 0;
-    this.pbis.forEach((pbi: Pbi) => {
-      if (pbi.sprint > this.ultimoSprint) this.ultimoSprint = pbi.sprint;
+  calcularMaxValor() {
+    //console.log(this.chartOptions)
+    this.maxValor = 0;
+    [this.deadlineSprint, this.listaAverageWorst[this.listaAverageWorst.length - 1][0]].forEach((valor: number) => {
+      if (this.maxValor < valor) this.maxValor = valor;
     });
-    // generar suma pbis:
-    this.puntosTotales = this.pbis.length;
-    // generar lista sprints y porcentajes:
-    for (var i = 0; i <= this.ultimoSprint; i++) {
-      //this.sprints.push(new Sprint('Sprint ' + i.toString(), i, 0, 0));
-      if (i == 0) {
-        this.sprints[i].quemadoRelativo = 0;
-      } else {
-        // sumar los pbis completados para cada sprint:
-        var sumpbis = 0;
-        this.pbis.forEach((pbi: Pbi) => {
-          if (pbi.sprint == i) sumpbis++;
-        });
-        // restar al total anterior las del sprint en forma de porcentaje
-        this.sprints[i].quemadoRelativo = Number(
-          (this.sprints[i - 1].quemadoRelativo + (sumpbis / this.puntosTotales) * 100).toFixed(2)
-        );
-      }
-    }
-    this.listaData = [];
-    // la metrica es el quemado por sprint en forma de porcentaje
-    for (var i = 0; i <= this.ultimoSprint; i++) {
-      this.listaData[i] = [this.sprints[i].sprint, this.sprints[i].quemadoRelativo];
-    }
-  } */
+  }
 
   ngOnDestroy() {}
 

@@ -93,18 +93,21 @@ export class ProyectoComponent implements OnInit, OnDestroy {
                   this.permisos = permisos;
                   this.isLoading = false;
                 });
-
-              this.proyectosService
-                .getProyectoSprintGoals(this.proyecto.idproyecto)
-                .pipe(untilDestroyed(this))
-                .subscribe(sprintGoals => {
-                  this.sprintGoals = sprintGoals;
-                  this.updateSprintGoal();
-                  this.isLoading = false;
-                });
+              this.actualizarSprintGoals();
             });
         });
     });
+  }
+
+  actualizarSprintGoals() {
+    this.proyectosService
+      .getProyectoSprintGoals(this.proyecto.idproyecto)
+      .pipe(untilDestroyed(this))
+      .subscribe(sprintGoals => {
+        this.sprintGoals = sprintGoals;
+        this.updateSprintGoal();
+        this.isLoading = false;
+      });
   }
 
   onTabChanged(event: MatTabChangeEvent) {
@@ -168,7 +171,8 @@ export class ProyectoComponent implements OnInit, OnDestroy {
             .actualizarProyecto(this.proyecto.idproyecto, this.proyecto)
             .pipe(untilDestroyed(this))
             .subscribe(res => {
-              this.updateSprintGoal();
+              this.actualizarSprintGoals();
+              //this.updateSprintGoal();
               this.checkSprintZero();
               this.actualizarComponentes();
               this.buttonDisabled = true;
@@ -200,7 +204,8 @@ export class ProyectoComponent implements OnInit, OnDestroy {
               .actualizarProyecto(this.proyecto.idproyecto, this.proyecto)
               .pipe(untilDestroyed(this))
               .subscribe(res => {
-                this.updateSprintGoal();
+                this.actualizarSprintGoals();
+                //this.updateSprintGoal();
                 this.checkSprintZero();
                 this.actualizarComponentes();
                 this.buttonDisabled = true;
