@@ -35,7 +35,7 @@ export class CriteriosService {
   /**
    * Borra un criterio
    * @method DELETE
-   * @param idcriterio id del criterio a borrar
+   * @param {number} idcriterio id del criterio a borrar
    */
   borrarCriterio(idcriterio: number): Observable<any> {
     return this.http.delete<any>(this.url + '/' + idcriterio, httpOptions);

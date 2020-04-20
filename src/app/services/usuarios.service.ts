@@ -25,7 +25,7 @@ export class UsuariosService {
   /**
    * Obtiene los proyectos de un usuario
    * @method GET
-   * @param id id del usuario
+   * @param {number} idusuario id del usuario
    * @returns [ {idproyecto, nombre, descripcion} ]
    */
   getUsuarioProyectos(idusuario: number): Observable<any> {
@@ -35,8 +35,8 @@ export class UsuariosService {
   /**
    * Obtiene los permisos de un usuario para un proyecto
    * @method GET
-   * @param id id del usuario
-   * @param idproyecto id del proyecto
+   * @param {number} idusuario id del usuario
+   * @param {number} idproyecto id del proyecto
    */
   getUsuarioProyectoPermisos(idusuario: number, idproyecto: number): Observable<any> {
     return this.http.get<any>(this.url + '/' + idusuario + '/proyectos/' + idproyecto + '/permisos', httpOptions);
@@ -45,7 +45,7 @@ export class UsuariosService {
   /**
    * Obtiene los proyectos favoritos de un usuario
    * @method GET
-   * @param idusuario id del usuario
+   * @param {number} idusuario id del usuario
    * @returns [ {idproyecto, idusuario, nombre} ]
    */
   getUsuarioProyectosFavoritos(idusuario: number): Observable<any> {
@@ -55,7 +55,7 @@ export class UsuariosService {
   /**
    * Agrega un proyecto del usuario a sus favoritos
    * @method POST
-   * @param idusuario id del usuario
+   * @param {number} idusuario id del usuario
    * @param data contiene el id del proyecto
    */
   agregarUsuarioProyectosFavoritos(idusuario: number, idproyecto: number): Observable<any> {
@@ -69,8 +69,8 @@ export class UsuariosService {
   /**
    * Elimina un proyecto del usuario de sus favoritos
    * @method DELETE
-   * @param idusuario id del usuario
-   * @param idproyecto id del proyecto
+   * @param {number} idusuario id del usuario
+   * @param {number} idproyecto id del proyecto
    */
   eliminarUsuarioProyectosFavoritos(idusuario: number, idproyecto: number): Observable<any> {
     return this.http.delete<any>(this.url + '/' + idusuario + '/proyectosfavoritos/' + idproyecto, httpOptions);
@@ -79,7 +79,7 @@ export class UsuariosService {
   /**
    * Actualiza los datos de un usuario
    * @method PUT
-   * @param idusuario id del usuario
+   * @param {number} idusuario id del usuario
    * @param data datos del usuario: nick, nombre, apellido1, apellido2, email
    */
   actualizarUsuario(usuario: Usuario): Observable<any> {
@@ -90,7 +90,7 @@ export class UsuariosService {
   /**
    * Actualiza la password de un usuario
    * @method PUT
-   * @param idusuario id del usuario
+   * @param {number} idusuario id del usuario
    * @param data datos del usuario: password, newPassword
    */
   actualizarUsuarioPassword(data: any): Observable<any> {

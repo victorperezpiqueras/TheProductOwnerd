@@ -47,7 +47,7 @@ export class PbisService {
   /**
    * Obtiene los comentarios de un pbi
    * @method GET
-   * @param idpbi id del pbi
+   * @param {number} idpbi id del pbi
    * @returns [ {idcomentario, comentario, fecha, idpbi, idusuario, nick} ]
    */
   obtenerComentarios(idpbi: number): Observable<any> {
@@ -57,7 +57,7 @@ export class PbisService {
   /**
    * Obtiene los archivos de un pbi
    * @method GET
-   * @param idpbi id del pbi
+   * @param {number} idpbi id del pbi
    * @returns [ {idarchivo, nombre, src, idpbi, idusuario, nombreUsuario} ]
    */
   obtenerArchivos(idpbi: number): Observable<any> {
@@ -67,7 +67,7 @@ export class PbisService {
   /**
    * Obtiene los criterios de un pbi
    * @method GET
-   * @param idpbi id del pbi
+   * @param {number} idpbi id del pbi
    * @returns [ {idcriterio, nombre, done, idpbi} ]
    */
   obtenerCriterios(idpbi: number): Observable<any> {
@@ -77,7 +77,7 @@ export class PbisService {
   /**
    * Obtiene las dependencias de un pbi
    * @method GET
-   * @param idpbi id del pbi
+   * @param {number} idpbi id del pbi
    * @returns [ {iddependencia, idpbi, idpbi2} ]
    */
   obtenerDependencias(idpbi: number): Observable<any> {

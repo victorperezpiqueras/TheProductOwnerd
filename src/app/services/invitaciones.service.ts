@@ -17,7 +17,7 @@ export class InvitacionesService {
   /**
    * Obtiene una invitacion dado un token
    * @method GET
-   * @param token token asignado a la invitacion
+   * @param {string} token token asignado a la invitacion
    */
   obtenerInvitacion(token: string): Observable<any> {
     return this.http.get<any>(this.url + '/' + token, httpOptions);

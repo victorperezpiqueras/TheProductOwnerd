@@ -24,7 +24,7 @@ export class ProyectosService {
   /**
    * Obtiene un proyecto dado su id
    * @method GET
-   * @param idproyecto id del proyecto
+   * @param {number} idproyecto id del proyecto
    * @returns (idproyecto, nombre, descripcion, sprintActual, vision)
    */
   getProyecto(idproyecto: number): Observable<any> {
@@ -34,7 +34,7 @@ export class ProyectosService {
   /**
    * Obtiene los usuarios de un proyecto
    * @method GET
-   * @param idproyecto id del proyecto
+   * @param {number} idproyecto id del proyecto
    * @returns [ {idusuario, nombre, email} ]
    */
   getProyectosUsuarios(idproyecto: number): Observable<any> {
@@ -44,7 +44,7 @@ export class ProyectosService {
   /**
    * Obtiene los usuarios y roles de un proyecto
    * @method GET
-   * @param idproyecto id del proyecto
+   * @param {number} idproyecto id del proyecto
    * @returns [ {idusuario, nick, email, rol} ]
    */
   getProyectoUsuariosRoles(idproyecto: number): Observable<any> {
@@ -71,7 +71,7 @@ export class ProyectosService {
   /**
    * Actualiza los datos de un proyecto
    * @method PUT
-   * @param idproyecto id del proyecto
+   * @param {number} idproyecto id del proyecto
    * @param proyecto contiene los datos del proyecto: nombre, descripcion, vision, sprintActual
    */
   actualizarProyecto(idproyecto: number, proyecto: any): Observable<any> {
@@ -81,7 +81,7 @@ export class ProyectosService {
   /**
    * Obtiene los pbis de un proyecto
    * @method GET
-   * @param idproyecto id del proyecto
+   * @param {number} idproyecto id del proyecto
    * @returns [ {idpbi, titulo, descripcion, done, label, estimacion, idproyecto, prioridad, valor, sprint, sprintCreacion} ]
    */
   getProyectosPBI(idproyecto: number): Observable<any> {
@@ -91,7 +91,7 @@ export class ProyectosService {
   /**
    * Invita un usuario al proyecto. Si existe lo agrega, si no, genera una in
    * @method POST
-   * @param idproyecto id del proyecto
+   * @param {number} idproyecto id del proyecto
    * @param data datos de la invitacion: email, rol, nombreProyecto, invitadoPor
    */
   invitarUsuario(idproyecto: number, email: any): Observable<any> {
@@ -101,8 +101,8 @@ export class ProyectosService {
   /**
    * Elimina un usuario del proyecto
    * @method DELETE
-   * @param idproyecto id del proyecto
-   * @param idusuario id del usuario
+   * @param {number} idproyecto id del proyecto
+   * @param {number} idusuario id del usuario
    */
   eliminarUsuario(idproyecto: number, idusuario: number): Observable<any> {
     return this.http.delete<any>(this.url + '/' + idproyecto + '/eliminarUsuario' + '/' + idusuario, httpOptions);
@@ -111,7 +111,7 @@ export class ProyectosService {
   /**
    * Obtiene los sprintgoals de un proyecto
    * @method GET
-   * @param idproyecto id del proyecto
+   * @param {number} idproyecto id del proyecto
    * @returns [ {idproyecto, goal, sprintNumber} ]
    */
   getProyectoSprintGoals(idproyecto: number): Observable<any> {

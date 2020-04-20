@@ -26,8 +26,8 @@ export class DependenciasService {
   /**
    * Borra una dependencia
    * @method DELETE
-   * @param idpbi id de la dependencia a borrar
-   * @param idpbi2 id de la dependencia 2 a borrar
+   * @param {number} idpbi id de la dependencia a borrar
+   * @param {number} idpbi2 id de la dependencia 2 a borrar
    */
   borrarDependencia(idpbi: number, idpbi2: number): Observable<any> {
     return this.http.delete<any>(this.url + '/' + idpbi + '/' + idpbi2, httpOptions);

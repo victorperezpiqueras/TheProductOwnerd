@@ -26,9 +26,9 @@ export class ArchivosService {
   /**
    * Borra un archivo
    * @method DELETE
-   * @param id id del archivo
+   * @param {number} idarchivo id del archivo
    */
-  borrarArchivo(id: number): Observable<any> {
-    return this.http.delete<any>(this.url + '/' + id, httpOptions);
+  borrarArchivo(idarchivo: number): Observable<any> {
+    return this.http.delete<any>(this.url + '/' + idarchivo, httpOptions);
   }
 }
