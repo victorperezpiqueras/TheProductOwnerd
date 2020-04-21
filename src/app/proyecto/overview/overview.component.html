@@ -5,7 +5,6 @@
     <div fxLayout="row" fxLayoutGap="2%" fxFlex="40">
       <mat-card fxFlex="80" fxLayout="column" class="mat-elevation-z3" fxLayoutAlign="center center">
         <highcharts-chart
-          #chart1
           *ngIf="chartOptions"
           [Highcharts]="Highcharts"
           [options]="chartOptions"
@@ -41,10 +40,11 @@
               <td mat-cell *matCellDef="let usuario">
                 <div class="borrar-hueco">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
                 <mat-icon
-                  *ngIf="usuario.idusuario !== idusuario"
+                  *ngIf="usuario.idusuario !== idusuario && permisos && permisos.mantenerUsuarios === 1"
                   class="borrar-usuario"
-                  matTooltip="Kick member"
-                  matTooltipPosition="below"
+                  matTooltip="Kick member (requires confirmation)"
+                  matTooltipPosition="left"
+                  matTooltipShowDelay="500"
                   (click)="eliminarUsuario(usuario)"
                   >remove_circle</mat-icon
                 >
@@ -132,13 +132,9 @@
         <div *ngIf="permisos && permisos.vision === 1">
           <mat-form-field appearance="outline" style="width: 90%;">
             <mat-label class="mat-h1">Vision</mat-label>
-            <textarea
-              matInput
-              [(ngModel)]="proyecto.vision"
-              (change)="switchSaveButton()"
-              cdkTextareaAutosize
-              #autosize="cdkTextareaAutosize"
-            ></textarea>
+            <textarea matInput [(ngModel)]="proyecto.vision" (change)="switchSaveButton()"></textarea
+            ><!-- cdkTextareaAutosize
+              #autosize="cdkTextareaAutosize" -->
           </mat-form-field>
           <button
             mat-raised-button

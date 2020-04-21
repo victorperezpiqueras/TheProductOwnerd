@@ -66,11 +66,31 @@
         </button>
 
         <mat-menu #menu2="matMenu">
-          <button mat-menu-item (click)="orderBy('priority')">Manual</button>
-          <button mat-menu-item (click)="orderBy('valueup')">
+          <button
+            mat-menu-item
+            (click)="orderBy('priority')"
+            matTooltip="Priority set by the Product Owner"
+            matTooltipPosition="right"
+            matTooltipShowDelay="500"
+          >
+            Manual
+          </button>
+          <button
+            mat-menu-item
+            (click)="orderBy('valueup')"
+            matTooltip="Value assigned by the Product Owner"
+            matTooltipPosition="right"
+            matTooltipShowDelay="500"
+          >
             Value<mat-icon class="mat-order-icon">arrow_upward </mat-icon>
           </button>
-          <button mat-menu-item (click)="orderBy('valuedown')">
+          <button
+            mat-menu-item
+            (click)="orderBy('valuedown')"
+            matTooltip="Value assigned by the Product Owner"
+            matTooltipPosition="right"
+            matTooltipShowDelay="500"
+          >
             Value<mat-icon class="mat-order-icon">arrow_downward </mat-icon>
           </button>
         </mat-menu>
@@ -93,6 +113,9 @@
           mat-fab
           color="primary"
           (click)="crearPbiDialog()"
+          matTooltip="Create a new PBI"
+          matTooltipPosition="left"
+          matTooltipShowDelay="1000"
         >
           +
         </button>
@@ -101,6 +124,12 @@
 
     <!-- BACKLOG ITEMS LIST -->
     <div class="div-list" *ngIf="!viewDone">
+      <div fxLayoutAlign="center center">
+        <button mat-raised-button color="primary" (click)="swapItemList()">
+          View Done Items
+        </button>
+      </div>
+      <br />
       <div
         class="droplist"
         cdkDropList
@@ -110,7 +139,14 @@
       >
         <!-- cdkDragBoundary=".droplist" -->
         <div *ngFor="let pbi of showingPbis">
-          <mat-card *ngIf="pbi.done == 0" class="card mat-elevation-z9" cdkDrag (click)="editarPbiDialog(pbi)">
+          <mat-card
+            *ngIf="pbi.done == 0"
+            class="card mat-elevation-z9"
+            cdkDrag
+            (click)="editarPbiDialog(pbi)"
+            (cdkDragStarted)="isDragging = true"
+            (cdkDragReleased)="isDragging = false"
+          >
             <!-- matBadge="{{ pbi.estimacion }}" matBadgeOverlap="true" matBadgeSize="medium" matBadgeColor="primary" -->
             <mat-card-header>
               <mat-card-title>#{{ pbi.idpbi }} - {{ pbi.titulo }}</mat-card-title>
@@ -134,7 +170,15 @@
                 >
                   {{ pbi.estimacion }}
                 </button>
-                <mat-icon *ngIf="!(permisos?.ordenar == 0 || !priorityOn)" cdkDragHandle>drag_indicator</mat-icon>
+                <mat-icon
+                  *ngIf="!(permisos?.ordenar == 0 || !priorityOn)"
+                  cdkDragHandle
+                  matTooltip="Drag to change prioritization"
+                  matTooltipPosition="above"
+                  matTooltipShowDelay="1000"
+                  [matTooltipDisabled]="isDragging"
+                  >drag_indicator</mat-icon
+                >
                 <b *ngIf="permisos?.ordenar == 0 || !priorityOn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
               </div>
             </mat-card-header>
@@ -147,16 +191,16 @@
           <br />
         </div>
       </div>
-
-      <div fxLayoutAlign="center center">
-        <button mat-raised-button color="primary" (click)="swapItemList()">
-          View Done Items
-        </button>
-      </div>
     </div>
 
     <!-- DONE ITEMS LIST -->
     <div class="div-list" *ngIf="viewDone">
+      <div fxLayoutAlign="center center">
+        <button mat-raised-button color="accent" (click)="swapItemList()">
+          View Backlog Items
+        </button>
+      </div>
+      <br />
       <div class="droplist">
         <div *ngFor="let pbi of showingDonePbis">
           <mat-card *ngIf="pbi.done == 1" class="card mat-elevation-z9" (click)="verPbiDialog(pbi)">
@@ -218,12 +262,6 @@
           </mat-card> -->
           <br />
         </div>
-      </div>
-
-      <div fxLayoutAlign="center center">
-        <button mat-raised-button color="accent" (click)="swapItemList()">
-          View Backlog Items
-        </button>
       </div>
     </div>
   </div>

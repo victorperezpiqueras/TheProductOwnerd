@@ -7,18 +7,24 @@
   </div>
   <div fxHide.lt-md>
     <a class="brand" href="https://github.com/victorperezpiqueras/TFG" translate>APP_NAME</a>
-    <button mat-button routerLink="/home" routerLinkActive="active">
+    <!-- <button mat-button routerLink="/home" routerLinkActive="active">
+      <mat-icon>home</mat-icon>
+      <span translate>Home</span>
+    </button> -->
+    <button mat-button routerLink="/proyectos" routerLinkActive="active">
       <mat-icon>home</mat-icon>
       <span translate>Home</span>
     </button>
-    <button mat-button routerLink="/about" routerLinkActive="active">
+
+    <!-- <button mat-button routerLink="/about" routerLinkActive="active">
       <mat-icon>info</mat-icon>
       <span translate>About</span>
-    </button>
-    <button mat-button routerLink="/proyectos" routerLinkActive="active">
+    </button> -->
+
+    <!-- <button mat-button routerLink="/proyectos" routerLinkActive="active">
       <mat-icon>folder</mat-icon>
       <span translate>Projects</span>
-    </button>
+    </button> -->
     <button
       mat-button
       *ngFor="let proy of proyectosFavoritos"
@@ -29,25 +35,33 @@
       <mat-icon>star</mat-icon>
       <span>{{ proy.nombre }}</span>
     </button>
+
     <button
-      mat-button
+      mat-icon-button
       class="add"
       (click)="agregarFavorito()"
       matTooltip="Add projects to favourites"
       matTooltipPosition="right"
+      matTooltipShowDelay="500"
     >
       <mat-icon>add_circle_outline</mat-icon>
     </button>
   </div>
   <span fxFlex></span>
-  <button mat-icon-button [matMenuTriggerFor]="languageMenu">
+
+  <button mat-icon-button routerLink="/about" routerLinkActive="active">
+    <mat-icon>info</mat-icon>
+  </button>
+
+  <!-- <button mat-icon-button [matMenuTriggerFor]="languageMenu">
     <mat-icon>language</mat-icon>
   </button>
   <mat-menu #languageMenu="matMenu">
     <button mat-menu-item *ngFor="let language of languages" (click)="setLanguage(language)">
       {{ language }}
     </button>
-  </mat-menu>
+  </mat-menu> -->
+
   <button mat-icon-button [matMenuTriggerFor]="userMenu">
     <mat-icon>person</mat-icon>
   </button>

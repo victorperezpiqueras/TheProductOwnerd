@@ -37,7 +37,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
   @Input() permisos: Permisos;
 
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
-  @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;
+  /*  @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize; */
 
   dataTable: any;
 
@@ -477,7 +477,9 @@ export class OverviewComponent implements OnInit, OnDestroy {
         enabled: false
       },
       exporting: {
-        enabled: true
+        enabled: true,
+        sourceHeight: 550,
+        sourceWidth: 1100
       }
     };
   }
@@ -796,10 +798,10 @@ export class OverviewComponent implements OnInit, OnDestroy {
     if (this.buttonDisabled) this.buttonDisabled = false;
   }
 
-  triggerResize() {
+  /* triggerResize() {
     // Wait for changes to be applied, then trigger textarea resize.
     this._ngZone.onStable.pipe(take(1)).subscribe(() => this.autosize.resizeToFitContent(true));
-  }
+  } */
 
   ngOnDestroy() {}
 

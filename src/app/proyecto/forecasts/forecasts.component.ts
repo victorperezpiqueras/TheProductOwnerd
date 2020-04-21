@@ -141,10 +141,13 @@ export class ForecastsComponent implements OnInit, OnDestroy {
   actualizarGraficoVelocidad() {
     if (this.pbis.length > 0) {
       this.generarEjes();
-      this.generarExpectedAverage(this.sprintNumber);
-      this.generarBestWorstAverage(this.sprintNumber, this.sprintNumberBW);
-      this.generarDeadline(this.deadlineSprint);
-      this.generarPuntosCorte();
+      // si no hay pbis acabados no se puede calcular el ultimo sprint
+      if (this.sprints.length) {
+        this.generarExpectedAverage(this.sprintNumber);
+        this.generarBestWorstAverage(this.sprintNumber, this.sprintNumberBW);
+        this.generarDeadline(this.deadlineSprint);
+        this.generarPuntosCorte();
+      }
     }
     this.calcularMaxValor();
     this.generarGrafico();
@@ -511,7 +514,9 @@ export class ForecastsComponent implements OnInit, OnDestroy {
         enabled: false
       },
       exporting: {
-        enabled: true
+        enabled: true,
+        sourceHeight: 550,
+        sourceWidth: 1100
         // showTable: true
       }
     };

@@ -68,7 +68,14 @@
         <!--  <br> -->
 
         <!-- <div fxLayout="row"> -->
-        <mat-form-field class="number-form form" appearance="outline">
+        <mat-form-field
+          class="number-form form"
+          appearance="outline"
+          matTooltip="Only Developers can edit this value"
+          [matTooltipDisabled]="permisos.estimarTam != 0"
+          matTooltipPosition="above"
+          matTooltipShowDelay="500"
+        >
           <mat-label>Estimation</mat-label>
           <!-- <input matInput type="text" [(ngModel)]="estimacion" required> -->
           <mat-select
@@ -80,7 +87,14 @@
         </mat-form-field>
         <!-- </div> -->
 
-        <mat-form-field class="number-form form" appearance="outline">
+        <mat-form-field
+          class="number-form form"
+          appearance="outline"
+          matTooltip="Only Product Owners can edit this value"
+          [matTooltipDisabled]="permisos.estimarValor != 0"
+          matTooltipPosition="above"
+          matTooltipShowDelay="500"
+        >
           <mat-label
             >Value
             <mat-icon class="icon-valor">offline_bolt</mat-icon>

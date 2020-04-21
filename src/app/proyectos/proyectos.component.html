@@ -3,10 +3,20 @@
 
   <mat-card class="proyectos-card gradient">
     <div>
-      <button class="mat-button-create" mat-fab color="primary" (click)="crearProyectoDialog()">+</button>
+      <button
+        class="mat-button-create"
+        mat-fab
+        color="primary"
+        (click)="crearProyectoDialog()"
+        matTooltip="Create a new project"
+        matTooltipPosition="left"
+        matTooltipShowDelay="1000"
+      >
+        +
+      </button>
     </div>
     <h1>
-      <mat-card-title class="title">Projects</mat-card-title>
+      <mat-card-title class="title">My Projects</mat-card-title>
     </h1>
     <!-- <mat-divider></mat-divider> -->
     <br />

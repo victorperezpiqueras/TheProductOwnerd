@@ -47,6 +47,8 @@ export class BacklogComponent implements OnInit, OnDestroy {
   botonOrder: string = 'default';
   priorityOn: boolean = true;
 
+  isDragging: boolean = false;
+
   /*   orderValueMode: boolean = false; */
 
   constructor(
@@ -107,18 +109,29 @@ export class BacklogComponent implements OnInit, OnDestroy {
 
   actualizarFiltro() {
     if (this.searchword == '') {
-      this.priorityOn = true;
       this.clearSearch();
-    } else this.priorityOn = false;
-    this.showingPbis = this.showingPbis.filter(pbi => {
-      if (pbi.titulo.includes(this.searchword) || (pbi.descripcion.includes(this.searchword) && pbi.done == 0))
+      this.priorityOn = true;
+    } else {
+      this.botonLabel = 'Filter by Label';
+      this.botonLabelColor = this.getLabelButtonColor();
+      this.priorityOn = false;
+    }
+
+    this.showingPbis = this.pbis.filter(pbi => {
+      if (
+        pbi.titulo.includes(this.searchword) ||
+        (pbi.descripcion && pbi.descripcion.includes(this.searchword) && pbi.done == 0)
+      )
         return true;
     });
     this.showingPbis.sort((pbi1, pbi2) => {
       return pbi1.prioridad - pbi2.prioridad;
     });
-    this.showingDonePbis = this.showingDonePbis.filter(pbi => {
-      if (pbi.titulo.includes(this.searchword) || (pbi.descripcion.includes(this.searchword) && pbi.done == 1))
+    this.showingDonePbis = this.pbis.filter(pbi => {
+      if (
+        pbi.titulo.includes(this.searchword) ||
+        (pbi.descripcion && pbi.descripcion.includes(this.searchword) && pbi.done == 1)
+      )
         return true;
     });
   }

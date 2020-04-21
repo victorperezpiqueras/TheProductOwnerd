@@ -1,11 +1,72 @@
-<div class="container">
+<div class="container" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="2%" style="padding-top: 2%;">
   <mat-card>
     <h1>
       <mat-card-title translate>APP_NAME</mat-card-title>
     </h1>
-    <mat-card-content>
-      <mat-icon>code</mat-icon>
-      <span translate>Version</span> {{ version }}
+    <div fxLayout="column" fxLayoutAlign="center center">
+      <div><mat-icon>code</mat-icon>&nbsp; <span translate>Version</span> {{ version }}</div>
+      <!-- 
+      <br>
+      <hr style="width: 200px;">
+      <br> -->
+    </div>
+  </mat-card>
+  <mat-card>
+    <mat-card-content style="font-size: medium;" fxLayout="column" fxLayoutGap="1%" fxLayoutAlign="center center">
+      <br />
+      <div fxLayoutAlign="center center" class="aligned-start">
+        TheProductOwnerd is a web application focused on giving the Product Owner the tools to successfully manage
+        software projects using an agile methodology.
+        <br /><br />
+        Using this application the Product Owner will be able to:
+      </div>
+
+      <div fxLayoutAlign="center center">
+        <ul class="aligned-start">
+          <li><mat-icon>calendar_view_day</mat-icon>&nbsp;Manage the Product Backlog of a project</li>
+          <li><mat-icon>group</mat-icon>&nbsp;Invite new members to collaborate in the Scrum team.</li>
+          <li>
+            <mat-icon>bar_chart</mat-icon>&nbsp;Control the Product Burndown Chart and project specific metrics such as
+            velocity
+          </li>
+          <li><mat-icon>multiline_chart</mat-icon>&nbsp;Perform forecasting of the project and team performance</li>
+        </ul>
+      </div>
+
+      <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="1%">
+        If you found any issue/bug or if you have any question regarding the application behaviour, send an email to
+        this address:<br />
+        <a href="mailto:theproductownerd@gmail.com" style="color: rgb(114, 114, 114);text-decoration: none;"
+          >theproductownerd@gmail.com</a
+        >
+      </div>
     </mat-card-content>
+  </mat-card>
+  <br />
+  <mat-card>
+    <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="2%">
+      <span>This application has been developed as part of a Computer Engineering Final Year Project. </span>
+
+      <span
+        >The project was presented at the Escuela Superior de Ingeniería Informática de Albacete, Universidad de
+        Castilla-La Mancha, in 2020.</span
+      >
+
+      <span><b>Author: </b>Víctor Pérez Piqueras</span>
+
+      <span><b>Supervisors: </b>Pablo Bermejo López, Miguel Ángel Sánchez Cifo</span>
+
+      <div>
+        <b>References:</b>
+        <ul class="aligned-start">
+          <li>
+            <mat-icon>explore</mat-icon>&nbsp;<i>The Professional Product Owner - Don McGreal, Ralph Jocham. 2018.</i>
+          </li>
+          <li>
+            <mat-icon>loop</mat-icon>&nbsp;<i>The Scrum Guide – V. September 2017. Ken Schwaber and Jeff Sutherland.</i>
+          </li>
+        </ul>
+      </div>
+    </div>
   </mat-card>
 </div>
