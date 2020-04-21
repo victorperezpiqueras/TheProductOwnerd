@@ -147,9 +147,10 @@ export class ForecastsComponent implements OnInit, OnDestroy {
         this.generarBestWorstAverage(this.sprintNumber, this.sprintNumberBW);
         this.generarDeadline(this.deadlineSprint);
         this.generarPuntosCorte();
+        this.calcularMaxValor();
       }
     }
-    this.calcularMaxValor();
+
     this.generarGrafico();
     /* this.calcularMaxValor(); */
   }

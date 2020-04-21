@@ -62,7 +62,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             token: data.token
           };
           this.credentialsService.setCredentials(cred, true);
-          this.router.navigate([this.route.snapshot.queryParams.redirect || '/proyectos'], { replaceUrl: true });
+          this.router.navigate([this.route.snapshot.queryParams.redirect || ''], { replaceUrl: true });
         },
         error => {
           console.log(error);

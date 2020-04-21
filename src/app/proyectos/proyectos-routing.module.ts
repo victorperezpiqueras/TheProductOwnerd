@@ -7,13 +7,12 @@ import { Shell } from '@app/shell/shell.service';
 
 const routes: Routes = [
   Shell.childRoutes([
-    { path: '', redirectTo: '/proyectos', pathMatch: 'full' },
+    { path: '', redirectTo: '/projects', pathMatch: 'full' },
     {
-      path: 'proyectos',
+      path: 'projects',
       component: ProyectosComponent,
-      data: { title: extract('Projects') }
-    } /* ,
-    { path: 'proyectos/:id', component: ProyectosComponent, data: { title: extract('Proyectossssssssssss') } } */
+      data: { title: extract('Home') }
+    }
   ])
 ];
 

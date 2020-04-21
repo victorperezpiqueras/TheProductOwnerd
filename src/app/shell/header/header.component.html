@@ -11,7 +11,7 @@
       <mat-icon>home</mat-icon>
       <span translate>Home</span>
     </button> -->
-    <button mat-button routerLink="/proyectos" routerLinkActive="active">
+    <button mat-button routerLink="/projects" routerLinkActive="active">
       <mat-icon>home</mat-icon>
       <span translate>Home</span>
     </button>
@@ -28,7 +28,7 @@
     <button
       mat-button
       *ngFor="let proy of proyectosFavoritos"
-      [routerLink]="['/proyectos', proy.idproyecto]"
+      [routerLink]="['/projects', proy.idproyecto]"
       routerLinkActive="active"
       (click)="proyectoSeleccionado(proy)"
     >
@@ -72,7 +72,7 @@
       </mat-list-item>
       <mat-divider></mat-divider>
     </mat-list>
-    <button mat-menu-item [routerLink]="['/cuenta']" routerLinkActive="active">Account</button>
+    <button mat-menu-item [routerLink]="['/account']" routerLinkActive="active">Account</button>
     <mat-divider></mat-divider>
     <button mat-menu-item (click)="logout()" translate>Logout</button>
   </mat-menu>

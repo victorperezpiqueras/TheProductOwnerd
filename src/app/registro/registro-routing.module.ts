@@ -7,8 +7,8 @@ import { RegistroComponent } from './registro.component';
 import { LoginComponent } from '@app/login/login.component';
 
 const routes: Routes = [
-  { path: 'registro', component: RegistroComponent, data: { title: extract('Register') } },
-  { path: 'registro/invitacion/:id', component: RegistroComponent, data: { title: extract('Invitation') } }
+  { path: 'register', component: RegistroComponent, data: { title: extract('Register') } },
+  { path: 'register/invitation/:id', component: RegistroComponent, data: { title: extract('Invitation') } }
 ];
 
 @NgModule({

@@ -58,11 +58,12 @@ import { SprintGoalsService } from './services/sprintgoals.service';
     ShellModule,
 
     TruncatePipeModule,
-
+    // proyectos primero para que lo cargue por defecto
+    ProyectosModule,
     HomeModule,
     LoginModule,
     RegistroModule,
-    ProyectosModule,
+
     ProyectoModule,
     CuentaModule,
 

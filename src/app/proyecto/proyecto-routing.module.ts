@@ -6,7 +6,8 @@ import { Shell } from '@app/shell/shell.service';
 import { ProyectoComponent } from './proyecto.component';
 
 const routes: Routes = [
-  Shell.childRoutes([{ path: 'proyectos/:id', component: ProyectoComponent, data: { title: extract('Projects') } }])
+  /* Shell.childRoutes([{ path: 'proyectos/:id', component: ProyectoComponent, data: { title: extract('Projects') } }]) */
+  { path: '', component: ProyectoComponent, data: { title: extract('Projects') } }
 ];
 
 @NgModule({
