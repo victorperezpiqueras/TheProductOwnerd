@@ -5,6 +5,9 @@ const config = require('../config/config');
 const controllerInvitaciones = require('../controllers/invitaciones');
 /* configurar mailer */
 const nodemailer = require('nodemailer');
+const fs = require('fs'); //Filesystem
+var path = require('path');
+const mustache = require('mustache');
 
 /**
  * Envia una invitacion por correo
@@ -35,24 +38,35 @@ async function enviarInvitacion(data, tokenUrl) {
       break;
   }
 
+  // cargar plantilla y renderizar con variables:
+  const content = fs.readFileSync(path.join(__dirname, '../helpers') + '/email-invitation.html', 'utf8');
+  const view = {
+    from: process.env.MAIL_USER,
+    invitadoPor: data.invitadoPor.toUpperCase(),
+    proyecto: data.proyecto.toUpperCase(),
+    rol: data.rol,
+    link: process.env.MAIL_INVITE_LINK + tokenUrl
+  };
+  const output = mustache.render(content, view);
+
   const mailOptions = {
     from: process.env.MAIL_USER,
     to: data.email,
-    subject: 'You were invited to a project at TheProductOwnerd website',
-    html:
-      '<p>You were invited by <b>' +
-      data.invitadoPor +
-      '</b> to join the project <b>"' +
-      data.proyecto +
-      '"</b>.<br>' +
-      ' By clicking the following link and registering an account you will be joined the project and assigned the <b>' +
-      data.rol +
-      "'s</b> role.</p>" +
-      '<a href="' +
-      process.env.MAIL_INVITE_LINK +
-      tokenUrl +
-      '">Create Account</a><br><br>' +
-      'Happy Forecasting!'
+    subject: 'You were invited to a project at TheProductOwnerd website!',
+    html: output
+    /* '<p>You were invited by <b>' +
+    data.invitadoPor +
+    '</b> to join the project <b>"' +
+    data.proyecto +
+    '"</b>.<br>' +
+    ' By clicking the following link and registering an account you will be joined the project and assigned the <b>' +
+    data.rol +
+    "'s</b> role.</p>" +
+    '<a href="' +
+    process.env.MAIL_INVITE_LINK +
+    tokenUrl +
+    '">Create Account</a><br><br>' +
+    'Happy Forecasting!' */
   };
 
   transporter.sendMail(mailOptions, function(error, info) {
