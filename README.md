@@ -133,5 +133,5 @@ Every Sprint has a documentation issue associated to it. The report file is post
 | ![GitHub labels](https://img.shields.io/github/labels/victorperezpiqueras/TFG/retro)       | Issues generated in the Scrum retrospective |
 | ![GitHub labels](https://img.shields.io/github/labels/victorperezpiqueras/TFG/debt)        | Technical Debt that has to be paid          |
 | ![GitHub labels](https://img.shields.io/github/labels/victorperezpiqueras/TFG/memoria)     | Report related issues                       |
-| ![GitHub labels](https://img.shields.io/github/labels/victorperezpiqueras/TFG/Epic)        | are neat                                    |
+| ![GitHub labels](https://img.shields.io/github/labels/victorperezpiqueras/TFG/Epic)        | Epic issues                                 |
 | ![GitHub labels](https://img.shields.io/github/labels/victorperezpiqueras/TFG/Sprint%201)  | Issue selected for Sprint X                 |
