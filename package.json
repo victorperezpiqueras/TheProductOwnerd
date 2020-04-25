@@ -36,15 +36,16 @@
     "@angular/router": "^8.1.0",
     "@angular/service-worker": "^8.1.0",
     "@ngx-translate/core": "^11.0.1",
+    "@types/webpack-env": "^1.15.1",
     "caniuse-lite": "^1.0.30001031",
     "dotenv": "^8.2.0",
     "hammerjs": "^2.0.8",
     "highcharts": "^8.0.1",
     "highcharts-angular": "^2.4.0",
     "material-design-icons-iconfont": "^5.0.1",
+    "ml-regression": "^5.0.0",
     "rxjs": "^6.5.4",
-    "zone.js": "^0.9.1",
-    "@types/webpack-env": "^1.15.1"
+    "zone.js": "^0.9.1"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.801.0",

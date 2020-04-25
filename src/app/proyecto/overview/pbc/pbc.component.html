@@ -1,0 +1,27 @@
+<mat-card fxFill fxLayout="column" class="mat-elevation-z3" fxLayoutAlign="center center">
+  <highcharts-chart
+    *ngIf="chartOptions"
+    class="chart"
+    [Highcharts]="Highcharts"
+    [options]="chartOptions"
+    [(update)]="updateFlag"
+  ></highcharts-chart>
+  <br />
+  <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="20px">
+    <mat-slide-toggle color="primary" [(ngModel)]="showScopeCreep" (change)="showSC()">
+      Show Scope Creep
+    </mat-slide-toggle>
+
+    <div fxLayout="row" fxLayoutGap="20px">
+      <div>
+        <b class="body-2" style="display:inline-block;">Average Sprint Throughput:</b>&nbsp;
+        <h1 class="mat-h4" style="display:inline-block;">{{ averageThroughput.toFixed(1) }}</h1>
+      </div>
+
+      <div>
+        <b class="body-2" style="display:inline-block;">Average Sprint Velocity:</b>&nbsp;
+        <h1 class="mat-h4" style="display:inline-block;">{{ averageVelocity.toFixed(1) }}</h1>
+      </div>
+    </div>
+  </div>
+</mat-card>

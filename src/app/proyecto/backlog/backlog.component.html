@@ -52,14 +52,16 @@
           [color]="viewDone ? 'accent' : 'primary'"
         >
           <div style="display:inline-block;">
-            <div *ngIf="botonOrder === 'priority'" style="display:inline-block;">Manual</div>
+            <div *ngIf="botonOrder === 'priority' || botonOrder === 'default'" style="display:inline-block;">
+              Order by: Manual
+            </div>
             <div *ngIf="botonOrder === 'valueup'" style="display:inline-block;">
-              Value<mat-icon class="mat-order-icon"> arrow_upward</mat-icon>
+              Order by: Value<mat-icon class="mat-order-icon"> arrow_upward</mat-icon>
             </div>
             <div *ngIf="botonOrder === 'valuedown'" style="display:inline-block;">
-              Value<mat-icon class="mat-order-icon"> arrow_downward</mat-icon>
+              Order by: Value<mat-icon class="mat-order-icon"> arrow_downward</mat-icon>
             </div>
-            <div *ngIf="botonOrder === 'default'" style="display:inline-block;">Order by</div>
+            <!--  <div *ngIf="botonOrder === 'default'" style="display:inline-block;">Order by</div> -->
 
             <mat-icon class="mat-order-icon">arrow_drop_down</mat-icon>
           </div>
@@ -101,8 +103,17 @@
           [color]="viewDone ? 'accent' : 'primary'"
           style="margin-left: 5%;"
         >
-          <!-- <mat-icon>search</mat-icon> -->
           Reset Filters
+        </button>
+      </div>
+
+      <!-- VER DONE O BACKLOG -->
+      <div fxLayoutAlign="center center" fxFlex="20">
+        <button *ngIf="!viewDone" mat-raised-button color="primary" (click)="swapItemList()">
+          View Done Items
+        </button>
+        <button *ngIf="viewDone" mat-raised-button color="accent" (click)="swapItemList()">
+          View Backlog Items
         </button>
       </div>
 
@@ -124,12 +135,12 @@
 
     <!-- BACKLOG ITEMS LIST -->
     <div class="div-list" *ngIf="!viewDone">
-      <div fxLayoutAlign="center center">
+      <!--  <div fxLayoutAlign="center center">
         <button mat-raised-button color="primary" (click)="swapItemList()">
           View Done Items
         </button>
       </div>
-      <br />
+      <br /> -->
       <div
         class="droplist"
         cdkDropList
@@ -195,11 +206,11 @@
 
     <!-- DONE ITEMS LIST -->
     <div class="div-list" *ngIf="viewDone">
-      <div fxLayoutAlign="center center">
+      <!--  <div fxLayoutAlign="center center">
         <button mat-raised-button color="accent" (click)="swapItemList()">
           View Backlog Items
         </button>
-      </div>
+      </div> -->
       <br />
       <div class="droplist">
         <div *ngFor="let pbi of showingDonePbis">

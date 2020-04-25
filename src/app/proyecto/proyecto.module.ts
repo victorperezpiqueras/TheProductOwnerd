@@ -18,6 +18,11 @@ import { TruncatePipeModule } from '@app/shared/truncatePipe/truncatePipe.module
 import { ComentariosService } from '@app/services/comentarios.service';
 import { ArchivosService } from '@app/services/archivos.service';
 import { ForecastsComponent } from './forecasts/forecasts.component';
+import { PbcComponent } from './overview/pbc/pbc.component';
+import { PocComponent } from './overview/poc/poc.component';
+import { VelocityComponent } from './forecasts/velocity/velocity.component';
+import { LinearRegressionComponent } from './forecasts/linear-regression/linear-regression.component';
+import { PolynomialRegressionComponent } from './forecasts/polynomial-regression/polynomial-regression.component';
 
 @NgModule({
   imports: [
@@ -33,7 +38,17 @@ import { ForecastsComponent } from './forecasts/forecasts.component';
     HighchartsChartModule,
     ProyectoRoutingModule
   ],
-  declarations: [ProyectoComponent, OverviewComponent, BacklogComponent, ForecastsComponent],
+  declarations: [
+    ProyectoComponent,
+    OverviewComponent,
+    PbcComponent,
+    PocComponent,
+    BacklogComponent,
+    ForecastsComponent,
+    VelocityComponent,
+    LinearRegressionComponent,
+    PolynomialRegressionComponent
+  ],
   providers: [PbisService, ComentariosService, ArchivosService]
 })
 export class ProyectoModule {}

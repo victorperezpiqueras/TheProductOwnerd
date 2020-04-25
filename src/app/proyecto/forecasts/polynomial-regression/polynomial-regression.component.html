@@ -1,0 +1,61 @@
+<mat-card fxFill fxLayout="row">
+  <highcharts-chart
+    *ngIf="chartOptions"
+    class="chart"
+    [Highcharts]="Highcharts"
+    [options]="chartOptions"
+    [(update)]="updateFlag"
+  ></highcharts-chart>
+
+  <mat-accordion style="position: absolute;right: 1%;">
+    <mat-expansion-panel class="options mat-elevation-z2" style="width: 350px;" expanded="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title style="font-size: x-large;">
+          Regression Options
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <hr />
+      <h1 class="mat-h3">General</h1>
+      <mat-form-field class="number-form form" appearance="outline">
+        <mat-label>Deadline Sprint</mat-label>
+        <input matInput type="number" [(ngModel)]="deadlineSprint" [min]="sprints.length - 1" />
+      </mat-form-field>
+
+      <mat-form-field class="number-form form" appearance="outline">
+        <mat-label>Last N Sprints</mat-label>
+        <input matInput type="number" [(ngModel)]="sprintNumber" [min]="1" [max]="sprints.length - 1" />
+      </mat-form-field>
+
+      <hr />
+      <h1 class="mat-h3">Polynomial Configuration</h1>
+      <mat-form-field class="number-form form" appearance="outline">
+        <mat-label>Polynomial Degree</mat-label>
+        <input matInput type="number" [(ngModel)]="degree" [min]="1" [max]="5" />
+      </mat-form-field>
+      <br />
+      <button class="number-form" mat-raised-button (click)="updateChart()" color="primary">
+        Update chart
+      </button>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+  <!--   <mat-card fxFlex="20" class="options mat-elevation-z3">
+    <mat-card-title>Regression Options</mat-card-title>
+    <hr />
+    <h1 class="mat-h3">General</h1>
+    <mat-form-field class="number-form form" appearance="outline">
+      <mat-label>Last N Sprints</mat-label>
+      <input matInput type="number" [(ngModel)]="sprintNumber" [min]="1" [max]="sprints.length - 1" />
+    </mat-form-field>
+    <hr />
+    <h1 class="mat-h3">Polynomial Degree</h1>
+    <mat-form-field class="number-form form" appearance="outline">
+      <mat-label>Polynomial Degree</mat-label>
+      <input matInput type="number" [(ngModel)]="degree" [min]="1" [max]="5" />
+    </mat-form-field>
+    <br>
+    <button class="number-form" mat-raised-button (click)="updateChart()" color="primary">
+      Update chart
+    </button>
+  </mat-card> -->
+</mat-card>

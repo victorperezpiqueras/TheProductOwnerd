@@ -20,11 +20,21 @@
 }
 
 mat-icon {
-  display: inline-flex;
+  /*  display: inline-flex; */
   vertical-align: middle;
   margin-right: 3px;
 }
 
 .add {
   opacity: 50%;
+}
+
+.logo-button {
+  margin-right: 5%;
+  /*   margin-bottom: 10px; */
+}
+
+.logo {
+  width: 40px;
+  height: 40px;
 }

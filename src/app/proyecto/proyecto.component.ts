@@ -125,6 +125,9 @@ export class ProyectoComponent implements OnInit, OnDestroy {
     this.overview.proyecto = this.proyecto;
     this.backlog.proyecto = this.proyecto;
     this.forecasts.proyecto = this.proyecto;
+    this.overview.actualizar();
+    this.backlog.actualizar();
+    this.forecasts.actualizar();
   }
 
   editMode() {
@@ -242,6 +245,7 @@ export class ProyectoComponent implements OnInit, OnDestroy {
           this.isLoading = false;
           this.buttonDisabled = true;
           this._snackBar.open('Sprint Goal edited successfully!', 'Close', { duration: 3000 });
+          this.actualizarComponentes();
         });
     }
   }
