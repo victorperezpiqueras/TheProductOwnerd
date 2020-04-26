@@ -18,10 +18,10 @@ router.get('/', verifyToken, function(req, res, next) {
     });
 });
 
-router.get('/:id', verifyToken, function(req, res, next) {
+router.get('/:idusuario', verifyToken, function(req, res, next) {
   console.log('getUsuario');
   controllerUsuarios
-    .getUsuario(req.params.id)
+    .getUsuario(req.params.idusuario)
     .then(function(usuario) {
       res.json(usuario);
     })
@@ -30,12 +30,12 @@ router.get('/:id', verifyToken, function(req, res, next) {
     });
 });
 
-router.put('/:id/actualizar', verifyToken, function(req, res, next) {
+router.put('/:idusuario/actualizar', verifyToken, function(req, res, next) {
   console.log('actualizarUsuario');
   if (!propertyChecker(req.body, ['nick', 'nombre', 'apellido1', 'apellido2', 'email', 'password']))
     throw new ErrorHandler(422, 'Missing required fields: nick, nombre, apellido1, apellido2, email, password');
   controllerUsuarios
-    .actualizarUsuario(req.params.id, req.body)
+    .actualizarUsuario(req.params.idusuario, req.body)
     .then(function(usuario) {
       res.json(usuario);
     })
@@ -44,12 +44,12 @@ router.put('/:id/actualizar', verifyToken, function(req, res, next) {
     });
 });
 
-router.put('/:id/actualizarpassword', verifyToken, function(req, res, next) {
+router.put('/:idusuario/actualizarpassword', verifyToken, function(req, res, next) {
   console.log('actualizarUsuarioPassword');
   if (!propertyChecker(req.body, ['password', 'newPassword']))
     throw new ErrorHandler(422, 'Missing required fields: password, newPassword');
   controllerUsuarios
-    .actualizarUsuarioPassword(req.params.id, req.body)
+    .actualizarUsuarioPassword(req.params.idusuario, req.body)
     .then(function(usuario) {
       res.json(usuario);
     })
@@ -60,10 +60,10 @@ router.put('/:id/actualizarpassword', verifyToken, function(req, res, next) {
     });
 });
 
-router.get('/:id/proyectos', verifyToken, function(req, res, next) {
+router.get('/:idusuario/proyectos', verifyToken, function(req, res, next) {
   console.log('getUsuariosProyectos');
   controllerUsuarios
-    .getUsuariosProyectos(req.params.id)
+    .getUsuariosProyectos(req.params.idusuario)
     .then(function(proyectos) {
       res.json(proyectos);
     })
@@ -72,10 +72,10 @@ router.get('/:id/proyectos', verifyToken, function(req, res, next) {
     });
 });
 
-router.get('/:id/proyectos/:idp/permisos', verifyToken, function(req, res, next) {
+router.get('/:idusuario/proyectos/:idproyecto/permisos', verifyToken, function(req, res, next) {
   console.log('getUsuariosProyectosPermisos');
   controllerUsuarios
-    .getUsuariosProyectosPermisos(req.params.id, req.params.idp)
+    .getUsuariosProyectosPermisos(req.params.idusuario, req.params.idproyecto)
     .then(function(permisos) {
       res.json(permisos);
     })
@@ -134,10 +134,10 @@ router.post('/login', function(req, res, next) {
     });
 });
 
-router.get('/:id/proyectosfavoritos', verifyToken, function(req, res, next) {
+router.get('/:idusuario/proyectosfavoritos', verifyToken, function(req, res, next) {
   console.log('getUsuarioProyectosFavoritos');
   controllerUsuarios
-    .getUsuarioProyectosFavoritos(req.params.id)
+    .getUsuarioProyectosFavoritos(req.params.idusuario)
     .then(function(proyectosfavoritos) {
       res.json(proyectosfavoritos);
     })
@@ -146,11 +146,11 @@ router.get('/:id/proyectosfavoritos', verifyToken, function(req, res, next) {
     });
 });
 
-router.post('/:id/proyectosfavoritos', verifyToken, function(req, res, next) {
+router.post('/:idusuario/proyectosfavoritos', verifyToken, function(req, res, next) {
   console.log('agregarUsuarioProyectosFavoritos');
   if (!propertyChecker(req.body, ['idproyecto'])) throw new ErrorHandler(422, 'Missing required fields: idproyecto');
   controllerUsuarios
-    .agregarUsuarioProyectosFavoritos(req.params.id, req.body)
+    .agregarUsuarioProyectosFavoritos(req.params.idusuario, req.body)
     .then(function(proyectosfavoritos) {
       res.json(proyectosfavoritos);
     })
@@ -159,10 +159,10 @@ router.post('/:id/proyectosfavoritos', verifyToken, function(req, res, next) {
     });
 });
 
-router.delete('/:id/proyectosfavoritos/:idproyecto', verifyToken, function(req, res, next) {
+router.delete('/:idusuario/proyectosfavoritos/:idproyecto', verifyToken, function(req, res, next) {
   console.log('eliminarUsuarioProyectosFavoritos');
   controllerUsuarios
-    .eliminarUsuarioProyectosFavoritos(req.params.id, req.params.idproyecto)
+    .eliminarUsuarioProyectosFavoritos(req.params.idusuario, req.params.idproyecto)
     .then(function(proyectosfavoritos) {
       res.json(proyectosfavoritos);
     })

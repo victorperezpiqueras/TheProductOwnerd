@@ -4,7 +4,17 @@
 
 [![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://travis-ci.org/github/victorperezpiqueras/TFG)
 ![GitHub issues](https://img.shields.io/github/issues-raw/victorperezpiqueras/TFG)
-![GitHub commit activity](https://img.shields.io/github/commit-activity/w/victorperezpiqueras/TFG)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/victorperezpiqueras/TFG)
+
+## Table of Contents
+
+- [Introduction](#introduction)
+- [Showcase](#showcase)
+- [Main Dependencies](#main-dependencies)
+- [Get Started](#get-started)
+- [Documentation](#documentation)
+
+## Introduction
 
 TheProductOwnerd is a web application focused on giving the Product Owner the tools to successfully manage software projects using an agile methodology. Using this application the Product Owner will be able to:
 
@@ -13,7 +23,7 @@ TheProductOwnerd is a web application focused on giving the Product Owner the to
 - Control the Product Burndown Chart and project specific metrics such as velocity
 - Perform forecasting and predictions of the project and team performance
 
-# Showcase
+## Showcase
 
 Login page:
 ![Login page](readme_images/cap1.PNG 'Login page')
@@ -28,9 +38,7 @@ PBIs:
 
 ![animated demo screenshot](https://media.giphy.com/media/lr8TftXlHG6HFrlqmW/giphy.gif)
 
----
-
-## Reporting
+### Reporting
 
 Project Burndown Chart:
 ![Project Burndown Chart](readme_images/pbc.PNG 'Project Burndown Chart')
@@ -38,9 +46,7 @@ Project Burndown Chart:
 Percentage of Completion:
 ![Percentage of Completion](readme_images/poc.PNG 'Percentage of Completion')
 
----
-
-## Forecasting
+### Forecasting
 
 Velocity:
 ![Velocity](readme_images/velocity.PNG 'Velocity')
@@ -51,9 +57,11 @@ Linear Regression:
 Polynomial Regression:
 ![Polynomial Regression](readme_images/pr.PNG 'Polynomial Regression')
 
-# Main Dependencies
+---
 
-## Backend
+## Main Dependencies
+
+### Backend
 
 - [Node](https://nodejs.org/en/)
 - [Express](https://expressjs.com/)
@@ -62,18 +70,18 @@ Polynomial Regression:
 - [Mysql2](https://www.npmjs.com/package/mysql2)
 - [Jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken)
 
-## Frontend
+### Frontend
 
 - [Angular 8](https://angular.io/)
 - [Jasmine](https://jasmine.github.io/setup/nodejs.html)
 - [Highcharts](https://www.highcharts.com/)
 - [Ml-regression](https://www.npmjs.com/package/ml-regression)
 
-# Get started
+## Get started
 
 Clone the repo: `git clone https://github.com/victorperezpiqueras/TFG`
 
-## Backend
+### Backend
 
 To start the server in development mode you have to create the following file: `/backend/.env` with the following configuration:
 
@@ -102,27 +110,25 @@ And run the server (from the root of the project or inside `/backend` ):
 npm run dev
 ```
 
----
-
-## Frontend
+### Frontend
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
 Run `ng build` to build the project. The build artifacts will be stored in the dist/ directory. Use the --prod flag for a production build.
 
-## Running unit tests
+### Running unit tests
 
 Run `ng test` to execute the Frontend unit tests via [Karma](https://karma-runner.github.io).
 
 Run `cd backend && npm test` to run the Jasmine server unit tests.
 
-# Documentation
+## Documentation
 
-## Sprint Reports
+### Sprint Reports
 
 Every Sprint has a documentation issue associated to it. The report file is posted inside the issue.
 
-## Labelling
+### Labelling
 
 | Label                                                                                      | Description                                 |
 | ------------------------------------------------------------------------------------------ | :------------------------------------------ |

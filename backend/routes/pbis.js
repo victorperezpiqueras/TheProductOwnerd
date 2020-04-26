@@ -38,7 +38,7 @@ router.post('/', verifyToken, function(req, res, next) {
     });
 });
 
-router.put('/:id', verifyToken, function(req, res, next) {
+router.put('/:idpbi', verifyToken, function(req, res, next) {
   console.log('editarPbi');
   if (
     !propertyChecker(req.body, [
@@ -59,7 +59,7 @@ router.put('/:id', verifyToken, function(req, res, next) {
       'Missing required fields: titulo,descripcion,done,label,estimacion,valor,idproyecto,prioridad,sprint, printCreacion'
     );
   controllerPbis
-    .editarPbi(req.params.id, req.body)
+    .editarPbi(req.params.idpbi, req.body)
     .then(function(pbi) {
       res.json(pbi);
     })
@@ -80,10 +80,10 @@ router.put('/', verifyToken, function(req, res, next) {
     });
 });
 
-router.get('/:id/comentarios', verifyToken, function(req, res, next) {
+router.get('/:idpbi/comentarios', verifyToken, function(req, res, next) {
   console.log('obtenerComentariosPbi');
   controllerComentarios
-    .obtenerComentariosPbi(req.params.id)
+    .obtenerComentariosPbi(req.params.idpbi)
     .then(function(comentarios) {
       res.json(comentarios);
     })
@@ -92,10 +92,10 @@ router.get('/:id/comentarios', verifyToken, function(req, res, next) {
     });
 });
 
-router.get('/:id/archivos', verifyToken, function(req, res, next) {
+router.get('/:idpbi/archivos', verifyToken, function(req, res, next) {
   console.log('obtenerArchivosPbi');
   controllerArchivos
-    .obtenerArchivosPbi(req.params.id)
+    .obtenerArchivosPbi(req.params.idpbi)
     .then(function(archivos) {
       res.json(archivos);
     })
@@ -104,10 +104,10 @@ router.get('/:id/archivos', verifyToken, function(req, res, next) {
     });
 });
 
-router.get('/:id/criterios', verifyToken, function(req, res, next) {
+router.get('/:idpbi/criterios', verifyToken, function(req, res, next) {
   console.log('obtenerCriteriosPbi');
   controllerCriterios
-    .obtenerCriteriosPbi(req.params.id)
+    .obtenerCriteriosPbi(req.params.idpbi)
     .then(function(criterios) {
       res.json(criterios);
     })
@@ -116,10 +116,10 @@ router.get('/:id/criterios', verifyToken, function(req, res, next) {
     });
 });
 
-router.get('/:id/dependencias', verifyToken, function(req, res, next) {
+router.get('/:idpbi/dependencias', verifyToken, function(req, res, next) {
   console.log('obtenerDependenciasPbi');
   controllerDependencias
-    .obtenerDependenciasPbi(req.params.id)
+    .obtenerDependenciasPbi(req.params.idpbi)
     .then(function(dependencias) {
       res.json(dependencias);
     })

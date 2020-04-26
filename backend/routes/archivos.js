@@ -22,10 +22,10 @@ router.post('/', verifyToken, function(req, res, next) {
     });
 });
 
-router.delete('/:id', verifyToken, function(req, res, next) {
+router.delete('/:idarchivo', verifyToken, function(req, res, next) {
   console.log('borrarArchivo');
   controllerArchivos
-    .borrarArchivo(req.params.id)
+    .borrarArchivo(req.params.idarchivo)
     .then(function(archivo) {
       res.json(archivo);
     })

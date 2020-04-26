@@ -20,12 +20,12 @@ router.post('/', verifyToken, function(req, res, next) {
     });
 });
 
-router.put('/:id', verifyToken, function(req, res, next) {
+router.put('/:idcriterio', verifyToken, function(req, res, next) {
   console.log('actualizarCriterio');
-  if (!propertyChecker(req.body, ['nombre', 'idcriterio', 'done']))
-    throw new ErrorHandler(422, 'Missing required fields: nombre, idcriterio, done');
+  if (!propertyChecker(req.body, ['nombre', 'idpbi', 'done']))
+    throw new ErrorHandler(422, 'Missing required fields: nombre, idpbi, done');
   controllerCriterios
-    .actualizarCriterio(req.params.id, req.body)
+    .actualizarCriterio(req.params.idcriterio, req.body)
     .then(function(criterio) {
       res.json(criterio);
     })
@@ -33,10 +33,10 @@ router.put('/:id', verifyToken, function(req, res, next) {
       res.status(500).json(err);
     });
 });
-router.delete('/:id', verifyToken, function(req, res, next) {
+router.delete('/:idcriterio', verifyToken, function(req, res, next) {
   console.log('borrarCriterio');
   controllerCriterios
-    .borrarCriterio(req.params.id)
+    .borrarCriterio(req.params.idcriterio)
     .then(function(criterio) {
       res.json(criterio);
     })
