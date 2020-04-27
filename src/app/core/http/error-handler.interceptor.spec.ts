@@ -1,23 +1,26 @@
-/* import { Type } from '@angular/core';
+import { Type } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
 
 import { ErrorHandlerInterceptor } from './error-handler.interceptor';
+import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('ErrorHandlerInterceptor', () => {
   let errorHandlerInterceptor: ErrorHandlerInterceptor;
   let http: HttpClient;
   let httpMock: HttpTestingController;
+  let router: Router;
 
   function createInterceptor() {
-    errorHandlerInterceptor = new ErrorHandlerInterceptor();
+    errorHandlerInterceptor = new ErrorHandlerInterceptor(router);
     return errorHandlerInterceptor;
   }
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, RouterTestingModule.withRoutes([])],
       providers: [
         {
           provide: HTTP_INTERCEPTORS,
@@ -29,6 +32,7 @@ describe('ErrorHandlerInterceptor', () => {
 
     http = TestBed.get(HttpClient);
     httpMock = TestBed.get(HttpTestingController as Type<HttpTestingController>);
+    router = TestBed.get(Router);
   });
 
   afterEach(() => {
@@ -56,4 +60,3 @@ describe('ErrorHandlerInterceptor', () => {
     });
   });
 });
- */

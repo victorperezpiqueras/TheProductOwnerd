@@ -18,7 +18,7 @@ export class AuthenticationGuard implements CanActivate {
     }
     /*  console.log(route['_routerState']) */
     /* si se accede a registro aceptar */
-    if (route['_routerState'].url.includes('/register')) {
+    if (route['_routerState'].url && route['_routerState'].url.includes('/register')) {
       return true;
     }
 

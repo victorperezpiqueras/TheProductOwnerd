@@ -1,7 +1,7 @@
-/* import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { RouterTestingModule } from '@angular/router/testing';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
@@ -13,6 +13,17 @@ import { ProyectosService } from '@app/services/proyectos.service';
 import { ProyectoComponent } from './proyecto.component';
 import { ProyectosComponent } from '@app/proyectos/proyectos.component';
 import { HighchartsChartModule } from 'highcharts-angular';
+import { BacklogComponent } from './backlog/backlog.component';
+import { ForecastsComponent } from './forecasts/forecasts.component';
+import { OverviewComponent } from './overview/overview.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { TruncatePipeModule } from '@app/shared/truncatePipe/truncatePipe.module';
+import { VelocityComponent } from './forecasts/velocity/velocity.component';
+import { LinearRegressionComponent } from './forecasts/linear-regression/linear-regression.component';
+import { PolynomialRegressionComponent } from './forecasts/polynomial-regression/polynomial-regression.component';
+import { PbcComponent } from './overview/pbc/pbc.component';
+import { PocComponent } from './overview/poc/poc.component';
+import { SprintGoalsService } from '@app/services/sprintgoals.service';
 
 describe('ProyectoComponent', () => {
   let component: ProyectoComponent;
@@ -25,14 +36,27 @@ describe('ProyectoComponent', () => {
         FlexLayoutModule,
         MaterialModule,
         SharedModule,
+        FormsModule,
         RouterTestingModule,
         TranslateModule.forRoot(),
         ReactiveFormsModule,
         CoreModule,
+        DragDropModule,
+        TruncatePipeModule,
         HighchartsChartModule
       ],
-      declarations: [ProyectoComponent],
-      providers: [AuthenticationService, CredentialsService, UsuariosService, ProyectosService]
+      declarations: [
+        ProyectoComponent,
+        BacklogComponent,
+        ForecastsComponent,
+        VelocityComponent,
+        LinearRegressionComponent,
+        PolynomialRegressionComponent,
+        OverviewComponent,
+        PbcComponent,
+        PocComponent
+      ],
+      providers: [AuthenticationService, CredentialsService, UsuariosService, ProyectosService, SprintGoalsService]
     }).compileComponents();
   }));
 
@@ -46,4 +70,3 @@ describe('ProyectoComponent', () => {
     expect(component).toBeTruthy();
   });
 });
- */

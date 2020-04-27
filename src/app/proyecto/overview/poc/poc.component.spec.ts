@@ -10,13 +10,12 @@ import { SharedModule } from '@app/shared';
 import { MaterialModule } from '@app/material.module';
 import { UsuariosService } from '@app/services/usuarios.service';
 import { ProyectosService } from '@app/services/proyectos.service';
-import { ComparerComponent } from './comparer.component';
-import { VelocityComparerComponent } from './velocity-comparer/velocity-comparer.component';
 import { HighchartsChartModule } from 'highcharts-angular';
+import { PocComponent } from './poc.component';
 
-describe('ComparerComponent', () => {
-  let component: ComparerComponent;
-  let fixture: ComponentFixture<ComparerComponent>;
+describe('PocComponent', () => {
+  let component: PocComponent;
+  let fixture: ComponentFixture<PocComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -26,19 +25,18 @@ describe('ComparerComponent', () => {
         MaterialModule,
         SharedModule,
         FormsModule,
-        HighchartsChartModule,
         RouterTestingModule,
         TranslateModule.forRoot(),
         ReactiveFormsModule,
-        CoreModule
+        CoreModule,
+        HighchartsChartModule
       ],
-      declarations: [ComparerComponent, VelocityComparerComponent],
-      providers: [AuthenticationService, CredentialsService, UsuariosService, ProyectosService]
+      declarations: [PocComponent]
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ComparerComponent);
+    fixture = TestBed.createComponent(PocComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

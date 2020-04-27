@@ -1,4 +1,4 @@
-/* import { OnInit, OnDestroy } from '@angular/core';
+import { OnInit, OnDestroy } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 
 import { untilDestroyed } from './until-destroyed';
@@ -163,4 +163,3 @@ describe('untilDestroyed', () => {
     expect(spy.complete).toHaveBeenCalledTimes(1);
   });
 });
- */

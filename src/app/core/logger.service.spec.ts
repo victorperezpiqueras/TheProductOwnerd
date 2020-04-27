@@ -1,4 +1,4 @@
-/* import { Logger, LogLevel, LogOutput } from './logger.service';
+import { Logger, LogLevel, LogOutput } from './logger.service';
 
 const logMethods = ['log', 'info', 'warn', 'error'];
 
@@ -76,4 +76,3 @@ describe('Logger', () => {
     expect(outputSpy).toHaveBeenCalledWith('test', LogLevel.Error, 'e', { error: true });
   });
 });
- */

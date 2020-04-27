@@ -10,13 +10,16 @@ import { SharedModule } from '@app/shared';
 import { MaterialModule } from '@app/material.module';
 import { UsuariosService } from '@app/services/usuarios.service';
 import { ProyectosService } from '@app/services/proyectos.service';
-import { ComparerComponent } from './comparer.component';
-import { VelocityComparerComponent } from './velocity-comparer/velocity-comparer.component';
 import { HighchartsChartModule } from 'highcharts-angular';
+import { PbiDialogComponent } from './pbiDialog/pbiDialog.component';
+import { PbisService } from '@app/services/pbis.service';
+import { BacklogComponent } from './backlog.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { TruncatePipe } from '@app/shared/truncatePipe/truncatePipe';
 
-describe('ComparerComponent', () => {
-  let component: ComparerComponent;
-  let fixture: ComponentFixture<ComparerComponent>;
+describe('BacklogComponent', () => {
+  let component: BacklogComponent;
+  let fixture: ComponentFixture<BacklogComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -26,20 +29,21 @@ describe('ComparerComponent', () => {
         MaterialModule,
         SharedModule,
         FormsModule,
-        HighchartsChartModule,
         RouterTestingModule,
         TranslateModule.forRoot(),
         ReactiveFormsModule,
-        CoreModule
+        CoreModule,
+        DragDropModule
       ],
-      declarations: [ComparerComponent, VelocityComparerComponent],
-      providers: [AuthenticationService, CredentialsService, UsuariosService, ProyectosService]
+      declarations: [BacklogComponent, PbiDialogComponent, TruncatePipe],
+      providers: [AuthenticationService, CredentialsService, UsuariosService, ProyectosService, PbisService]
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ComparerComponent);
+    fixture = TestBed.createComponent(BacklogComponent);
     component = fixture.componentInstance;
+
     fixture.detectChanges();
   });
 

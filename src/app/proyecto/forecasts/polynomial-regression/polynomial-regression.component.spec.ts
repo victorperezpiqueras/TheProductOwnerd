@@ -5,18 +5,15 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
-import { CoreModule, AuthenticationService, CredentialsService } from '@app/core';
+import { CoreModule } from '@app/core';
 import { SharedModule } from '@app/shared';
 import { MaterialModule } from '@app/material.module';
-import { UsuariosService } from '@app/services/usuarios.service';
-import { ProyectosService } from '@app/services/proyectos.service';
-import { ComparerComponent } from './comparer.component';
-import { VelocityComparerComponent } from './velocity-comparer/velocity-comparer.component';
 import { HighchartsChartModule } from 'highcharts-angular';
+import { PolynomialRegressionComponent } from './polynomial-regression.component';
 
-describe('ComparerComponent', () => {
-  let component: ComparerComponent;
-  let fixture: ComponentFixture<ComparerComponent>;
+describe('PolynomialRegressionComponent', () => {
+  let component: PolynomialRegressionComponent;
+  let fixture: ComponentFixture<PolynomialRegressionComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -26,19 +23,18 @@ describe('ComparerComponent', () => {
         MaterialModule,
         SharedModule,
         FormsModule,
-        HighchartsChartModule,
         RouterTestingModule,
         TranslateModule.forRoot(),
         ReactiveFormsModule,
-        CoreModule
+        CoreModule,
+        HighchartsChartModule
       ],
-      declarations: [ComparerComponent, VelocityComparerComponent],
-      providers: [AuthenticationService, CredentialsService, UsuariosService, ProyectosService]
+      declarations: [PolynomialRegressionComponent]
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ComparerComponent);
+    fixture = TestBed.createComponent(PolynomialRegressionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

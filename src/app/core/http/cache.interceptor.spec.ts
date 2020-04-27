@@ -1,4 +1,4 @@
-/* import { Type } from '@angular/core';
+import { Type } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { HTTP_INTERCEPTORS, HttpClient, HttpResponse } from '@angular/common/http';
@@ -113,4 +113,3 @@ describe('CacheInterceptor', () => {
     });
   });
 });
- */

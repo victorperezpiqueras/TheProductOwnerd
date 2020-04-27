@@ -1,4 +1,4 @@
-/* import { TestBed, inject } from '@angular/core/testing';
+import { TestBed, inject } from '@angular/core/testing';
 
 import { CredentialsService, Credentials } from './credentials.service';
 
@@ -24,7 +24,7 @@ describe('CredentialsService', () => {
   describe('setCredentials', () => {
     it('should authenticate user if credentials are set', () => {
       // Act
-      credentialsService.setCredentials({ username: 'me', id: 1 });
+      credentialsService.setCredentials({ username: 'me', id: 1, token: '1' });
 
       // Assert
       expect(credentialsService.isAuthenticated()).toBe(true);
@@ -41,7 +41,7 @@ describe('CredentialsService', () => {
 
     it('should persist credentials for the session', () => {
       // Act
-      credentialsService.setCredentials({ username: 'me', id: 1  });
+      credentialsService.setCredentials({ username: 'me', id: 1, token: '1' });
 
       // Assert
       expect(sessionStorage.getItem(credentialsKey)).not.toBeNull();
@@ -50,7 +50,7 @@ describe('CredentialsService', () => {
 
     it('should persist credentials across sessions', () => {
       // Act
-      credentialsService.setCredentials({ username: 'me', id: 1  }, true);
+      credentialsService.setCredentials({ username: 'me', id: 1, token: '1' }, true);
 
       // Assert
       expect(localStorage.getItem(credentialsKey)).not.toBeNull();
@@ -69,4 +69,3 @@ describe('CredentialsService', () => {
     });
   });
 });
- */

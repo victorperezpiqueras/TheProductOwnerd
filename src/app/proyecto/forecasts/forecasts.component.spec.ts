@@ -10,13 +10,15 @@ import { SharedModule } from '@app/shared';
 import { MaterialModule } from '@app/material.module';
 import { UsuariosService } from '@app/services/usuarios.service';
 import { ProyectosService } from '@app/services/proyectos.service';
-import { ComparerComponent } from './comparer.component';
-import { VelocityComparerComponent } from './velocity-comparer/velocity-comparer.component';
 import { HighchartsChartModule } from 'highcharts-angular';
+import { VelocityComponent } from './velocity/velocity.component';
+import { PolynomialRegressionComponent } from './polynomial-regression/polynomial-regression.component';
+import { ForecastsComponent } from './forecasts.component';
+import { LinearRegressionComponent } from './linear-regression/linear-regression.component';
 
-describe('ComparerComponent', () => {
-  let component: ComparerComponent;
-  let fixture: ComponentFixture<ComparerComponent>;
+describe('ForecastsComponent', () => {
+  let component: ForecastsComponent;
+  let fixture: ComponentFixture<ForecastsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -26,19 +28,19 @@ describe('ComparerComponent', () => {
         MaterialModule,
         SharedModule,
         FormsModule,
-        HighchartsChartModule,
         RouterTestingModule,
         TranslateModule.forRoot(),
         ReactiveFormsModule,
-        CoreModule
+        CoreModule,
+        HighchartsChartModule
       ],
-      declarations: [ComparerComponent, VelocityComparerComponent],
+      declarations: [ForecastsComponent, VelocityComponent, LinearRegressionComponent, PolynomialRegressionComponent],
       providers: [AuthenticationService, CredentialsService, UsuariosService, ProyectosService]
     }).compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ComparerComponent);
+    fixture = TestBed.createComponent(ForecastsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

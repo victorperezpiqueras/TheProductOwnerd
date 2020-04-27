@@ -1,4 +1,4 @@
-/* import { TestBed } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { HttpResponse } from '@angular/common/http';
 
 import { HttpCacheService, HttpCacheEntry } from './http-cache.service';
@@ -190,4 +190,3 @@ describe('HttpCacheService', () => {
     });
   });
 });
- */

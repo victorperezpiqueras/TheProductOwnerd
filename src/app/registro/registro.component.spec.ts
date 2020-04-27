@@ -1,4 +1,4 @@
-/* import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -10,9 +10,11 @@ import { SharedModule } from '@app/shared';
 import { MaterialModule } from '@app/material.module';
 import { UsuariosService } from '@app/services/usuarios.service';
 import { ProyectosService } from '@app/services/proyectos.service';
-import { ProyectoComponent } from './proyecto.component';
 import { ProyectosComponent } from '@app/proyectos/proyectos.component';
 import { HighchartsChartModule } from 'highcharts-angular';
+import { RegistroComponent } from './registro.component';
+import { RegistroService } from '@app/services/registro.service';
+import { InvitacionesService } from '@app/services/invitaciones.service';
 
 describe('RegistroComponent', () => {
   let component: RegistroComponent;
@@ -32,7 +34,7 @@ describe('RegistroComponent', () => {
         HighchartsChartModule
       ],
       declarations: [RegistroComponent],
-      providers: [AuthenticationService, CredentialsService, UsuariosService, ProyectosService]
+      providers: [AuthenticationService, CredentialsService, RegistroService, InvitacionesService]
     }).compileComponents();
   }));
 
@@ -46,4 +48,3 @@ describe('RegistroComponent', () => {
     expect(component).toBeTruthy();
   });
 });
- */

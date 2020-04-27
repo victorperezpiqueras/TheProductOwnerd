@@ -1,4 +1,4 @@
-/* import { Type } from '@angular/core';
+import { Type } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { HttpClient, HttpInterceptor } from '@angular/common/http';
@@ -8,16 +8,19 @@ import { HttpCacheService } from './http-cache.service';
 import { ErrorHandlerInterceptor } from './error-handler.interceptor';
 import { CacheInterceptor } from './cache.interceptor';
 import { ApiPrefixInterceptor } from './api-prefix.interceptor';
+import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 
 describe('HttpService', () => {
   let httpCacheService: HttpCacheService;
   let http: HttpClient;
   let httpMock: HttpTestingController;
   let interceptors: HttpInterceptor[];
+  let router: Router;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, RouterTestingModule.withRoutes([])],
       providers: [
         ErrorHandlerInterceptor,
         CacheInterceptor,
@@ -33,6 +36,8 @@ describe('HttpService', () => {
     http = TestBed.get(HttpClient);
     httpMock = TestBed.get(HttpTestingController as Type<HttpTestingController>);
     httpCacheService = TestBed.get(HttpCacheService);
+
+    router = TestBed.get(Router);
 
     const realRequest = http.request;
     spyOn(HttpService.prototype, 'request').and.callFake(function(
@@ -104,4 +109,3 @@ describe('HttpService', () => {
     httpMock.expectOne({}).flush({});
   });
 });
- */
