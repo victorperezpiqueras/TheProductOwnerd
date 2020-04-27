@@ -41,6 +41,7 @@ export class ProyectosComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.actualizarDatos();
+    console.log(this.credentialsService.credentials);
   }
 
   crearProyectoDialog(): void {
@@ -94,7 +95,7 @@ export class ProyectosComponent implements OnInit, OnDestroy {
           for (var user of results[1]) {
             if (user.idproyecto == proy.idproyecto) {
               proy.usuarios.push(user);
-              console.log(user);
+              //   console.log(user);
             }
           }
         }

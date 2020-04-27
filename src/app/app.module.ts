@@ -40,6 +40,7 @@ import { RegistroModule } from './registro/registro.module';
 import { RegistroService } from './services/registro.service';
 import { InvitacionesService } from './services/invitaciones.service';
 import { SprintGoalsService } from './services/sprintgoals.service';
+import { ComparerModule } from './comparer/comparer.module';
 
 @NgModule({
   imports: [
@@ -61,6 +62,8 @@ import { SprintGoalsService } from './services/sprintgoals.service';
     // proyectos primero para que lo cargue por defecto
     ProyectosModule,
     HomeModule,
+    ComparerModule,
+
     LoginModule,
     RegistroModule,
 

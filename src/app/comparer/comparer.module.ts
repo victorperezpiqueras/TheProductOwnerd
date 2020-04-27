@@ -3,16 +3,17 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
+
 import { SharedModule } from '@app/shared';
 import { MaterialModule } from '@app/material.module';
+import { ComparerRoutingModule } from './comparer-routing.module';
+import { ComparerComponent } from './comparer.component';
 import { HighchartsChartModule } from 'highcharts-angular';
-import { DragDropModule } from '@angular/cdk/drag-drop';
+import { ProyectosService } from '@app/services/proyectos.service';
 import { PbisService } from '@app/services/pbis.service';
-import { TruncatePipeModule } from '@app/shared/truncatePipe/truncatePipe.module';
-import { RegistroComponent } from './registro.component';
-import { RegistroRoutingModule } from './registro-routing.module';
-import { RegistroService } from '@app/services/registro.service';
+import { VelocityComparerComponent } from './velocity-comparer/velocity-comparer.component';
 import { CredentialsService } from '@app/core';
+import { UsuariosService } from '@app/services/usuarios.service';
 
 @NgModule({
   imports: [
@@ -21,11 +22,11 @@ import { CredentialsService } from '@app/core';
     TranslateModule,
     SharedModule,
     FlexLayoutModule,
-    MaterialModule,
     FormsModule,
-    TruncatePipeModule,
-    RegistroRoutingModule
+    MaterialModule,
+    HighchartsChartModule,
+    ComparerRoutingModule
   ],
-  declarations: [RegistroComponent]
+  declarations: [ComparerComponent, VelocityComparerComponent]
 })
-export class RegistroModule {}
+export class ComparerModule {}

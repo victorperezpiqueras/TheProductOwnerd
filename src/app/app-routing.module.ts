@@ -5,6 +5,7 @@ import { Shell } from '@app/shell/shell.service';
 const routes: Routes = [
   Shell.childRoutes([{ path: 'about', loadChildren: './about/about.module#AboutModule' }]),
 
+  Shell.childRoutes([{ path: 'comparer', loadChildren: './comparer/comparer.module#ComparerModule' }]),
   Shell.childRoutes([{ path: 'account', loadChildren: './cuenta/cuenta.module#CuentaModule' }]),
   Shell.childRoutes([{ path: 'projects/:id', loadChildren: './proyecto/proyecto.module#ProyectoModule' }]),
 

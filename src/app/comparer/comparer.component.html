@@ -1,0 +1,16 @@
+<div class="container" fxLayout="column" fxLayoutGap="2%">
+  <app-loader class="loader" [isLoading]="isLoading"></app-loader>
+
+  <mat-card class="account-card" fxFlex="20">
+    <h1>
+      <mat-card-title class="title">Project Velocity Comparison</mat-card-title>
+    </h1>
+  </mat-card>
+  <app-velocity-comparer
+    #velocityComparer
+    fxFlex="80"
+    fxLayout="column"
+    class="mat-elevation-z3"
+    fxLayoutAlign="center center"
+  ></app-velocity-comparer>
+</div>

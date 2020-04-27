@@ -129,12 +129,12 @@ ControllerUsuarios.actualizarUsuarioPassword = function(idusuario, data) {
 /**
  * Obtiene los proyectos de un usuario
  * @param {number} idusuario id del usuario
- * @returns [ {idproyecto, nombre, descripcion} ]
+ * @returns [ {idproyecto, nombre, descripcion, sprintActual, vision} ]
  */
 ControllerUsuarios.getUsuariosProyectos = function(idusuario) {
   return new Promise(async function(resolve, reject) {
     const sql =
-      'select p.idproyecto, p.nombre, p.descripcion from proyectos p, usuarios u, roles r where u.idusuario = ?' +
+      'select p.* from proyectos p, usuarios u, roles r where u.idusuario = ?' +
       ' and u.idusuario = r.idusuario and p.idproyecto = r.idproyecto';
     const arr = [idusuario];
     try {

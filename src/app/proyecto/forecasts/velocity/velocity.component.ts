@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import * as Highcharts from 'highcharts';
 import HC_exporting from 'highcharts/modules/exporting';
@@ -7,7 +7,6 @@ HC_exporting(Highcharts);
 import { Pbi } from '@app/models/pbis';
 import { Sprint } from '@app/models/sprints';
 import { Proyecto } from '@app/models/proyectos';
-import { Permisos } from '@app/models/permisos';
 import { Grafico } from '@app/proyecto/grafico.interface';
 
 @Component({
