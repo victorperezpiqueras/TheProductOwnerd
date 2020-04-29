@@ -60,7 +60,7 @@ export class ForecastsComponent implements OnInit, OnDestroy {
 
   actualizarGraficos() {
     this.proyectosService
-      .getProyectosPBI(this.proyecto.idproyecto)
+      .getProyectoPBIs(this.proyecto.idproyecto)
       .pipe(untilDestroyed(this))
       .subscribe((pbis: []) => {
         this.pbis = pbis;

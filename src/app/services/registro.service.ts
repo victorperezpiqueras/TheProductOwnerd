@@ -8,7 +8,7 @@ const httpOptions = {
 
 @Injectable()
 export class RegistroService {
-  private url = '/usuarios/registro';
+  public url = '/usuarios/registro';
   constructor(private http: HttpClient) {}
 
   /**

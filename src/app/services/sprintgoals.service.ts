@@ -9,7 +9,7 @@ const httpOptions = {
 
 @Injectable()
 export class SprintGoalsService {
-  private url = '/sprintgoals';
+  public url = '/sprintgoals';
   constructor(private http: HttpClient) {}
 
   /**

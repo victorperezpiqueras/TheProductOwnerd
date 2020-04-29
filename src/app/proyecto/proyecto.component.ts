@@ -57,6 +57,8 @@ export class ProyectoComponent implements OnInit, OnDestroy {
 
   editProjectMode: boolean = false;
 
+  tabIndex: number = 0;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -72,6 +74,7 @@ export class ProyectoComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.isLoading = true;
+    this.tabIndex = 0;
     this.activeRoute.params.pipe(untilDestroyed(this)).subscribe(routeParams => {
       this.proyectosService
         .getProyecto(routeParams.id)
@@ -122,9 +125,11 @@ export class ProyectoComponent implements OnInit, OnDestroy {
   }
 
   actualizarComponentes() {
+    console.log('actualizar proyecto');
     this.overview.proyecto = this.proyecto;
     this.backlog.proyecto = this.proyecto;
     this.forecasts.proyecto = this.proyecto;
+    this.tabIndex = 0;
     this.overview.actualizar();
     this.backlog.actualizar();
     this.forecasts.actualizar();

@@ -84,7 +84,7 @@ export class BacklogComponent implements OnInit, OnDestroy {
           //console.log(proyecto);
           this.proyecto = proyecto;
           this.proyectosService
-            .getProyectosPBI(proyecto.idproyecto)
+            .getProyectoPBIs(proyecto.idproyecto)
             .pipe(untilDestroyed(this))
             .subscribe((pbis: []) => {
               this.pbis = pbis;
@@ -239,7 +239,7 @@ export class BacklogComponent implements OnInit, OnDestroy {
   actualizarPbis() {
     this.isLoading = true;
     this.proyectosService
-      .getProyectosPBI(this.proyecto.idproyecto)
+      .getProyectoPBIs(this.proyecto.idproyecto)
       .pipe(untilDestroyed(this))
       .subscribe((pbis: any) => {
         this.pbis = pbis;

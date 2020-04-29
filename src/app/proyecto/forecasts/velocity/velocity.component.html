@@ -27,7 +27,7 @@
       </mat-form-field>
       <hr />
       <h1 class="mat-h3">Projected Average Velocity</h1>
-      <h1 class="mat-h4">Velocity: {{ mediaAverage.toFixed(1) }}</h1>
+      <h1 class="mat-h4">Velocity: {{ formatDataNumber(mediaAverage) }}</h1>
 
       <hr />
 
@@ -36,8 +36,8 @@
         <mat-label>X Worst and Best Sprints</mat-label>
         <input matInput type="number" [(ngModel)]="sprintNumberBW" min="1" [max]="sprintNumber" />
       </mat-form-field>
-      <h1 class="mat-h4">Worst Velocity: {{ mediaAverageWorst.toFixed(1) }}</h1>
-      <h1 class="mat-h4">Best Velocity: {{ mediaAverageBest.toFixed(1) }}</h1>
+      <h1 class="mat-h4">Worst Velocity: {{ formatDataNumber(mediaAverageWorst) }}</h1>
+      <h1 class="mat-h4">Best Velocity: {{ formatDataNumber(mediaAverageBest) }}</h1>
       <button class="number-form" mat-raised-button (click)="updateChart()" color="primary">
         Update chart
       </button>

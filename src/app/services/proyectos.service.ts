@@ -10,15 +10,14 @@ const httpOptions = {
 @Injectable()
 export class ProyectosService {
   public proyecto: Proyecto;
-  private url = '/proyectos';
+  public url = '/proyectos';
   constructor(private http: HttpClient) {}
 
   /**
    * Obtiene todos los proyectos
    */
-  getProyectos(credenciales: any): Observable<any> {
-    console.log('login', JSON.stringify(credenciales));
-    return this.http.post<any>(this.url, JSON.stringify(credenciales), httpOptions);
+  getProyectos(): Observable<any> {
+    return this.http.get<any>(this.url, httpOptions);
   }
 
   /**
@@ -37,7 +36,7 @@ export class ProyectosService {
    * @param {number} idproyecto id del proyecto
    * @returns [ {idusuario, nombre, email} ]
    */
-  getProyectosUsuarios(idproyecto: number): Observable<any> {
+  getProyectoUsuarios(idproyecto: number): Observable<any> {
     return this.http.get<any>(this.url + '/' + idproyecto + '/usuarios', httpOptions);
   }
 
@@ -84,28 +83,8 @@ export class ProyectosService {
    * @param {number} idproyecto id del proyecto
    * @returns [ {idpbi, titulo, descripcion, done, label, estimacion, idproyecto, prioridad, valor, sprint, sprintCreacion} ]
    */
-  getProyectosPBI(idproyecto: number): Observable<any> {
+  getProyectoPBIs(idproyecto: number): Observable<any> {
     return this.http.get<any>(this.url + '/' + idproyecto + '/pbis', httpOptions);
-  }
-
-  /**
-   * Invita un usuario al proyecto. Si existe lo agrega, si no, genera una in
-   * @method POST
-   * @param {number} idproyecto id del proyecto
-   * @param data datos de la invitacion: email, rol, nombreProyecto, invitadoPor
-   */
-  invitarUsuario(idproyecto: number, email: any): Observable<any> {
-    return this.http.post<any>(this.url + '/' + idproyecto + '/invitar', JSON.stringify(email), httpOptions);
-  }
-
-  /**
-   * Elimina un usuario del proyecto
-   * @method DELETE
-   * @param {number} idproyecto id del proyecto
-   * @param {number} idusuario id del usuario
-   */
-  eliminarUsuario(idproyecto: number, idusuario: number): Observable<any> {
-    return this.http.delete<any>(this.url + '/' + idproyecto + '/eliminarUsuario' + '/' + idusuario, httpOptions);
   }
 
   /**
@@ -116,5 +95,25 @@ export class ProyectosService {
    */
   getProyectoSprintGoals(idproyecto: number): Observable<any> {
     return this.http.get<any>(this.url + '/' + idproyecto + '/sprintgoals', httpOptions);
+  }
+
+  /**
+   * Invita un usuario al proyecto. Si existe lo agrega, si no, genera una in
+   * @method POST
+   * @param {number} idproyecto id del proyecto
+   * @param data datos de la invitacion: email, rol, nombreProyecto, invitadoPor
+   */
+  invitarUsuario(idproyecto: number, data: any): Observable<any> {
+    return this.http.post<any>(this.url + '/' + idproyecto + '/invitar', JSON.stringify(data), httpOptions);
+  }
+
+  /**
+   * Elimina un usuario del proyecto
+   * @method DELETE
+   * @param {number} idproyecto id del proyecto
+   * @param {number} idusuario id del usuario
+   */
+  eliminarUsuario(idproyecto: number, idusuario: number): Observable<any> {
+    return this.http.delete<any>(this.url + '/' + idproyecto + '/eliminarUsuario' + '/' + idusuario, httpOptions);
   }
 }

@@ -63,7 +63,7 @@ export class ComparerComponent implements OnInit, OnDestroy {
         var observables: any[] = [];
         // para cada proyecto cargar sus pbis:
         proyAux.forEach((proyectoData: ProyectoData) => {
-          observables.push(this.proyectosService.getProyectosPBI(proyectoData.proyecto.idproyecto));
+          observables.push(this.proyectosService.getProyectoPBIs(proyectoData.proyecto.idproyecto));
         });
         // buscar cada lista de pbis y enlazar con el proyecto correspondiente:
         forkJoin(observables)

@@ -11,7 +11,7 @@ const httpOptions = {
 
 @Injectable()
 export class ComentariosService {
-  private url = '/comentarios';
+  public url = '/comentarios';
   constructor(private http: HttpClient) {}
 
   /**

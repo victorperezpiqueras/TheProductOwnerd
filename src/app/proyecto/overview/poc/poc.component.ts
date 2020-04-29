@@ -8,6 +8,7 @@ import { Pbi } from '@app/models/pbis';
 import { Sprint } from '@app/models/sprints';
 import { Proyecto } from '@app/models/proyectos';
 import { Grafico } from '@app/proyecto/grafico.interface';
+import { formatDataNumberStandardToFixed1 } from '@app/shared/formatDataNumber';
 
 @Component({
   selector: 'app-poc',
@@ -99,25 +100,28 @@ export class PocComponent implements Grafico, OnInit, OnDestroy {
           }
         });
         this.sprints[i].quemadoRelativo = Number(
-          (
+          this.formatDataNumber(
             this.sprints[i - 1].quemadoRelativo +
-            ((sumpbisFeatures + sumpbisTechDebt + sumpbisInfrastructure + sumpbisBug) / this.puntosTotales) * 100
-          ).toFixed(2)
+              ((sumpbisFeatures + sumpbisTechDebt + sumpbisInfrastructure + sumpbisBug) / this.puntosTotales) * 100
+          )
         );
         this.listaFeatures[i].quemadoRelativo = Number(
-          (this.listaFeatures[i - 1].quemadoRelativo + (sumpbisFeatures / this.puntosTotales) * 100).toFixed(2)
+          this.formatDataNumber(
+            this.listaFeatures[i - 1].quemadoRelativo + (sumpbisFeatures / this.puntosTotales) * 100
+          )
         );
         this.listaTechDebt[i].quemadoRelativo = Number(
-          (this.listaTechDebt[i - 1].quemadoRelativo + (sumpbisTechDebt / this.puntosTotales) * 100).toFixed(2)
+          this.formatDataNumber(
+            this.listaTechDebt[i - 1].quemadoRelativo + (sumpbisTechDebt / this.puntosTotales) * 100
+          )
         );
         this.listaInfrastructures[i].quemadoRelativo = Number(
-          (
-            this.listaInfrastructures[i - 1].quemadoRelativo +
-            (sumpbisInfrastructure / this.puntosTotales) * 100
-          ).toFixed(2)
+          this.formatDataNumber(
+            this.listaInfrastructures[i - 1].quemadoRelativo + (sumpbisInfrastructure / this.puntosTotales) * 100
+          )
         );
         this.listaBugs[i].quemadoRelativo = Number(
-          (this.listaBugs[i - 1].quemadoRelativo + (sumpbisBug / this.puntosTotales) * 100).toFixed(2)
+          this.formatDataNumber(this.listaBugs[i - 1].quemadoRelativo + (sumpbisBug / this.puntosTotales) * 100)
         );
       }
     }
@@ -247,6 +251,10 @@ export class PocComponent implements Grafico, OnInit, OnDestroy {
         sourceWidth: 1100
       }
     };
+  }
+
+  formatDataNumber(data: number): string {
+    return formatDataNumberStandardToFixed1(data);
   }
 
   ngOnDestroy() {}

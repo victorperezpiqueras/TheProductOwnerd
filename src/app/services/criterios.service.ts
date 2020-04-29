@@ -11,7 +11,7 @@ const httpOptions = {
 
 @Injectable()
 export class CriteriosService {
-  private url = '/criterios';
+  public url = '/criterios';
   constructor(private http: HttpClient) {}
 
   /**

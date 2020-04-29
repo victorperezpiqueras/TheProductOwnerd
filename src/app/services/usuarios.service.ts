@@ -9,7 +9,7 @@ const httpOptions = {
 
 @Injectable()
 export class UsuariosService {
-  private url = '/usuarios';
+  public url = '/usuarios';
   constructor(private http: HttpClient) {}
 
   /**
@@ -56,7 +56,7 @@ export class UsuariosService {
    * Agrega un proyecto del usuario a sus favoritos
    * @method POST
    * @param {number} idusuario id del usuario
-   * @param data contiene el id del proyecto
+   * @param idproyecto id del proyecto
    */
   agregarUsuarioProyectosFavoritos(idusuario: number, idproyecto: number): Observable<any> {
     return this.http.post<any>(

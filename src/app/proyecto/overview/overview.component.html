@@ -137,7 +137,7 @@
             <textarea
               matInput
               [(ngModel)]="proyecto.vision"
-              (change)="switchSaveButton()"
+              (ngModelChange)="switchSaveButton()"
               style="height: 100px;"
             ></textarea
             ><!-- cdkTextareaAutosize

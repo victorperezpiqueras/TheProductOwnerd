@@ -11,7 +11,7 @@ const httpOptions = {
 
 @Injectable()
 export class DependenciasService {
-  private url = '/dependencias';
+  public url = '/dependencias';
   constructor(private http: HttpClient) {}
 
   /**

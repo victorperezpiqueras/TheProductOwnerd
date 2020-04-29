@@ -9,6 +9,7 @@ import { Sprint } from '@app/models/sprints';
 import { Proyecto } from '@app/models/proyectos';
 import { Permisos } from '@app/models/permisos';
 import { Grafico } from '@app/proyecto/grafico.interface';
+import { formatDataNumberStandardToFixed1 } from '@app/shared/formatDataNumber';
 
 @Component({
   selector: 'app-pbc',
@@ -362,6 +363,10 @@ export class PbcComponent implements Grafico, OnInit, OnDestroy {
     // ultimo sprint debe estar calculado
     this.averageThroughput /= this.ultimoSprint;
     this.averageVelocity /= this.ultimoSprint;
+  }
+
+  formatDataNumber(data: number): string {
+    return formatDataNumberStandardToFixed1(data);
   }
 
   ngOnDestroy() {}

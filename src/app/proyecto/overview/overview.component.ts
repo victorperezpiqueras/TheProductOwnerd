@@ -79,6 +79,10 @@ export class OverviewComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.cargarDatos();
+  }
+
+  cargarDatos() {
     this.isLoading = true;
     // modificar la UI en función del rol para ajustarla a los cards
     if (this.permisos.mantenerUsuarios === 1) {
@@ -86,7 +90,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
       this.pageSizeOptions = [5];
       this.pageSize = 5;
     } else {
-      this.displayedColumns = ['Name', 'Role'];
+      this.displayedColumns = ['Actions', 'Name', 'Role'];
       this.pageSizeOptions = [8];
       this.pageSize = 8;
     }
@@ -130,7 +134,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
 
   actualizarGraficos() {
     this.proyectosService
-      .getProyectosPBI(this.proyecto.idproyecto)
+      .getProyectoPBIs(this.proyecto.idproyecto)
       .pipe(untilDestroyed(this))
       .subscribe((pbis: []) => {
         this.pbis = pbis;

@@ -43,6 +43,7 @@
             [(ngModel)]="titulo"
             maxlength="200"
             [disabled]="disabled || permisos.editarPBI == 0"
+            (ngModelChange)="changed()"
           />
         </mat-form-field>
         <!-- </div> -->
@@ -57,9 +58,10 @@
             (selectionChange)="setColor()"
             required
             [disabled]="disabled || permisos.editarPBI == 0"
+            (ngModelChange)="changed()"
           >
             <mat-option *ngFor="let label of labels" [value]="label">
-              {{ label.charAt(0).toUpperCase() + label.substring(1) }}
+              {{ labelFormatter(label) }}
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -80,6 +82,7 @@
           <!-- <input matInput type="text" [(ngModel)]="estimacion" required> -->
           <mat-select
             [(ngModel)]="estimacion"
+            (ngModelChange)="changed()"
             [disabled]="disabled || permisos.editarPBI == 0 || permisos.estimarTam == 0"
           >
             <mat-option *ngFor="let fib of fibonacci" [value]="fib" required>{{ fib }}</mat-option>
@@ -103,6 +106,7 @@
             matInput
             type="number"
             [(ngModel)]="valor"
+            (ngModelChange)="changed()"
             [disabled]="disabled || permisos.editarPBI == 0 || permisos.estimarValor == 0"
           />
           <!-- <mat-select [(ngModel)]="estimacion" [disabled]="disabled">
@@ -117,6 +121,7 @@
             type="number"
             [(ngModel)]="sprintCreacion"
             min="1"
+            (ngModelChange)="changed()"
             [disabled]="disabled || permisos.editarPBI == 0"
           />
         </mat-form-field>
@@ -130,47 +135,39 @@
               matInput
               placeholder="Description"
               [(ngModel)]="descripcion"
+              (ngModelChange)="changed()"
               [disabled]="disabled || permisos.editarPBI == 0"
             ></textarea>
           </mat-form-field>
         </div>
 
-        <div fxLayout="row">
+        <!-- <div fxLayout="row">
           <h1 class="mat-h2" style="display: inline-block;margin-right: 2%;">Dependencies:</h1>
 
           <mat-chip-list style="display: inline-block;margin-right: 2%;">
-            <mat-chip
-              *ngFor="let dep of dependencias"
-              [ngStyle]="{ 'background-color': getPbiColor(dep.idpbi2) }"
-              color="accent"
-              [removable]="!disabled"
-              (removed)="borrarDependencia(dep)"
-              selected
-              class="mat-typography"
-            >
+            <mat-chip *ngFor="let dep of dependencias" [ngStyle]="{ 'background-color': getPbiColor(dep.idpbi2) }"
+              color="accent" [removable]="!disabled" (removed)="borrarDependencia(dep)" selected class="mat-typography">
               {{ getPbiTitulo(dep.idpbi2) }}<mat-icon *ngIf="!disabled" matChipRemove>cancel</mat-icon>
             </mat-chip>
           </mat-chip-list>
 
           <mat-form-field style="display: inline-block;margin-right: 2%;" *ngIf="!disabled">
             <mat-label>Add Dependencies</mat-label>
-            <!--  <mat-select multiple (selectionChange)="actualizarDependencia(pbi)">
-              <mat-option *ngFor="let pbi of pbis" [value]="pbi">
-                #{{pbi.idpbi}} {{pbi.titulo}}</mat-option>
-            </mat-select> -->
+            
             <mat-select [(ngModel)]="dependenciaData" (selectionChange)="actualizarDependencia()" [disabled]="disabled">
-              <mat-option *ngFor="let pbi of notSelectedPbis" [value]="pbi"
-                >#{{ pbi.idpbi }} {{ pbi.titulo }}
+              <mat-option *ngFor="let pbi of notSelectedPbis" [value]="pbi">#{{ pbi.idpbi }} {{ pbi.titulo }}
               </mat-option>
             </mat-select>
           </mat-form-field>
-        </div>
+        </div> -->
         <br />
         <!-- <br> -->
 
         <div mat-dialog-actions fxLayout="row">
           <!-- <div fxLayout="row" fxFill> -->
-          <mat-checkbox class="checkbox" [checked]="checkDone()" (click)="markDone()"></mat-checkbox>
+          <mat-checkbox class="checkbox" disabled="true" (ngModelChange)="changed()"
+            ><!-- [checked]="checkDone()" (click)="markDone()"  -->
+          </mat-checkbox>
           <button
             *ngIf="checkDone()"
             class="done-button"
@@ -202,7 +199,7 @@
             mat-raised-button
             (click)="save()"
             [color]="'success'"
-            [disabled]="!filled()"
+            [disabled]="!filled() || saveButtonDisabled"
             style="display: inline-block;margin-left: 70%;width: 9vmin;height: 5vmin;min-width: 100px;min-height: 50px;"
           >
             <mat-icon>save</mat-icon>&nbsp;&nbsp;Save
@@ -211,6 +208,7 @@
 
           <!--     <button class="close-button" mat-raised-button (click)="close()" color="primary">Close</button> -->
         </div>
+
         <!-- </mat-card> -->
         <br /><br />
         <hr />
@@ -251,6 +249,41 @@
               <mat-icon>add_circle</mat-icon>&nbsp;&nbsp;Create
             </button>
           </div>
+        </div>
+
+        <hr />
+        <br />
+
+        <div fxLayout="row">
+          <mat-card class="comments-card">
+            <mat-card-title>Dependencies</mat-card-title> </mat-card
+          ><br />
+          <mat-chip-list style="display: inline-block;margin-right: 2%;">
+            <mat-chip
+              *ngFor="let dep of dependencias"
+              [ngStyle]="{ 'background-color': getPbiColor(dep.idpbi2) }"
+              color="accent"
+              [removable]="!disabled"
+              (removed)="borrarDependencia(dep)"
+              selected
+              class="mat-typography"
+            >
+              {{ getPbiTitulo(dep.idpbi2) }}<mat-icon *ngIf="!disabled" matChipRemove>cancel</mat-icon>
+            </mat-chip>
+          </mat-chip-list>
+
+          <mat-form-field style="display: inline-block;margin-right: 2%;" *ngIf="!disabled">
+            <mat-label>Add Dependencies</mat-label>
+            <!--  <mat-select multiple (selectionChange)="actualizarDependencia(pbi)">
+              <mat-option *ngFor="let pbi of pbis" [value]="pbi">
+                #{{pbi.idpbi}} {{pbi.titulo}}</mat-option>
+            </mat-select> -->
+            <mat-select [(ngModel)]="dependenciaData" (selectionChange)="actualizarDependencia()" [disabled]="disabled">
+              <mat-option *ngFor="let pbi of notSelectedPbis" [value]="pbi"
+                >#{{ pbi.idpbi }} {{ pbi.titulo }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
       </div>
     </div>
@@ -341,7 +374,6 @@
       </div>
     </div>
 
-    <br />
     <hr />
     <br />
 

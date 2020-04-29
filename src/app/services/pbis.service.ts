@@ -14,13 +14,13 @@ const httpOptions = {
 
 @Injectable()
 export class PbisService {
-  private url = '/pbis';
+  public url = '/pbis';
   constructor(private http: HttpClient) {}
 
   /**
    * Crea un pbi
    * @method POST
-   * @param pbi contiene los datos del pbi: titulo, descripcion, done, label, estimacion, valor, idproyecto, prioridad, sprintCreacion
+   * @param pbi contiene los datos del pbi: idpbi, titulo, descripcion, done, label, estimacion, valor, idproyecto, prioridad, sprintCreacion, sprint
    */
   crearPbi(pbi: Pbi): Observable<any> {
     return this.http.post<any>(this.url, JSON.stringify(pbi), httpOptions);

@@ -81,12 +81,20 @@
   <mat-menu #userMenu="matMenu">
     <mat-list>
       <mat-list-item>
+        <mat-icon>account_circle</mat-icon>
+        <br />
         <span translate>Logged in as</span>&nbsp;<b>{{ username }}</b>
       </mat-list-item>
       <mat-divider></mat-divider>
     </mat-list>
-    <button mat-menu-item [routerLink]="['/account']" routerLinkActive="active">Account</button>
+    <button mat-menu-item [routerLink]="['/account']" routerLinkActive="active">
+      <mat-icon>settings</mat-icon>
+      <span translate>Account</span>
+    </button>
     <mat-divider></mat-divider>
-    <button mat-menu-item (click)="logout()" translate>Logout</button>
+    <button mat-menu-item (click)="logout()" translate>
+      <mat-icon>exit_to_app</mat-icon>
+      <span translate>Logout</span>
+    </button>
   </mat-menu>
 </mat-toolbar>

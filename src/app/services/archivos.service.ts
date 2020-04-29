@@ -11,7 +11,7 @@ const httpOptions = {
 
 @Injectable()
 export class ArchivosService {
-  private url = '/archivos';
+  public url = '/archivos';
   constructor(private http: HttpClient) {}
 
   /**

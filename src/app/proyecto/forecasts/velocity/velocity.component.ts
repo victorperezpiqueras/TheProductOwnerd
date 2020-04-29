@@ -8,6 +8,7 @@ import { Pbi } from '@app/models/pbis';
 import { Sprint } from '@app/models/sprints';
 import { Proyecto } from '@app/models/proyectos';
 import { Grafico } from '@app/proyecto/grafico.interface';
+import { formatDataNumberStandardToFixed1 } from '@app/shared/formatDataNumber';
 
 @Component({
   selector: 'app-velocity',
@@ -450,7 +451,7 @@ export class VelocityComponent implements Grafico, OnInit, OnDestroy {
         }
       ],
       legend: {
-        x: -50
+        x: -80
       },
       navigation: {
         buttonOptions: {
@@ -467,6 +468,10 @@ export class VelocityComponent implements Grafico, OnInit, OnDestroy {
         sourceWidth: 1100
       }
     };
+  }
+
+  formatDataNumber(data: number): string {
+    return formatDataNumberStandardToFixed1(data);
   }
 
   ngOnDestroy() {}

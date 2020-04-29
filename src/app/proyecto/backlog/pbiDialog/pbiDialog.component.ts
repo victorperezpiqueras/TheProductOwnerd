@@ -74,6 +74,8 @@ export class PbiDialogComponent implements OnInit, OnDestroy {
 
   dialogRefConfirm: MatDialogRef<any>;
 
+  saveButtonDisabled: boolean = true;
+
   constructor(
     public dialogRef: MatDialogRef<PbiDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -430,6 +432,7 @@ export class PbiDialogComponent implements OnInit, OnDestroy {
           console.log(data);
           this.done = data.done;
           this.sprint = data.sprint;
+          this.saveButtonDisabled = false;
         }
       });
   }
@@ -586,6 +589,14 @@ export class PbiDialogComponent implements OnInit, OnDestroy {
     else {
       return { format: 'text/plain', ending: '.txt' };
     }
+  }
+
+  labelFormatter(label: string): string {
+    return label.charAt(0).toUpperCase() + label.substring(1);
+  }
+
+  changed() {
+    this.saveButtonDisabled = false;
   }
 
   get idusuario(): number | null {

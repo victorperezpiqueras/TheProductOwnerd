@@ -28,6 +28,8 @@ export class CuentaComponent implements OnInit, OnDestroy {
   myForm2: FormGroup;
   /* errorPasswordMissmatch: string; */
 
+  buttonDisabled: boolean = true;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -249,6 +251,10 @@ export class CuentaComponent implements OnInit, OnDestroy {
     this._snackBar.open(message, action, {
       duration: 2500 //miliseconds
     });
+  }
+
+  switchSaveButton() {
+    if (this.buttonDisabled) this.buttonDisabled = false;
   }
 
   ngOnDestroy() {}

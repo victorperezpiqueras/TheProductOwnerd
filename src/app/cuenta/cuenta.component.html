@@ -12,7 +12,13 @@
       <div fxLayout="row" fxLayoutGap="2%">
         <mat-form-field class="title form" appearance="outline">
           <mat-label>Nick</mat-label>
-          <input matInput placeholder="Nick" maxlength="20" formControlName="nick" /><!-- [(ngModel)]="usuario.nick" -->
+          <input
+            matInput
+            placeholder="Nick"
+            maxlength="20"
+            formControlName="nick"
+            (ngModelChange)="switchSaveButton()"
+          /><!-- [(ngModel)]="usuario.nick" -->
           <mat-error *ngIf="errorLength('nick', 1)">
             Nick cannot be empty
           </mat-error>
@@ -33,7 +39,13 @@
       <div fxLayout="row" fxLayoutGap="2%">
         <mat-form-field class="title form" appearance="outline">
           <mat-label>Name</mat-label>
-          <input matInput placeholder="Name" maxlength="20" formControlName="nombre" />
+          <input
+            matInput
+            placeholder="Name"
+            maxlength="20"
+            formControlName="nombre"
+            (ngModelChange)="switchSaveButton()"
+          />
           <!-- [(ngModel)]="usuario.nombre"  -->
           <mat-error *ngIf="errorLength('nombre', 1)">
             Name cannot be empty
@@ -43,7 +55,13 @@
       <div fxLayout="row" fxLayoutGap="2%">
         <mat-form-field class="title form" appearance="outline">
           <mat-label>First Surname</mat-label>
-          <input matInput placeholder="First Surname" maxlength="30" formControlName="apellido1" />
+          <input
+            matInput
+            placeholder="First Surname"
+            maxlength="30"
+            formControlName="apellido1"
+            (ngModelChange)="switchSaveButton()"
+          />
           <!-- [(ngModel)]="usuario.apellido1"  -->
           <mat-error *ngIf="errorLength('apellido1', 1)">
             First Surname cannot be empty
@@ -52,7 +70,13 @@
 
         <mat-form-field class="title form" appearance="outline">
           <mat-label>Second Surname</mat-label>
-          <input matInput placeholder="Second Surname" maxlength="30" formControlName="apellido2" />
+          <input
+            matInput
+            placeholder="Second Surname"
+            maxlength="30"
+            formControlName="apellido2"
+            (ngModelChange)="switchSaveButton()"
+          />
           <!-- [(ngModel)]="usuario.apellido2"  -->
           <mat-error *ngIf="errorLength('apellido2', 1)">
             Second Surname cannot be empty
@@ -67,7 +91,7 @@
           mat-raised-button
           (click)="actualizarUsuario()"
           [color]="'success'"
-          [disabled]="!checkFieldsOk()"
+          [disabled]="!checkFieldsOk() || buttonDisabled"
           style="margin-left: 500px;display: inline-block;width: 9vmin;height: 5vmin;min-width: 100px;min-height: 50px;"
         >
           <mat-icon>save</mat-icon>&nbsp;&nbsp;Save
