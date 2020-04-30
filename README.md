@@ -2,9 +2,9 @@
 
 # TheProductOwnerd
 
-[![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://travis-ci.org/github/victorperezpiqueras/TFG)
-![GitHub issues](https://img.shields.io/github/issues-raw/victorperezpiqueras/TFG)
-![GitHub commit activity](https://img.shields.io/github/commit-activity/m/victorperezpiqueras/TFG)
+[![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://travis-ci.org/github/victorperezpiqueras/theproductownerd)
+![GitHub issues](https://img.shields.io/github/issues-raw/victorperezpiqueras/theproductownerd)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/victorperezpiqueras/theproductownerd)
 
 ## Table of Contents
 
@@ -79,7 +79,7 @@ Polynomial Regression:
 
 ## Get started
 
-Clone the repo: `git clone https://github.com/victorperezpiqueras/TFG`
+Clone the repo: `git clone https://github.com/victorperezpiqueras/theproductownerd`
 
 ### Backend
 
@@ -130,14 +130,14 @@ Every Sprint has a documentation issue associated to it. The report file is post
 
 ### Labelling
 
-| Label                                                                                      | Description                                 |
-| ------------------------------------------------------------------------------------------ | :------------------------------------------ |
-| ![GitHub labels](https://img.shields.io/github/labels/victorperezpiqueras/TFG/feature)     | New features requested for the application  |
-| ![GitHub labels](https://img.shields.io/github/labels/victorperezpiqueras/TFG/defect)      | Bugs                                        |
-| ![GitHub labels](https://img.shields.io/github/labels/victorperezpiqueras/TFG/enhancement) | Enhancements for application features       |
-| ![GitHub labels](https://img.shields.io/github/labels/victorperezpiqueras/TFG/flow)        | Integration and flow related issues         |
-| ![GitHub labels](https://img.shields.io/github/labels/victorperezpiqueras/TFG/retro)       | Issues generated in the Scrum retrospective |
-| ![GitHub labels](https://img.shields.io/github/labels/victorperezpiqueras/TFG/debt)        | Technical Debt that has to be paid          |
-| ![GitHub labels](https://img.shields.io/github/labels/victorperezpiqueras/TFG/memoria)     | Report related issues                       |
-| ![GitHub labels](https://img.shields.io/github/labels/victorperezpiqueras/TFG/Epic)        | Epic issues                                 |
-| ![GitHub labels](https://img.shields.io/github/labels/victorperezpiqueras/TFG/Sprint%201)  | Issue selected for Sprint X                 |
+| Label                                                                                                   | Description                                 |
+| ------------------------------------------------------------------------------------------------------- | :------------------------------------------ |
+| ![GitHub labels](https://img.shields.io/github/labels/victorperezpiqueras/theproductownerd/feature)     | New features requested for the application  |
+| ![GitHub labels](https://img.shields.io/github/labels/victorperezpiqueras/theproductownerd/defect)      | Bugs                                        |
+| ![GitHub labels](https://img.shields.io/github/labels/victorperezpiqueras/theproductownerd/enhancement) | Enhancements for application features       |
+| ![GitHub labels](https://img.shields.io/github/labels/victorperezpiqueras/theproductownerd/flow)        | Integration and flow related issues         |
+| ![GitHub labels](https://img.shields.io/github/labels/victorperezpiqueras/theproductownerd/retro)       | Issues generated in the Scrum retrospective |
+| ![GitHub labels](https://img.shields.io/github/labels/victorperezpiqueras/theproductownerd/debt)        | Technical Debt that has to be paid          |
+| ![GitHub labels](https://img.shields.io/github/labels/victorperezpiqueras/theproductownerd/memoria)     | Report related issues                       |
+| ![GitHub labels](https://img.shields.io/github/labels/victorperezpiqueras/theproductownerd/Epic)        | Epic issues                                 |
+| ![GitHub labels](https://img.shields.io/github/labels/victorperezpiqueras/theproductownerd/Sprint%201)  | Issue selected for Sprint X                 |

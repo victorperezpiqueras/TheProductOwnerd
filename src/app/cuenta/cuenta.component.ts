@@ -118,6 +118,7 @@ export class CuentaComponent implements OnInit, OnDestroy {
           this.credentialsService.setCredentials(cred, true);
 
           this.isLoading = false;
+          this.buttonDisabled = true;
           this.openSnackBar('Account edited successfully!', 'Close');
           console.log(data);
         },
@@ -134,12 +135,13 @@ export class CuentaComponent implements OnInit, OnDestroy {
       const credenciales = { email: this.usuario.email, password: this.usuario.password };
       /*  const response = await this.loginService.login(credenciales).toPromise();console.log(response)
        if (response.token && response.token === this.credentialsService.credentials.token) { */
+      const oldPassword = this.myForm2.get('password').value;
       const newPassword = this.myForm2.get('newPassword').value;
-      this.usuario.password = newPassword;
+      //this.usuario.password = newPassword;
       this.usuariosService
         .actualizarUsuarioPassword({
           idusuario: this.usuario.idusuario,
-          password: this.usuario.password,
+          password: oldPassword,
           newPassword: newPassword
         })
         .pipe(untilDestroyed(this))

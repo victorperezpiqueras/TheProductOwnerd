@@ -7,7 +7,7 @@
       "skipInstall": false,
       "skipQuickstart": false,
       "initGit": true,
-      "appName": "TFG",
+      "appName": "TheProductOwnerd",
       "target": ["web"],
       "pwa": true,
       "ui": "material",
@@ -17,7 +17,7 @@
       "angulartics": false,
       "tools": ["prettier", "hads"],
       "utility": [],
-      "projectName": "tfg",
+      "projectName": "theproductownerd",
       "packageManager": "npm",
       "mobile": [],
       "desktop": []

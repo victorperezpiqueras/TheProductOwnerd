@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node server.js",
     "test": "node node_modules/jasmine/bin/jasmine.js",
-    "dev": "node -r dotenv/config server.js"
+    "dev": "node -r dotenv/config server.js",
+    "seedertest": "node -r dotenv/config db/seederTest.js"
   },
   "author": "",
   "license": "ISC",
