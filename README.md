@@ -2,7 +2,7 @@
 
 # TheProductOwnerd
 
-[![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://travis-ci.org/github/victorperezpiqueras/TFG)
+[![Build Status](https://travis-ci.com/victorperezpiqueras/TFG.svg?branch=master)](https://travis-ci.com/victorperezpiqueras/TFG)
 ![GitHub issues](https://img.shields.io/github/issues-raw/victorperezpiqueras/TFG)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/victorperezpiqueras/TFG)
 
