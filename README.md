@@ -2,7 +2,7 @@
 
 # TheProductOwnerd
 
-[![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://travis-ci.org/github/victorperezpiqueras/theproductownerd)
+[![Build Status](https://travis-ci.com/victorperezpiqueras/TheProductOwnerd.svg?token=pmhaTELXyxgHKQz4j74Z&branch=master)](https://travis-ci.com/victorperezpiqueras/TheProductOwnerd)
 ![GitHub issues](https://img.shields.io/github/issues-raw/victorperezpiqueras/theproductownerd)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/victorperezpiqueras/theproductownerd)
 
