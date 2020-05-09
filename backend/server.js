@@ -31,7 +31,6 @@ app.get('/api/holamundo', (req, res) => {
 });
 
 app.use('/api', apiRouter);
-/* app.use('*', viewsRouter); */
 
 app.get('*', function(req, res, next) {
   //console.log("*")

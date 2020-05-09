@@ -15,14 +15,6 @@ ControllerDependencias.crearDependencia = function(dependencia) {
     } catch (error) {
       reject({ error: 'Error inesperado en crearDependencia' });
     }
-    /* connection.query(sql, array, function (err, result) {
-      if (err) {
-        reject({ error: 'Error inesperado en crearDependencia' });
-      } else {
-        console.log(result);
-        resolve(result);
-      }
-    }); */
   });
 };
 
@@ -41,14 +33,6 @@ ControllerDependencias.borrarDependencia = function(id, id2) {
     } catch (error) {
       reject({ error: 'Error inesperado en borrarDependencia' });
     }
-    /* connection.query(sql, array, function (err, result) {
-      if (err) {
-        reject({ error: 'Error inesperado en borrarDependencia' });
-      } else {
-        console.log(result);
-        resolve(result);
-      }
-    }); */
   });
 };
 
@@ -67,14 +51,6 @@ ControllerDependencias.obtenerDependenciasPbi = function(idpbi) {
     } catch (error) {
       reject({ error: 'Error inesperado en obtenerDependenciasPbi' });
     }
-    /* connection.query(sql, array, function (err, result) {
-      if (err) {
-        reject({ error: 'Error inesperado en obtenerDependenciasPbi' });
-      } else {
-        console.log(result);
-        resolve(result);
-      }
-    }); */
   });
 };
 

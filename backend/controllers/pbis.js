@@ -27,14 +27,6 @@ ControllerPbis.crearPbi = function(pbi) {
     } catch (error) {
       reject({ error: 'Error inesperado en crearPbi' });
     }
-    /* connection.query(sql, array, function (err, result) {
-      if (err) {
-        reject({ error: 'Error inesperado en crearPbi' });
-      } else {
-        console.log(result);
-        resolve(result);
-      }
-    }); */
   });
 };
 
@@ -69,14 +61,6 @@ ControllerPbis.editarPbi = function(idpbi, pbi) {
     } catch (error) {
       reject({ error: 'Error inesperado en editarPbi' });
     }
-    /* connection.query(sql, array, function (err, result) {
-      if (err) {
-        reject({ error: 'Error inesperado en editarPbi' });
-      } else {
-        console.log(result);
-        resolve(result);
-      }
-    }); */
   });
 };
 
@@ -99,28 +83,6 @@ ControllerPbis.editarPrioridadesPbis = function(pbis) {
     } catch (error) {
       reject({ error: 'Error inesperado en editarPrioridadesPbis' });
     }
-
-    /* console.log(pbis);
-    var promises = [];
-    for (let pbi of pbis) {
-      var promise = new Promise(function (resolve, reject) {
-        const sql = 'update pbis set prioridad=? where idpbi=?';
-        var array = [pbi.prioridad, pbi.idpbi];
-        connection.query(sql, array, function (err, result) {
-          if (err) {
-            reject({ error: 'Error inesperado en editarPrioridadesPbis' });
-          } else {
-            console.log(result);
-            resolve(result);
-          }
-        });
-      });
-      promises.push(promise);
-    }
-    Promise.all(promises).then(pbis => {
-      console.log(pbis);
-      resolve(pbis);
-    }); */
   });
 };
 

@@ -15,15 +15,6 @@ ControllerArchivos.crearArchivo = function(archivo) {
     } catch (error) {
       reject({ error: 'Error inesperado en crearArchivo' });
     }
-    /* const array = [archivo.nombre, archivo.src, archivo.idpbi, archivo.idusuario];
-    connection.query(sql, array, function (err, result) {
-      if (err) {
-        reject({ error: 'Error inesperado en crearArchivo' });
-      } else {
-        console.log(result);
-        resolve(result);
-      }
-    }); */
   });
 };
 
@@ -41,14 +32,6 @@ ControllerArchivos.borrarArchivo = function(idarchivo) {
     } catch (error) {
       reject({ error: 'Error inesperado en borrarArchivo' });
     }
-    /* connection.query(sql, array, function (err, result) {
-      if (err) {
-        reject({ error: 'Error inesperado en borrarArchivo' });
-      } else {
-        console.log(result);
-        resolve(result);
-      }
-    }); */
   });
 };
 
@@ -68,14 +51,6 @@ ControllerArchivos.obtenerArchivosPbi = function(idpbi) {
     } catch (error) {
       reject({ error: 'Error inesperado en obtenerArchivosPbi' });
     }
-    /* connection.query(sql, array, function (err, result) {
-      if (err) {
-        reject({ error: 'Error inesperado en obtenerArchivosPbi' });
-      } else {
-        console.log(result);
-        resolve(result);
-      }
-    }); */
   });
 };
 

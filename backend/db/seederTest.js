@@ -22,9 +22,9 @@ generateAllProjects().then(v => {
 }) */
 
 async function generateAllProjects() {
-  var initialId = [4444 /* , 4445, 4446, 4447, 4448 */];
-  var nombres = ['proyecto11' /* , "proyecto12", "proyecto13", "proyecto14", "proyecto15" */];
-  for (var i = 0; i < 5; i++) {
+  var initialId = [4444, 4445, 4446, 4447, 4448];
+  var nombres = ['proyecto11', 'proyecto12', 'proyecto13', 'proyecto14', 'proyecto15'];
+  for (var i = 1; i < 5; i++) {
     await generateProject(initialId[i], nombres[i], 21, initialId[i]);
   }
 }

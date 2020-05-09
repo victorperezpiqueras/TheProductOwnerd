@@ -15,14 +15,6 @@ ControllerSprintGoals.crearSprintGoal = function(sprintGoal) {
     } catch (error) {
       reject({ error: 'Error inesperado en crearSprintGoal' });
     }
-    /* connection.query(sql, array, function(err, result) {
-      if (err) {
-        reject({ error: 'Error inesperado en crearSprintGoal' });
-      } else {
-        console.log(result);
-        resolve(result);
-      }
-    }); */
   });
 };
 
@@ -40,15 +32,6 @@ ControllerSprintGoals.actualizarSprintGoal = function(sprintGoal) {
     } catch (error) {
       reject({ error: 'Error inesperado en actualizarSprintGoal' });
     }
-    /* connection.query(sql, array, function (err, result) {
-      if (err) {
-        console.log(err);
-        reject({ error: 'Error inesperado en actualizarSprintGoal' });
-      } else {
-        console.log(result);
-        resolve(result);
-      }
-    }); */
   });
 };
 

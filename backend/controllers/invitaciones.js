@@ -19,19 +19,6 @@ ControllerInvitaciones.crearInvitacion = function(invitacion) {
     } catch (error) {
       reject({ error: 'Error inesperado en crearInvitacion' });
     }
-    /*  ControllerInvitaciones.borrarInvitacion(invitacion) //no es el mismo token
-       .then(res => {
-         const sql = 'insert into invitaciones(token,idproyecto, email, rol) values (?,?,?,?)';
-         const array = [invitacion.token, invitacion.idproyecto, invitacion.email, invitacion.rol];
-         connection.query(sql, array, function (err, result) {
-           if (err) {
-             reject({ error: 'Error inesperado en crearInvitacion' });
-           } else {
-             console.log(result);
-             resolve(result);
-           }
-         });
-       }); */
   });
 };
 
@@ -49,14 +36,6 @@ ControllerInvitaciones.borrarInvitacion = function(invitacion) {
     } catch (error) {
       reject({ error: 'Error inesperado en borrarInvitacion' });
     }
-    /* connection.query(sql, array, function (err, result) {
-      if (err) {
-        reject({ error: 'Error inesperado en borrarInvitacion' });
-      } else {
-        console.log(result);
-        resolve(result);
-      }
-    }); */
   });
 };
 
@@ -75,14 +54,6 @@ ControllerInvitaciones.obtenerInvitacion = function(token) {
     } catch (error) {
       reject({ error: 'Error inesperado en obtenerInvitacion' });
     }
-    /* connection.query(sql, array, function (err, result) {
-      if (err) {
-        reject({ error: 'Error inesperado en obtenerInvitacion' });
-      } else {
-        console.log(result);
-        resolve(result[0]);
-      }
-    }); */
   });
 };
 

@@ -215,40 +215,6 @@ ControllerProyectos.getProyectosUsuariosRoles = function() {
 ControllerProyectos.crearProyecto = function(data) {
   return new Promise(async function(resolve, reject) {
     var sql = 'insert into proyectos(nombre,descripcion) values(?, ?)';
-    /*  connection.query(sql, [data.nombre, data.descripcion], function (err, result) {
-       if (err) {
-         reject({ error: 'project_name_exists' });
-         //throw err;
-       } else {
-         console.log('insertado proyecto');
- 
-         var sql = 'select idproyecto from proyectos where nombre = ?';
-         connection.query(sql, [data.nombre], function (err, result) {
-           if (err) {
-             reject('Error al buscar el proyecto');
-             //throw err;
-           } else {
-             console.log('idproyecto', result);
-             const idProyecto = result[0].idproyecto;
-             const sql =
-               'insert into roles(nombre,idusuario,idproyecto, ordenar, editarPBI,estimarTam,estimarValor, mantenerUsuarios, archivarProyecto, setDone, proyecciones, sprintGoals, vision)' +
-               ' values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-             connection.query(sql, ['productOwner', data.idusuario, idProyecto, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1], function (
-               err,
-               result
-             ) {
-               if (err) {
-                 reject('Error al insertar los roles');
-                 //throw err;
-               } else {
-                 console.log('insertado rol');
-                 resolve(result);
-               }
-             });
-           }
-         });
-       }
-     }); */
     var idProyecto;
     try {
       let insertion = await connection.query(sql, [data.nombre, data.descripcion]);
@@ -293,17 +259,6 @@ ControllerProyectos.crearProyecto = function(data) {
 ControllerProyectos.actualizarProyecto = function(idproyecto, proyecto) {
   return new Promise(async function(resolve, reject) {
     const sql = 'update proyectos set nombre=?, descripcion=?, vision=?, sprintActual=? where idproyecto=?';
-    /* connection.query(
-      sql,
-      [proyecto.nombre, proyecto.descripcion, proyecto.vision, proyecto.sprintActual, idproyecto],
-      function (err, result) {
-        if (err) {
-          reject({ error: 'Error inesperado en actualizarProyecto' });
-        } else {
-          resolve(result);
-        }
-      }
-    ); */
     try {
       let update = await connection.query(sql, [
         proyecto.nombre,
@@ -327,34 +282,6 @@ ControllerProyectos.actualizarProyecto = function(idproyecto, proyecto) {
  */
 ControllerProyectos.proyectoAgregarUsuario = function(idproyecto, data) {
   return new Promise(async function(resolve, reject) {
-    /* connection.query(sql, [data.idusuario, idproyecto], function (err, result) {
-      if (err) {
-        reject({ error: 'Error inesperado en proyectoAgregarUsuario' });
-      } else {
-        if (result && result.length > 0) {
-          reject({ error: 'error_already_in_project' });
-        } else {
-          var sql =
-            'insert into roles(nombre,idusuario,idproyecto, ordenar, editarPBI,estimarTam,estimarValor, mantenerUsuarios, archivarProyecto, setDone, proyecciones, sprintGoals, vision)' +
-            ' values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-          if (data.rol == 'productOwner') {
-            var list = ['productOwner', data.idusuario, idproyecto, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1];
-          } else if (data.rol == 'desarrollador') {
-            var list = ['desarrollador', data.idusuario, idproyecto, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0];
-          } else {
-            var list = ['stakeholder', data.idusuario, idproyecto, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-          }
-          connection.query(sql, list, function (err, result) {
-            if (err) {
-              reject({ error: 'Error inesperado' });
-            } else {
-              console.log('insertado rol');
-              resolve(result);
-            }
-          });
-        }
-      }
-    }); */
     var sql = 'select * from roles where idusuario=? and idproyecto=?';
     try {
       let roles = await connection.query(sql, [data.idusuario, idproyecto]);
@@ -388,14 +315,6 @@ ControllerProyectos.proyectoAgregarUsuario = function(idproyecto, data) {
  */
 ControllerProyectos.proyectoEliminarUsuario = function(idproyecto, idusuario) {
   return new Promise(async function(resolve, reject) {
-    /*  const sql = 'delete from roles where idusuario=? and idproyecto=?';
-     connection.query(sql, [idusuario, idproyecto], function (err, result) {
-       if (err) {
-         reject({ error: 'Error inesperado en proyectoEliminarUsuario' });
-       } else {
-         resolve(result);
-       }
-     }); */
     const sql = 'delete from roles where idusuario=? and idproyecto=?';
     try {
       let deletion = await connection.query(sql, [idusuario, idproyecto]);
@@ -447,39 +366,6 @@ ControllerProyectos.proyectoInvitarUsuario = function(idproyecto, data) {
       console.log(error);
       reject({ error: 'Error inesperado en proyectoInvitarUsuario' });
     }
-
-    /* const sql = 'select * from usuarios where email=?';
-    arr = [data.email];
-    var proyectoInvitado;
-    connection.query(sql, arr, function (err, result) {
-      if (err) {
-        reject({ error: 'email_searching_error' });
-      } else {
-        console.log(result);
-        if (result.length > 0) {
-          // existe el usuario --> agregar al proyecto 
-          const inviData = { rol: data.rol, idusuario: result[0].idusuario };
-          ControllerProyectos.proyectoAgregarUsuario(idproyecto, inviData).then(data => {
-            resolve({ existe: true });
-          });
-        } else {
-          // no existe el usuario --> crear invitacion 
-          const tokenUrl = jwt.sign({ idproyecto: idproyecto, email: data.email, rol: data.rol }, config.jwtKey);
-          console.log(tokenUrl);
-          controllerInvitaciones
-            .crearInvitacion({ token: tokenUrl, rol: data.rol, idproyecto: idproyecto, email: data.email })
-            .then(res => {
-              console.log(res);
-              enviarInvitacion(
-                { email: data.email, proyecto: data.nombreProyecto, rol: data.rol, invitadoPor: data.invitadoPor },
-                tokenUrl
-              );
-              resolve({ existe: false });
-            })
-            .catch(err => console.log(err));
-        }
-      }
-    }); */
   });
 };
 
@@ -497,15 +383,6 @@ ControllerProyectos.getProyectoPBIs = function(idproyecto) {
     } catch (error) {
       reject({ error: 'Error inesperado en getProyectoPBIs' });
     }
-    /* const sql = 'select p.* from pbis p, proyectos pr where pr.idproyecto=p.idproyecto and p.idproyecto = ?';
-    connection.query(sql, [idproyecto], function (err, result) {
-      if (err) {
-        reject({ error: 'Error inesperado en getProyectoPBIs' });
-      } else {
-        console.log(result);
-        resolve(result);
-      }
-    }); */
   });
 };
 
@@ -523,15 +400,6 @@ ControllerProyectos.getProyectoSprintGoals = function(idproyecto) {
     } catch (error) {
       reject({ error: 'Error inesperado en getProyectoSprintGoals' });
     }
-    /* const sql = 'select * from sprintgoals where idproyecto = ?';
-    connection.query(sql, [idproyecto], function (err, result) {
-      if (err) {
-        reject({ error: 'Error inesperado en getProyectoSprintGoals' });
-      } else {
-        console.log(result);
-        resolve(result);
-      }
-    }); */
   });
 };
 

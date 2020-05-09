@@ -15,14 +15,6 @@ ControllerComentarios.crearComentario = function(comentario) {
     } catch (error) {
       reject({ error: 'Error inesperado en crearComentario' });
     }
-    /* connection.query(sql, array, function (err, result) {
-      if (err) {
-        reject({ error: 'Error inesperado en crearComentario' });
-      } else {
-        console.log(result);
-        resolve(result);
-      }
-    }); */
   });
 };
 
@@ -41,14 +33,6 @@ ControllerComentarios.obtenerComentariosPbi = function(idpbi) {
     } catch (error) {
       reject({ error: 'Error inesperado en obtenerComentariosPbi' });
     }
-    /* connection.query(sql, array, function (err, result) {
-      if (err) {
-        reject({ error: 'Error inesperado en obtenerComentariosPbi' });
-      } else {
-        console.log(result);
-        resolve(result);
-      }
-    }); */
   });
 };
 

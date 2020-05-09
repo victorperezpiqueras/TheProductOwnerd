@@ -19,14 +19,6 @@ ControllerUsuarios.getUsuarios = function() {
     } catch (error) {
       reject({ error: 'Error inesperado en getUsuarios' });
     }
-    /* connection.query(sql, function (err, result) {
-      if (err) {
-        reject({ error: 'Error inesperado' });
-      } else {
-        console.log(result);
-        resolve(result);
-      }
-    }); */
   });
 };
 
@@ -45,14 +37,6 @@ ControllerUsuarios.getUsuario = function(idusuario) {
     } catch (error) {
       reject({ error: 'Error inesperado en getUsuario' });
     }
-    /* connection.query(sql, [idusuario], function (err, result) {
-      if (err) {
-        reject({ error: 'Error inesperado en getUsuario' });
-      } else {
-        console.log(result);
-        resolve(result[0]);
-      }
-    }); */
   });
 };
 
@@ -71,11 +55,6 @@ ControllerUsuarios.actualizarUsuario = function(idusuario, data) {
     } catch (error) {
       reject({ error: 'Error inesperado en actualizarUsuario' });
     }
-    /* connection.query(sql, values, function (err, result) {
-      if (err) throw err;
-      console.log(result);
-      resolve(result);
-    }); */
   });
 };
 
@@ -104,25 +83,6 @@ ControllerUsuarios.actualizarUsuarioPassword = function(idusuario, data) {
     } catch (error) {
       reject({ error: 'Error inesperado en actualizarUsuarioPassword' });
     }
-    /* connection.query(sql, values, function (err, result) {
-      if (err) throw err;
-      console.log(result);
-      if (result.length <= 0) reject({ error: 'user_not_found' });
-      else {
-        console.log(result[0].password);
-        console.log(bcrypt.hashSync(data.password));
-        if (!bcrypt.compareSync(data.password, result[0].password)) reject({ error: 'password_missmatch' });
-        else {
-          var sql = 'update usuarios set password=? where idusuario=?';
-          var values = [bcrypt.hashSync(data.newPassword), idusuario];
-          connection.query(sql, values, function (err, result) {
-            if (err) throw err;
-            console.log(result);
-            resolve(result);
-          });
-        }
-      }
-    }); */
   });
 };
 
@@ -143,14 +103,6 @@ ControllerUsuarios.getUsuariosProyectos = function(idusuario) {
     } catch (error) {
       reject({ error: 'Error inesperado en getUsuariosProyectos' });
     }
-    /* connection.query(sql, [idusuario], function (err, result) {
-      if (err) {
-        reject({ error: 'Error inesperado' });
-      } else {
-        console.log(result);
-        resolve(result);
-      }
-    }); */
   });
 };
 
@@ -173,14 +125,6 @@ ControllerUsuarios.getUsuariosProyectosPermisos = function(idusuario, idproyecto
     } catch (error) {
       reject({ error: 'Error inesperado en getUsuariosProyectosPermisos' });
     }
-    /* connection.query(sql, [idusuario, idproyecto], function (err, result) {
-      if (err) {
-        reject({ error: 'Error inesperado' });
-      } else {
-        console.log(result[0]);
-        resolve(result[0]);
-      }
-    }); */
   });
 };
 
@@ -212,31 +156,6 @@ ControllerUsuarios.registroUsuario = function(usuario) {
     } catch (error) {
       reject({ error: 'Error inesperado en registroUsuario' });
     }
-    /* connection.query(sql, [usuario.email], function (err, result) {
-      if (err) {
-        reject({ error: 'Error inesperado en registroUsuario' });
-      } else {
-        console.log(result);
-        if (result.length <= 0) {
-          const sql = 'insert into usuarios(nick,nombre,apellido1,apellido2,password,email) values (?,?,?,?,?,?)';
-          const values = [
-            usuario.nick,
-            usuario.nombre,
-            usuario.apellido1,
-            usuario.apellido2,
-            bcrypt.hashSync(usuario.password),
-            usuario.email
-          ];
-          connection.query(sql, values, function (err, result) {
-            if (err) throw err;
-            console.log(result);
-            resolve(result);
-          });
-        } else {
-          reject({ error: 'user_exists' });
-        }
-      }
-    }); */
   });
 };
 
@@ -302,7 +221,7 @@ ControllerUsuarios.loginUsuario = function(usuario) {
         const token = jwt.sign(
           { idusuario: usuariosExistentes[0][0].idusuario },
           config.jwtKey // , { expiresIn: config.expirationTime }
-        ); //////////////////
+        );
         const credentials = {
           nick: usuariosExistentes[0][0].nick,
           idusuario: usuariosExistentes[0][0].idusuario,
@@ -313,56 +232,6 @@ ControllerUsuarios.loginUsuario = function(usuario) {
     } catch (error) {
       reject({ error: 'Error inesperado en loginUsuario' });
     }
-    /* connection.query(sql, [usuario.email], function (err, result) {
-      console.log(result);
-      if (err) {
-        reject({ error: 'Error inesperado en loginUsuario' });
-      } else {
-        if (result.length <= 0) {
-          reject({ error: 'user_not_found' });
-        } else if (!bcrypt.compareSync(usuario.password, result[0].password)) {
-          reject({ error: 'password_missmatch' });
-        } else {
-          const token = jwt.sign(
-            { idusuario: result[0].idusuario },
-            config.jwtKey // , { expiresIn: config.expirationTime }
-          ); //////////////////
-          const credentials = {
-            nick: result[0].nick,
-            idusuario: result[0].idusuario,
-            token: token
-          };
-          resolve(credentials);
-        }
-      }
-    }); */
-  });
-};
-
-/**
- * Obtiene los proyectos favoritos de un usuario
- * @param {number} idusuario id del usuario
- * @returns [ {idproyecto, idusuario, nombre} ]
- */
-ControllerUsuarios.getUsuarioProyectosFavoritos = function(idusuario) {
-  return new Promise(async function(resolve, reject) {
-    const sql =
-      'select pr.*, p.nombre from proyectosfavoritos pr, proyectos p where idusuario=? and pr.idproyecto=p.idproyecto';
-    const arr = [idusuario];
-    try {
-      let proyectos = await connection.query(sql, arr);
-      resolve(proyectos[0]);
-    } catch (error) {
-      reject({ error: 'Error inesperado en getUsuarioProyectosFavoritos' });
-    }
-    /*  connection.query(sql, [idusuario], function (err, result) {
-       if (err) {
-         reject({ error: 'Error inesperado en getUsuarioProyectosFavoritos' });
-       } else {
-         console.log(result);
-         resolve(result);
-       }
-     }); */
   });
 };
 
@@ -381,14 +250,6 @@ ControllerUsuarios.agregarUsuarioProyectosFavoritos = function(idusuario, data) 
     } catch (error) {
       reject({ error: 'Error inesperado en agregarUsuarioProyectosFavoritos' });
     }
-    /* connection.query(sql, [idusuario, data.idproyecto], function (err, result) {
-      if (err) {
-        reject({ error: 'Error inesperado en agregarUsuarioProyectosFavoritos' });
-      } else {
-        console.log(result);
-        resolve(result);
-      }
-    }); */
   });
 };
 
@@ -407,14 +268,6 @@ ControllerUsuarios.eliminarUsuarioProyectosFavoritos = function(idusuario, idpro
     } catch (error) {
       reject({ error: 'Error inesperado en eliminarUsuarioProyectosFavoritos' });
     }
-    /* connection.query(sql, [idusuario, idproyecto], function (err, result) {
-      if (err) {
-        reject({ error: 'Error inesperado en eliminarUsuarioProyectosFavoritos' });
-      } else {
-        console.log(result);
-        resolve(result);
-      }
-    }); */
   });
 };
 

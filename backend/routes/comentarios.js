@@ -8,8 +8,6 @@ const { propertyChecker } = require('../helpers/propertyChecker');
 /* COMENTARIOS */
 router.post('/', verifyToken, function(req, res, next) {
   console.log('crearComentario');
-  /* const data = { comentario: req.body.comentario, idpbi: req.body.idpbi, idusuario: req.body.idusuario, fecha: req.body.fecha };
-  if (!data.nombre || !data.idpbi || !data.done)  */
   if (!propertyChecker(req.body, ['comentario', 'idpbi', 'idusuario', 'fecha']))
     throw new ErrorHandler(422, 'Missing required fields: comentario, idpbi, idusuario, fecha');
   controllerComentarios

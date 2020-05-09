@@ -15,14 +15,6 @@ ControllerCriterios.crearCriterio = function(criterio) {
     } catch (error) {
       reject({ error: 'Error inesperado en crearCriterio' });
     }
-    /* connection.query(sql, array, function (err, result) {
-      if (err) {
-        reject({ error: 'Error inesperado en crearCriterio' });
-      } else {
-        console.log(result);
-        resolve(result);
-      }
-    }); */
   });
 };
 
@@ -41,14 +33,6 @@ ControllerCriterios.actualizarCriterio = function(idcriterio, criterio) {
     } catch (error) {
       reject({ error: 'Error inesperado en actualizarCriterio' });
     }
-    /* connection.query(sql, array, function (err, result) {
-      if (err) {
-        reject({ error: 'Error inesperado en actualizarCriterio' });
-      } else {
-        console.log(result);
-        resolve(result);
-      }
-    }); */
   });
 };
 
@@ -66,14 +50,6 @@ ControllerCriterios.borrarCriterio = function(idcriterio) {
     } catch (error) {
       reject({ error: 'Error inesperado en borrarCriterio' });
     }
-    /* connection.query(sql, array, function (err, result) {
-      if (err) {
-        reject({ error: 'Error inesperado en borrarCriterio' });
-      } else {
-        console.log(result);
-        resolve(result);
-      }
-    }); */
   });
 };
 
@@ -92,14 +68,6 @@ ControllerCriterios.obtenerCriteriosPbi = function(idpbi) {
     } catch (error) {
       reject({ error: 'Error inesperado en obtenerCriteriosPbi' });
     }
-    /* connection.query(sql, array, function (err, result) {
-      if (err) {
-        reject({ error: 'Error inesperado en obtenerCriteriosPbi' });
-      } else {
-        console.log(result);
-        resolve(result);
-      }
-    }); */
   });
 };
 
