@@ -93,10 +93,12 @@ export class PolynomialRegressionComponent implements Grafico, OnInit, OnDestroy
     /*  this.mediaAverage = 0; */
 
     // obtener ultimo sprint:
-    this.ultimoSprint = 0;
+    /* this.ultimoSprint = 0;
     this.pbis.forEach((pbi: Pbi) => {
       if (pbi.sprint > this.ultimoSprint) this.ultimoSprint = pbi.sprint;
-    });
+    }); */
+    this.ultimoSprint = this.proyecto.sprintActual;
+
     // resets de numeros de inputs:
     if (this.sprintNumber == 0) this.sprintNumber = this.ultimoSprint;
     if (this.deadlineSprint == 0) this.deadlineSprint = this.ultimoSprint + 5; // 5 por poner un numero
@@ -109,7 +111,7 @@ export class PolynomialRegressionComponent implements Grafico, OnInit, OnDestroy
 
     // generar lista sprints y estimaciones:
     for (var i = 0; i <= this.ultimoSprint; i++) {
-      this.sprints.push(new Sprint(i.toString(), i, 0, 0, 0, ''));
+      this.sprints.push(new Sprint((i + 1).toString(), i + 1, 0, 0, 0, ''));
       if (i == 0) {
         this.sprints[i].restante = this.puntosTotales;
       } else {
@@ -126,7 +128,7 @@ export class PolynomialRegressionComponent implements Grafico, OnInit, OnDestroy
     //console.log(this.listaSprints);
     this.listaScope = [];
     for (var i = 0; i <= this.ultimoSprint; i++) {
-      this.listaScope[i] = [this.sprints[i].sprint, this.sprints[i].restante];
+      this.listaScope[i] = [this.sprints[i].sprintNumber, this.sprints[i].restante];
     }
   }
 
@@ -165,7 +167,7 @@ export class PolynomialRegressionComponent implements Grafico, OnInit, OnDestroy
         }
         this.listaAverage.push([finalX, finalY]); */
     for (var i = startingSprint; i <= this.ultimoSprint; i++) {
-      this.listaAverage.push([i, this.regression.predict(i)]);
+      this.listaAverage.push([i + 1, this.regression.predict(i)]); // +1 due to axis starting at 1
     }
 
     /* const initialX = this.sprints[0].sprint;
@@ -185,7 +187,8 @@ export class PolynomialRegressionComponent implements Grafico, OnInit, OnDestroy
     while (notZero) {
       sprint += 0.1;
       var r = this.regression.predict(sprint);
-      if (r > 0) this.listaAverage.push([sprint, r]);
+      if (r > 0) this.listaAverage.push([sprint + 1, r]);
+      // +1 due to axis starting at 1
       else notZero = false;
       // si se excede el limite:
       if (sprint > this.deadlineSprint + this.deadlineSprint * 0.5) notZero = false;
@@ -195,7 +198,7 @@ export class PolynomialRegressionComponent implements Grafico, OnInit, OnDestroy
   generarPuntosCorte() {
     this.puntoCorteAverage = [];
     if (this.listaAverage[this.listaAverage.length - 1][0] >= this.deadlineSprint) {
-      const corteAverage = this.regression.predict(this.deadlineSprint);
+      const corteAverage = this.regression.predict(this.deadlineSprint - 1); // -1 due to axis starting at 1
       this.puntoCorteAverage.push([this.deadlineSprint, corteAverage]);
     }
   }

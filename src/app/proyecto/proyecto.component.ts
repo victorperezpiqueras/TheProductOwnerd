@@ -109,6 +109,7 @@ export class ProyectoComponent implements OnInit, OnDestroy {
       .subscribe(sprintGoals => {
         this.sprintGoals = sprintGoals;
         this.updateSprintGoal();
+        this.actualizarComponentes();
         this.isLoading = false;
       });
   }

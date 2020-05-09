@@ -104,10 +104,12 @@ export class VelocityComponent implements Grafico, OnInit, OnDestroy {
     this.mediaAverageWorst = 0;
 
     // obtener ultimo sprint:
-    this.ultimoSprint = 0;
-    this.pbis.forEach((pbi: Pbi) => {
+    /*this.ultimoSprint = 0;
+     this.pbis.forEach((pbi: Pbi) => {
       if (pbi.sprint > this.ultimoSprint) this.ultimoSprint = pbi.sprint;
-    });
+    }); */
+    this.ultimoSprint = this.proyecto.sprintActual;
+
     // resets de numeros de inputs:
     if (this.sprintNumber == 0) this.sprintNumber = this.ultimoSprint;
     if (this.sprintNumberBW == 0 && this.sprintNumber - 3 > 0) this.sprintNumberBW = 3;
@@ -121,14 +123,14 @@ export class VelocityComponent implements Grafico, OnInit, OnDestroy {
 
     // generar lista sprints y estimaciones:
     for (var i = 0; i <= this.ultimoSprint; i++) {
-      this.sprints.push(new Sprint(i.toString(), i, 0, 0, 0, ''));
-      if (i == 0) {
+      this.sprints.push(new Sprint((i + 1).toString(), i + 1, 0, 0, 0, ''));
+      if (i === 0) {
         this.sprints[i].restante = this.puntosTotales;
       } else {
         // sumar las estimaciones para cada sprint:
         var sumpbis = 0;
         this.pbis.forEach((pbi: Pbi) => {
-          if (pbi.sprint == i) sumpbis += pbi.estimacion;
+          if (pbi.sprint === i) sumpbis += pbi.estimacion;
         });
         // restar al total anterior las del sprint
         this.sprints[i].restante = this.sprints[i - 1].restante - sumpbis;
@@ -138,7 +140,7 @@ export class VelocityComponent implements Grafico, OnInit, OnDestroy {
     //console.log(this.listaSprints);
     this.listaScope = [];
     for (var i = 0; i <= this.ultimoSprint; i++) {
-      this.listaScope[i] = [this.sprints[i].sprint, this.sprints[i].restante];
+      this.listaScope[i] = [this.sprints[i].sprintNumber, this.sprints[i].restante];
     }
   }
 
@@ -173,7 +175,7 @@ export class VelocityComponent implements Grafico, OnInit, OnDestroy {
     // calculamos la proporcion del ultimo sprint esperado:
     puntoFinal += (restantes % this.mediaAverage) / this.mediaAverage;
 
-    this.listaAverage.push([puntoFinal, 0]);
+    this.listaAverage.push([puntoFinal + 1, 0]); // +1 due to axis starting at 1
   }
 
   generarBestWorstAverage(numeroSprints: number, sprintNumberBW: number) {
@@ -227,8 +229,8 @@ export class VelocityComponent implements Grafico, OnInit, OnDestroy {
     puntoFinalBest += (restantes % this.mediaAverageBest) / this.mediaAverageBest;
     // insertamos los puntos finales:
     // por si alguna media diese 0:
-    if (this.mediaAverageWorst > 0) this.listaAverageWorst.push([puntoFinalWorst, 0]);
-    if (this.mediaAverageBest > 0) this.listaAverageBest.push([puntoFinalBest, 0]);
+    if (this.mediaAverageWorst > 0) this.listaAverageWorst.push([puntoFinalWorst + 1, 0]); // +1 due to axis starting at 1
+    if (this.mediaAverageBest > 0) this.listaAverageBest.push([puntoFinalBest + 1, 0]); // +1 due to axis starting at 1
   }
 
   generarDeadline(deadlineSprint: number) {
@@ -245,17 +247,19 @@ export class VelocityComponent implements Grafico, OnInit, OnDestroy {
     if (this.listaAverage[this.listaAverage.length - 1][0] >= this.deadlineSprint) {
       // y - y0 = m·(x-x0) --> y - this.sprints[this.ultimoSprint].restante = media*(deadline-this.ultimoSprint)
       var corteAverage =
-        this.sprints[this.ultimoSprint].restante - this.mediaAverage * (this.deadlineSprint - this.ultimoSprint);
+        this.sprints[this.ultimoSprint].restante - this.mediaAverage * (this.deadlineSprint - (this.ultimoSprint + 1)); // +1 due to axis starting at 1
       this.puntoCorteAverage.push([this.deadlineSprint, corteAverage]);
     }
     if (this.listaAverageWorst[this.listaAverageWorst.length - 1][0] >= this.deadlineSprint) {
       var corteAverageWorst =
-        this.sprints[this.ultimoSprint].restante - this.mediaAverageWorst * (this.deadlineSprint - this.ultimoSprint);
+        this.sprints[this.ultimoSprint].restante -
+        this.mediaAverageWorst * (this.deadlineSprint - (this.ultimoSprint + 1)); // +1 due to axis starting at 1
       this.puntoCorteWorst.push([this.deadlineSprint, corteAverageWorst]);
     }
     if (this.listaAverageBest[this.listaAverageBest.length - 1][0] >= this.deadlineSprint) {
       var corteAverageBest =
-        this.sprints[this.ultimoSprint].restante - this.mediaAverageBest * (this.deadlineSprint - this.ultimoSprint);
+        this.sprints[this.ultimoSprint].restante -
+        this.mediaAverageBest * (this.deadlineSprint - (this.ultimoSprint + 1)); // +1 due to axis starting at 1
       this.puntoCorteBest.push([this.deadlineSprint, corteAverageBest]);
     }
   }
@@ -285,7 +289,7 @@ export class VelocityComponent implements Grafico, OnInit, OnDestroy {
               fontSize: '16px'
             }
           },
-          min: 0,
+          min: 1,
           max: this.maxValor + 5,
           tickInterval: 1
         }

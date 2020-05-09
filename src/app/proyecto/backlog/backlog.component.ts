@@ -108,9 +108,8 @@ export class BacklogComponent implements OnInit, OnDestroy {
   }
 
   actualizarFiltro() {
-    if (this.searchword == '') {
+    if (this.searchword === '') {
       this.clearSearch();
-      this.priorityOn = true;
     } else {
       this.botonLabel = 'Filter by Label';
       this.botonLabelColor = this.getLabelButtonColor();
@@ -119,8 +118,8 @@ export class BacklogComponent implements OnInit, OnDestroy {
 
     this.showingPbis = this.pbis.filter(pbi => {
       if (
-        pbi.titulo.includes(this.searchword) ||
-        (pbi.descripcion && pbi.descripcion.includes(this.searchword) && pbi.done == 0)
+        pbi.titulo.toLowerCase().includes(this.searchword.toLowerCase()) ||
+        (pbi.descripcion && pbi.descripcion.toLowerCase().includes(this.searchword.toLowerCase()) && pbi.done == 0)
       )
         return true;
     });
@@ -129,8 +128,8 @@ export class BacklogComponent implements OnInit, OnDestroy {
     });
     this.showingDonePbis = this.pbis.filter(pbi => {
       if (
-        pbi.titulo.includes(this.searchword) ||
-        (pbi.descripcion && pbi.descripcion.includes(this.searchword) && pbi.done == 1)
+        pbi.titulo.toLowerCase().includes(this.searchword.toLowerCase()) ||
+        (pbi.descripcion && pbi.descripcion.toLowerCase().includes(this.searchword.toLowerCase()) && pbi.done == 1)
       )
         return true;
     });
@@ -197,10 +196,10 @@ export class BacklogComponent implements OnInit, OnDestroy {
     } else {
       this.botonLabel = label.charAt(0).toUpperCase() + label.substring(1);
       this.showingPbis = this.pbis.filter(pbi => {
-        if (pbi.label == label && pbi.done == 0) return true;
+        if (pbi.label === label && pbi.done === 0) return true;
       });
       this.showingDonePbis = this.pbis.filter(pbi => {
-        if (pbi.label == label && pbi.done == 1) return true;
+        if (pbi.label === label && pbi.done === 1) return true;
       });
     }
     this.botonLabelColor = this.getLabelButtonColor();

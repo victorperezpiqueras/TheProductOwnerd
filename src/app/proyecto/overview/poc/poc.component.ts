@@ -61,10 +61,12 @@ export class PocComponent implements Grafico, OnInit, OnDestroy {
     this.listaInfrastructures = [];
     this.listaBugs = [];
 
-    this.ultimoSprint = 0;
+    /* this.ultimoSprint = 0;
     this.pbis.forEach((pbi: Pbi) => {
       if (pbi.sprint > this.ultimoSprint) this.ultimoSprint = pbi.sprint;
-    });
+    }); */
+    this.ultimoSprint = this.proyecto.sprintActual;
+
     // no debería verse los sprints por el sprint ultimo sino por el del proyecto
     if (this.ultimoSprint > this.proyecto.sprintActual) this.ultimoSprint = this.proyecto.sprintActual;
 
@@ -73,12 +75,12 @@ export class PocComponent implements Grafico, OnInit, OnDestroy {
 
     // generar lista sprints y estimaciones:
     for (var i = 0; i <= this.ultimoSprint; i++) {
-      this.sprints.push(new Sprint('Sprint ' + i.toString(), i, 0, 0, 0, ''));
+      this.sprints.push(new Sprint('Sprint ' + (i + 1).toString(), i + 1, 0, 0, 0, ''));
 
-      this.listaFeatures.push(new Sprint('Sprint ' + i.toString(), i, 0, 0, 0, ''));
-      this.listaInfrastructures.push(new Sprint('Sprint ' + i.toString(), i, 0, 0, 0, ''));
-      this.listaTechDebt.push(new Sprint('Sprint ' + i.toString(), i, 0, 0, 0, ''));
-      this.listaBugs.push(new Sprint('Sprint ' + i.toString(), i, 0, 0, 0, ''));
+      this.listaFeatures.push(new Sprint('Sprint ' + (i + 1).toString(), i + 1, 0, 0, 0, ''));
+      this.listaInfrastructures.push(new Sprint('Sprint ' + (i + 1).toString(), i + 1, 0, 0, 0, ''));
+      this.listaTechDebt.push(new Sprint('Sprint ' + (i + 1).toString(), i + 1, 0, 0, 0, ''));
+      this.listaBugs.push(new Sprint('Sprint ' + (i + 1).toString(), i + 1, 0, 0, 0, ''));
       if (i == 0) {
         this.sprints[i].quemadoRelativo = 0;
         this.listaFeatures[i].quemadoRelativo = 0;
@@ -127,14 +129,14 @@ export class PocComponent implements Grafico, OnInit, OnDestroy {
     }
     this.listaTotal = [];
     for (var i = 0; i <= this.ultimoSprint; i++) {
-      this.listaTotal[i] = [this.listaFeatures[i].sprint, this.sprints[i].quemadoRelativo];
-      this.listaFeatures[i] = [this.listaFeatures[i].sprint, this.listaFeatures[i].quemadoRelativo];
-      this.listaTechDebt[i] = [this.listaTechDebt[i].sprint, this.listaTechDebt[i].quemadoRelativo];
+      this.listaTotal[i] = [this.listaFeatures[i].sprintNumber, this.sprints[i].quemadoRelativo];
+      this.listaFeatures[i] = [this.listaFeatures[i].sprintNumber, this.listaFeatures[i].quemadoRelativo];
+      this.listaTechDebt[i] = [this.listaTechDebt[i].sprintNumber, this.listaTechDebt[i].quemadoRelativo];
       this.listaInfrastructures[i] = [
-        this.listaInfrastructures[i].sprint,
+        this.listaInfrastructures[i].sprintNumber,
         this.listaInfrastructures[i].quemadoRelativo
       ];
-      this.listaBugs[i] = [this.listaBugs[i].sprint, this.listaBugs[i].quemadoRelativo];
+      this.listaBugs[i] = [this.listaBugs[i].sprintNumber, this.listaBugs[i].quemadoRelativo];
     }
   }
 
@@ -159,7 +161,8 @@ export class PocComponent implements Grafico, OnInit, OnDestroy {
           }
         },
         tickInterval: 1,
-        max: this.ultimoSprint + 1
+        min: 1,
+        max: this.proyecto.sprintActual + 1
       },
       yAxis: {
         title: {

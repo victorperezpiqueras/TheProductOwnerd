@@ -81,10 +81,12 @@ export class PbcComponent implements Grafico, OnInit, OnDestroy {
     this.listaInfrastructuresSC = [];
     this.listaBugsSC = [];
 
-    this.ultimoSprint = 0;
+    /* this.ultimoSprint = 0;
     this.pbis.forEach((pbi: Pbi) => {
       if (pbi.sprint > this.ultimoSprint) this.ultimoSprint = pbi.sprint;
-    });
+    }); */
+    this.ultimoSprint = this.proyecto.sprintActual;
+
     // no debería verse los sprints por el sprint ultimo sino por el del proyecto
     if (this.ultimoSprint > this.proyecto.sprintActual) this.ultimoSprint = this.proyecto.sprintActual;
 
@@ -109,12 +111,12 @@ export class PbcComponent implements Grafico, OnInit, OnDestroy {
 
     // generar lista sprints y estimaciones:
     for (var i = 0; i <= this.ultimoSprint; i++) {
-      this.sprints.push(new Sprint('Sprint ' + i.toString(), i, 0, 0, 0, ''));
-      this.listaFeatures.push(new Sprint('Sprint ' + i.toString(), i, 0, 0, 0, ''));
-      this.listaInfrastructures.push(new Sprint('Sprint ' + i.toString(), i, 0, 0, 0, ''));
-      this.listaTechDebt.push(new Sprint('Sprint ' + i.toString(), i, 0, 0, 0, ''));
-      this.listaBugs.push(new Sprint('Sprint ' + i.toString(), i, 0, 0, 0, ''));
-      if (i == 0) {
+      this.sprints.push(new Sprint('Sprint ' + (i + 1).toString(), i + 1, 0, 0, 0, ''));
+      this.listaFeatures.push(new Sprint('Sprint ' + (i + 1).toString(), i + 1, 0, 0, 0, ''));
+      this.listaInfrastructures.push(new Sprint('Sprint ' + (i + 1).toString(), i + 1, 0, 0, 0, ''));
+      this.listaTechDebt.push(new Sprint('Sprint ' + (i + 1).toString(), i + 1, 0, 0, 0, ''));
+      this.listaBugs.push(new Sprint('Sprint ' + (i + 1).toString(), i + 1, 0, 0, 0, ''));
+      if (i === 0) {
         this.sprints[i].restante = this.puntosTotales;
 
         this.listaFeatures[i].restante = this.puntosTotalesFeature;
@@ -177,13 +179,22 @@ export class PbcComponent implements Grafico, OnInit, OnDestroy {
       }
     }
 
-    for (var i = 0; i <= this.ultimoSprint; i++) {
+    /* for (var i = 0; i <= this.ultimoSprint; i++) {
       this.listaScope[i] = [this.sprints[i].sprint, this.sprints[i].restante];
 
       this.listaFeatures[i] = [this.listaFeatures[i].sprint, this.listaFeatures[i].restante];
       this.listaTechDebt[i] = [this.listaTechDebt[i].sprint, this.listaTechDebt[i].restante];
       this.listaInfrastructures[i] = [this.listaInfrastructures[i].sprint, this.listaInfrastructures[i].restante];
       this.listaBugs[i] = [this.listaBugs[i].sprint, this.listaBugs[i].restante];
+    } */
+
+    for (var i = 0; i <= this.ultimoSprint; i++) {
+      this.listaScope[i] = [this.sprints[i].sprintNumber, this.sprints[i].restante];
+
+      this.listaFeatures[i] = [this.listaFeatures[i].sprintNumber, this.listaFeatures[i].restante];
+      this.listaTechDebt[i] = [this.listaTechDebt[i].sprintNumber, this.listaTechDebt[i].restante];
+      this.listaInfrastructures[i] = [this.listaInfrastructures[i].sprintNumber, this.listaInfrastructures[i].restante];
+      this.listaBugs[i] = [this.listaBugs[i].sprintNumber, this.listaBugs[i].restante];
     }
   }
 
@@ -206,9 +217,11 @@ export class PbcComponent implements Grafico, OnInit, OnDestroy {
             fontSize: '16px'
           }
         },
+        allowDecimals: false,
         tickInterval: 1,
-        min: 0,
-        startOnTick: true
+        min: 1,
+        max: this.proyecto.sprintActual + 1
+        /*  startOnTick: true */
       },
       yAxis: {
         title: {
@@ -244,6 +257,12 @@ export class PbcComponent implements Grafico, OnInit, OnDestroy {
           dataLabels: {
             enabled: false
           }
+          /*  tooltip: {
+             headerFormat: null,
+             pointFormatter: function () {
+               return 'Features: <b>' + this.y.toFixed(0) + '</b><br/>Remaining Story Points: ';
+             }
+           } */
         },
         {
           name: 'Tech-debt',

@@ -97,10 +97,11 @@ export class LinearRegressionComponent implements Grafico, OnInit, OnDestroy {
     this.mediaAverage = 0;
 
     // obtener ultimo sprint:
-    this.ultimoSprint = 0;
+    /* this.ultimoSprint = 0;
     this.pbis.forEach((pbi: Pbi) => {
       if (pbi.sprint > this.ultimoSprint) this.ultimoSprint = pbi.sprint;
-    });
+    }); */
+    this.ultimoSprint = this.proyecto.sprintActual;
     // resets de numeros de inputs:
     if (this.sprintNumber == 0) this.sprintNumber = this.ultimoSprint;
     if (this.deadlineSprint == 0) this.deadlineSprint = this.ultimoSprint + 5; // 5 por poner un numero
@@ -113,7 +114,7 @@ export class LinearRegressionComponent implements Grafico, OnInit, OnDestroy {
 
     // generar lista sprints y estimaciones:
     for (var i = 0; i <= this.ultimoSprint; i++) {
-      this.sprints.push(new Sprint(i.toString(), i, 0, 0, 0, ''));
+      this.sprints.push(new Sprint((i + 1).toString(), i + 1, 0, 0, 0, ''));
       if (i == 0) {
         this.sprints[i].restante = this.puntosTotales;
       } else {
@@ -130,7 +131,7 @@ export class LinearRegressionComponent implements Grafico, OnInit, OnDestroy {
     //console.log(this.listaSprints);
     this.listaScope = [];
     for (var i = 0; i <= this.ultimoSprint; i++) {
-      this.listaScope[i] = [this.sprints[i].sprint, this.sprints[i].restante];
+      this.listaScope[i] = [this.sprints[i].sprintNumber, this.sprints[i].restante];
     }
   }
 
@@ -163,8 +164,8 @@ export class LinearRegressionComponent implements Grafico, OnInit, OnDestroy {
     const finalX = -this.regression.coefficients[0] / this.regression.coefficients[1];
     const finalY = 0;
 
-    this.listaAverage.push([initialX, initialY]);
-    this.listaAverage.push([finalX, finalY]);
+    this.listaAverage.push([initialX + 1, initialY]);
+    this.listaAverage.push([finalX + 1, finalY]);
     //console.log(this.listaAverage)
 
     //calcular media:
@@ -174,7 +175,8 @@ export class LinearRegressionComponent implements Grafico, OnInit, OnDestroy {
   generarPuntosCorte() {
     this.puntoCorteAverage = [];
     if (this.listaAverage[this.listaAverage.length - 1][0] >= this.deadlineSprint) {
-      this.puntoCorteAverage.push([this.deadlineSprint, this.regression.predict(this.deadlineSprint)]);
+      const corteAverage = this.regression.predict(this.deadlineSprint - 1); // -1 due to axis starting at 1
+      this.puntoCorteAverage.push([this.deadlineSprint, corteAverage]);
     }
   }
 
@@ -209,7 +211,7 @@ export class LinearRegressionComponent implements Grafico, OnInit, OnDestroy {
               fontSize: '16px'
             }
           },
-          min: 0,
+          min: 1,
           max: this.maxValor + 5,
           tickInterval: 1
         }
