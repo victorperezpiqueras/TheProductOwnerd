@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { finalize, map, takeUntil } from 'rxjs/operators';
 import { UsuariosService } from '@app/services/usuarios.service';
 import { CredentialsService, untilDestroyed } from '@app/core';
 import { Proyecto } from '@app/models/proyectos';
@@ -9,9 +8,7 @@ import { ProyectosService } from '@app/services/proyectos.service';
 import { Observable, forkJoin } from 'rxjs';
 import { MatDialogConfig, MatDialogRef, MatDialog } from '@angular/material/dialog';
 
-import * as Highcharts from 'highcharts';
 import { Permisos } from '@app/models/permisos';
-import { Pbi } from '@app/models/pbis';
 import { OverviewComponent } from './overview/overview.component';
 import { MatTabChangeEvent, MatSnackBar } from '@angular/material';
 import { BacklogComponent } from './backlog/backlog.component';
@@ -50,6 +47,7 @@ export class ProyectoComponent implements OnInit, OnDestroy {
   sprintGoal: string;
 
   isFirstSprint: boolean;
+  isFirstSprintDeadline: boolean;
 
   dialogRefConfirm: MatDialogRef<any>;
 
@@ -153,6 +151,9 @@ export class ProyectoComponent implements OnInit, OnDestroy {
 
   checkSprintZero() {
     this.proyecto.sprintActual === 1 ? (this.isFirstSprint = true) : (this.isFirstSprint = false);
+    this.proyecto.deadline <= this.proyecto.sprintActual
+      ? (this.isFirstSprintDeadline = true)
+      : (this.isFirstSprintDeadline = false);
   }
   updateSprintGoal() {
     this.showingGoal = this.sprintGoals.find((goal: SprintGoal) => goal.sprintNumber === this.proyecto.sprintActual);
@@ -254,6 +255,68 @@ export class ProyectoComponent implements OnInit, OnDestroy {
           this.actualizarComponentes();
         });
     }
+  }
+
+  previousDeadline() {
+    if (!this.isFirstSprintDeadline) {
+      /* const dialogConfig = new MatDialogConfig();
+      dialogConfig.autoFocus = false;
+      dialogConfig.data = {
+        dialogMode: 'Deadline',
+        dialogModeVerbo: 'shorten deadline to',
+        descripcion: 'Deadline Sprint ' + this.proyecto.deadline + ' -> Deadline Sprint ' + (this.proyecto.deadline - 1),
+        botonConfirm: 'Shorten Deadline'
+      };
+      this.dialogRefConfirm = this.dialog.open(ConfirmDialogComponent, dialogConfig);
+      this.dialogRefConfirm
+        .afterClosed()
+        .pipe(untilDestroyed(this))
+        .subscribe(data => {
+          if (data != undefined) { */
+      this.isLoading = true;
+      this.proyecto.deadline--;
+      this.proyectosService
+        .actualizarProyecto(this.proyecto.idproyecto, this.proyecto)
+        .pipe(untilDestroyed(this))
+        .subscribe(res => {
+          this.checkSprintZero();
+          this.actualizarComponentes();
+          this.isLoading = false;
+          this._snackBar.open('Deadline changed successfully!', 'Close', { duration: 3000 });
+        });
+      /*    }
+       }); */
+    }
+  }
+
+  nextDeadline() {
+    /* const dialogConfig = new MatDialogConfig();
+    dialogConfig.autoFocus = false;
+    dialogConfig.data = {
+      dialogMode: 'Deadline',
+      dialogModeVerbo: 'delay to',
+      descripcion: 'Deadline Sprint ' + this.proyecto.deadline + ' -> Deadline Sprint ' + (this.proyecto.deadline + 1),
+      botonConfirm: 'Delay Deadline'
+    };
+    this.dialogRefConfirm = this.dialog.open(ConfirmDialogComponent, dialogConfig);
+    this.dialogRefConfirm
+      .afterClosed()
+      .pipe(untilDestroyed(this))
+      .subscribe(data => {
+        if (data != undefined) { */
+    this.isLoading = true;
+    this.proyecto.deadline++;
+    this.proyectosService
+      .actualizarProyecto(this.proyecto.idproyecto, this.proyecto)
+      .pipe(untilDestroyed(this))
+      .subscribe(res => {
+        this.checkSprintZero();
+        this.actualizarComponentes();
+        this.isLoading = false;
+        this._snackBar.open('Deadline changed successfully!', 'Close', { duration: 3000 });
+      });
+    /*   }
+      }); */
   }
 
   ngOnDestroy() {}

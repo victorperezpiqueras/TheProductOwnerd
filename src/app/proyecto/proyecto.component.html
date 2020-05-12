@@ -58,15 +58,43 @@
             matTooltip="Switch to the previous sprint (requires confirmation)"
             matTooltipPosition="below"
             matTooltipShowDelay="500"
+            [matTooltipDisabled]="isFirstSprint"
             [ngStyle]="{ color: isFirstSprint ? '#cacaca' : '#000000' }"
-            >chevron_left</mat-icon
-          >
+            >chevron_left
+          </mat-icon>
           <h1 class="mat-h1" style="font-size: xx-large">{{ proyecto.sprintActual }}</h1>
           <mat-icon
             class="arrow-icon"
             (click)="nextSprint()"
             *ngIf="permisos && permisos.sprintGoals === 1"
             matTooltip="Switch to the next sprint (requires confirmation)"
+            matTooltipPosition="below"
+            matTooltipShowDelay="500"
+            >chevron_right
+          </mat-icon>
+
+          <div fxFlex="60"></div>
+
+          <h1 class="mat-h1">Deadline:</h1>
+          &nbsp;&nbsp;&nbsp;
+          <!-- <input matInput type="number" [(ngModel)]="proyecto.deadline" (ngModelChange)="nextDeadline()" style="width: 50px;"/> -->
+          <mat-icon
+            class="arrow-icon"
+            (click)="previousDeadline()"
+            *ngIf="permisos && permisos.sprintGoals === 1"
+            matTooltip="Shorten deadline"
+            matTooltipPosition="below"
+            [matTooltipDisabled]="isFirstSprintDeadline"
+            matTooltipShowDelay="500"
+            [ngStyle]="{ color: isFirstSprintDeadline ? '#cacaca' : '#000000' }"
+            >chevron_left
+          </mat-icon>
+          <h1 class="mat-h1" style="font-size: xx-large">{{ proyecto.deadline }}</h1>
+          <mat-icon
+            class="arrow-icon"
+            (click)="nextDeadline()"
+            *ngIf="permisos && permisos.sprintGoals === 1"
+            matTooltip="Delay deadline"
             matTooltipPosition="below"
             matTooltipShowDelay="500"
             >chevron_right

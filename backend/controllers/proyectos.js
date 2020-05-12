@@ -258,13 +258,15 @@ ControllerProyectos.crearProyecto = function(data) {
  */
 ControllerProyectos.actualizarProyecto = function(idproyecto, proyecto) {
   return new Promise(async function(resolve, reject) {
-    const sql = 'update proyectos set nombre=?, descripcion=?, vision=?, sprintActual=? where idproyecto=?';
+    console.log(proyecto);
+    const sql = 'update proyectos set nombre=?, descripcion=?, vision=?, sprintActual=?, deadline=? where idproyecto=?';
     try {
       let update = await connection.query(sql, [
         proyecto.nombre,
         proyecto.descripcion,
         proyecto.vision,
         proyecto.sprintActual,
+        proyecto.deadline,
         idproyecto
       ]);
       console.log(update[0]);

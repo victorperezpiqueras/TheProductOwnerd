@@ -236,6 +236,25 @@ ControllerUsuarios.loginUsuario = function(usuario) {
 };
 
 /**
+ * Obtiene los proyectos favoritos de un usuario
+ * @param {number} idusuario id del usuario
+ * @returns [ {idproyecto, idusuario, nombre} ]
+ */
+ControllerUsuarios.getUsuarioProyectosFavoritos = function(idusuario) {
+  return new Promise(async function(resolve, reject) {
+    const sql =
+      'select pr.*, p.nombre from proyectosfavoritos pr, proyectos p where idusuario=? and pr.idproyecto=p.idproyecto';
+    const arr = [idusuario];
+    try {
+      let proyectos = await connection.query(sql, arr);
+      resolve(proyectos[0]);
+    } catch (error) {
+      reject({ error: 'Error inesperado en getUsuarioProyectosFavoritos' });
+    }
+  });
+};
+
+/**
  * Agrega un proyecto del usuario a sus favoritos
  * @param {number} idusuario id del usuario
  * @param data contiene el id del proyecto

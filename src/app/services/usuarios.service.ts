@@ -26,7 +26,7 @@ export class UsuariosService {
    * Obtiene los proyectos de un usuario
    * @method GET
    * @param {number} idusuario id del usuario
-   * @returns [ {idproyecto, nombre, descripcion, sprintActual, vision} ]
+   * @returns [ {idproyecto, nombre, descripcion, sprintActual, deadline, vision} ]
    */
   getUsuarioProyectos(idusuario: number): Observable<any> {
     return this.http.get<any>(this.url + '/' + idusuario + '/proyectos', httpOptions);

@@ -7,6 +7,7 @@ export class Proyecto {
     public descripcion: string,
     public vision: string,
     public sprintActual: number,
+    public deadline: number,
     public usuarios: Usuario[]
   ) {}
 }

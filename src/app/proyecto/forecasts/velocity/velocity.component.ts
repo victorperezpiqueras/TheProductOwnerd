@@ -24,6 +24,9 @@ export class VelocityComponent implements Grafico, OnInit, OnDestroy {
   proyecto: Proyecto;
   pbis: Pbi[];
 
+  //updated:
+  newDeadlineFlag: boolean = true;
+
   // datos derivados
   listaScope: any[] = [];
   sprints: Sprint[] = [];
@@ -63,6 +66,7 @@ export class VelocityComponent implements Grafico, OnInit, OnDestroy {
   actualizarGrafico(proyecto: Proyecto, pbis: Pbi[]) {
     this.proyecto = proyecto;
     this.pbis = pbis;
+    this.newDeadlineFlag = true;
     this.generarDatos();
     this.generarGrafico();
   }
@@ -113,7 +117,10 @@ export class VelocityComponent implements Grafico, OnInit, OnDestroy {
     // resets de numeros de inputs:
     if (this.sprintNumber == 0) this.sprintNumber = this.ultimoSprint;
     if (this.sprintNumberBW == 0 && this.sprintNumber - 3 > 0) this.sprintNumberBW = 3;
-    if (this.deadlineSprint == 0) this.deadlineSprint = this.ultimoSprint + 5; // 5 por poner un numero
+    if (this.newDeadlineFlag) {
+      this.deadlineSprint = this.proyecto.deadline;
+      this.newDeadlineFlag = false;
+    }
 
     // generar suma pbis:
     this.puntosTotales = 0;

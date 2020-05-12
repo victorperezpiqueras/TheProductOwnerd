@@ -91,7 +91,12 @@ export class ConfirmDialogComponent implements OnInit {
         remove: true
       });
       this.openSnackBar('Sprint switched successfully!', 'Close');
-    }
+    } /* else if (this.dialogMode == 'Deadline') {
+      this.dialogRef.close({
+        remove: true
+      });
+      this.openSnackBar('Deadline changed successfully!', 'Close');
+    } */
   }
 
   close() {

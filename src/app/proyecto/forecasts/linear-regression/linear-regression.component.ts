@@ -26,6 +26,9 @@ export class LinearRegressionComponent implements Grafico, OnInit, OnDestroy {
   proyecto: Proyecto;
   pbis: Pbi[];
 
+  //updated:
+  newDeadlineFlag: boolean = true;
+
   // datos derivados
   listaScope: any[] = [];
   sprints: Sprint[] = [];
@@ -62,6 +65,7 @@ export class LinearRegressionComponent implements Grafico, OnInit, OnDestroy {
   actualizarGrafico(proyecto: Proyecto, pbis: Pbi[]) {
     this.proyecto = proyecto;
     this.pbis = pbis;
+    this.newDeadlineFlag = true;
     this.generarDatos();
     this.generarGrafico();
   }
@@ -102,9 +106,13 @@ export class LinearRegressionComponent implements Grafico, OnInit, OnDestroy {
       if (pbi.sprint > this.ultimoSprint) this.ultimoSprint = pbi.sprint;
     }); */
     this.ultimoSprint = this.proyecto.sprintActual;
+
     // resets de numeros de inputs:
     if (this.sprintNumber == 0) this.sprintNumber = this.ultimoSprint;
-    if (this.deadlineSprint == 0) this.deadlineSprint = this.ultimoSprint + 5; // 5 por poner un numero
+    if (this.newDeadlineFlag) {
+      this.deadlineSprint = this.proyecto.deadline;
+      this.newDeadlineFlag = false;
+    }
 
     // generar suma pbis:
     this.puntosTotales = 0;

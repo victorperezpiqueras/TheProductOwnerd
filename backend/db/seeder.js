@@ -8,7 +8,8 @@ try {
   console.log('Tabla USUARIOS creada');
 
   await connection.query(
-    'CREATE TABLE proyectos(idproyecto INT AUTO_INCREMENT PRIMARY KEY,nombre VARCHAR(255) NOT NULL, descripcion text, vision text, sprintActual int not null default 1)'
+    'CREATE TABLE proyectos(idproyecto INT AUTO_INCREMENT PRIMARY KEY,nombre VARCHAR(255) NOT NULL, descripcion text, vision text,' +
+      ' sprintActual int not null default 1, deadline int not null default 5)'
   );
   console.log('Tabla PROYECTOS creada');
 

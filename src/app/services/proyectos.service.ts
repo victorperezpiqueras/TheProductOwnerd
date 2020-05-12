@@ -24,7 +24,7 @@ export class ProyectosService {
    * Obtiene un proyecto dado su id
    * @method GET
    * @param {number} idproyecto id del proyecto
-   * @returns (idproyecto, nombre, descripcion, sprintActual, vision)
+   * @returns (idproyecto, nombre, descripcion, sprintActual, deadline, vision)
    */
   getProyecto(idproyecto: number): Observable<any> {
     return this.http.get<any>(this.url + '/' + idproyecto, httpOptions);
@@ -71,7 +71,7 @@ export class ProyectosService {
    * Actualiza los datos de un proyecto
    * @method PUT
    * @param {number} idproyecto id del proyecto
-   * @param proyecto contiene los datos del proyecto: nombre, descripcion, vision, sprintActual
+   * @param proyecto contiene los datos del proyecto: nombre, descripcion, vision, sprintActual, deadline
    */
   actualizarProyecto(idproyecto: number, proyecto: any): Observable<any> {
     return this.http.put<any>(this.url + '/' + idproyecto, JSON.stringify(proyecto), httpOptions);
