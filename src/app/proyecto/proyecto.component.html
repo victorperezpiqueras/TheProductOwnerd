@@ -104,7 +104,7 @@
           <div style="margin-left: 15px;">
             <!-- <b>Sprint Goal: </b><br> -->
             <div *ngIf="showingGoal && permisos && permisos.sprintGoals === 1">
-              <mat-form-field appearance="outline" style="width: 90%;">
+              <mat-form-field appearance="outline" style="width: 85%;">
                 <mat-label class="mat-h2">Sprint Goal</mat-label>
                 <textarea matInput [(ngModel)]="showingGoal.goal" (ngModelChange)="switchSaveButton()"></textarea>
               </mat-form-field>

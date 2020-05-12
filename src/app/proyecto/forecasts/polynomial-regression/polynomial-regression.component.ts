@@ -287,7 +287,7 @@ export class PolynomialRegressionComponent implements Grafico, OnInit, OnDestroy
               return '<b>Sprint ' + this.x.toFixed(0) + '</b><br>Scope: ' + this.y;
             }
           },
-          enableMouseTracking: false,
+          /* enableMouseTracking: false, */
           marker: {
             enabled: true,
             radius: 1

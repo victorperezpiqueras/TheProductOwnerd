@@ -43,6 +43,10 @@ export class VelocityComparerComponent implements GraficoComparer, OnInit, OnDes
 
   ultimoSprint: number;
 
+  // deadline
+  listaDeadline: any[] = [];
+  maxDeadline: number;
+
   constructor() {}
 
   ngOnInit() {}
@@ -71,6 +75,9 @@ export class VelocityComparerComponent implements GraficoComparer, OnInit, OnDes
     // calcula los sprints relativos en funcion de todos los proyectos:
     this.recalcularEjesX();
     this.insertarDatosGrafico();
+
+    // pintar la deadline
+    this.generarDeadline(this.maxDeadline);
     //console.log(this.listaProyectosChart)
   }
 
@@ -111,7 +118,7 @@ export class VelocityComparerComponent implements GraficoComparer, OnInit, OnDes
     return array;
   }
 
-  recalcularEjesX(): void {
+  /* recalcularEjesX(): void {
     var maxSprint: number = 0;
     // obtener maximo sprint de todos:
     this.proyectos.forEach((proy: ProyectoData) => {
@@ -127,6 +134,24 @@ export class VelocityComparerComponent implements GraficoComparer, OnInit, OnDes
       }
     });
     //console.log(this.proyectos)
+  } */
+
+  recalcularEjesX(): void {
+    this.maxDeadline = 0;
+    // obtener maximo sprint de todos:
+    this.proyectos.forEach((proy: ProyectoData) => {
+      if (proy.proyecto.deadline > this.maxDeadline) this.maxDeadline = proy.proyecto.deadline;
+    });
+
+    // cambiar numeros de sprint desde el maximo hasta que se agote:
+    this.proyectos.forEach((proy: ProyectoData) => {
+      let contadorSprints = this.maxDeadline - (proy.proyecto.deadline - proy.proyecto.sprintActual);
+      for (var i = proy.sprints.length - 1; i >= 0; i--) {
+        proy.sprints[i].sprintNumberRelativo = contadorSprints;
+        contadorSprints--;
+      }
+    });
+    //console.log(this.proyectos)
   }
 
   insertarDatosGrafico(): void {
@@ -135,7 +160,12 @@ export class VelocityComparerComponent implements GraficoComparer, OnInit, OnDes
       var datosLinea: any[] = [];
       // para cada proyecto crear una lista de sus sprints para una linea:
       proy.sprints.forEach((sprint: SprintComparer) => {
-        datosLinea.push([sprint.sprintNumberRelativo, Number(sprint.restantesRelativos.toFixed(2))]);
+        /* datosLinea.push([sprint.sprintNumberRelativo, Number(sprint.restantesRelativos.toFixed(2))]); */
+        datosLinea.push({
+          x: sprint.sprintNumberRelativo,
+          y: Number(sprint.restantesRelativos.toFixed(2)),
+          sprint: sprint.sprintNumber
+        });
       });
 
       // crea la nueva linea:
@@ -152,7 +182,18 @@ export class VelocityComparerComponent implements GraficoComparer, OnInit, OnDes
         name: proy.proyecto.nombre,
         data: proy.series,
         type: 'line',
-        color: colores[colorIndex]
+        color: colores[colorIndex],
+        tooltip: {
+          pointFormat:
+            '<span style="color:{point.color}">●</span> {series.name}: <b>{point.y}</b> - Sprint: <b>{point.sprint}<b><br/>'
+          /* pointFormatter: function () {
+            return 'Sprint: ' + this.sprint+'<br>';
+          } */
+        },
+        marker: {
+          enabled: true,
+          radius: 3
+        }
       });
       colorIndex++;
     }); //console.log(this.listaProyectosSeries)
@@ -172,7 +213,7 @@ export class VelocityComparerComponent implements GraficoComparer, OnInit, OnDes
   }
 
   generarColoresAleatorios(numeroProyectos: number): string[] {
-    var colores: string[] = ['#ffbb00', '#00ad17', '#ad0000', '#2196f3', '#4d4d4d'];
+    var colores: string[] = ['#ffbb00', '#00ad17', '#ff06a4', '#2196f3', '#00ffe8', '#7c00ff'];
     var selectedColores: string[] = [];
     var counter = 0;
     while (counter < numeroProyectos) {
@@ -181,6 +222,28 @@ export class VelocityComparerComponent implements GraficoComparer, OnInit, OnDes
     }
     return selectedColores;
   }
+
+  generarDeadline(deadlineSprint: number) {
+    this.listaDeadline = [];
+    /* this.listaDeadline.push([deadlineSprint, 0]);
+    this.listaDeadline.push([deadlineSprint, 100]); */
+    this.listaDeadline.push({ x: deadlineSprint, y: 0 });
+    this.listaDeadline.push({ x: deadlineSprint, y: 100 });
+    this.listaProyectosSeries.push({
+      name: 'Deadline',
+      data: this.listaDeadline,
+      type: 'line',
+      color: '#b20000',
+      lineWidth: 3,
+      tooltip: {
+        headerFormat: null,
+        pointFormatter: function() {
+          return '<b>Sprint Deadline: ' + this.x.toFixed(0);
+        }
+      }
+    });
+  }
+
   generarGrafico() {
     this.chartOptions = {
       title: {
@@ -205,6 +268,7 @@ export class VelocityComparerComponent implements GraficoComparer, OnInit, OnDes
         },
         tickInterval: 1,
         min: 0,
+        max: this.maxDeadline + 1,
         startOnTick: true
       },
       yAxis: {

@@ -189,13 +189,61 @@ export class PbcComponent implements Grafico, OnInit, OnDestroy {
     } */
 
     for (var i = 0; i <= this.ultimoSprint; i++) {
-      this.listaScope[i] = [this.sprints[i].sprintNumber, this.sprints[i].restante];
-
-      this.listaFeatures[i] = [this.listaFeatures[i].sprintNumber, this.listaFeatures[i].restante];
-      this.listaTechDebt[i] = [this.listaTechDebt[i].sprintNumber, this.listaTechDebt[i].restante];
-      this.listaInfrastructures[i] = [this.listaInfrastructures[i].sprintNumber, this.listaInfrastructures[i].restante];
-      this.listaBugs[i] = [this.listaBugs[i].sprintNumber, this.listaBugs[i].restante];
+      if (i <= this.ultimoSprint - 1) {
+        this.listaScope[i] = {
+          x: this.sprints[i].sprintNumber,
+          y: this.sprints[i].restante,
+          quemado: this.sprints[i].restante - this.sprints[i + 1].restante
+        };
+        this.listaFeatures[i] = {
+          x: this.listaFeatures[i].sprintNumber,
+          y: this.listaFeatures[i].restante,
+          quemado: this.listaFeatures[i].restante - this.listaFeatures[i + 1].restante
+        };
+        this.listaTechDebt[i] = {
+          x: this.listaTechDebt[i].sprintNumber,
+          y: this.listaTechDebt[i].restante,
+          quemado: this.listaTechDebt[i].restante - this.listaTechDebt[i + 1].restante
+        };
+        this.listaInfrastructures[i] = {
+          x: this.listaInfrastructures[i].sprintNumber,
+          y: this.listaInfrastructures[i].restante,
+          quemado: this.listaInfrastructures[i].restante - this.listaInfrastructures[i + 1].restante
+        };
+        this.listaBugs[i] = {
+          x: this.listaBugs[i].sprintNumber,
+          y: this.listaBugs[i].restante,
+          quemado: this.listaBugs[i].restante - this.listaBugs[i + 1].restante
+        };
+      } else {
+        this.listaScope[i] = {
+          x: this.sprints[i].sprintNumber,
+          y: this.sprints[i].restante,
+          quemado: '?'
+        };
+        this.listaFeatures[i] = {
+          x: this.listaFeatures[i].sprintNumber,
+          y: this.listaFeatures[i].restante,
+          quemado: '?'
+        };
+        this.listaTechDebt[i] = {
+          x: this.listaTechDebt[i].sprintNumber,
+          y: this.listaTechDebt[i].restante,
+          quemado: '?'
+        };
+        this.listaInfrastructures[i] = {
+          x: this.listaInfrastructures[i].sprintNumber,
+          y: this.listaInfrastructures[i].restante,
+          quemado: '?'
+        };
+        this.listaBugs[i] = {
+          x: this.listaBugs[i].sprintNumber,
+          y: this.listaBugs[i].restante,
+          quemado: '?'
+        };
+      }
     }
+    console.log(this.listaFeatures);
   }
 
   generarGrafico() {
@@ -256,6 +304,10 @@ export class PbcComponent implements Grafico, OnInit, OnDestroy {
           color: '#00ad17',
           dataLabels: {
             enabled: false
+          },
+          tooltip: {
+            pointFormat:
+              '<span style="color:{point.color}">●</span> {series.name}: <b>{point.y}</b> - Burned: <b>{point.quemado}<b><br/>'
           }
           /*  tooltip: {
              headerFormat: null,
@@ -272,6 +324,10 @@ export class PbcComponent implements Grafico, OnInit, OnDestroy {
           color: '#ffbb00',
           dataLabels: {
             enabled: false
+          },
+          tooltip: {
+            pointFormat:
+              '<span style="color:{point.color}">●</span> {series.name}: <b>{point.y}</b> - Burned: <b>{point.quemado}<b><br/>'
           }
         },
         {
@@ -282,6 +338,10 @@ export class PbcComponent implements Grafico, OnInit, OnDestroy {
           color: '#2196f3',
           dataLabels: {
             enabled: false
+          },
+          tooltip: {
+            pointFormat:
+              '<span style="color:{point.color}">●</span> {series.name}: <b>{point.y}</b> - Burned: <b>{point.quemado}<b><br/>'
           }
         },
         {
@@ -292,6 +352,10 @@ export class PbcComponent implements Grafico, OnInit, OnDestroy {
           color: '#ad0000',
           dataLabels: {
             enabled: false
+          },
+          tooltip: {
+            pointFormat:
+              '<span style="color:{point.color}">●</span> {series.name}: <b>{point.y}</b> - Burned: <b>{point.quemado}<b><br/>'
           }
         },
         {
@@ -342,7 +406,11 @@ export class PbcComponent implements Grafico, OnInit, OnDestroy {
           name: 'Scope Line',
           data: this.listaScope,
           type: 'line',
-          color: '#4d4d4d'
+          color: '#4d4d4d',
+          tooltip: {
+            pointFormat:
+              '<span style="color:{point.color}">●</span> {series.name}: <b>{point.y}</b> - Total Burned: <b>{point.quemado}<b><br/>'
+          }
         }
       ],
       navigation: {

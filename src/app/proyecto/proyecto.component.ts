@@ -68,7 +68,7 @@ export class ProyectoComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     private activeRoute: ActivatedRoute,
     private _snackBar: MatSnackBar
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.isLoading = true;
@@ -177,6 +177,7 @@ export class ProyectoComponent implements OnInit, OnDestroy {
         if (data != undefined) {
           this.isLoading = true;
           this.proyecto.sprintActual++;
+          if (this.proyecto.deadline < this.proyecto.sprintActual) this.proyecto.deadline++;
           this.proyectosService
             .actualizarProyecto(this.proyecto.idproyecto, this.proyecto)
             .pipe(untilDestroyed(this))
@@ -319,7 +320,7 @@ export class ProyectoComponent implements OnInit, OnDestroy {
       }); */
   }
 
-  ngOnDestroy() {}
+  ngOnDestroy() { }
 
   get username(): string | null {
     const credentials = this.credentialsService.credentials;
