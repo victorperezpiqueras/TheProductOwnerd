@@ -94,13 +94,7 @@ export class PolynomialRegressionComponent implements Grafico, OnInit, OnDestroy
 
     this.puntoCorteAverage = [];
 
-    /*  this.mediaAverage = 0; */
-
     // obtener ultimo sprint:
-    /* this.ultimoSprint = 0;
-    this.pbis.forEach((pbi: Pbi) => {
-      if (pbi.sprint > this.ultimoSprint) this.ultimoSprint = pbi.sprint;
-    }); */
     this.ultimoSprint = this.proyecto.sprintActual;
 
     // resets de numeros de inputs:
@@ -150,51 +144,32 @@ export class PolynomialRegressionComponent implements Grafico, OnInit, OnDestroy
     var x: number[] = [];
     var y: number[] = [];
 
-    for (var i = startingSprint; i <= this.ultimoSprint; i++) {
+    for (var i = startingSprint; i <= this.ultimoSprint + 1; i++) {
+      // contar el punto del sprint siguiente
       x.push(i);
-      y.push(this.sprints[i].restante);
+      y.push(this.sprints[i - 1].restante);
     }
+
+    /* console.log(x)
+    console.log(y) */
 
     // generar regresion:
     this.regression = new PolynomialRegression(x, y, this.degree);
 
-    /* console.log(this.regression)
-        console.log(this.regression.toString()) */
+    console.log(this.regression);
+    console.log(this.regression.toString());
 
-    // calcular punto final: resolver ecuacion
-    /* const finalX = (-regression.coefficients[0]) / regression.coefficients[1];//esto esta mal
-        const finalY = 0;
-        const finalXrounded = Math.trunc(finalX) + 1;
-        console.log(regression)
-        console.log(finalX)
-        console.log(finalXrounded) */
-    // calcular lista de puntos:
-    /* for (var i = 0; i <= finalXrounded; i++) {
-            this.listaAverage.push([i, regression.predict(i)]);
-        }
-        this.listaAverage.push([finalX, finalY]); */
+    // calcular puntos finales:
     for (var i = startingSprint; i <= this.ultimoSprint; i++) {
-      this.listaAverage.push([i + 1, this.regression.predict(i)]); // +1 due to axis starting at 1
+      this.listaAverage.push({ x: i /* + 1 */, y: this.regression.predict(i) }); // +1 due to axis starting at 1
     }
-
-    /* const initialX = this.sprints[0].sprint;
-        const initialY = regression.predict(0);
-
-        
-        
-        this.listaAverage.push([initialX, initialY]);
-        this.listaAverage.push([finalX, finalY]); */
-
-    //console.log(this.listaAverage)
-    // calcular media:
-    /* this.mediaAverage = initialY / finalX; */
 
     var notZero = true;
     var sprint: number = this.ultimoSprint;
     while (notZero) {
       sprint += 0.1;
       var r = this.regression.predict(sprint);
-      if (r > 0) this.listaAverage.push([sprint + 1, r]);
+      if (r > 0) this.listaAverage.push({ x: sprint /* + 1 */, y: r });
       // +1 due to axis starting at 1
       else notZero = false;
       // si se excede el limite:
@@ -204,9 +179,9 @@ export class PolynomialRegressionComponent implements Grafico, OnInit, OnDestroy
 
   generarPuntosCorte() {
     this.puntoCorteAverage = [];
-    if (this.listaAverage[this.listaAverage.length - 1][0] >= this.deadlineSprint) {
-      const corteAverage = this.regression.predict(this.deadlineSprint - 1); // -1 due to axis starting at 1
-      this.puntoCorteAverage.push([this.deadlineSprint, corteAverage]);
+    if (this.listaAverage[this.listaAverage.length - 1].x >= this.deadlineSprint) {
+      const corteAverage = this.regression.predict(this.deadlineSprint /* - 1 */); // -1 due to axis starting at 1
+      this.puntoCorteAverage.push({ x: this.deadlineSprint, y: corteAverage });
     }
   }
 
@@ -215,18 +190,18 @@ export class PolynomialRegressionComponent implements Grafico, OnInit, OnDestroy
     var maxY: number = 0;
     var maxList = [];
     maxList.push(this.sprints[0].restante);
-    if (this.puntoCorteAverage.length) maxList.push(this.puntoCorteAverage[0][1]);
+    if (this.puntoCorteAverage.length) maxList.push(this.puntoCorteAverage[0].y);
     maxList.forEach((valor: number) => {
       if (maxY < valor) maxY = valor;
     });
-    this.listaDeadline.push([deadlineSprint, 0]);
-    this.listaDeadline.push([deadlineSprint, maxY]);
+    this.listaDeadline.push({ x: deadlineSprint, y: 0 });
+    this.listaDeadline.push({ x: deadlineSprint, y: maxY });
   }
 
   // valor calculado para limitar el rango del grafico
   calcularMaxValor() {
     this.maxValor = 0;
-    [this.deadlineSprint, this.listaAverage[this.listaAverage.length - 1][0]].forEach((valor: number) => {
+    [this.deadlineSprint, this.listaAverage[this.listaAverage.length - 1].x].forEach((valor: number) => {
       if (this.maxValor < valor) this.maxValor = valor;
     });
   }

@@ -599,6 +599,10 @@ export class PbiDialogComponent implements OnInit, OnDestroy {
     this.saveButtonDisabled = false;
   }
 
+  get isCreateMode(): boolean {
+    return this.dialogMode === 'Create new PBI';
+  }
+
   get idusuario(): number | null {
     const credentials = this.credentialsService.credentials;
     return credentials ? credentials.id : null;

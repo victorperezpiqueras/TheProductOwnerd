@@ -213,6 +213,8 @@
         <br /><br />
         <hr />
         <br />
+
+        <!-- ACCEPTANCE CRITERIA -->
         <div fxLayout="row">
           <mat-card class="comments-card">
             <mat-card-title>Acceptance Criteria</mat-card-title>
@@ -235,7 +237,7 @@
                 placeholder="New Acceptance Criteria"
                 [(ngModel)]="criterioData"
                 maxlength="50"
-                [disabled]="disabled || permisos.editarPBI == 0"
+                [disabled]="disabled || permisos.editarPBI == 0 || isCreateMode"
               />
             </mat-form-field>
             <button
@@ -243,7 +245,7 @@
               mat-raised-button
               (click)="crearCriterio()"
               [color]="'success'"
-              [disabled]="!criterioData"
+              [disabled]="!criterioData || isCreateMode"
               style="display: inline-block;width: 9vmin;height: 6vmin;min-width: 100px;min-height: 50px;"
             >
               <mat-icon>add_circle</mat-icon>&nbsp;&nbsp;Create
@@ -254,10 +256,9 @@
         <hr />
         <br />
 
+        <!-- DEPENDENCIES -->
         <div fxLayout="row">
-          <mat-card class="comments-card">
-            <mat-card-title>Dependencies</mat-card-title> </mat-card
-          ><br />
+          <mat-card class="comments-card"> <mat-card-title>Dependencies</mat-card-title> </mat-card><br />
           <mat-chip-list style="display: inline-block;margin-right: 2%;">
             <mat-chip
               *ngFor="let dep of dependencias"
@@ -278,7 +279,11 @@
               <mat-option *ngFor="let pbi of pbis" [value]="pbi">
                 #{{pbi.idpbi}} {{pbi.titulo}}</mat-option>
             </mat-select> -->
-            <mat-select [(ngModel)]="dependenciaData" (selectionChange)="actualizarDependencia()" [disabled]="disabled">
+            <mat-select
+              [(ngModel)]="dependenciaData"
+              (selectionChange)="actualizarDependencia()"
+              [disabled]="disabled || isCreateMode"
+            >
               <mat-option *ngFor="let pbi of notSelectedPbis" [value]="pbi"
                 >#{{ pbi.idpbi }} {{ pbi.titulo }}
               </mat-option>
@@ -329,7 +334,13 @@
           </div>
         </div>
         <div *ngIf="!uploadFileMode">
-          <button class="boton-cargar-imagen" mat-raised-button color="primary" (click)="cargarImagen()">
+          <button
+            class="boton-cargar-imagen"
+            mat-raised-button
+            color="primary"
+            (click)="cargarImagen()"
+            [disabled]="isCreateMode"
+          >
             <mat-icon>cloud_upload</mat-icon>&nbsp;Add file
           </button>
         </div>
@@ -386,14 +397,14 @@
       <div fxLayout="row" fxLayoutAlign="end end" style="justify-content: flex-end">
         <mat-form-field class="description" appearance="outline">
           <mat-label>Write a comment...</mat-label>
-          <textarea matInput [(ngModel)]="comentarioData"></textarea>
+          <textarea matInput [(ngModel)]="comentarioData" [disabled]="isCreateMode"></textarea>
         </mat-form-field>
         <button
           class="save-button"
           mat-raised-button
           (click)="crearComentario()"
           [color]="'success'"
-          [disabled]="!comentarioData"
+          [disabled]="!comentarioData || isCreateMode"
           style="justify-content: flex-end"
         >
           <mat-icon>add_comment</mat-icon>&nbsp;&nbsp;Comment

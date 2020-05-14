@@ -75,7 +75,7 @@
             matTooltipPosition="right"
             matTooltipShowDelay="500"
           >
-            Manual
+            Manual&nbsp;<mat-icon style="font-size: medium;">open_with</mat-icon>
           </button>
           <button
             mat-menu-item
@@ -182,6 +182,7 @@
                   {{ pbi.estimacion }}
                 </button>
                 <mat-icon
+                  class="drag-icon"
                   *ngIf="!(permisos?.ordenar == 0 || !priorityOn)"
                   cdkDragHandle
                   matTooltip="Drag to change prioritization"

@@ -171,9 +171,9 @@ export class PocComponent implements Grafico, OnInit, OnDestroy {
             fontSize: '16px'
           }
         },
-        labels: {
+        /* labels: {
           format: '{value}%'
-        },
+        }, */
         stackLabels: {
           enabled: true,
           style: {
@@ -195,7 +195,7 @@ export class PocComponent implements Grafico, OnInit, OnDestroy {
           name: 'Features',
           data: this.listaFeatures,
           type: 'column',
-          pointWidth: 60,
+          pointWidth: 30,
           color: '#00ad17',
           dataLabels: {
             enabled: false
@@ -205,7 +205,7 @@ export class PocComponent implements Grafico, OnInit, OnDestroy {
           name: 'Tech-debt',
           data: this.listaTechDebt,
           type: 'column',
-          pointWidth: 60,
+          pointWidth: 30,
           color: '#ffbb00',
           dataLabels: {
             enabled: false
@@ -215,7 +215,7 @@ export class PocComponent implements Grafico, OnInit, OnDestroy {
           name: 'Infrastructure',
           data: this.listaInfrastructures,
           type: 'column',
-          pointWidth: 60,
+          pointWidth: 30,
           color: '#2196f3',
           dataLabels: {
             enabled: false
@@ -225,7 +225,7 @@ export class PocComponent implements Grafico, OnInit, OnDestroy {
           name: 'Bugs',
           data: this.listaBugs,
           type: 'column',
-          pointWidth: 60,
+          pointWidth: 30,
           color: '#ad0000',
           dataLabels: {
             enabled: false
@@ -236,7 +236,10 @@ export class PocComponent implements Grafico, OnInit, OnDestroy {
           data: this.listaTotal,
           type: 'line',
           color: '#4d4d4d',
-          enableMouseTracking: false
+          enableMouseTracking: false,
+          dataLabels: {
+            enabled: false
+          }
         }
       ],
       navigation: {

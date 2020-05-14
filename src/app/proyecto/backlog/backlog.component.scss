@@ -79,6 +79,14 @@ mat-tab {
   padding-right: 5%;
 }
 
+.drag-icon {
+  color: grey;
+}
+
+.drag-icon:hover {
+  color: rgb(255, 81, 81);
+}
+
 .cdk-drag-preview {
   box-sizing: border-box;
   border-radius: 4px;

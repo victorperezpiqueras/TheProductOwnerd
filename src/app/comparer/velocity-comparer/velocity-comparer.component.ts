@@ -185,7 +185,7 @@ export class VelocityComparerComponent implements GraficoComparer, OnInit, OnDes
         color: colores[colorIndex],
         tooltip: {
           pointFormat:
-            '<span style="color:{point.color}">●</span> {series.name}: <b>{point.y}</b> - Sprint: <b>{point.sprint}<b><br/>'
+            '<span style="color:{point.color}">●</span> {series.name}: <b>{point.y} %</b> (Sprint: <b>{point.sprint}</b>)<br/>'
           /* pointFormatter: function () {
             return 'Sprint: ' + this.sprint+'<br>';
           } */

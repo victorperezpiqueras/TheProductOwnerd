@@ -154,9 +154,10 @@ export class LinearRegressionComponent implements Grafico, OnInit, OnDestroy {
     var x: number[] = [];
     var y: number[] = [];
 
-    for (var i = startingSprint; i <= this.ultimoSprint; i++) {
+    for (var i = startingSprint; i <= this.ultimoSprint + 1; i++) {
+      // contar el punto del sprint siguiente
       x.push(i);
-      y.push(this.sprints[i].restante);
+      y.push(this.sprints[i - 1].restante);
     }
 
     // generar regresion:
@@ -172,8 +173,8 @@ export class LinearRegressionComponent implements Grafico, OnInit, OnDestroy {
     const finalX = -this.regression.coefficients[0] / this.regression.coefficients[1];
     const finalY = 0;
 
-    this.listaAverage.push([initialX + 1, initialY]);
-    this.listaAverage.push([finalX + 1, finalY]);
+    this.listaAverage.push({ x: initialX /*  + 1 */, y: initialY });
+    this.listaAverage.push({ x: finalX /* + 1 */, y: finalY });
     //console.log(this.listaAverage)
 
     //calcular media:
@@ -182,22 +183,22 @@ export class LinearRegressionComponent implements Grafico, OnInit, OnDestroy {
 
   generarPuntosCorte() {
     this.puntoCorteAverage = [];
-    if (this.listaAverage[this.listaAverage.length - 1][0] >= this.deadlineSprint) {
-      const corteAverage = this.regression.predict(this.deadlineSprint - 1); // -1 due to axis starting at 1
+    if (this.listaAverage[this.listaAverage.length - 1].x >= this.deadlineSprint) {
+      const corteAverage = this.regression.predict(this.deadlineSprint /* - 1 */); // -1 due to axis starting at 1
       this.puntoCorteAverage.push([this.deadlineSprint, corteAverage]);
     }
   }
 
   generarDeadline(deadlineSprint: number) {
     this.listaDeadline = [];
-    this.listaDeadline.push([deadlineSprint, 0]);
-    this.listaDeadline.push([deadlineSprint, this.sprints[0].restante]);
+    this.listaDeadline.push({ x: deadlineSprint, y: 0 });
+    this.listaDeadline.push({ x: deadlineSprint, y: this.sprints[0].restante });
   }
 
   // valor calculado para limitar el rango del grafico
   calcularMaxValor() {
     this.maxValor = 0;
-    [this.deadlineSprint, this.listaAverage[this.listaAverage.length - 1][0]].forEach((valor: number) => {
+    [this.deadlineSprint, this.listaAverage[this.listaAverage.length - 1].x].forEach((valor: number) => {
       if (this.maxValor < valor) this.maxValor = valor;
     });
     if (this.maxValor > this.deadlineSprint * 2) this.maxValor = this.deadlineSprint;

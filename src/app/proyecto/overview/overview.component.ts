@@ -41,6 +41,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
 
   @ViewChild('pbc', { static: false }) pbc: PbcComponent;
   @ViewChild('poc', { static: false }) poc: PocComponent;
+  @ViewChild('bugs', { static: false }) bugs: PocComponent;
 
   pbis: Pbi[];
 
@@ -140,6 +141,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
         this.pbis = pbis;
         this.pbc.actualizarGrafico(this.proyecto, this.pbis);
         this.poc.actualizarGrafico(this.proyecto, this.pbis);
+        this.bugs.actualizarGrafico(this.proyecto, this.pbis);
       });
   }
 

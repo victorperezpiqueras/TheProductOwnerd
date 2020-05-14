@@ -23,6 +23,7 @@ import { PocComponent } from './overview/poc/poc.component';
 import { VelocityComponent } from './forecasts/velocity/velocity.component';
 import { LinearRegressionComponent } from './forecasts/linear-regression/linear-regression.component';
 import { PolynomialRegressionComponent } from './forecasts/polynomial-regression/polynomial-regression.component';
+import { BugsComponent } from './overview/bugs/bugs.component';
 
 @NgModule({
   imports: [
@@ -43,6 +44,7 @@ import { PolynomialRegressionComponent } from './forecasts/polynomial-regression
     OverviewComponent,
     PbcComponent,
     PocComponent,
+    BugsComponent,
     BacklogComponent,
     ForecastsComponent,
     VelocityComponent,

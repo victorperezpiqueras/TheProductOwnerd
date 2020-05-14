@@ -307,7 +307,7 @@ export class PbcComponent implements Grafico, OnInit, OnDestroy {
           },
           tooltip: {
             pointFormat:
-              '<span style="color:{point.color}">●</span> {series.name}: <b>{point.y}</b> - Burned: <b>{point.quemado}<b><br/>'
+              '<span style="color:{point.color}">●</span> {series.name}: <b>{point.y}</b>. (Burned: <b>{point.quemado}</b>)<br/>'
           }
           /*  tooltip: {
              headerFormat: null,
@@ -327,7 +327,7 @@ export class PbcComponent implements Grafico, OnInit, OnDestroy {
           },
           tooltip: {
             pointFormat:
-              '<span style="color:{point.color}">●</span> {series.name}: <b>{point.y}</b> - Burned: <b>{point.quemado}<b><br/>'
+              '<span style="color:{point.color}">●</span> {series.name}: <b>{point.y}</b>. (Burned: <b>{point.quemado}</b>)<br/>'
           }
         },
         {
@@ -341,7 +341,7 @@ export class PbcComponent implements Grafico, OnInit, OnDestroy {
           },
           tooltip: {
             pointFormat:
-              '<span style="color:{point.color}">●</span> {series.name}: <b>{point.y}</b> - Burned: <b>{point.quemado}<b><br/>'
+              '<span style="color:{point.color}">●</span> {series.name}: <b>{point.y}</b>. (Burned: <b>{point.quemado}</b>)<br/>'
           }
         },
         {
@@ -355,7 +355,7 @@ export class PbcComponent implements Grafico, OnInit, OnDestroy {
           },
           tooltip: {
             pointFormat:
-              '<span style="color:{point.color}">●</span> {series.name}: <b>{point.y}</b> - Burned: <b>{point.quemado}<b><br/>'
+              '<span style="color:{point.color}">●</span> {series.name}: <b>{point.y}</b>. (Burned: <b>{point.quemado}</b>)<br/>'
           }
         },
         {
@@ -403,13 +403,14 @@ export class PbcComponent implements Grafico, OnInit, OnDestroy {
           visible: false
         },
         {
-          name: 'Scope Line',
+          name: 'Scope',
           data: this.listaScope,
           type: 'line',
           color: '#4d4d4d',
           tooltip: {
             pointFormat:
-              '<span style="color:{point.color}">●</span> {series.name}: <b>{point.y}</b> - Total Burned: <b>{point.quemado}<b><br/>'
+              '____________________________________' +
+              '<br><span style="color:{point.color}">●</span> {series.name}: <b>{point.y}</b>. (Total Burned: <b>{point.quemado}</b>)<br/>'
           }
         }
       ],

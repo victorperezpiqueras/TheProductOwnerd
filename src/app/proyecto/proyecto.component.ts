@@ -68,7 +68,7 @@ export class ProyectoComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     private activeRoute: ActivatedRoute,
     private _snackBar: MatSnackBar
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.isLoading = true;
@@ -320,7 +320,7 @@ export class ProyectoComponent implements OnInit, OnDestroy {
       }); */
   }
 
-  ngOnDestroy() { }
+  ngOnDestroy() {}
 
   get username(): string | null {
     const credentials = this.credentialsService.credentials;
