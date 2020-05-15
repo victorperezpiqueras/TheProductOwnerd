@@ -160,7 +160,19 @@
           >
             <!-- matBadge="{{ pbi.estimacion }}" matBadgeOverlap="true" matBadgeSize="medium" matBadgeColor="primary" -->
             <mat-card-header>
-              <mat-card-title>#{{ pbi.idpbi }} - {{ pbi.titulo }}</mat-card-title>
+              <mat-card-title
+                ><mat-icon
+                  class="drag-icon"
+                  *ngIf="!(permisos?.ordenar == 0 || !priorityOn)"
+                  cdkDragHandle
+                  matTooltip="Drag to change prioritization"
+                  matTooltipPosition="above"
+                  matTooltipShowDelay="500"
+                  [matTooltipDisabled]="isDragging"
+                  >open_with</mat-icon
+                >
+                #{{ pbi.idpbi }} - {{ pbi.titulo }}</mat-card-title
+              >
               <div fxLayout="row" fxLayoutGap="10px" style="float:right;margin-left:auto; margin-right:0;">
                 <mat-chip-list>
                   <mat-chip
@@ -181,16 +193,7 @@
                 >
                   {{ pbi.estimacion }}
                 </button>
-                <mat-icon
-                  class="drag-icon"
-                  *ngIf="!(permisos?.ordenar == 0 || !priorityOn)"
-                  cdkDragHandle
-                  matTooltip="Drag to change prioritization"
-                  matTooltipPosition="above"
-                  matTooltipShowDelay="1000"
-                  [matTooltipDisabled]="isDragging"
-                  >open_with</mat-icon
-                ><!-- drag_indicator -->
+                <!-- drag_indicator -->
                 <b *ngIf="permisos?.ordenar == 0 || !priorityOn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
               </div>
             </mat-card-header>

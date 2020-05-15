@@ -24,6 +24,7 @@ import { PolynomialRegressionComponent } from './forecasts/polynomial-regression
 import { PbcComponent } from './overview/pbc/pbc.component';
 import { PocComponent } from './overview/poc/poc.component';
 import { SprintGoalsService } from '@app/services/sprintgoals.service';
+import { BugsComponent } from './overview/bugs/bugs.component';
 
 describe('ProyectoComponent', () => {
   let component: ProyectoComponent;
@@ -54,7 +55,8 @@ describe('ProyectoComponent', () => {
         PolynomialRegressionComponent,
         OverviewComponent,
         PbcComponent,
-        PocComponent
+        PocComponent,
+        BugsComponent
       ],
       providers: [AuthenticationService, CredentialsService, UsuariosService, ProyectosService, SprintGoalsService]
     }).compileComponents();

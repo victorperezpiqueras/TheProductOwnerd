@@ -15,27 +15,38 @@
         </mat-panel-title>
       </mat-expansion-panel-header>
       <hr />
-      <h1 class="mat-h3">General</h1>
+      <h1 class="mat-h3">
+        General
+        <mat-icon
+          class="warning-icon"
+          matTooltip="Low &lt;Last N Sprint&gt; values may produce wrong predictions"
+          matTooltipPosition="below"
+          >warning</mat-icon
+        >
+      </h1>
       <mat-form-field class="number-form form" appearance="outline">
         <mat-label>Deadline Sprint</mat-label>
         <input matInput type="number" [(ngModel)]="deadlineSprint" [min]="sprints.length - 1" />
       </mat-form-field>
 
       <mat-form-field class="number-form form" appearance="outline">
-        <mat-label>Last N Sprints</mat-label>
+        <mat-label>Last N Sprints </mat-label>
+
         <input matInput type="number" [(ngModel)]="sprintNumber" [min]="1" [max]="sprints.length - 1" />
       </mat-form-field>
 
-      <hr />
+      <!--  <hr />
       <h1 class="mat-h3">Polynomial Configuration</h1>
       <mat-form-field class="number-form form" appearance="outline">
         <mat-label>Polynomial Degree</mat-label>
-        <input matInput type="number" [(ngModel)]="degree" [min]="1" [max]="5" />
-      </mat-form-field>
+        <input matInput type="number" [(ngModel)]="degree" [min]="1" [max]="5" disabled="true" />
+      </mat-form-field> -->
       <br />
-      <button class="number-form" mat-raised-button (click)="updateChart()" color="primary">
-        Update chart
-      </button>
+      <div fxLayout="row" fxLayoutGap="10px">
+        <button class="number-form" mat-raised-button (click)="updateChart()" color="primary">
+          Update chart
+        </button>
+      </div>
     </mat-expansion-panel>
   </mat-accordion>
 

@@ -47,9 +47,9 @@ export class ProyectosComponent implements OnInit, OnDestroy {
   crearProyectoDialog(): void {
     const dialogConfig = new MatDialogConfig();
     //dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    /* dialogConfig.height = '400px';
-    dialogConfig.width = '600px'; */
+    dialogConfig.autoFocus = false;
+    dialogConfig.height = '390px';
+    dialogConfig.width = '700px';
     dialogConfig.data = {
       proyecto: new Proyecto(null, null, null, null, 0, 5, null),
       dialogMode: 'create'

@@ -74,7 +74,8 @@ export class HeaderComponent implements OnInit {
       // console.log(this.proyectosFavoritos);
       // console.log(proyectos);
       const dialogConfig = new MatDialogConfig();
-      dialogConfig.autoFocus = true;
+      dialogConfig.autoFocus = false;
+      dialogConfig.width = '300px';
       dialogConfig.data = {
         proyectos: proyectos
       };

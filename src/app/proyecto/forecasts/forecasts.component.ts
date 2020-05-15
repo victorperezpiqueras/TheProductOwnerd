@@ -40,11 +40,10 @@ export class ForecastsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.actualizar();
+    this.cargarDatos();
   }
 
-  actualizar() {
-    console.log('actualizar');
+  cargarDatos() {
     this.isLoading = true;
     this.activeRoute.params.subscribe(routeParams => {
       this.proyectosService
@@ -56,6 +55,11 @@ export class ForecastsComponent implements OnInit, OnDestroy {
           this.isLoading = false;
         });
     });
+  }
+
+  actualizar() {
+    console.log('actualizar');
+    this.actualizarGraficos();
   }
 
   actualizarGraficos() {

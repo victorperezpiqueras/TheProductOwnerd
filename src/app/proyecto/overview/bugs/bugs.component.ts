@@ -54,11 +54,11 @@ export class BugsComponent implements Grafico, OnInit, OnDestroy {
     // no debería verse los sprints por el sprint ultimo sino por el del proyecto
     if (this.ultimoSprint > this.proyecto.sprintActual) this.ultimoSprint = this.proyecto.sprintActual;
 
-    var totalCreatedBugs = 0;
+    /* var totalCreatedBugs = 0; */
     // generar lista sprints y nº de bugs:
     for (var i = 0; i <= this.ultimoSprint; i++) {
       if (i === 0) {
-        var sumBugsClosed = 0;
+        /* var sumBugsClosed = 0;
         var sumNewBugs = 0;
         this.pbis.forEach((pbi: Pbi) => {
           if (pbi.sprint === i + 1 && pbi.label === 'bug') {
@@ -68,46 +68,53 @@ export class BugsComponent implements Grafico, OnInit, OnDestroy {
             sumNewBugs++;
           }
         });
-        totalCreatedBugs += sumNewBugs;
-        this.listaClosedBugs[i] = { value: 0, displayed: sumBugsClosed };
-        this.listaOpenBugs[i] = { value: sumNewBugs, displayed: sumNewBugs };
-        this.listaCreatedBugs[i] = { value: 0, displayed: totalCreatedBugs };
+        totalCreatedBugs += sumNewBugs; */
+        this.listaClosedBugs[i] = { value: 0, displayed: 0 };
+        this.listaOpenBugs[i] = { value: 0, displayed: 0 };
+        this.listaCreatedBugs[i] = { value: 0, displayed: 0 };
       } else {
         var sumBugsClosed = 0;
         var sumNewBugs = 0;
-        var sumPbiBugsOpened = this.listaOpenBugs[i - 1].opened;
+        var sumPbiBugsOpened = 0;
         this.pbis.forEach((pbi: Pbi) => {
-          if (pbi.sprint === i + 1 && pbi.label === 'bug') {
+          if (pbi.sprint && pbi.sprint <= i && pbi.label === 'bug') {
             sumBugsClosed++;
+            console.log(pbi);
           }
-          if (pbi.sprintCreacion === i + 1 - 1 && pbi.label === 'bug') {
+          if (pbi.sprintCreacion <= i && pbi.label === 'bug' && pbi.done === 0) {
             sumPbiBugsOpened++;
           }
-          if (pbi.sprintCreacion === i + 1 && pbi.label === 'bug') {
+          /*  if (pbi.sprintCreacion === i && pbi.label === 'bug') {
             sumNewBugs++;
-          }
+          } */
         });
-        totalCreatedBugs += sumNewBugs;
-        let closed = this.listaClosedBugs[i - 1].value + this.listaClosedBugs[i - 1].displayed;
-        this.listaClosedBugs[i] = { value: closed, displayed: sumBugsClosed };
-        this.listaCreatedBugs[i] = { value: totalCreatedBugs - sumNewBugs, displayed: sumNewBugs };
-        let openedValue = totalCreatedBugs - closed;
-        let openedDisplayed = sumPbiBugsOpened - sumBugsClosed;
-        this.listaOpenBugs[i] = { value: openedValue, displayed: openedDisplayed };
+        console.log(sumBugsClosed);
+        /* totalCreatedBugs += sumNewBugs; */
+        /* let closed = this.listaClosedBugs[i - 1].value + this.listaClosedBugs[i - 1].displayed; */
+        /* let closed = this.listaClosedBugs[i - 1].value + sumBugsClosed; */
+        this.listaClosedBugs[i] = { value: sumBugsClosed, displayed: sumBugsClosed };
+        /* this.listaCreatedBugs[i] = { value: totalCreatedBugs - sumNewBugs, displayed: sumNewBugs }; */
+        /* let openedValue = totalCreatedBugs - closed;
+        let openedDisplayed = sumPbiBugsOpened - sumBugsClosed; */
+        this.listaOpenBugs[i] = { value: sumPbiBugsOpened, displayed: sumPbiBugsOpened };
       }
     }
     for (var i = 0; i <= this.ultimoSprint; i++) {
       this.listaClosedBugs[i] = {
-        x: i + 1,
+        x: i /* + 1 */,
         y: this.listaClosedBugs[i].value,
         displayed: this.listaClosedBugs[i].displayed
       };
-      this.listaOpenBugs[i] = { x: i + 1, y: this.listaOpenBugs[i].value, displayed: this.listaOpenBugs[i].displayed };
-      this.listaCreatedBugs[i] = {
+      this.listaOpenBugs[i] = {
+        x: i /* + 1 */,
+        y: this.listaOpenBugs[i].value,
+        displayed: this.listaOpenBugs[i].displayed
+      };
+      /* this.listaCreatedBugs[i] = {
         x: i + 1,
         y: this.listaCreatedBugs[i].value,
         displayed: this.listaCreatedBugs[i].displayed
-      };
+      }; */
     }
     console.log(this.listaCreatedBugs);
   }
@@ -132,8 +139,13 @@ export class BugsComponent implements Grafico, OnInit, OnDestroy {
           }
         },
         tickInterval: 1,
-        min: 1,
-        max: this.proyecto.sprintActual + 1
+        min: 0,
+        max: this.proyecto.sprintActual,
+        labels: {
+          formatter: function() {
+            return (this.value === 0 ? 'Start' : this.value).toString();
+          }
+        }
       },
       yAxis: {
         /* min: 0, */
@@ -186,17 +198,15 @@ export class BugsComponent implements Grafico, OnInit, OnDestroy {
         {
           name: 'Closed Bugs',
           data: this.listaClosedBugs,
-          type: 'area',
-          pointWidth: 60,
+          type: 'column',
+          pointWidth: 20,
           color: '#898989',
           fillOpacity: 0.4,
           dataLabels: {
             enabled: false
           },
           tooltip: {
-            pointFormat:
-              '<span style="color:{point.color}">●</span> {series.name}:' +
-              ' <b>{point.y}</b>. <span style="font-size:10px">(During sprint: <b>{point.displayed}</b>)</span><br/>'
+            pointFormat: '<span style="color:{point.color}">●</span> {series.name}: <b>{point.y}</b><br/>'
           }
         },
         {
@@ -210,7 +220,7 @@ export class BugsComponent implements Grafico, OnInit, OnDestroy {
             enabled: false
           },
           tooltip: {
-            pointFormat: '<span style="color:{point.color}">●</span> Total {series.name}: <b>{point.y}</b><br/>'
+            pointFormat: '<span style="color:{point.color}">●</span> {series.name}: <b>{point.y}</b><br/>'
           }
         }
       ],
@@ -228,6 +238,24 @@ export class BugsComponent implements Grafico, OnInit, OnDestroy {
         sourceHeight: 550,
         sourceWidth: 1100
       }
+    };
+
+    this.chartOptions.tooltip.formatter = function() {
+      var s: string = '';
+      for (var i = 0; i < this.points.length; i++) {
+        s +=
+          '<span style="color:' +
+          this.points[i].color +
+          '">●</span> ' +
+          this.points[i].series.name +
+          ': <b>' +
+          this.points[i].y +
+          '</b><br/>';
+      }
+      if (this.x == 0) s = '<b>Start</b><br>' + s;
+      else s = '<b>Sprint ' + this.x + '</b><br>' + s;
+
+      return s;
     };
   }
 

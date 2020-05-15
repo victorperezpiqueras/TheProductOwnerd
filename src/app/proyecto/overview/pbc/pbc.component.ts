@@ -88,7 +88,7 @@ export class PbcComponent implements Grafico, OnInit, OnDestroy {
     this.ultimoSprint = this.proyecto.sprintActual;
 
     // no debería verse los sprints por el sprint ultimo sino por el del proyecto
-    if (this.ultimoSprint > this.proyecto.sprintActual) this.ultimoSprint = this.proyecto.sprintActual;
+    /* if (this.ultimoSprint > this.proyecto.sprintActual) this.ultimoSprint = this.proyecto.sprintActual; */
 
     // generar suma pbis:
     this.puntosTotales = 0;
@@ -111,14 +111,69 @@ export class PbcComponent implements Grafico, OnInit, OnDestroy {
 
     // generar lista sprints y estimaciones:
     for (var i = 0; i <= this.ultimoSprint; i++) {
-      this.sprints.push(new Sprint('Sprint ' + (i + 1).toString(), i + 1, 0, 0, 0, ''));
-      this.listaFeatures.push(new Sprint('Sprint ' + (i + 1).toString(), i + 1, 0, 0, 0, ''));
-      this.listaInfrastructures.push(new Sprint('Sprint ' + (i + 1).toString(), i + 1, 0, 0, 0, ''));
-      this.listaTechDebt.push(new Sprint('Sprint ' + (i + 1).toString(), i + 1, 0, 0, 0, ''));
-      this.listaBugs.push(new Sprint('Sprint ' + (i + 1).toString(), i + 1, 0, 0, 0, ''));
+      this.sprints.push(
+        new Sprint(
+          'Sprint ' +
+            i /* + 1 */
+              .toString(),
+          i /* + 1 */,
+          0,
+          0,
+          0,
+          ''
+        )
+      );
+      this.listaFeatures.push(
+        new Sprint(
+          'Sprint ' +
+            i /* + 1 */
+              .toString(),
+          i /* + 1 */,
+          0,
+          0,
+          0,
+          ''
+        )
+      );
+      this.listaInfrastructures.push(
+        new Sprint(
+          'Sprint ' +
+            i /* + 1 */
+              .toString(),
+          i /* + 1 */,
+          0,
+          0,
+          0,
+          ''
+        )
+      );
+      this.listaTechDebt.push(
+        new Sprint(
+          'Sprint ' +
+            i /* + 1 */
+              .toString(),
+          i /* + 1 */,
+          0,
+          0,
+          0,
+          ''
+        )
+      );
+      this.listaBugs.push(
+        new Sprint(
+          'Sprint ' +
+            i /* + 1 */
+              .toString(),
+          i /* + 1 */,
+          0,
+          0,
+          0,
+          ''
+        )
+      );
       if (i === 0) {
         this.sprints[i].restante = this.puntosTotales;
-
+        this.sprints[i].sprint = 'Start';
         this.listaFeatures[i].restante = this.puntosTotalesFeature;
         this.listaTechDebt[i].restante = this.puntosTotalesTechDebt;
         this.listaInfrastructures[i].restante = this.puntosTotalesInfrastructure;
@@ -137,13 +192,13 @@ export class PbcComponent implements Grafico, OnInit, OnDestroy {
         var sumpbisInfrastructure = 0;
         var sumpbisBug = 0;
         this.pbis.forEach((pbi: Pbi) => {
-          if (pbi.sprint == i) {
+          if (pbi.sprint === i) {
             sumpbis += pbi.estimacion;
 
-            if (pbi.label == 'feature') sumpbisFeatures += pbi.estimacion;
-            else if (pbi.label == 'tech-debt') sumpbisTechDebt += pbi.estimacion;
-            else if (pbi.label == 'infrastructure') sumpbisInfrastructure += pbi.estimacion;
-            else if (pbi.label == 'bug') sumpbisBug += pbi.estimacion;
+            if (pbi.label === 'feature') sumpbisFeatures += pbi.estimacion;
+            else if (pbi.label === 'tech-debt') sumpbisTechDebt += pbi.estimacion;
+            else if (pbi.label === 'infrastructure') sumpbisInfrastructure += pbi.estimacion;
+            else if (pbi.label === 'bug') sumpbisBug += pbi.estimacion;
           }
         });
         // restar al total anterior las del sprint:
@@ -162,10 +217,10 @@ export class PbcComponent implements Grafico, OnInit, OnDestroy {
         sumpbisBug = 0;
         this.pbis.forEach((pbi: Pbi) => {
           if (pbi.sprintCreacion == i) {
-            if (pbi.label == 'feature') sumpbisFeatures += pbi.estimacion;
-            else if (pbi.label == 'tech-debt') sumpbisTechDebt += pbi.estimacion;
-            else if (pbi.label == 'infrastructure') sumpbisInfrastructure += pbi.estimacion;
-            else if (pbi.label == 'bug') sumpbisBug += pbi.estimacion;
+            if (pbi.label === 'feature') sumpbisFeatures += pbi.estimacion;
+            else if (pbi.label === 'tech-debt') sumpbisTechDebt += pbi.estimacion;
+            else if (pbi.label === 'infrastructure') sumpbisInfrastructure += pbi.estimacion;
+            else if (pbi.label === 'bug') sumpbisBug += pbi.estimacion;
           }
         });
         if (sumpbisFeatures === 0) sumpbisFeatures = undefined;
@@ -189,64 +244,76 @@ export class PbcComponent implements Grafico, OnInit, OnDestroy {
     } */
 
     for (var i = 0; i <= this.ultimoSprint; i++) {
-      if (i <= this.ultimoSprint - 1) {
+      if (i > 0) {
         this.listaScope[i] = {
           x: this.sprints[i].sprintNumber,
+          xLabel: this.sprints[i].sprint,
           y: this.sprints[i].restante,
-          quemado: this.sprints[i].restante - this.sprints[i + 1].restante
+          quemado: this.sprints[i - 1].restante - this.sprints[i].restante
         };
         this.listaFeatures[i] = {
           x: this.listaFeatures[i].sprintNumber,
+          xLabel: this.sprints[i].sprint,
           y: this.listaFeatures[i].restante,
-          quemado: this.listaFeatures[i].restante - this.listaFeatures[i + 1].restante
+          quemado: this.listaFeatures[i - 1].y - this.listaFeatures[i].restante
         };
         this.listaTechDebt[i] = {
           x: this.listaTechDebt[i].sprintNumber,
+          xLabel: this.sprints[i].sprint,
           y: this.listaTechDebt[i].restante,
-          quemado: this.listaTechDebt[i].restante - this.listaTechDebt[i + 1].restante
+          quemado: this.listaTechDebt[i - 1].y - this.listaTechDebt[i].restante
         };
         this.listaInfrastructures[i] = {
           x: this.listaInfrastructures[i].sprintNumber,
+          xLabel: this.sprints[i].sprint,
           y: this.listaInfrastructures[i].restante,
-          quemado: this.listaInfrastructures[i].restante - this.listaInfrastructures[i + 1].restante
+          quemado: this.listaInfrastructures[i - 1].y - this.listaInfrastructures[i].restante
         };
         this.listaBugs[i] = {
           x: this.listaBugs[i].sprintNumber,
+          xLabel: this.sprints[i].sprint,
           y: this.listaBugs[i].restante,
-          quemado: this.listaBugs[i].restante - this.listaBugs[i + 1].restante
+          quemado: this.listaBugs[i - 1].y - this.listaBugs[i].restante
         };
       } else {
         this.listaScope[i] = {
           x: this.sprints[i].sprintNumber,
+          xLabel: this.sprints[i].sprint,
           y: this.sprints[i].restante,
-          quemado: '?'
+          quemado: '- '
         };
         this.listaFeatures[i] = {
           x: this.listaFeatures[i].sprintNumber,
+          xLabel: this.sprints[i].sprint,
           y: this.listaFeatures[i].restante,
-          quemado: '?'
+          quemado: '- '
         };
         this.listaTechDebt[i] = {
           x: this.listaTechDebt[i].sprintNumber,
+          xLabel: this.sprints[i].sprint,
           y: this.listaTechDebt[i].restante,
-          quemado: '?'
+          quemado: '- '
         };
         this.listaInfrastructures[i] = {
           x: this.listaInfrastructures[i].sprintNumber,
+          xLabel: this.sprints[i].sprint,
           y: this.listaInfrastructures[i].restante,
-          quemado: '?'
+          quemado: '- '
         };
         this.listaBugs[i] = {
           x: this.listaBugs[i].sprintNumber,
+          xLabel: this.sprints[i].sprint,
           y: this.listaBugs[i].restante,
-          quemado: '?'
+          quemado: '- '
         };
       }
     }
     console.log(this.listaFeatures);
+    console.log(this.listaFeaturesSC);
   }
 
   generarGrafico() {
+    var that = this;
     this.chartOptions = {
       title: {
         text: 'Project Burndown Chart',
@@ -267,9 +334,14 @@ export class PbcComponent implements Grafico, OnInit, OnDestroy {
         },
         allowDecimals: false,
         tickInterval: 1,
-        min: 1,
-        max: this.proyecto.sprintActual + 1
-        /*  startOnTick: true */
+        min: 0,
+        max: this.proyecto.sprintActual,
+        /*  startOnTick: true, */
+        labels: {
+          formatter: function() {
+            return (this.value === 0 ? 'Start' : this.value).toString();
+          }
+        }
       },
       yAxis: {
         title: {
@@ -363,9 +435,12 @@ export class PbcComponent implements Grafico, OnInit, OnDestroy {
           data: this.listaFeaturesSC,
           type: 'column',
           pointWidth: 30,
-          color: '#c1ffc0',
+          color: '#87ff85',
           dataLabels: {
             enabled: false
+          },
+          tooltip: {
+            pointFormat: '<span style="color:{point.color}">●</span> {series.name}: <b>{point.y}</b><br/>'
           },
           visible: false
         },
@@ -374,9 +449,12 @@ export class PbcComponent implements Grafico, OnInit, OnDestroy {
           data: this.listaTechDebtSC,
           type: 'column',
           pointWidth: 30,
-          color: '#ffecc0',
+          color: '#ffda84',
           dataLabels: {
             enabled: false
+          },
+          tooltip: {
+            pointFormat: '<span style="color:{point.color}">●</span> {series.name}: <b>{point.y}</b><br/>'
           },
           visible: false
         },
@@ -385,9 +463,12 @@ export class PbcComponent implements Grafico, OnInit, OnDestroy {
           data: this.listaInfrastructuresSC,
           type: 'column',
           pointWidth: 30,
-          color: '#c0e9ff',
+          color: '#7cd1ff',
           dataLabels: {
             enabled: false
+          },
+          tooltip: {
+            pointFormat: '<span style="color:{point.color}">●</span> {series.name}: <b>{point.y}</b><br/>'
           },
           visible: false
         },
@@ -396,9 +477,12 @@ export class PbcComponent implements Grafico, OnInit, OnDestroy {
           data: this.listaBugsSC,
           type: 'column',
           pointWidth: 30,
-          color: '#ffc0c0',
+          color: '#ff8181',
           dataLabels: {
             enabled: false
+          },
+          tooltip: {
+            pointFormat: '<span style="color:{point.color}">●</span> {series.name}: <b>{point.y}</b><br/>'
           },
           visible: false
         },
@@ -428,6 +512,55 @@ export class PbcComponent implements Grafico, OnInit, OnDestroy {
         sourceHeight: 550,
         sourceWidth: 1100
       }
+    };
+    this.chartOptions.tooltip.formatter = function() {
+      var s: string = '';
+      for (var i = 0; i < this.points.length; i++) {
+        // puntos basicos:
+        if (i < 4) {
+          var point: any = this.points[i];
+          s +=
+            '<span style="color:' +
+            this.points[i].color +
+            '">●</span> ' +
+            this.points[i].series.name +
+            ': <b>' +
+            this.points[i].y +
+            '</b>. (Burned: <b>' +
+            point.point.options.quemado +
+            '</b>)<br/>';
+        }
+        // puntos scope creep:
+        if (i >= 4 && i !== this.points.length - 1 && this.points.length > 4) {
+          s +=
+            '<span style="color:' +
+            this.points[i].color +
+            '">●</span> ' +
+            this.points[i].series.name +
+            ': <b>' +
+            -this.points[i].y +
+            '</b><br/>';
+        }
+        // scope:
+        if (i === this.points.length - 1) {
+          s =
+            '<span style="color:' +
+            this.points[i].color +
+            '">●</span> ' +
+            this.points[i].series.name +
+            ': <b>' +
+            this.points[i].y +
+            '</b>. (Total Burned: <b>' +
+            point.point.options.quemado +
+            '</b>)<br/>' +
+            s;
+        }
+      }
+
+      if (this.x == 0) s = '<b>Start</b><br>' + s;
+      else s = '<b>Sprint ' + this.x + '</b><br>' + s;
+
+      return s;
     };
   }
 

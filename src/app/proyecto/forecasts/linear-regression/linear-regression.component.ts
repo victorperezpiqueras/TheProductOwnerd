@@ -122,14 +122,24 @@ export class LinearRegressionComponent implements Grafico, OnInit, OnDestroy {
 
     // generar lista sprints y estimaciones:
     for (var i = 0; i <= this.ultimoSprint; i++) {
-      this.sprints.push(new Sprint((i + 1).toString(), i + 1, 0, 0, 0, ''));
-      if (i == 0) {
+      this.sprints.push(
+        new Sprint(
+          i /* + 1 */
+            .toString(),
+          i /* + 1 */,
+          0,
+          0,
+          0,
+          ''
+        )
+      );
+      if (i === 0) {
         this.sprints[i].restante = this.puntosTotales;
       } else {
         // sumar las estimaciones para cada sprint:
         var sumpbis = 0;
         this.pbis.forEach((pbi: Pbi) => {
-          if (pbi.sprint == i) sumpbis += pbi.estimacion;
+          if (pbi.sprint === i) sumpbis += pbi.estimacion;
         });
         // restar al total anterior las del sprint
         this.sprints[i].restante = this.sprints[i - 1].restante - sumpbis;
@@ -154,10 +164,10 @@ export class LinearRegressionComponent implements Grafico, OnInit, OnDestroy {
     var x: number[] = [];
     var y: number[] = [];
 
-    for (var i = startingSprint; i <= this.ultimoSprint + 1; i++) {
+    for (var i = startingSprint; i <= this.ultimoSprint /* + 1 */; i++) {
       // contar el punto del sprint siguiente
       x.push(i);
-      y.push(this.sprints[i - 1].restante);
+      y.push(this.sprints[i /* - 1 */].restante);
     }
 
     // generar regresion:
@@ -171,6 +181,7 @@ export class LinearRegressionComponent implements Grafico, OnInit, OnDestroy {
 
     //calcular punto final: [Y=0: y=mx+n] --> [0 = regression.coefficients[1]* X + regression.coefficients[0] ]
     const finalX = -this.regression.coefficients[0] / this.regression.coefficients[1];
+
     const finalY = 0;
 
     this.listaAverage.push({ x: initialX /*  + 1 */, y: initialY });
@@ -220,8 +231,13 @@ export class LinearRegressionComponent implements Grafico, OnInit, OnDestroy {
               fontSize: '16px'
             }
           },
-          min: 1,
+          min: 0,
           max: this.maxValor + 5,
+          labels: {
+            formatter: function() {
+              return (this.value === 0 ? 'Start' : this.value).toString();
+            }
+          },
           tickInterval: 1
         }
       ],
@@ -247,7 +263,8 @@ export class LinearRegressionComponent implements Grafico, OnInit, OnDestroy {
             pointFormatter: function() {
               return '<b>Sprint ' + this.x.toFixed(0) + '</b><br>Scope: ' + this.y;
             }
-          }
+          },
+          enableMouseTracking: false
         },
         {
           name: 'Scope Line',
@@ -260,7 +277,7 @@ export class LinearRegressionComponent implements Grafico, OnInit, OnDestroy {
               return '<b>Sprint ' + this.x.toFixed(0) + '</b><br>Scope: ' + this.y;
             }
           },
-          /* enableMouseTracking: false, */
+          enableMouseTracking: false,
           marker: {
             enabled: true,
             radius: 1
@@ -277,7 +294,8 @@ export class LinearRegressionComponent implements Grafico, OnInit, OnDestroy {
             pointFormatter: function() {
               return '<b>Sprint Deadline: ' + this.x.toFixed(0);
             }
-          }
+          },
+          enableMouseTracking: false
         },
         {
           name: 'Projected Regression',
@@ -288,7 +306,12 @@ export class LinearRegressionComponent implements Grafico, OnInit, OnDestroy {
           tooltip: {
             headerFormat: null,
             pointFormatter: function() {
-              return '<b>Sprint ' + this.x.toFixed(0) + '</b><br>Regression: ' + this.y.toFixed(1);
+              var x = this.x;
+              if (this.x % 1 !== 0) {
+                x = Math.trunc(x);
+                x++;
+              }
+              return '<b>Sprint ' + x + '</b><br>Regression: ' + this.y.toFixed(1);
             }
           },
           marker: {

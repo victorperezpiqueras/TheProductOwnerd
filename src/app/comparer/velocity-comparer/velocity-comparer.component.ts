@@ -238,7 +238,7 @@ export class VelocityComparerComponent implements GraficoComparer, OnInit, OnDes
       tooltip: {
         headerFormat: null,
         pointFormatter: function() {
-          return '<b>Sprint Deadline: ' + this.x.toFixed(0);
+          return '<b>Deadline</b>';
         }
       }
     });

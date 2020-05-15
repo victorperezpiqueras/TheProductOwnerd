@@ -1,5 +1,11 @@
 <div class="container">
-  <h2 mat-dialog-title>Favourite projects</h2>
+  <!--  <h2 mat-dialog-title>Favourite projects</h2> -->
+  <mat-card class="title-card" fxLayout="row" fxLayoutAlign="center center">
+    Favourite projects
+  </mat-card>
+
+  <br />
+
   <mat-list>
     <mat-divider></mat-divider>
     <div *ngFor="let proy of proyectos">
@@ -14,8 +20,8 @@
     </div>
   </mat-list>
   <br />
-  <div mat-dialog-actions style="padding-bottom: 5%;">
+  <div mat-dialog-actions style="padding-bottom: 10%;">
     <button class="close-button" mat-raised-button (click)="close()" color="primary">Cancel</button>
-    <button class="save-button" mat-raised-button (click)="save()" color="accent">Save</button>
+    <button class="save-button" mat-raised-button (click)="save()" [color]="'success'">Save</button>
   </div>
 </div>

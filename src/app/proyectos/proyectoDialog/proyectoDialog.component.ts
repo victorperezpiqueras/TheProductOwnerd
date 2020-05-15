@@ -47,4 +47,8 @@ export class ProyectoDialogComponent implements OnInit {
   close() {
     this.dialogRef.close();
   }
+
+  get opcion(): string {
+    if (this.dialogMode == 'create') return 'Create';
+  }
 }

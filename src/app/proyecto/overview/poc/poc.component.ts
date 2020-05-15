@@ -75,12 +75,67 @@ export class PocComponent implements Grafico, OnInit, OnDestroy {
 
     // generar lista sprints y estimaciones:
     for (var i = 0; i <= this.ultimoSprint; i++) {
-      this.sprints.push(new Sprint('Sprint ' + (i + 1).toString(), i + 1, 0, 0, 0, ''));
+      this.sprints.push(
+        new Sprint(
+          'Sprint ' +
+            i /* + 1 */
+              .toString(),
+          i /* + 1 */,
+          0,
+          0,
+          0,
+          ''
+        )
+      );
 
-      this.listaFeatures.push(new Sprint('Sprint ' + (i + 1).toString(), i + 1, 0, 0, 0, ''));
-      this.listaInfrastructures.push(new Sprint('Sprint ' + (i + 1).toString(), i + 1, 0, 0, 0, ''));
-      this.listaTechDebt.push(new Sprint('Sprint ' + (i + 1).toString(), i + 1, 0, 0, 0, ''));
-      this.listaBugs.push(new Sprint('Sprint ' + (i + 1).toString(), i + 1, 0, 0, 0, ''));
+      this.listaFeatures.push(
+        new Sprint(
+          'Sprint ' +
+            i /*  + 1 */
+              .toString(),
+          i /* + 1 */,
+          0,
+          0,
+          0,
+          ''
+        )
+      );
+      this.listaInfrastructures.push(
+        new Sprint(
+          'Sprint ' +
+            i /* + 1 */
+              .toString(),
+          i /* + 1 */,
+          0,
+          0,
+          0,
+          ''
+        )
+      );
+      this.listaTechDebt.push(
+        new Sprint(
+          'Sprint ' +
+            i /* + 1 */
+              .toString(),
+          i /* + 1 */,
+          0,
+          0,
+          0,
+          ''
+        )
+      );
+      this.listaBugs.push(
+        new Sprint(
+          'Sprint ' +
+            i /* + 1 */
+              .toString(),
+          i /* + 1 */,
+          0,
+          0,
+          0,
+          ''
+        )
+      );
       if (i == 0) {
         this.sprints[i].quemadoRelativo = 0;
         this.listaFeatures[i].quemadoRelativo = 0;
@@ -161,8 +216,13 @@ export class PocComponent implements Grafico, OnInit, OnDestroy {
           }
         },
         tickInterval: 1,
-        min: 1,
-        max: this.proyecto.sprintActual + 1
+        min: 0,
+        max: this.proyecto.sprintActual,
+        labels: {
+          formatter: function() {
+            return (this.value === 0 ? 'Start' : this.value).toString();
+          }
+        }
       },
       yAxis: {
         title: {
@@ -256,6 +316,24 @@ export class PocComponent implements Grafico, OnInit, OnDestroy {
         sourceHeight: 550,
         sourceWidth: 1100
       }
+    };
+
+    this.chartOptions.tooltip.formatter = function() {
+      var s: string = '';
+      for (var i = 0; i < this.points.length; i++) {
+        s +=
+          '<span style="color:' +
+          this.points[i].color +
+          '">●</span> ' +
+          this.points[i].series.name +
+          ': <b>' +
+          this.points[i].y +
+          ' %</b><br/>';
+      }
+      if (this.x == 0) s = '<b>Start</b><br>' + s;
+      else s = '<b>Sprint ' + this.x + '</b><br>' + s;
+
+      return s;
     };
   }
 

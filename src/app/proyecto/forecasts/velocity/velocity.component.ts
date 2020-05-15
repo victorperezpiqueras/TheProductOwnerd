@@ -130,7 +130,17 @@ export class VelocityComponent implements Grafico, OnInit, OnDestroy {
 
     // generar lista sprints y estimaciones:
     for (var i = 0; i <= this.ultimoSprint; i++) {
-      this.sprints.push(new Sprint((i + 1).toString(), i + 1, 0, 0, 0, ''));
+      this.sprints.push(
+        new Sprint(
+          i /*  + 1 */
+            .toString(),
+          i /*  + 1 */,
+          0,
+          0,
+          0,
+          ''
+        )
+      );
       if (i === 0) {
         this.sprints[i].restante = this.puntosTotales;
       } else {
@@ -182,7 +192,7 @@ export class VelocityComponent implements Grafico, OnInit, OnDestroy {
     // calculamos la proporcion del ultimo sprint esperado:
     puntoFinal += (restantes % this.mediaAverage) / this.mediaAverage;
 
-    this.listaAverage.push([puntoFinal + 1, 0]); // +1 due to axis starting at 1
+    this.listaAverage.push([puntoFinal /* + 1 */, 0]); // +1 due to axis starting at 1
   }
 
   generarBestWorstAverage(numeroSprints: number, sprintNumberBW: number) {
@@ -236,8 +246,8 @@ export class VelocityComponent implements Grafico, OnInit, OnDestroy {
     puntoFinalBest += (restantes % this.mediaAverageBest) / this.mediaAverageBest;
     // insertamos los puntos finales:
     // por si alguna media diese 0:
-    if (this.mediaAverageWorst > 0) this.listaAverageWorst.push([puntoFinalWorst + 1, 0]); // +1 due to axis starting at 1
-    if (this.mediaAverageBest > 0) this.listaAverageBest.push([puntoFinalBest + 1, 0]); // +1 due to axis starting at 1
+    if (this.mediaAverageWorst > 0) this.listaAverageWorst.push([puntoFinalWorst /* + 1 */, 0]); // +1 due to axis starting at 1
+    if (this.mediaAverageBest > 0) this.listaAverageBest.push([puntoFinalBest /* + 1 */, 0]); // +1 due to axis starting at 1
   }
 
   generarDeadline(deadlineSprint: number) {
@@ -254,19 +264,20 @@ export class VelocityComponent implements Grafico, OnInit, OnDestroy {
     if (this.listaAverage[this.listaAverage.length - 1][0] >= this.deadlineSprint) {
       // y - y0 = m·(x-x0) --> y - this.sprints[this.ultimoSprint].restante = media*(deadline-this.ultimoSprint)
       var corteAverage =
-        this.sprints[this.ultimoSprint].restante - this.mediaAverage * (this.deadlineSprint - (this.ultimoSprint + 1)); // +1 due to axis starting at 1
+        this.sprints[this.ultimoSprint].restante -
+        this.mediaAverage * (this.deadlineSprint - this.ultimoSprint /* + 1 */); // +1 due to axis starting at 1
       this.puntoCorteAverage.push([this.deadlineSprint, corteAverage]);
     }
     if (this.listaAverageWorst[this.listaAverageWorst.length - 1][0] >= this.deadlineSprint) {
       var corteAverageWorst =
         this.sprints[this.ultimoSprint].restante -
-        this.mediaAverageWorst * (this.deadlineSprint - (this.ultimoSprint + 1)); // +1 due to axis starting at 1
+        this.mediaAverageWorst * (this.deadlineSprint - this.ultimoSprint /* + 1 */); // +1 due to axis starting at 1
       this.puntoCorteWorst.push([this.deadlineSprint, corteAverageWorst]);
     }
     if (this.listaAverageBest[this.listaAverageBest.length - 1][0] >= this.deadlineSprint) {
       var corteAverageBest =
         this.sprints[this.ultimoSprint].restante -
-        this.mediaAverageBest * (this.deadlineSprint - (this.ultimoSprint + 1)); // +1 due to axis starting at 1
+        this.mediaAverageBest * (this.deadlineSprint - this.ultimoSprint /* + 1 */); // +1 due to axis starting at 1
       this.puntoCorteBest.push([this.deadlineSprint, corteAverageBest]);
     }
   }
@@ -296,8 +307,13 @@ export class VelocityComponent implements Grafico, OnInit, OnDestroy {
               fontSize: '16px'
             }
           },
-          min: 1,
+          min: 0,
           max: this.maxValor + 5,
+          labels: {
+            formatter: function() {
+              return (this.value === 0 ? 'Start' : this.value).toString();
+            }
+          },
           tickInterval: 1
         }
       ],
@@ -323,7 +339,8 @@ export class VelocityComponent implements Grafico, OnInit, OnDestroy {
             pointFormatter: function() {
               return '<b>Sprint ' + this.x.toFixed(0) + '</b><br>Scope: ' + this.y;
             }
-          }
+          },
+          enableMouseTracking: false
         },
         {
           name: 'Scope Line',
@@ -336,7 +353,7 @@ export class VelocityComponent implements Grafico, OnInit, OnDestroy {
               return '<b>Sprint ' + this.x.toFixed(0) + '</b><br>Scope: ' + this.y;
             }
           },
-          /*  enableMouseTracking: false, */
+          enableMouseTracking: false,
           marker: {
             enabled: true,
             radius: 1
@@ -353,7 +370,8 @@ export class VelocityComponent implements Grafico, OnInit, OnDestroy {
             pointFormatter: function() {
               return '<b>Sprint Deadline: ' + this.x.toFixed(0);
             }
-          }
+          },
+          enableMouseTracking: false
         },
         {
           name: 'Average Best',
@@ -364,7 +382,12 @@ export class VelocityComponent implements Grafico, OnInit, OnDestroy {
           tooltip: {
             headerFormat: null,
             pointFormatter: function() {
-              return '<b>Sprint ' + this.x.toFixed(0) + '</b><br>Scope: ' + this.y;
+              var x = this.x;
+              if (this.x % 1 !== 0) {
+                x = Math.trunc(x);
+                x++;
+              }
+              return '<b>Sprint ' + x + '</b><br>Scope: ' + this.y.toFixed(1);
             }
           }
         },
@@ -377,7 +400,12 @@ export class VelocityComponent implements Grafico, OnInit, OnDestroy {
           tooltip: {
             headerFormat: null,
             pointFormatter: function() {
-              return '<b>Sprint ' + this.x.toFixed(0) + '</b><br>Scope: ' + this.y;
+              var x = this.x;
+              if (this.x % 1 !== 0) {
+                x = Math.trunc(x);
+                x++;
+              }
+              return '<b>Sprint ' + x + '</b><br>Scope: ' + this.y.toFixed(1);
             }
           }
         },
@@ -390,7 +418,12 @@ export class VelocityComponent implements Grafico, OnInit, OnDestroy {
           tooltip: {
             headerFormat: null,
             pointFormatter: function() {
-              return '<b>Sprint ' + this.x.toFixed(0) + '</b><br>Scope: ' + this.y;
+              var x = this.x;
+              if (this.x % 1 !== 0) {
+                x = Math.trunc(x);
+                x++;
+              }
+              return '<b>Sprint ' + x + '</b><br>Scope: ' + this.y.toFixed(1);
             }
           }
         },
