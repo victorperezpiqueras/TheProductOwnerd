@@ -10,17 +10,17 @@ branches:
 notifications:
   slack:
     rooms:
-      - secure: L/KvTXWfCsKr82eNKNBgOJw5TyE2qvGf+fJhclYqrUTQlbOjnuuzKhdDUKNSHjrcJDcp8pbcJF0BsjISqk12AX5E8piTGo7Xt0BHPKUSXDzePn85R45vfqqYr0aih7LzebfabPUHeVPHuCLm0QhvCSOUq6w4N8Axy/Jtx72KSGI+dmyHMdGwxnD5YyK0bJ/EQl3+snZk/c/cEfHkF5DvVExfHfAWr7ISKaWfKD3R3BHWaYv5H3Qar26EYqT6sueixicfy+fzbM82rXyhO08g3jCx3/QvN8LHo2fshtDh3nkiX+xn6LIK6qOpxoTJ8Z1eHMu7Gjbu8RaiNwBeks0lMIY1TN0BA42m6vY6jmLohU2uUxbybqDzCPDFRWh7f29QJYerFo7yCLuEOasURr34rSwUiwxoaM5llNIJW9q41Sq+roUZlqthRENb7IQqgM8qjP9vO/J3gW1Ahc70fqgH6u4qaziJJBgTjTsr7UY+bX/mYjUF4PgjfI/xv7poFWwykFO0R3SQb0mghVuQA5Ggeu9lOeXLnALryzujNysoyDt5JgLR2LtNDLKM3TKnTDlQla70vsN3jDiUsccbOqM7mXqCI4Dfne2R1V7dvp61WVEP+l6XQ7bzwDiPXKnnuaUuqgbEJCH95HNUW0oi7s7tqbtn/4jefy+q8gb4tawrXjE=
+      - secure: rSd0Pu2f1gP/Y7YVyrCPqiAf5Mf/4rYpdRBD2NJyHRq31GQM4BaIdaJOLXepwYPpV2QKb01BP2PZNxf881tcmBwjGClrSWUarn7P7CuceRpG5pJkchz3wBaAYfkqdM3jmT39DRoNChyxdFvUoix1y14keEUDusvt4PksM1Kvl9zs1vLIfohws9ZiioaV056mZpldMCdS6hEtabiFbuMIhz7iWhDmZocN6KfnZwd4dt42f3K6YK9hDjtvpyVt8WYlsZY/JQ68qLXliEsQJSqlyXP7V3ACtsWR/VZHMmUh3tUGdlaHi1NXk3OgpT2rcjplUNg9pfs4PF50I3EifG91tGqaGEgW2d44UwGPe+zhnJxfVo3TqBDLMSX5mmbbq66q1xhhQpZx5uoIPa7x0v1xSC7DoD+IojLa9dGt4K54Iv3PUdk/JoU4z0S4pf1kkGI2msK70c/yDcfjT7h5G+r2+w/vvV/mYzfox7U6YjHu4IHqZDKwVeFCCL02tVkwmekyGlo012jnJSMTxEnMcWoF/y3Bx9H99sPTMpt+3Dwn6fnLi5RVU38rARXgq2PZlFUJp1/AjKsAkAU4G+qU/Io/9ipWumFTLPzHyuAnDXEBEFNOD2tZP2SeZcnw56clbpbycCfRKjqHf4GUYDJxZjmrf4/XhaGQNtCsfos8847kzIA=
     on_success: always
     on_failure: never
 before_script:
-  - npm i -g heroku
+  # - npm i -g heroku
   - npm install -g @angular/cli
-  - npm i caniuse-lite@latest
+  # - npm i caniuse-lite@latest
   - npm i jasmine-core@3.5
-  - npm install
+  - npm ci
   - cd backend
-  - npm install
+  - npm ci
   - cd ..
 script:
   - cd backend

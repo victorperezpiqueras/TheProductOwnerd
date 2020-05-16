@@ -313,7 +313,6 @@ export class PbcComponent implements Grafico, OnInit, OnDestroy {
   }
 
   generarGrafico() {
-    var that = this;
     this.chartOptions = {
       title: {
         text: 'Project Burndown Chart',

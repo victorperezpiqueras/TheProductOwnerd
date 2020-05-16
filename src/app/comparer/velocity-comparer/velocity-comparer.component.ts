@@ -161,10 +161,12 @@ export class VelocityComparerComponent implements GraficoComparer, OnInit, OnDes
       // para cada proyecto crear una lista de sus sprints para una linea:
       proy.sprints.forEach((sprint: SprintComparer) => {
         /* datosLinea.push([sprint.sprintNumberRelativo, Number(sprint.restantesRelativos.toFixed(2))]); */
+        let sprintLabel: string;
+        sprint.sprintNumber === 0 ? (sprintLabel = 'Start') : (sprintLabel = sprint.sprintNumber.toString());
         datosLinea.push({
           x: sprint.sprintNumberRelativo,
           y: Number(sprint.restantesRelativos.toFixed(2)),
-          sprint: sprint.sprintNumber
+          sprint: sprintLabel
         });
       });
 
@@ -185,10 +187,7 @@ export class VelocityComparerComponent implements GraficoComparer, OnInit, OnDes
         color: colores[colorIndex],
         tooltip: {
           pointFormat:
-            '<span style="color:{point.color}">●</span> {series.name}: <b>{point.y} %</b> (Sprint: <b>{point.sprint}</b>)<br/>'
-          /* pointFormatter: function () {
-            return 'Sprint: ' + this.sprint+'<br>';
-          } */
+            '<span style="color:{point.color}">●</span> {series.name}: <b>{point.y} %</b> (Sprint <b>{point.sprint}</b>)<br/>'
         },
         marker: {
           enabled: true,
@@ -197,19 +196,6 @@ export class VelocityComparerComponent implements GraficoComparer, OnInit, OnDes
       });
       colorIndex++;
     }); //console.log(this.listaProyectosSeries)
-
-    /* this.listaProyectosChart.forEach((proyectoLinea: any) => {
-      this.listaProyectosSeries.push(
-        {
-          name: 'Scope Line',
-          data: proyectoLinea,
-          type: 'line',
-          color: '#4d4d4d'
-        }
-      );
-    }); */
-
-    // generar las estructuras para Highcharts:
   }
 
   generarColoresAleatorios(numeroProyectos: number): string[] {
