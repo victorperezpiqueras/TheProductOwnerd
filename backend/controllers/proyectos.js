@@ -300,7 +300,7 @@ ControllerProyectos.proyectoAgregarUsuario = function(idproyecto, data) {
       } else if (data.rol == 'desarrollador') {
         var list = ['desarrollador', data.idusuario, idproyecto, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0];
       } else {
-        var list = ['stakeholder', data.idusuario, idproyecto, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        var list = ['stakeholder', data.idusuario, idproyecto, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0];
       }
       let insertion = await connection.query(sql, list);
       resolve(insertion[0]);
