@@ -79,7 +79,7 @@ export class BugsComponent implements Grafico, OnInit, OnDestroy {
         this.pbis.forEach((pbi: Pbi) => {
           if (pbi.sprint && pbi.sprint <= i && pbi.label === 'bug') {
             sumBugsClosed++;
-            console.log(pbi);
+            // console.log(pbi);
           }
           if (pbi.sprintCreacion <= i && pbi.label === 'bug' && pbi.done === 0) {
             sumPbiBugsOpened++;
@@ -88,7 +88,7 @@ export class BugsComponent implements Grafico, OnInit, OnDestroy {
             sumNewBugs++;
           } */
         });
-        console.log(sumBugsClosed);
+        // console.log(sumBugsClosed);
         /* totalCreatedBugs += sumNewBugs; */
         /* let closed = this.listaClosedBugs[i - 1].value + this.listaClosedBugs[i - 1].displayed; */
         /* let closed = this.listaClosedBugs[i - 1].value + sumBugsClosed; */
@@ -116,7 +116,7 @@ export class BugsComponent implements Grafico, OnInit, OnDestroy {
         displayed: this.listaCreatedBugs[i].displayed
       }; */
     }
-    console.log(this.listaCreatedBugs);
+    //console.log(this.listaCreatedBugs);
   }
 
   generarGrafico() {

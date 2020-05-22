@@ -120,10 +120,10 @@ export class CuentaComponent implements OnInit, OnDestroy {
           this.isLoading = false;
           this.buttonDisabled = true;
           this.openSnackBar('Account edited successfully!', 'Close');
-          console.log(data);
+          // console.log(data);
         },
         error => {
-          console.log(error);
+          // console.log(error);
         }
       );
     /* } */
@@ -170,10 +170,10 @@ export class CuentaComponent implements OnInit, OnDestroy {
               this.openSnackBar('Password changed successfully!', 'Close');
             }
             this.isLoading = false;
-            console.log(data);
+            // console.log(data);
           },
           error => {
-            console.log(error);
+            // console.log(error);
           }
         );
       /*  }

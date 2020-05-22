@@ -83,7 +83,7 @@ export class UsuariosService {
    * @param data datos del usuario: nick, nombre, apellido1, apellido2, email
    */
   actualizarUsuario(usuario: Usuario): Observable<any> {
-    console.log(usuario);
+    // console.log(usuario);
     return this.http.put<any>(this.url + '/' + usuario.idusuario + '/actualizar', JSON.stringify(usuario), httpOptions);
   }
 

@@ -105,7 +105,7 @@ export class PbiDialogComponent implements OnInit, OnDestroy {
       this.notSelectedPbis.splice(index, 1);
     }
 
-    console.log(data.pbi);
+    // console.log(data.pbi);
     this.idpbi = data.pbi.idpbi;
     this.titulo = data.pbi.titulo;
     this.descripcion = data.pbi.descripcion;
@@ -203,7 +203,7 @@ export class PbiDialogComponent implements OnInit, OnDestroy {
       .obtenerCriterios(this.idpbi)
       .pipe(untilDestroyed(this))
       .subscribe((criterios: Criterio[]) => {
-        console.log(criterios);
+        // console.log(criterios);
         this.criterios = criterios;
         this.isLoading = false;
       });
@@ -303,30 +303,9 @@ export class PbiDialogComponent implements OnInit, OnDestroy {
       .obtenerArchivos(this.idpbi)
       .pipe(untilDestroyed(this))
       .subscribe((archivos: any[]) => {
-        console.log(archivos);
+        // console.log(archivos);
         this.archivos = archivos;
-        this.archivos.forEach(archivo => {
-          console.log(archivo);
-
-          var fileType = this.getFileType(archivo);
-
-          //archivo.nombre += fileType.ending;
-          console.log(archivo);
-
-          //archivo.src = Buffer.from(archivo.src, 'base64').toString();
-
-          //var blob = new Blob([archivo.src, { type: fileType.format }]);
-
-          /*  var array = new Array<Blob>();
-         array.push(blob);
-         blob = new File(array, archivo.nombre, { type: fileType.format }); */
-
-          /*  console.log(fileType);
-         console.log(archivo);
-         console.log(blob); */
-
-          // archivo.src = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(blob));
-        });
+        this.archivos.forEach(archivo => {});
 
         this.isLoading = false;
       });
@@ -340,7 +319,7 @@ export class PbiDialogComponent implements OnInit, OnDestroy {
 
     const downloadLink = document.createElement('a');
     const fileName = archivo.nombre;
-    console.log(archivo.src);
+    // console.log(archivo.src);
     downloadLink.href = archivo.src;
     downloadLink.download = fileName;
     downloadLink.click();
@@ -429,7 +408,7 @@ export class PbiDialogComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe(data => {
         if (data != undefined) {
-          console.log(data);
+          // console.log(data);
           this.done = data.done;
           this.sprint = data.sprint;
           this.saveButtonDisabled = false;
@@ -504,14 +483,13 @@ export class PbiDialogComponent implements OnInit, OnDestroy {
         this.sprintCreacion
       )
     });
-    console.log(this.dialogMode);
+    // console.log(this.dialogMode);
     //show snackbar on success:
     if (this.dialogMode == 'Edit') this.openSnackBar('PBI edited successfully!', 'Close');
     else if (this.dialogMode == 'Create new PBI') this.openSnackBar('PBI created successfully!', 'Close');
   }
 
   close() {
-    console.log();
     this.dialogRef.close();
   }
 
@@ -559,22 +537,7 @@ export class PbiDialogComponent implements OnInit, OnDestroy {
     this.uploadFileMode = !this.uploadFileMode;
   }
 
-  download(archivo: any) {
-    /*  window.location.href = archivo.src; */
-    var blob = new Blob([archivo.src]);
-    archivo.src = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
-    //window.open(url);
-  }
-
   getFileType(file: any) {
-    /*  let checkFileType = Buffer.from(file.src, 'base64').toString();
-    checkFileType = checkFileType.split(':').pop(); */
-    //console.log(checkFileType);
-    /* if (checkFileType.includes('image/png')) return { format: 'image/png', ending: '.png' };
-    else if (checkFileType.includes('application/pdf')) return { format: 'application/pdf', ending: '.pdf' };
-    else {
-      return { format: 'image/png', ending: '.png' };
-    } */
     let checkFileType = file.nombre;
     /* imagenes */
     if (checkFileType.endsWith('.png')) return { format: 'image/png', ending: '.png' };

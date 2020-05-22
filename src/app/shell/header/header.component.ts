@@ -53,7 +53,7 @@ export class HeaderComponent implements OnInit {
   }
 
   proyectoSeleccionado(proyecto: Proyecto) {
-    console.log(proyecto);
+    // console.log(proyecto);
     this.proyecto = proyecto;
     this.proyectosService.proyecto = proyecto;
   }

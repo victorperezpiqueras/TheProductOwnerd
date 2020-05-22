@@ -114,7 +114,6 @@ export class ProyectoComponent implements OnInit, OnDestroy {
 
   onTabChanged(event: MatTabChangeEvent) {
     if (event.index == 0) {
-      console.log('cargarpadre');
       this.overview.actualizar();
     } else if (event.index == 1) {
       this.backlog.actualizar();
@@ -124,7 +123,7 @@ export class ProyectoComponent implements OnInit, OnDestroy {
   }
 
   actualizarComponentes() {
-    console.log('actualizar proyecto');
+    // console.log('actualizar proyecto');
     this.overview.proyecto = this.proyecto;
     this.backlog.proyecto = this.proyecto;
     this.forecasts.proyecto = this.proyecto;

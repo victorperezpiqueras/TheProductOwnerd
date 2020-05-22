@@ -64,12 +64,6 @@ export class BacklogComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    //this.proyecto = this.proyectosService.proyecto;
-    /* console.log(this.router.url.split('/')[2])
-    this.proyectosService.getProyecto(Number(this.router.url.split('/')[2]))
-      .subscribe((proyecto)=>{ 
-        this.proyecto=proyecto;
-      }) */
     this.actualizar();
   }
 
@@ -99,7 +93,7 @@ export class BacklogComponent implements OnInit, OnDestroy {
                 .pipe(untilDestroyed(this))
                 .subscribe((permisos: Permisos) => {
                   this.permisos = permisos;
-                  console.log('Permisos', this.permisos);
+                  // console.log('Permisos', this.permisos);
                   this.isLoading = false;
                 });
             });
@@ -284,7 +278,7 @@ export class BacklogComponent implements OnInit, OnDestroy {
       .subscribe(data => {
         if (data != undefined) {
           this.addPbi(data.pbi);
-          console.log(data);
+          // console.log(data);
         }
       });
   }
@@ -341,7 +335,7 @@ export class BacklogComponent implements OnInit, OnDestroy {
   }
 
   drop(event: CdkDragDrop<string[]>) {
-    console.log(this.showingPbis);
+    // console.log(this.showingPbis);
     if (!this.viewDone) {
       moveItemInArray(this.showingPbis, event.previousIndex, event.currentIndex);
       /* console.log(this.showingPbis)
@@ -407,7 +401,7 @@ export class BacklogComponent implements OnInit, OnDestroy {
   }
 
   editarPbi(pbi: Pbi) {
-    console.log(pbi);
+    // console.log(pbi);
     this.pbisService
       .editarPbi(pbi)
       .pipe(untilDestroyed(this))

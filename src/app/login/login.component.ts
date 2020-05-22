@@ -55,7 +55,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       )
       .subscribe(
         data => {
-          console.log(data);
+          //console.log(data);
           const cred = {
             username: data.nick,
             id: data.idusuario,
@@ -65,7 +65,7 @@ export class LoginComponent implements OnInit, OnDestroy {
           this.router.navigate([this.route.snapshot.queryParams.redirect || ''], { replaceUrl: true });
         },
         error => {
-          console.log(error);
+          //console.log(error);
           this.error = error.error.error;
         }
       );
@@ -80,7 +80,7 @@ export class LoginComponent implements OnInit, OnDestroy {
        )
        .subscribe(
          (data) => {
-           console.log(data)
+           // console.log(data)
            if (data.error) {
              log.debug(`Login error: ${data.error}`);
              this.error = data.error;

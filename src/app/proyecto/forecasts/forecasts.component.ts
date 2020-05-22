@@ -58,7 +58,7 @@ export class ForecastsComponent implements OnInit, OnDestroy {
   }
 
   actualizar() {
-    console.log('actualizar');
+    // console.log('actualizar');
     this.actualizarGraficos();
   }
 

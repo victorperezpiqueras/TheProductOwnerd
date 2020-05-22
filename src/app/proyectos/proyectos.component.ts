@@ -41,7 +41,6 @@ export class ProyectosComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.actualizarDatos();
-    console.log(this.credentialsService.credentials);
   }
 
   crearProyectoDialog(): void {

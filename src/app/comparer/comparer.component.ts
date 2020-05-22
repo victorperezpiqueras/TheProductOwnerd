@@ -48,12 +48,10 @@ export class ComparerComponent implements OnInit, OnDestroy {
 
   cargarDatos() {
     this.isLoading = true;
-    console.log(this.credentialsService.credentials);
     this.usuariosService
       .getUsuarioProyectos(this.idusuario)
       .pipe(untilDestroyed(this))
       .subscribe(proyectos => {
-        console.log(proyectos);
         var proyAux: ProyectoData[] = [];
         // cargar los proyectos:
         proyectos.forEach((proyecto: any) => {

@@ -107,7 +107,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
   }
 
   actualizar() {
-    console.log('actualizar');
+    //console.log('actualizar');
     this.actualizarUsuarios();
     this.actualizarGraficos();
   }
@@ -176,7 +176,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
     const rol = formatRoles(us.rol);
     const usuario = await this.usuariosService.getUsuario(us.idusuario).toPromise();
 
-    console.log(usuario);
+    // console.log(usuario);
     const dialogConfig = new MatDialogConfig();
     dialogConfig.autoFocus = false;
     dialogConfig.data = {
@@ -192,7 +192,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe(data => {
         if (data != undefined) {
-          console.log(data);
+          // console.log(data);
           this.isLoading = true;
           this.proyectosService
             .eliminarUsuario(this.proyecto.idproyecto, us.idusuario)
@@ -211,7 +211,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
       .actualizarProyecto(this.proyecto.idproyecto, this.proyecto)
       .pipe(untilDestroyed(this))
       .subscribe(data => {
-        console.log(this.proyecto);
+        // console.log(this.proyecto);
         this.isLoading = false;
         this._snackBar.open('Vision edited successfully!', 'Close', { duration: 3000 });
       });

@@ -177,7 +177,7 @@ export class VelocityComparerComponent implements GraficoComparer, OnInit, OnDes
 
     // generar colores para los proyectos:
     var colores = this.generarColoresAleatorios(this.proyectos.length);
-    console.log(colores);
+    // console.log(colores);
     let colorIndex: number = 0;
     this.proyectos.forEach((proy: ProyectoData) => {
       this.listaProyectosSeries.push({

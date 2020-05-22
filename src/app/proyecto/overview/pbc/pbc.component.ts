@@ -38,6 +38,8 @@ export class PbcComponent implements Grafico, OnInit, OnDestroy {
   listaTechDebtSC: any[] = [];
   listaBugsSC: any[] = [];
 
+  listaIdeal: any[] = [];
+
   sprints: Sprint[] = [];
 
   puntosTotales: number;
@@ -63,6 +65,7 @@ export class PbcComponent implements Grafico, OnInit, OnDestroy {
     this.pbis = pbis;
     this.showScopeCreep = false;
     this.generarDatos();
+    this.generarIdeal();
     this.generarGrafico();
     this.calcularMedias();
   }
@@ -308,8 +311,14 @@ export class PbcComponent implements Grafico, OnInit, OnDestroy {
         };
       }
     }
-    console.log(this.listaFeatures);
-    console.log(this.listaFeaturesSC);
+    /* console.log(this.listaFeatures);
+    console.log(this.listaFeaturesSC); */
+  }
+
+  generarIdeal() {
+    this.listaIdeal = [];
+    this.listaIdeal.push({ x: 0, y: this.sprints[0].restante });
+    this.listaIdeal.push({ x: this.proyecto.deadline, y: 0 });
   }
 
   generarGrafico() {
@@ -495,6 +504,23 @@ export class PbcComponent implements Grafico, OnInit, OnDestroy {
               '____________________________________' +
               '<br><span style="color:{point.color}">●</span> {series.name}: <b>{point.y}</b>. (Total Burned: <b>{point.quemado}</b>)<br/>'
           }
+        },
+        {
+          name: 'Ideal',
+          data: this.listaIdeal,
+          type: 'line',
+          dashStyle: 'Dash',
+          color: '#a4a4a4',
+          marker: {
+            enabled: false,
+            radius: 0
+          },
+          enableMouseTracking: false,
+          tooltip: {
+            pointFormat:
+              '____________________________________' +
+              '<br><span style="color:{point.color}">●</span> {series.name}: <b>{point.y}</b><br/>'
+          }
         }
       ],
       navigation: {
@@ -514,6 +540,7 @@ export class PbcComponent implements Grafico, OnInit, OnDestroy {
     };
     this.chartOptions.tooltip.formatter = function() {
       var s: string = '';
+      let flag = false;
       for (var i = 0; i < this.points.length; i++) {
         // puntos basicos:
         if (i < 4) {
@@ -531,6 +558,10 @@ export class PbcComponent implements Grafico, OnInit, OnDestroy {
         }
         // puntos scope creep:
         if (i >= 4 && i !== this.points.length - 1 && this.points.length > 4) {
+          if (!flag) {
+            s += '-----------------------------<br>';
+            flag = true;
+          }
           s +=
             '<span style="color:' +
             this.points[i].color +

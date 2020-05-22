@@ -57,7 +57,7 @@ export class RegistroComponent implements OnInit, OnDestroy {
             if (res == null) this.showErrorInvitacion = true;
           });
       }
-      console.log(this.invitacionProyecto);
+      // console.log(this.invitacionProyecto);
       this.isLoading = false;
     });
   }
@@ -72,7 +72,7 @@ export class RegistroComponent implements OnInit, OnDestroy {
     const email = this.registerForm.value.email;
     const password = this.registerForm.value.password;
 
-    console.log(this.invitacionProyecto);
+    // console.log(this.invitacionProyecto);
     if (this.invitacionProyecto == null) {
       this.registroService
         .registrar({
@@ -92,13 +92,13 @@ export class RegistroComponent implements OnInit, OnDestroy {
         )
         .subscribe(
           data => {
-            console.log(data);
+            // console.log(data);
             this._snackBar.open('Account created successfully!', 'Close', { duration: 3000 });
             this.router.navigate(['/login'], { replaceUrl: true });
           },
           error => {
             this._snackBar.open('There was an error registering your account. Try again later', 'Close');
-            console.log(error);
+            // console.log(error);
             this.error = error.error.error;
           }
         );

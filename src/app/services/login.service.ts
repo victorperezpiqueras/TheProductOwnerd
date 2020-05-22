@@ -18,7 +18,7 @@ export class LoginService {
    * @returns credentials: { nick, idusuario, token }
    */
   login(credenciales: any): Observable<any> {
-    console.log('login', JSON.stringify(credenciales));
+    // console.log('login', JSON.stringify(credenciales));
     return this.http.post<any>(this.url, JSON.stringify(credenciales), httpOptions);
   }
 }
