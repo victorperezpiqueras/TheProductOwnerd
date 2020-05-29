@@ -252,7 +252,7 @@ export class PbcComponent implements Grafico, OnInit, OnDestroy {
           x: this.sprints[i].sprintNumber,
           xLabel: this.sprints[i].sprint,
           y: this.sprints[i].restante,
-          quemado: this.sprints[i - 1].restante - this.sprints[i].restante
+          quemado: this.sprints[i].quemado
         };
         this.listaFeatures[i] = {
           x: this.listaFeatures[i].sprintNumber,
@@ -311,8 +311,8 @@ export class PbcComponent implements Grafico, OnInit, OnDestroy {
         };
       }
     }
-    /* console.log(this.listaFeatures);
-    console.log(this.listaFeaturesSC); */
+    /* console.log(this.listaScope); */
+    /* console.log(this.listaFeaturesSC); */
   }
 
   generarIdeal() {
@@ -573,13 +573,14 @@ export class PbcComponent implements Grafico, OnInit, OnDestroy {
         }
         // scope:
         if (i === this.points.length - 1) {
+          var point: any = this.points[i];
           s =
             '<span style="color:' +
-            this.points[i].color +
+            point.color +
             '">●</span> ' +
-            this.points[i].series.name +
+            point.series.name +
             ': <b>' +
-            this.points[i].y +
+            point.y +
             '</b>. (Total Burned: <b>' +
             point.point.options.quemado +
             '</b>)<br/>' +
