@@ -1,0 +1,148 @@
+<?xml version="1.0"?>
+<testsuite name="HeadlessChrome 78.0.3882 (Windows 10.0.0)" package="" timestamp="2020-06-01T11:08:43" id="0" hostname="DESKTOP-32R65TP" tests="137" errors="0" failures="0" time="7.56">
+  <properties>
+    <property name="browser.fullName" value="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/78.0.3882.0 Safari/537.36"/>
+  </properties>
+  <testcase name="AboutComponent should create" time="0.749" classname="AboutComponent"/>
+  <testcase name="AppComponent should create the app" time="0.024" classname="AppComponent"/>
+  <testcase name="ComparerComponent should create" time="0.5" classname="ComparerComponent"/>
+  <testcase name="AuthenticationGuard should have a canActivate method" time="0.009" classname="AuthenticationGuard"/>
+  <testcase name="AuthenticationGuard should return true if user is authenticated" time="0.006" classname="AuthenticationGuard"/>
+  <testcase name="AuthenticationService login should return credentials" time="0.007" classname="AuthenticationService"/>
+  <testcase name="AuthenticationService login should authenticate user" time="0.008" classname="AuthenticationService"/>
+  <testcase name="AuthenticationService login should persist credentials for the session" time="0.007" classname="AuthenticationService"/>
+  <testcase name="AuthenticationService login should persist credentials across sessions" time="0.009" classname="AuthenticationService"/>
+  <testcase name="AuthenticationService logout should clear user authentication" time="0.013" classname="AuthenticationService"/>
+  <testcase name="CredentialsService setCredentials should authenticate user if credentials are set" time="0.006" classname="CredentialsService"/>
+  <testcase name="CredentialsService setCredentials should clean authentication" time="0.005" classname="CredentialsService"/>
+  <testcase name="CredentialsService setCredentials should persist credentials for the session" time="0.006" classname="CredentialsService"/>
+  <testcase name="CredentialsService setCredentials should persist credentials across sessions" time="0.007" classname="CredentialsService"/>
+  <testcase name="CredentialsService setCredentials should clear user authentication" time="0.004" classname="CredentialsService"/>
+  <testcase name="ApiPrefixInterceptor should prepend environment.serverUrl to the request url" time="0.007" classname="ApiPrefixInterceptor"/>
+  <testcase name="ApiPrefixInterceptor should not prepend environment.serverUrl to request url" time="0.007" classname="ApiPrefixInterceptor"/>
+  <testcase name="CacheInterceptor with default configuration should cache the request" time="0.011" classname="CacheInterceptor"/>
+  <testcase name="CacheInterceptor with default configuration should respond from the cache" time="0.006" classname="CacheInterceptor"/>
+  <testcase name="CacheInterceptor with default configuration should not cache the request in case of error" time="0.007" classname="CacheInterceptor"/>
+  <testcase name="CacheInterceptor with update forced configuration should force cache update" time="0.006" classname="CacheInterceptor"/>
+  <testcase name="ErrorHandlerInterceptor should catch error and call error handler" time="0.012" classname="ErrorHandlerInterceptor"/>
+  <testcase name="HttpCacheService setCacheData should set cache data" time="0.006" classname="HttpCacheService"/>
+  <testcase name="HttpCacheService setCacheData should replace existing data" time="0.006" classname="HttpCacheService"/>
+  <testcase name="HttpCacheService setCacheData should set cache date correctly" time="0.049" classname="HttpCacheService"/>
+  <testcase name="HttpCacheService getCacheData should return null if no cache" time="0.008" classname="HttpCacheService"/>
+  <testcase name="HttpCacheService getCacheData should return cached data if exists" time="0.005" classname="HttpCacheService"/>
+  <testcase name="HttpCacheService getCacheData should return cached data with url parameters if exists" time="0.008" classname="HttpCacheService"/>
+  <testcase name="HttpCacheService getHttpCacheEntry should return null if no cache" time="0.005" classname="HttpCacheService"/>
+  <testcase name="HttpCacheService getHttpCacheEntry should return cached data date  if exists" time="0.004" classname="HttpCacheService"/>
+  <testcase name="HttpCacheService clearCacheData should clear existing cache data" time="0.005" classname="HttpCacheService"/>
+  <testcase name="HttpCacheService clearCacheData should do nothing if no cache exists" time="0.005" classname="HttpCacheService"/>
+  <testcase name="HttpCacheService cleanCache should clear all cache if no date is specified" time="0.006" classname="HttpCacheService"/>
+  <testcase name="HttpCacheService cleanCache should clear existing since specified date" time="0.008" classname="HttpCacheService"/>
+  <testcase name="HttpCacheService cleanCache should not affect cache entries newer than specified date" time="0.007" classname="HttpCacheService"/>
+  <testcase name="HttpCacheService setPersistence should clear previous cache data when persistence value change" time="0.005" classname="HttpCacheService"/>
+  <testcase name="HttpCacheService setPersistence should persist cache to local storage" time="0.005" classname="HttpCacheService"/>
+  <testcase name="HttpCacheService setPersistence should persist cache to session storage" time="0.005" classname="HttpCacheService"/>
+  <testcase name="HttpService should use error handler, API prefix and no cache by default" time="0.011" classname="HttpService"/>
+  <testcase name="HttpService should use cache" time="0.009" classname="HttpService"/>
+  <testcase name="HttpService should skip error handler" time="0.011" classname="HttpService"/>
+  <testcase name="HttpService should not use API prefix" time="0.009" classname="HttpService"/>
+  <testcase name="I18nService extract should not modify string" time="0.006" classname="I18nService"/>
+  <testcase name="I18nService init should init with default language" time="0.006" classname="I18nService"/>
+  <testcase name="I18nService init should init with save language" time="0.005" classname="I18nService"/>
+  <testcase name="I18nService set language should change current language" time="0.006" classname="I18nService"/>
+  <testcase name="I18nService set language should change current language without a region match" time="0.008" classname="I18nService"/>
+  <testcase name="I18nService set language should change current language to default if unsupported" time="0.006" classname="I18nService"/>
+  <testcase name="I18nService get language should return current language" time="0.004" classname="I18nService"/>
+  <testcase name="Logger should create an instance" time="0" classname="Logger"/>
+  <testcase name="Logger should add a new LogOutput and receives log entries" time="0" classname="Logger"/>
+  <testcase name="Logger should add a new LogOutput and receives only production log entries" time="0" classname="Logger"/>
+  <testcase name="untilDestroyed should not destroy other instances" time="0" classname="untilDestroyed"/>
+  <testcase name="untilDestroyed should work with multiple observables" time="0" classname="untilDestroyed"/>
+  <testcase name="untilDestroyed should work with classes that are not components" time="0.001" classname="untilDestroyed"/>
+  <testcase name="untilDestroyed should unsubscribe from anywhere" time="0.001" classname="untilDestroyed"/>
+  <testcase name="untilDestroyed should throw when destroy method doesnt exist" time="0.001" classname="untilDestroyed"/>
+  <testcase name="untilDestroyed should not throw when destroy method is implemented on super class" time="0.001" classname="untilDestroyed"/>
+  <testcase name="untilDestroyed should work with subclass" time="0.001" classname="untilDestroyed"/>
+  <testcase name="CuentaComponent should create" time="0.378" classname="CuentaComponent"/>
+  <testcase name="Service: HolaMundoService should ..." time="0.006" classname="Service: HolaMundoService"/>
+  <testcase name="LoginComponent should create" time="0.452" classname="LoginComponent"/>
+  <testcase name="Archivo should create" time="0.003" classname="Archivo"/>
+  <testcase name="Pbi should create" time="0.001" classname="Pbi"/>
+  <testcase name="Permiso should create" time="0.001" classname="Permiso"/>
+  <testcase name="Permiso should create" time="0.001" classname="Permiso"/>
+  <testcase name="Permiso should create" time="0" classname="Permiso"/>
+  <testcase name="Permiso should create" time="0.001" classname="Permiso"/>
+  <testcase name="BacklogComponent should create" time="0.454" classname="BacklogComponent"/>
+  <testcase name="ForecastsComponent should create" time="0.309" classname="ForecastsComponent"/>
+  <testcase name="LinearRegressionComponent should create" time="0.286" classname="LinearRegressionComponent"/>
+  <testcase name="PolynomialRegressionComponent should create" time="0.283" classname="PolynomialRegressionComponent"/>
+  <testcase name="VelocityComponent should create" time="0.262" classname="VelocityComponent"/>
+  <testcase name="BugsComponent should create" time="0.224" classname="BugsComponent"/>
+  <testcase name="OverviewComponent should create" time="0.246" classname="OverviewComponent"/>
+  <testcase name="OverviewComponent should show kick users column for PO" time="0.254" classname="OverviewComponent"/>
+  <testcase name="PbcComponent should create" time="0.209" classname="PbcComponent"/>
+  <testcase name="PocComponent should create" time="0.251" classname="PocComponent"/>
+  <testcase name="ProyectoComponent should create" time="0.347" classname="ProyectoComponent"/>
+  <testcase name="ProyectosComponent should create" time="0.217" classname="ProyectosComponent"/>
+  <testcase name="RegistroComponent should create" time="0.268" classname="RegistroComponent"/>
+  <testcase name="ArchivosService should be created" time="0.009" classname="ArchivosService"/>
+  <testcase name="ArchivosService should post an archivo" time="0.009" classname="ArchivosService"/>
+  <testcase name="ArchivosService should delete an archivo" time="0.005" classname="ArchivosService"/>
+  <testcase name="ComentariosService should be created" time="0.004" classname="ComentariosService"/>
+  <testcase name="ComentariosService should post an comentario" time="0.007" classname="ComentariosService"/>
+  <testcase name="CriteriosService should be created" time="0.004" classname="CriteriosService"/>
+  <testcase name="CriteriosService should post a criterio" time="0.007" classname="CriteriosService"/>
+  <testcase name="CriteriosService should delete an archivo" time="0.005" classname="CriteriosService"/>
+  <testcase name="CriteriosService should update an archivo" time="0.004" classname="CriteriosService"/>
+  <testcase name="DependenciasService should be created" time="0.007" classname="DependenciasService"/>
+  <testcase name="DependenciasService should post a dependencia" time="0.005" classname="DependenciasService"/>
+  <testcase name="DependenciasService should delete a dependencia" time="0.005" classname="DependenciasService"/>
+  <testcase name="InvitacionesService should be created" time="0.006" classname="InvitacionesService"/>
+  <testcase name="InvitacionesService get an invitacion" time="0.005" classname="InvitacionesService"/>
+  <testcase name="InvitacionesService no invitation" time="0.006" classname="InvitacionesService"/>
+  <testcase name="LoginService should login" time="0.005" classname="LoginService"/>
+  <testcase name="PbisService should be created" time="0.005" classname="PbisService"/>
+  <testcase name="PbisService should create a pbi" time="0.005" classname="PbisService"/>
+  <testcase name="PbisService should update a pbi" time="0.005" classname="PbisService"/>
+  <testcase name="PbisService should update pbi priorities" time="0.004" classname="PbisService"/>
+  <testcase name="PbisService should get comentarios" time="0.004" classname="PbisService"/>
+  <testcase name="PbisService should get archivos" time="0.005" classname="PbisService"/>
+  <testcase name="PbisService should get criterios" time="0.006" classname="PbisService"/>
+  <testcase name="PbisService should get dependencias" time="0.004" classname="PbisService"/>
+  <testcase name="ProyectosService should be created" time="0.004" classname="ProyectosService"/>
+  <testcase name="ProyectosService should get all proyectos" time="0.004" classname="ProyectosService"/>
+  <testcase name="ProyectosService should get proyecto usuarios" time="0.004" classname="ProyectosService"/>
+  <testcase name="ProyectosService should get proyecto usuarios roles" time="0.007" classname="ProyectosService"/>
+  <testcase name="ProyectosService should get proyectos usuarios roles" time="0.004" classname="ProyectosService"/>
+  <testcase name="ProyectosService should post a proyecto" time="0.004" classname="ProyectosService"/>
+  <testcase name="ProyectosService should update a proyecto" time="0.005" classname="ProyectosService"/>
+  <testcase name="ProyectosService should get proyecto pbis" time="0.006" classname="ProyectosService"/>
+  <testcase name="ProyectosService should get proyecto sprintgoals" time="0.004" classname="ProyectosService"/>
+  <testcase name="ProyectosService should invite user" time="0.005" classname="ProyectosService"/>
+  <testcase name="ProyectosService should delete a usuario" time="0.008" classname="ProyectosService"/>
+  <testcase name="RegistroService should register" time="0.005" classname="RegistroService"/>
+  <testcase name="RegistroService should register with invitation" time="0.005" classname="RegistroService"/>
+  <testcase name="SprintGoalsService should be created" time="0.004" classname="SprintGoalsService"/>
+  <testcase name="SprintGoalsService should post a sprint goal" time="0.005" classname="SprintGoalsService"/>
+  <testcase name="SprintGoalsService should update a sprint goal" time="0.008" classname="SprintGoalsService"/>
+  <testcase name="UsuariosService should be created" time="0.004" classname="UsuariosService"/>
+  <testcase name="UsuariosService should get a user" time="0.005" classname="UsuariosService"/>
+  <testcase name="UsuariosService should get a user projects" time="0.005" classname="UsuariosService"/>
+  <testcase name="UsuariosService should get a user projects permissions" time="0.005" classname="UsuariosService"/>
+  <testcase name="UsuariosService should get a user favourite projects" time="0.005" classname="UsuariosService"/>
+  <testcase name="UsuariosService should add a project to favourites" time="0.005" classname="UsuariosService"/>
+  <testcase name="UsuariosService should remove a project from favourites" time="0.005" classname="UsuariosService"/>
+  <testcase name="UsuariosService should update a user" time="0.007" classname="UsuariosService"/>
+  <testcase name="UsuariosService should update a user password" time="0.008" classname="UsuariosService"/>
+  <testcase name="LoaderComponent should not be visible by default" time="0.182" classname="LoaderComponent"/>
+  <testcase name="LoaderComponent should be visible when app is loading" time="0.186" classname="LoaderComponent"/>
+  <testcase name="LoaderComponent should not display a message by default" time="0.185" classname="LoaderComponent"/>
+  <testcase name="LoaderComponent should display specified message" time="0.184" classname="LoaderComponent"/>
+  <testcase name="HeaderComponent should create" time="0.222" classname="HeaderComponent"/>
+  <testcase name="ShellComponent should create" time="0.243" classname="ShellComponent"/>
+  <testcase name="Shell childRoutes should create routes as children of shell" time="0.004" classname="Shell"/>
+  <system-out>
+    <![CDATA[
+]]>
+  </system-out>
+  <system-err/>
+</testsuite>
