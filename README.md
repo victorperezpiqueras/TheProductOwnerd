@@ -5,6 +5,7 @@
 [![Build Status](https://travis-ci.com/victorperezpiqueras/TheProductOwnerd.svg?token=pmhaTELXyxgHKQz4j74Z&branch=master)](https://travis-ci.com/victorperezpiqueras/TheProductOwnerd)
 ![GitHub issues](https://img.shields.io/github/issues-raw/victorperezpiqueras/TheProductOwnerd)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/victorperezpiqueras/TheProductOwnerd)
+![License](https://img.shields.io/badge/license-CC&nbsp;BY&ndash;NC&ndash;SA-black)
 
 ## Table of Contents
 
