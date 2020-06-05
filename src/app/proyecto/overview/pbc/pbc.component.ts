@@ -534,8 +534,8 @@ export class PbcComponent implements Grafico, OnInit, OnDestroy {
       exporting: {
         enabled: true,
         filename: 'project_burndown_chart',
-        sourceHeight: 550,
-        sourceWidth: 1100
+        sourceHeight: 1080,
+        sourceWidth: 1920
       }
     };
     this.chartOptions.tooltip.formatter = function() {

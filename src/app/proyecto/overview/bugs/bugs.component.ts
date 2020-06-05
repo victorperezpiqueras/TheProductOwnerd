@@ -235,8 +235,8 @@ export class BugsComponent implements Grafico, OnInit, OnDestroy {
       exporting: {
         enabled: true,
         filename: 'bugs_status',
-        sourceHeight: 550,
-        sourceWidth: 1100
+        sourceHeight: 1080,
+        sourceWidth: 1920
       }
     };
 

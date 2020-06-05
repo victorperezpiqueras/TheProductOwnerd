@@ -352,8 +352,8 @@ export class LinearRegressionComponent implements Grafico, OnInit, OnDestroy {
       exporting: {
         enabled: true,
         filename: 'linear_regression_model',
-        sourceHeight: 550,
-        sourceWidth: 1100
+        sourceHeight: 1080,
+        sourceWidth: 1920
       }
     };
   }

@@ -313,8 +313,8 @@ export class PocComponent implements Grafico, OnInit, OnDestroy {
       exporting: {
         enabled: true,
         filename: 'percentage_of_completion',
-        sourceHeight: 550,
-        sourceWidth: 1100
+        sourceHeight: 1080,
+        sourceWidth: 1920
       }
     };
 

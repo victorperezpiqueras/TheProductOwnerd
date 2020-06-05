@@ -229,12 +229,23 @@ ControllerProyectos.crearProyecto = function(data) {
         'insert into roles(nombre,idusuario,idproyecto, ordenar, editarPBI,estimarTam,estimarValor, mantenerUsuarios, archivarProyecto, setDone, proyecciones, sprintGoals, vision)' +
         ' values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
       let insertion = await connection.query(sql, [
-        'productOwner',
+        /* 'productOwner', */
+        'admin',
         data.idusuario,
         idProyecto,
-        1,
+        /*  1,
         1,
         0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1 */
+        1,
+        1,
+        1,
         1,
         1,
         1,

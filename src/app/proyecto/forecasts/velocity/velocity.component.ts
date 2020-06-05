@@ -265,19 +265,19 @@ export class VelocityComponent implements Grafico, OnInit, OnDestroy {
       // y - y0 = m·(x-x0) --> y - this.sprints[this.ultimoSprint].restante = media*(deadline-this.ultimoSprint)
       var corteAverage =
         this.sprints[this.ultimoSprint].restante -
-        this.mediaAverage * (this.deadlineSprint - this.ultimoSprint /* + 1 */); // +1 due to axis starting at 1
+        this.mediaAverage * (this.deadlineSprint - this.ultimoSprint) /* + 1 */; // +1 due to axis starting at 1
       this.puntoCorteAverage.push([this.deadlineSprint, corteAverage]);
     }
     if (this.listaAverageWorst[this.listaAverageWorst.length - 1][0] >= this.deadlineSprint) {
       var corteAverageWorst =
         this.sprints[this.ultimoSprint].restante -
-        this.mediaAverageWorst * (this.deadlineSprint - this.ultimoSprint /* + 1 */); // +1 due to axis starting at 1
+        this.mediaAverageWorst * (this.deadlineSprint - this.ultimoSprint) /* + 1 */; // +1 due to axis starting at 1
       this.puntoCorteWorst.push([this.deadlineSprint, corteAverageWorst]);
     }
     if (this.listaAverageBest[this.listaAverageBest.length - 1][0] >= this.deadlineSprint) {
       var corteAverageBest =
         this.sprints[this.ultimoSprint].restante -
-        this.mediaAverageBest * (this.deadlineSprint - this.ultimoSprint /* + 1 */); // +1 due to axis starting at 1
+        this.mediaAverageBest * (this.deadlineSprint - this.ultimoSprint) /* + 1 */; // +1 due to axis starting at 1
       this.puntoCorteBest.push([this.deadlineSprint, corteAverageBest]);
     }
   }
@@ -508,8 +508,8 @@ export class VelocityComponent implements Grafico, OnInit, OnDestroy {
       exporting: {
         enabled: true,
         filename: 'forecast_by_velocity',
-        sourceHeight: 550,
-        sourceWidth: 1100
+        sourceHeight: 1080,
+        sourceWidth: 1920
       }
     };
   }
