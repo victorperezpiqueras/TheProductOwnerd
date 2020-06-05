@@ -162,11 +162,15 @@ export class OverviewComponent implements OnInit, OnDestroy {
           this._snackBar.open('Member successfully added!', 'Close', { duration: 3000 });
           this.actualizarUsuarios();
         } else {
-          this._snackBar.open(
-            'This email does not have an account linked. An invitation has been sent instead!',
-            'Close',
-            { duration: 5000 }
-          );
+          if (data.team) {
+            this._snackBar.open('ERROR: The user is already in the team', 'Close', { duration: 5000 });
+          } else {
+            this._snackBar.open(
+              'This email does not have an account linked. An invitation has been sent instead!',
+              'Close',
+              { duration: 5000 }
+            );
+          }
           this.isLoading = false;
         }
       });

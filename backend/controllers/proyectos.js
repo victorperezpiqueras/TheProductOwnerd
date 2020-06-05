@@ -355,10 +355,21 @@ ControllerProyectos.proyectoInvitarUsuario = function(idproyecto, data) {
       reject({ error: 'email_searching_error' });
     }
     try {
+      //si hay usuario:
       if (user[0].length > 0) {
-        const inviData = { rol: data.rol, idusuario: user[0][0].idusuario };
-        await ControllerProyectos.proyectoAgregarUsuario(idproyecto, inviData);
-        resolve({ existe: true });
+        var idusuario = user[0][0].idusuario;
+        var sql = 'select * from roles where idusuario=? and idproyecto=?';
+        var userRole = await connection.query(sql, [idusuario, idproyecto]);
+        // si ya tiene rol para el proyecto:
+        if (userRole[0].length > 0) {
+          resolve({ existe: false, team: true });
+        }
+        // si NO tiene rol OK:
+        else {
+          const inviData = { rol: data.rol, idusuario: user[0][0].idusuario };
+          await ControllerProyectos.proyectoAgregarUsuario(idproyecto, inviData);
+          resolve({ existe: true });
+        }
       } else {
         // no existe el usuario --> crear invitacion
         const tokenUrl = jwt.sign({ idproyecto: idproyecto, email: data.email, rol: data.rol }, config.jwtKey);
