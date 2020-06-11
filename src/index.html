@@ -15,6 +15,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
   </head>
+
   <body>
     <!--[if lt IE 10]>
       <p>
@@ -27,6 +28,19 @@
         This page requires JavaScript to work properly. Please enable JavaScript in your browser.
       </p>
     </noscript>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-169179489-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+
+      gtag('config', 'UA-169179489-1');
+    </script>
+
     <app-root></app-root>
   </body>
 </html>
