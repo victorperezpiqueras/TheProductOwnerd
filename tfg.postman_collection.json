@@ -1,0 +1,1317 @@
+{
+  "info": {
+    "_postman_id": "96c5235e-90f7-4071-8c04-a4d2ea82d148",
+    "name": "tfg",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Proyectos",
+      "item": [
+        {
+          "name": "localhost:5000/api/proyectos/121",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImlhdCI6MTU4NjE4NzM1OX0.ip4ruc828M6tX0u9B5rffIDCIMVExmxieljoN00ouEQ",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "localhost:5000/api/proyectos/261",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "proyectos", "261"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "localhost:5000/api/proyectos/1/usuarios",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImlhdCI6MTU4NjE4NzM1OX0.ip4ruc828M6tX0u9B5rffIDCIMVExmxieljoN00ouEQ",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "localhost:5000/api/proyectos/261/usuarios",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "proyectos", "261", "usuarios"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "localhost:5000/api/proyectos POST",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImlhdCI6MTU4NjE4NzM1OX0.ip4ruc828M6tX0u9B5rffIDCIMVExmxieljoN00ouEQ",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"nombre\":\"api2\",\n\t\"descripcion\":\"descripcionprueba\",\n\t\"idusuario\":191\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:5000/api/proyectos",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "proyectos"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "localhost:5000/api/proyectos/121/agregarUsuario",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImlhdCI6MTU4NjE4NzM1OX0.ip4ruc828M6tX0u9B5rffIDCIMVExmxieljoN00ouEQ",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"rol\":\"stakeholder\",\n\t\"idusuario\": 191\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:5000/api/proyectos/261/agregarUsuario",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "proyectos", "261", "agregarUsuario"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "localhost:5000/api/proyectos/usuarios/roles",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImlhdCI6MTU4NjE4NzM1OX0.ip4ruc828M6tX0u9B5rffIDCIMVExmxieljoN00ouEQ",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "localhost:5000/api/proyectos/usuarios/roles",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "proyectos", "usuarios", "roles"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "localhost:5000/api/proyectos/1/usuarios/roles",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImlhdCI6MTU4NjE4NzM1OX0.ip4ruc828M6tX0u9B5rffIDCIMVExmxieljoN00ouEQ",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "localhost:5000/api/proyectos/121/usuarios/roles",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "proyectos", "121", "usuarios", "roles"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "localhost:5000/api/proyectos/121/pbis",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImlhdCI6MTU4NjE4NzM1OX0.ip4ruc828M6tX0u9B5rffIDCIMVExmxieljoN00ouEQ",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "localhost:5000/api/proyectos/121/pbis",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "proyectos", "121", "pbis"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "localhost:5000/api/proyectos/121/invitar",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImlhdCI6MTU4NjE4NzM1OX0.ip4ruc828M6tX0u9B5rffIDCIMVExmxieljoN00ouEQ",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"email\": \"viktitors@hotmail.com\",\n\t\"rol\": \"desarrollador\",\n\t\"nombreProyecto\": \"proyecto1\",\n\t\"invitadoPor\":\"hsimpson\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:5000/api/proyectos/121/invitar",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "proyectos", "121", "invitar"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "localhost:5000/api/proyectos/121/eliminarUsuario",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImlhdCI6MTU4NjE4NzM1OX0.ip4ruc828M6tX0u9B5rffIDCIMVExmxieljoN00ouEQ",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:5000/api/proyectos/121/eliminarUsuario/111",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "proyectos", "121", "eliminarUsuario", "111"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "localhost:5000/api/proyectos/121 PUT",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImlhdCI6MTU4NjE4NzM1OX0.ip4ruc828M6tX0u9B5rffIDCIMVExmxieljoN00ouEQ",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"idproyecto\": 261,\r\n    \"nombre\": \"project 4\",\r\n    \"descripcion\": \"descrrrrr\",\r\n    \"sprintActual\": 1,\r\n    \"vision\": null\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:5000/api/proyectos/261",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "proyectos", "261"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "localhost:5000/api/proyectos/121/sprintgoals",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjExMSwiaWF0IjoxNTg3MzA3MDA5fQ.hE-A8DVaguHRcvJFUwwm7hrqQTRhvUWx3l8wi2VBsj8",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "localhost:5000/api/proyectos/261/sprintgoals",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "proyectos", "261", "sprintgoals"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "localhost:5000/api/proyectos/121/usuarios/1",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImlhdCI6MTU4NjE4NzM1OX0.ip4ruc828M6tX0u9B5rffIDCIMVExmxieljoN00ouEQ",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": ""
+            },
+            "url": {
+              "raw": "localhost:5000/api/proyectos/121/usuario/1",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "proyectos", "121", "usuario", "1"]
+            }
+          },
+          "response": []
+        }
+      ],
+      "protocolProfileBehavior": {}
+    },
+    {
+      "name": "Usuarios",
+      "item": [
+        {
+          "name": "localhost:5000/api/usuarios registro",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"nick\":\"prueba1\",\n\t\"nombre\":\"prueba1\",\n\t\"password\":\"prueba1\",\n\t\"email\": \"prueba1@prueba1.com\",\n\t\"apellido1\": \"prueba11\",\n\t\"apellido2\": \"prueba111\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:5000/api/usuarios/registro",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "usuarios", "registro"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "localhost:5000/api/usuarios login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"email\":\"victorperezpiqueras@gmail.com\",\n\t\"password\":\"password\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:5000/api/usuarios/login/",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "usuarios", "login", ""]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "localhost:5000/api/usuarios/1/proyectos",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjExMSwiaWF0IjoxNTg1ODY2Njk1fQ.hTw-xc3HCr3LRjUXxwRVmOO2QOtUigXpTjIUbe3TA3U",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "localhost:5000/api/usuarios/1/proyectos",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "usuarios", "1", "proyectos"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "localhost:5000/api/usuarios/1/proyectos/121/permisos",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImlhdCI6MTU4NjE4NzM1OX0.ip4ruc828M6tX0u9B5rffIDCIMVExmxieljoN00ouEQ",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "localhost:5000/api/usuarios/1/proyectos/121/permisos",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "usuarios", "1", "proyectos", "121", "permisos"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "localhost:5000/api/usuarios",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImlhdCI6MTU4NjE4NzM1OX0.ip4ruc828M6tX0u9B5rffIDCIMVExmxieljoN00ouEQ",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "localhost:5000/api/usuarios",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "usuarios"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "localhost:5000/api/usuarios/1",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImlhdCI6MTU4NjE4NzM1OX0.ip4ruc828M6tX0u9B5rffIDCIMVExmxieljoN00ouEQ",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "localhost:5000/api/usuarios/21",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "usuarios", "21"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "localhost:5000/api/usuarios/21/actualizar",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImlhdCI6MTU4NjE4NzM1OX0.ip4ruc828M6tX0u9B5rffIDCIMVExmxieljoN00ouEQ",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"nick\":\"victorperez1\",\n\t\"nombre\":\"Víctor\",\n\t\"apellido1\":\"Pérez\",\n\t\"apellido2\":\"Piqueras\",\n\t\"email\":\"Victor.Perez6@alu.uclm.es\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:5000/api/usuarios/21/actualizar",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "usuarios", "21", "actualizar"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "localhost:5000/api/usuarios/registro/invitar",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"nick\":\"prueba1\",\n\t\"nombre\":\"prueba1\",\n\t\"password\":\"prueba1\",\n\t\"email\": \"vik222\",\n\t\"apellido1\": \"prueba11\",\n\t\"apellido2\": \"prueba111\",\n\t\"token\": \"123123123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:5000/api/usuarios/registro/invitar",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "usuarios", "registro", "invitar"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "localhost:5000/api/invitaciones/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHByb3llY3RvIjoiMTIxIiwiZW1haWwiOiJ2aWt0XRvcnNAaG90bWFpbC5jb20iLCJyb2wiOiJzdGFrZWhvbGRlciIsImlhdCI6MTU4NTg0NTc0MH0.mQk_jv3wmBihO8DGP_CU5rrLMBpHFguZMcIXg-Jk0wo",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "localhost:5000/api/invitaciones/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHByb3llY3RvIjoiMTIxIiwiZW1haWwiOiJ2aWt0XRvcnNAaG90bWFpbC5jb20iLCJyb2wiOiJzdGFrZWhvbGRlciIsImlhdCI6MTU4NTg0NTc0MH0.mQk_jv3wmBihO8DGP_CU5rrLMBpHFguZMcIXg-Jk0wo",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": [
+                "api",
+                "invitaciones",
+                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHByb3llY3RvIjoiMTIxIiwiZW1haWwiOiJ2aWt0XRvcnNAaG90bWFpbC5jb20iLCJyb2wiOiJzdGFrZWhvbGRlciIsImlhdCI6MTU4NTg0NTc0MH0.mQk_jv3wmBihO8DGP_CU5rrLMBpHFguZMcIXg-Jk0wo"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "localhost:5000/api/usuarios/11/proyectosfavoritos",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImlhdCI6MTU4NjE4NzM1OX0.ip4ruc828M6tX0u9B5rffIDCIMVExmxieljoN00ouEQ",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "localhost:5000/api/usuarios/1/proyectosfavoritos",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "usuarios", "1", "proyectosfavoritos"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "localhost:5000/api/usuarios/11/proyectosfavoritos POST",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImlhdCI6MTU4NjE4NzM1OX0.ip4ruc828M6tX0u9B5rffIDCIMVExmxieljoN00ouEQ",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"idproyecto\":241\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:5000/api/usuarios/1/proyectosfavoritos",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "usuarios", "1", "proyectosfavoritos"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "localhost:5000/api/usuarios/11/proyectosfavoritos/121",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImlhdCI6MTU4NjE4NzM1OX0.ip4ruc828M6tX0u9B5rffIDCIMVExmxieljoN00ouEQ",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "localhost:5000/api/usuarios/1/proyectosfavoritos/241",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "usuarios", "1", "proyectosfavoritos", "241"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "localhost:5000/api/usuarios/21/actualizarpassword",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImlhdCI6MTU4NjE4NzM1OX0.ip4ruc828M6tX0u9B5rffIDCIMVExmxieljoN00ouEQ",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"password\":\"password\",\n\t\"newPassword\":\"newPassword\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:5000/api/usuarios/21/actualizarpassword",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "usuarios", "21", "actualizarpassword"]
+            }
+          },
+          "response": []
+        }
+      ],
+      "protocolProfileBehavior": {}
+    },
+    {
+      "name": "Pbis",
+      "item": [
+        {
+          "name": "localhost:5000/api/pbis CREATE",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "type": "text",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImlhdCI6MTU4NjE4NzM1OX0.ip4ruc828M6tX0u9B5rffIDCIMVExmxieljoN00ouEQ",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": " {\r\n        \"titulo\": \"pbi123232\",\r\n        \"descripcion\": \"null\",\r\n        \"done\": 0,\r\n        \"label\": \"feature\",\r\n        \"estimacion\": \"null\",\r\n        \"idproyecto\": 121,\r\n        \"prioridad\": 1,\r\n        \"sprintCreacion\": 1\r\n    }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:5000/api/pbis",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "pbis"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "localhost:5000/api/pbis EDIT",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImlhdCI6MTU4NjE4NzM1OX0.ip4ruc828M6tX0u9B5rffIDCIMVExmxieljoN00ouEQ",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": " {\r\n        \"titulo\": \"pbi123232\",\r\n        \"descripcion\": \"aaaa\",\r\n        \"done\": 1,\r\n        \"label\": \"bug\",\r\n        \"estimacion\": 3,\r\n        \"idproyecto\": 121,\r\n        \"prioridad\": 1,\r\n        \"sprint\": 4,\r\n        \"valor\": \"null\"\r\n    }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:5000/api/pbis/61",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "pbis", "61"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "localhost:5000/api/pbis/1/comentarios",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "type": "text",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImlhdCI6MTU4NjE4NzM1OX0.ip4ruc828M6tX0u9B5rffIDCIMVExmxieljoN00ouEQ",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"comentario\":\"aaaa\",\n\t\"idusuario\": 1,\n\t\"idpbi\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:5000/api/pbis/1/comentarios",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "pbis", "1", "comentarios"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "localhost:5000/api/pbis/1/archivos",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImlhdCI6MTU4NjE4NzM1OX0.ip4ruc828M6tX0u9B5rffIDCIMVExmxieljoN00ouEQ",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"comentario\":\"aaaa\",\n\t\"idusuario\": 1,\n\t\"idpbi\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:5000/api/pbis/1/archivos",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "pbis", "1", "archivos"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "localhost:5000/api/pbis/1/criterios",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImlhdCI6MTU4NjE4NzM1OX0.ip4ruc828M6tX0u9B5rffIDCIMVExmxieljoN00ouEQ",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "localhost:5000/api/pbis/1/criterios?",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "pbis", "1", "criterios"],
+              "query": [
+                {
+                  "key": "",
+                  "value": null
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "localhost:5000/api/pbis/1/dependencias",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImlhdCI6MTU4NjE4NzM1OX0.ip4ruc828M6tX0u9B5rffIDCIMVExmxieljoN00ouEQ",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "localhost:5000/api/pbis/1/dependencias",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "pbis", "1", "dependencias"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "localhost:5000/api/pbis PRIORIDADES",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImlhdCI6MTU4NjE4NzM1OX0.ip4ruc828M6tX0u9B5rffIDCIMVExmxieljoN00ouEQ",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "[\n\t{\n\t\"prioridad\": 4,\n\t\"idpbi\":1\n}\n,\n{\n\t\"prioridad\": 1,\n\t\"idpbi\":31\n}\n]",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:5000/api/pbis",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "pbis"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "localhost:5000/api/pbis/1/importancias",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImlhdCI6MTU4NjE4NzM1OX0.ip4ruc828M6tX0u9B5rffIDCIMVExmxieljoN00ouEQ",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "localhost:5000/api/pbis/1/importancias",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "pbis", "1", "importancias"]
+            }
+          },
+          "response": []
+        }
+      ],
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "32f065d7-5ae0-4a61-be1c-6126830bd7d9",
+            "type": "text/javascript",
+            "exec": [""]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "id": "a0f02bd2-48f3-49d4-9bc5-82d46e259bdb",
+            "type": "text/javascript",
+            "exec": [""]
+          }
+        }
+      ],
+      "protocolProfileBehavior": {}
+    },
+    {
+      "name": "Dependencias",
+      "item": [
+        {
+          "name": "localhost:5000/api/dependencias",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"idpbi\":1,\n\t\"idpbi2\":2\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:5000/api/dependencias",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "dependencias"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "localhost:5000/api/dependencias/1",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "localhost:5000/api/dependencias/1/2",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "dependencias", "1", "2"]
+            }
+          },
+          "response": []
+        }
+      ],
+      "protocolProfileBehavior": {}
+    },
+    {
+      "name": "Criterios",
+      "item": [
+        {
+          "name": "localhost:5000/api/criterios/11",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"nombre\":\"criterio1\",\n\t\"done\": 1,\n\t\"idpbi\":1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:5000/api/criterios/11",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "criterios", "11"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "localhost:5000/api/criterios/1",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "localhost:5000/api/criterios/1",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "criterios", "1"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "localhost:5000/api/criterios",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"nombre\":\"criterio1\",\n\t\"done\": 0,\n\t\"idpbi\":1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:5000/api/criterios",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "criterios"]
+            }
+          },
+          "response": []
+        }
+      ],
+      "protocolProfileBehavior": {}
+    },
+    {
+      "name": "Archivos",
+      "item": [
+        {
+          "name": "localhost:5000/api/archivos/91",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"comentario\":\"aaaa\",\n\t\"idusuario\": 1,\n\t\"idpbi\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:5000/api/archivos/91",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "archivos", "91"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "localhost:5000/api/archivos CREATE",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"nombre\":\"archivo1\",\n\t\"src\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\n\t\"idpbi\":1,\n\t\"idusuario\":1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:5000/api/archivos",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "archivos"]
+            }
+          },
+          "response": []
+        }
+      ],
+      "protocolProfileBehavior": {}
+    },
+    {
+      "name": "Comentarios",
+      "item": [
+        {
+          "name": "localhost:5000/api/comentarios",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"comentario\":\"aaaa\",\n\t\"idusuario\": 1,\n\t\"idpbi\": 1,\n\t\"fecha\": \"24/4/2020\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:5000/api/comentarios",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "comentarios"]
+            }
+          },
+          "response": []
+        }
+      ],
+      "protocolProfileBehavior": {}
+    },
+    {
+      "name": "SprintGoals",
+      "item": [
+        {
+          "name": "localhost:5000/api/sprintgoals",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImlhdCI6MTU4NjE4NzM1OX0.ip4ruc828M6tX0u9B5rffIDCIMVExmxieljoN00ouEQ",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n        \"idproyecto\": 121,\r\n        \"goal\": \"goal 2 \",\r\n        \"sprintNumber\": 2\r\n    }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:5000/api/sprintgoals",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "sprintgoals"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "localhost:5000/api/sprintgoals ",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImlhdCI6MTU4NjE4NzM1OX0.ip4ruc828M6tX0u9B5rffIDCIMVExmxieljoN00ouEQ",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n        \"idproyecto\": 121,\r\n        \"goal\": \"goal 222222\",\r\n        \"sprintNumber\": 2\r\n    }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:5000/api/sprintgoals",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "sprintgoals"]
+            }
+          },
+          "response": []
+        }
+      ],
+      "protocolProfileBehavior": {}
+    },
+    {
+      "name": "Importancias",
+      "item": [
+        {
+          "name": "localhost:5000/api/importancias",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImlhdCI6MTU4NjE4NzM1OX0.ip4ruc828M6tX0u9B5rffIDCIMVExmxieljoN00ouEQ",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"idpbi\":1,\n\t\"idrol\":411,\n    \"valor\":4\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:5000/api/importancias/1",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "importancias", "1"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "localhost:5000/api/importancias",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "name": "Content-Type",
+                "type": "text",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZHVzdWFyaW8iOjEsImlhdCI6MTU4NjE4NzM1OX0.ip4ruc828M6tX0u9B5rffIDCIMVExmxieljoN00ouEQ",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n\t\"idpbi\":1,\n\t\"idrol\":4951,\n    \"valor\":5\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "localhost:5000/api/importancias",
+              "host": ["localhost"],
+              "port": "5000",
+              "path": ["api", "importancias"]
+            }
+          },
+          "response": []
+        }
+      ],
+      "protocolProfileBehavior": {}
+    },
+    {
+      "name": "http://localhost:5000/api/usuarios",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/usuarios",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "usuarios"]
+        }
+      },
+      "response": []
+    }
+  ],
+  "protocolProfileBehavior": {}
+}
