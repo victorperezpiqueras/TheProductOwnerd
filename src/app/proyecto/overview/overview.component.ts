@@ -107,7 +107,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
   }
 
   actualizar() {
-    //console.log('actualizar');
+    // console.log('actualizar');
     this.actualizarUsuarios();
     this.actualizarGraficos();
   }

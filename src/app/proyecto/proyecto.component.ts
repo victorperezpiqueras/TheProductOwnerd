@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { UsuariosService } from '@app/services/usuarios.service';
@@ -67,7 +67,8 @@ export class ProyectoComponent implements OnInit, OnDestroy {
     private sprintGoalsService: SprintGoalsService,
     public dialog: MatDialog,
     private activeRoute: ActivatedRoute,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private changeDetectorRef: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -113,6 +114,7 @@ export class ProyectoComponent implements OnInit, OnDestroy {
   }
 
   onTabChanged(event: MatTabChangeEvent) {
+    // console.log("onTabChanged")
     if (event.index == 0) {
       this.overview.actualizar();
     } else if (event.index == 1) {
@@ -123,11 +125,12 @@ export class ProyectoComponent implements OnInit, OnDestroy {
   }
 
   actualizarComponentes() {
+    this.tabIndex = 0;
+    this.changeDetectorRef.detectChanges();
     // console.log('actualizar proyecto');
     this.overview.proyecto = this.proyecto;
     this.backlog.proyecto = this.proyecto;
     this.forecasts.proyecto = this.proyecto;
-    this.tabIndex = 0;
     this.overview.actualizar();
     this.backlog.actualizar();
     this.forecasts.actualizar();
