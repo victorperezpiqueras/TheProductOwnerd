@@ -23,7 +23,7 @@ try {
   await connection.query(
     'CREATE TABLE roles (nombre VARCHAR(255) NOT NULL,idusuario int, idproyecto int,' +
       ' ordenar boolean,  editarPBI boolean, estimarTam boolean,estimarValor boolean, sprintGoals boolean, mantenerUsuarios boolean, vision boolean ,archivarProyecto boolean,setDone boolean, proyecciones boolean, ' +
-      'foreign key(idusuario) references usuarios(idusuario),foreign key(idproyecto) references proyectos(idproyecto),idrol INT AUTO_INCREMENT PRIMARY KEY)'
+      'foreign key(idusuario) references usuarios(idusuario),foreign key(idproyecto) references proyectos(idproyecto) on delete cascade,idrol INT AUTO_INCREMENT PRIMARY KEY)'
   );
   console.log('Tabla ROLES creada');
 
