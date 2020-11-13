@@ -94,6 +94,7 @@ router.get('/usuarios/roles', verifyToken, function(req, res, next) {
 
 router.post('/', verifyToken, function(req, res, next) {
   console.log('crearProyecto');
+  console.log(req.body);
   if (!propertyChecker(req.body, ['nombre', 'descripcion', 'idusuario']))
     throw new ErrorHandler(422, 'Missing required fields: nombre, descripcion, idusuario');
   controllerProyectos
@@ -102,8 +103,8 @@ router.post('/', verifyToken, function(req, res, next) {
       res.json(proyecto);
     })
     .catch(function(err) {
-      if (err.error === 'project_name_exists') res.status(409).json(err);
-      else res.status(500).json(err);
+      /* if (err.error === 'project_name_exists') res.status(409).json(err);
+      else */ res.status(500).json(err);
     });
 });
 

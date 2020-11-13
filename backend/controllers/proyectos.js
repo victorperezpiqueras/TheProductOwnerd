@@ -221,7 +221,8 @@ ControllerProyectos.crearProyecto = function(data) {
       console.log(insertion[0]);
       idProyecto = insertion[0].insertId;
     } catch (error) {
-      reject({ error: 'project_name_exists' });
+      /* reject({ error: 'project_name_exists' }); */
+      reject({ error: 'error_creating_project' });
     }
     try {
       console.log('idproyecto', idProyecto);
