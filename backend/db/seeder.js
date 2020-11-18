@@ -77,6 +77,12 @@ try {
       'foreign key(idusuario) references usuarios(idusuario) on delete cascade, primary key (idproyecto,idusuario))'
   );
   console.log('Tabla PROYECTOSFAVORITOS creada');
+
+  await connection.query(
+    'create table importancias(idimportancia INT AUTO_INCREMENT PRIMARY key,idpbi int not null,foreign key(idpbi) references pbis(idpbi) on delete cascade,' +
+      'idrol int not null,foreign key(idrol) references roles(idrol) on delete cascade, valor int not null)'
+  );
+  console.log('Tabla IMPORTANCIAS creada');
 } catch (error) {
   console.log('Error ejecutando el seeder');
 }

@@ -100,4 +100,14 @@ export class UsuariosService {
       httpOptions
     );
   }
+
+  /**
+   * Obtiene un usuario por el idrol
+   * @method GET
+   * @param idrol id del usuario
+   * @returns (idusuario, nombre, password, email, nick, apellido1, apellido2,...)
+   */
+  getUsuarioPorRol(idrol: number): Observable<any> {
+    return this.http.get<any>(this.url + '/rol/' + idrol, httpOptions);
+  }
 }

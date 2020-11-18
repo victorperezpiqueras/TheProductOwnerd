@@ -1,3 +1,4 @@
+import { UsuariosService } from '@app/services/usuarios.service';
 import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar, MatDialog, MatDialogConfig } from '@angular/material';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -17,6 +18,9 @@ import { DependenciasService } from '@app/services/dependencias.service';
 import { Dependencia } from '@app/models/dependencias';
 import { ConfirmDialogComponent } from '@app/shared/confirmDialog/confirmDialog.component';
 import { takeUntil } from 'rxjs/operators';
+import { Importancia } from '@app/models/importancias';
+import { ImportanciasService } from '@app/services/importancias.service';
+import { forkJoin, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-pbiDialog',
@@ -42,6 +46,13 @@ export class PbiDialogComponent implements OnInit, OnDestroy {
   sprintCreacion: number;
 
   sprintActual: number;
+
+  /* stakeholder importance data */
+  importancias: Importancia[] = [];
+  importanciaStakeholder: Importancia;
+  rangoImportancias: number[] = [0, 1, 2, 4, 5];
+  tablaImportancias: any[] = [];
+  displayedColumns: string[] = ['Nick', 'Importance'];
 
   /* archivos data */
   archivos: any[] = [];
@@ -86,6 +97,8 @@ export class PbiDialogComponent implements OnInit, OnDestroy {
     private archivosService: ArchivosService,
     private criteriosService: CriteriosService,
     private dependenciasService: DependenciasService,
+    private importanciasService: ImportanciasService,
+    private usuariosService: UsuariosService,
     private sanitizer: DomSanitizer,
     public dialog: MatDialog
   ) {
@@ -104,7 +117,7 @@ export class PbiDialogComponent implements OnInit, OnDestroy {
     if (index !== -1) {
       this.notSelectedPbis.splice(index, 1);
     }
-
+    console.log(this.permisos);
     // console.log(data.pbi);
     this.idpbi = data.pbi.idpbi;
     this.titulo = data.pbi.titulo;
@@ -129,6 +142,67 @@ export class PbiDialogComponent implements OnInit, OnDestroy {
     this.actualizarArchivos();
     this.actualizarCriterios();
     this.actualizarDependencias();
+    this.actualizarImportancias();
+  }
+
+  /* IMPORTANCIAS */
+  actualizarImportancias() {
+    this.isLoading = true;
+    this.pbisService
+      .obtenerImportancias(this.idpbi)
+      .pipe(untilDestroyed(this))
+      .subscribe((importancias: Importancia[]) => {
+        this.importancias = importancias;
+        if (this.isStakeholder) {
+          this.importanciaStakeholder = this.importancias.find((imp: Importancia) => imp.idrol === this.permisos.idrol);
+          if (!this.importanciaStakeholder)
+            this.importanciaStakeholder = new Importancia(null, 0, this.permisos.idrol, this.idpbi);
+        }
+        if (this.isProductOwner) {
+          console.log(this.importancias);
+          var peticiones$: Observable<any>[] = [];
+          this.importancias.forEach((imp: Importancia) => {
+            //hacer forkjoin
+            peticiones$.push(this.usuariosService.getUsuarioPorRol(imp.idrol).pipe(untilDestroyed(this)));
+          });
+
+          forkJoin(peticiones$)
+            .pipe(untilDestroyed(this))
+            .subscribe(results => {
+              console.log('aaa');
+              results.forEach((result: any) => {
+                this.importancias.forEach((imp: Importancia) => {
+                  if (result.idrol === imp.idrol) {
+                    this.tablaImportancias.push({ valor: imp.valor, nick: result.nick });
+                  }
+                });
+              });
+
+              console.log(this.tablaImportancias);
+              this.isLoading = false;
+            });
+        }
+      });
+  }
+  actualizarImportancia() {
+    this.isLoading = true;
+    if (!this.importanciaStakeholder.idimportancia) {
+      this.importanciasService
+        .crearImportancia(this.importanciaStakeholder)
+        .pipe(untilDestroyed(this))
+        .subscribe((res: any) => {
+          this.actualizarImportancias();
+          this.isLoading = false;
+        });
+    } else {
+      this.importanciasService
+        .editarImportancia(this.importanciaStakeholder)
+        .pipe(untilDestroyed(this))
+        .subscribe((res: any) => {
+          this.actualizarImportancias();
+          this.isLoading = false;
+        });
+    }
   }
 
   /* DEPENDENCIAS */
@@ -468,6 +542,8 @@ export class PbiDialogComponent implements OnInit, OnDestroy {
   }
 
   save() {
+    if (this.isStakeholder) this.actualizarImportancia();
+
     this.dialogRef.close({
       pbi: new Pbi(
         this.idpbi,
@@ -560,6 +636,14 @@ export class PbiDialogComponent implements OnInit, OnDestroy {
 
   changed() {
     this.saveButtonDisabled = false;
+  }
+
+  get isStakeholder(): boolean {
+    return this.permisos.rol === 'stakeholder';
+  }
+
+  get isProductOwner(): boolean {
+    return this.permisos.rol === 'productOwner';
   }
 
   get isCreateMode(): boolean {

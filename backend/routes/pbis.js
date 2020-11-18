@@ -5,6 +5,7 @@ const controllerComentarios = require('../controllers/comentarios');
 const controllerArchivos = require('../controllers/archivos');
 const controllerCriterios = require('../controllers/criterios');
 const controllerDependencias = require('../controllers/dependencias');
+const controllerImportancias = require('../controllers/importancias');
 const verifyToken = require('../middlewares/verify-token');
 const { ErrorHandler, handleError } = require('../helpers/error');
 const { propertyChecker } = require('../helpers/propertyChecker');
@@ -122,6 +123,18 @@ router.get('/:idpbi/dependencias', verifyToken, function(req, res, next) {
     .obtenerDependenciasPbi(req.params.idpbi)
     .then(function(dependencias) {
       res.json(dependencias);
+    })
+    .catch(function(err) {
+      res.status(500).json(err);
+    });
+});
+
+router.get('/:idpbi/importancias', verifyToken, function(req, res, next) {
+  console.log('obtenerImportanciasPbi');
+  controllerImportancias
+    .obtenerImportanciasPbi(req.params.idpbi)
+    .then(function(importancias) {
+      res.json(importancias);
     })
     .catch(function(err) {
       res.status(500).json(err);

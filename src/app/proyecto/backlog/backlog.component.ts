@@ -93,7 +93,7 @@ export class BacklogComponent implements OnInit, OnDestroy {
                 .pipe(untilDestroyed(this))
                 .subscribe((permisos: Permisos) => {
                   this.permisos = permisos;
-                  // console.log('Permisos', this.permisos);
+                  console.log('Permisos', this.permisos);
                   this.isLoading = false;
                 });
             });

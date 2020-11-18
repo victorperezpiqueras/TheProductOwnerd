@@ -1,5 +1,7 @@
 export class Permisos {
   constructor(
+    public idrol: number,
+    public rol: string,
     public ordenar: number,
     public editarPBI: number,
     public estimarTam: number,

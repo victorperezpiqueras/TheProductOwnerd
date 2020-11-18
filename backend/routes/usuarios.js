@@ -171,4 +171,16 @@ router.delete('/:idusuario/proyectosfavoritos/:idproyecto', verifyToken, functio
     });
 });
 
+router.get('/rol/:idrol', verifyToken, function(req, res, next) {
+  console.log('obtenerUsuarioPorRol');
+  controllerUsuarios
+    .obtenerUsuarioPorRol(req.params.idrol)
+    .then(function(usuario) {
+      res.json(usuario);
+    })
+    .catch(function(err) {
+      res.status(500).json(err);
+    });
+});
+
 module.exports = router;

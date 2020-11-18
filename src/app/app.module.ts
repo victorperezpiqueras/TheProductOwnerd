@@ -1,3 +1,4 @@
+import { ImportanciasService } from './services/importancias.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -90,7 +91,8 @@ import { ComparerModule } from './comparer/comparer.module';
     DependenciasService,
     RegistroService,
     InvitacionesService,
-    SprintGoalsService
+    SprintGoalsService,
+    ImportanciasService
   ],
   entryComponents: [ProyectoDialogComponent, FavoritosDialogComponent, PbiDialogComponent, ConfirmDialogComponent],
   bootstrap: [AppComponent]

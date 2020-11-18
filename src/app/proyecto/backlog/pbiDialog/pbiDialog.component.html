@@ -30,101 +30,114 @@
       <br />
 
       <div fxLayout="row">
-        <!--  <mat-card fxLayout="row"> -->
+        <div fxLayout="row wrap" fxLayout.md="column">
+          <mat-grid-list cols="15" rowHeight="100px" gutterSize="10px">
+            <mat-grid-tile [colspan]="4" [rowspan]="1">
+              <mat-form-field class="form" appearance="outline" style="width: 100%;">
+                <mat-label>Title</mat-label>
+                <input
+                  matInput
+                  required
+                  placeholder="PBI title"
+                  [(ngModel)]="titulo"
+                  maxlength="200"
+                  [disabled]="disabled || permisos.editarPBI == 0"
+                  (ngModelChange)="changed()"
+                />
+              </mat-form-field>
+            </mat-grid-tile>
 
-        <!-- fxLayoutAlign="center center" -->
-        <!-- <div fxLayout="row"> -->
-        <mat-form-field class="title form" appearance="outline">
-          <mat-label>Title</mat-label>
-          <input
-            matInput
-            required
-            placeholder="PBI title"
-            [(ngModel)]="titulo"
-            maxlength="200"
-            [disabled]="disabled || permisos.editarPBI == 0"
-            (ngModelChange)="changed()"
-          />
-        </mat-form-field>
-        <!-- </div> -->
+            <mat-grid-tile [colspan]="3" [rowspan]="1">
+              <mat-form-field class="form" appearance="outline" style="width: 100%;">
+                <mat-label>Label</mat-label>
+                <mat-select
+                  [(ngModel)]="label"
+                  (selectionChange)="setColor()"
+                  required
+                  [disabled]="disabled || permisos.editarPBI == 0"
+                  (ngModelChange)="changed()"
+                >
+                  <mat-option *ngFor="let label of labels" [value]="label">
+                    {{ labelFormatter(label) }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </mat-grid-tile>
 
-        <!-- <br> -->
+            <mat-grid-tile [colspan]="2" [rowspan]="1">
+              <mat-form-field
+                class="form"
+                appearance="outline"
+                style="width: 70%;"
+                matTooltip="Only Developers can edit this value"
+                [matTooltipDisabled]="permisos.estimarTam != 0"
+                matTooltipPosition="above"
+                matTooltipShowDelay="500"
+              >
+                <mat-label>Estimation</mat-label>
+                <mat-select
+                  [(ngModel)]="estimacion"
+                  (ngModelChange)="changed()"
+                  [disabled]="disabled || permisos.editarPBI == 0 || permisos.estimarTam == 0"
+                >
+                  <mat-option *ngFor="let fib of fibonacci" [value]="fib" required>{{ fib }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </mat-grid-tile>
 
-        <!-- <div fxLayout="row"> -->
-        <mat-form-field class="normal-form form" appearance="outline">
-          <mat-label>Label</mat-label>
-          <mat-select
-            [(ngModel)]="label"
-            (selectionChange)="setColor()"
-            required
-            [disabled]="disabled || permisos.editarPBI == 0"
-            (ngModelChange)="changed()"
-          >
-            <mat-option *ngFor="let label of labels" [value]="label">
-              {{ labelFormatter(label) }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <!--  </div> -->
+            <mat-grid-tile [colspan]="2" [rowspan]="1">
+              <mat-form-field class="form" appearance="outline" style="width: 70%;">
+                <mat-label>Created at Sprint</mat-label>
+                <input
+                  matInput
+                  type="number"
+                  [(ngModel)]="sprintCreacion"
+                  min="1"
+                  (ngModelChange)="changed()"
+                  [disabled]="disabled || permisos.editarPBI == 0"
+                />
+              </mat-form-field>
+            </mat-grid-tile>
 
-        <!--  <br> -->
+            <mat-grid-tile [colspan]="3" [rowspan]="1" *ngIf="isStakeholder && importanciaStakeholder">
+              <mat-form-field class="form" appearance="outline" style="width: 70%;">
+                <mat-label>PBI Importance</mat-label>
+                <mat-select
+                  [(ngModel)]="importanciaStakeholder.valor"
+                  (ngModelChange)="changed()"
+                  [disabled]="disabled || !isStakeholder"
+                >
+                  <mat-option *ngFor="let num of rangoImportancias" [value]="num" required>{{ num }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </mat-grid-tile>
 
-        <!-- <div fxLayout="row"> -->
-        <mat-form-field
-          class="number-form form"
-          appearance="outline"
-          matTooltip="Only Developers can edit this value"
-          [matTooltipDisabled]="permisos.estimarTam != 0"
-          matTooltipPosition="above"
-          matTooltipShowDelay="500"
-        >
-          <mat-label>Estimation</mat-label>
-          <!-- <input matInput type="text" [(ngModel)]="estimacion" required> -->
-          <mat-select
-            [(ngModel)]="estimacion"
-            (ngModelChange)="changed()"
-            [disabled]="disabled || permisos.editarPBI == 0 || permisos.estimarTam == 0"
-          >
-            <mat-option *ngFor="let fib of fibonacci" [value]="fib" required>{{ fib }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-        <!-- </div> -->
+            <mat-grid-tile [colspan]="4" [rowspan]="2" *ngIf="isProductOwner && tablaImportancias.length">
+              <table mat-table [dataSource]="tablaImportancias" style="width: 100%;">
+                <ng-container matColumnDef="Nick">
+                  <th mat-header-cell *matHeaderCellDef>Stakeholder</th>
+                  <td mat-cell *matCellDef="let data">{{ data.nick }}</td>
+                </ng-container>
+                <ng-container matColumnDef="Importance">
+                  <th mat-header-cell *matHeaderCellDef>Importance</th>
+                  <td mat-cell *matCellDef="let data">{{ data.valor }}</td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+              </table>
+            </mat-grid-tile>
+          </mat-grid-list>
 
-        <mat-form-field
-          class="number-form form"
-          appearance="outline"
-          matTooltip="Only Product Owners can edit this value"
-          [matTooltipDisabled]="permisos.estimarValor != 0"
-          matTooltipPosition="above"
-          matTooltipShowDelay="500"
-        >
-          <mat-label
-            >Value
-            <mat-icon class="icon-valor">offline_bolt</mat-icon>
-          </mat-label>
-          <input
-            matInput
-            type="number"
-            [(ngModel)]="valor"
-            (ngModelChange)="changed()"
-            [disabled]="disabled || permisos.editarPBI == 0 || permisos.estimarValor == 0"
-          />
-          <!-- <mat-select [(ngModel)]="estimacion" [disabled]="disabled">
-            <mat-option *ngFor="let fib of fibonacci" [value]="fib" required>{{ fib }}</mat-option>
-          </mat-select> -->
-        </mat-form-field>
-
-        <mat-form-field class="number-form form" appearance="outline">
-          <mat-label>Created at Sprint</mat-label>
-          <input
-            matInput
-            type="number"
-            [(ngModel)]="sprintCreacion"
-            min="1"
-            (ngModelChange)="changed()"
-            [disabled]="disabled || permisos.editarPBI == 0"
-          />
-        </mat-form-field>
+          <!--  <mat-form-field class="number-form form" appearance="outline"
+            matTooltip="Only Product Owners can edit this value" [matTooltipDisabled]="permisos.estimarValor != 0"
+            matTooltipPosition="above" matTooltipShowDelay="500">
+            <mat-label>Value
+              <mat-icon class="icon-valor">offline_bolt</mat-icon>
+            </mat-label>
+            <input matInput type="number" [(ngModel)]="valor" (ngModelChange)="changed()"
+              [disabled]="disabled || permisos.editarPBI == 0 || permisos.estimarValor == 0" />
+          </mat-form-field> -->
+        </div>
 
         <br />
 
@@ -165,8 +178,8 @@
 
         <div mat-dialog-actions fxLayout="row">
           <!-- <div fxLayout="row" fxFill> -->
-          <mat-checkbox class="checkbox" disabled="true" (ngModelChange)="changed()"
-            ><!-- [checked]="checkDone()" (click)="markDone()"  -->
+          <mat-checkbox class="checkbox" disabled="true" (ngModelChange)="changed()">
+            <!-- [checked]="checkDone()" (click)="markDone()"  -->
           </mat-checkbox>
           <button
             *ngIf="checkDone()"
@@ -258,7 +271,9 @@
 
         <!-- DEPENDENCIES -->
         <div fxLayout="row">
-          <mat-card class="comments-card"> <mat-card-title>Dependencies</mat-card-title> </mat-card><br />
+          <mat-card class="comments-card">
+            <mat-card-title>Dependencies</mat-card-title> </mat-card
+          ><br />
           <mat-chip-list style="display: inline-block;margin-right: 2%;">
             <mat-chip
               *ngFor="let dep of dependencias"

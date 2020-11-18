@@ -83,4 +83,14 @@ export class PbisService {
   obtenerDependencias(idpbi: number): Observable<any> {
     return this.http.get<any>(this.url + '/' + idpbi + '/dependencias', httpOptions);
   }
+
+  /**
+   * Obtiene las importancias de un pbi
+   * @method GET
+   * @param {number} idpbi id del pbi
+   * @returns [ {valor, idpbi, idrol} ]
+   */
+  obtenerImportancias(idpbi: number): Observable<any> {
+    return this.http.get<any>(this.url + '/' + idpbi + '/importancias', httpOptions);
+  }
 }

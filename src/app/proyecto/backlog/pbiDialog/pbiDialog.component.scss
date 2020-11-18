@@ -36,7 +36,7 @@
 }
 
 .normal-form {
-  width: 15%;
+  width: 10%;
 }
 
 .number-form {
@@ -121,4 +121,25 @@
 
 .comentario {
   background-color: #f5f5f5;
+}
+
+.mat-row {
+  height: auto;
+}
+
+.mat-cell {
+  padding: 8px 8px 8px 0;
+}
+
+table {
+  width: 100%;
+}
+
+.modified-mc-content > mat-expansion-panel {
+  z-index: 1;
+}
+
+.modified-mc-content > mat-expansion-panel > .mat-expansion-panel-content {
+  max-height: 50vh;
+  overflow: auto;
 }

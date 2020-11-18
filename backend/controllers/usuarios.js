@@ -115,7 +115,7 @@ ControllerUsuarios.getUsuariosProyectosPermisos = function(idusuario, idproyecto
   return new Promise(async function(resolve, reject) {
     const sql =
       //'select r2.permiso from proyectos p, usuarios u, roles r, rolespermisos r2  where u.idusuario = ? and p.idproyecto = ? and u.idusuario = r.idusuario and p.idproyecto = r.idproyecto and r2.idrol =r.idrol';
-      'select r.ordenar, r.editarPBI,r.estimarTam, r.estimarValor, r.mantenerUsuarios, r.archivarProyecto, r.setDone,' +
+      'select r.idrol,r.nombre as rol, r.ordenar, r.editarPBI,r.estimarTam, r.estimarValor, r.mantenerUsuarios, r.archivarProyecto, r.setDone,' +
       ' r.proyecciones, r.vision, r.sprintGoals from proyectos p, usuarios u, roles r where u.idusuario = ? and p.idproyecto = ? ' +
       'and u.idusuario = r.idusuario and p.idproyecto = r.idproyecto';
     const arr = [idusuario, idproyecto];
@@ -286,6 +286,23 @@ ControllerUsuarios.eliminarUsuarioProyectosFavoritos = function(idusuario, idpro
       resolve(deletion[0]);
     } catch (error) {
       reject({ error: 'Error inesperado en eliminarUsuarioProyectosFavoritos' });
+    }
+  });
+};
+
+/**
+ * Obtiene los datos de un usuario a través de su rol
+ * @param {number} idrol idrol del usuario
+ */
+ControllerUsuarios.obtenerUsuarioPorRol = function(idrol) {
+  return new Promise(async function(resolve, reject) {
+    const sql = 'select * from usuarios u, roles r where u.idusuario=r.idusuario and r.idrol=?';
+    const arr = [idrol];
+    try {
+      let usuario = await connection.query(sql, arr);
+      resolve(usuario[0][0]);
+    } catch (error) {
+      reject({ error: 'Error inesperado en obtenerUsuarioPorRol' });
     }
   });
 };
