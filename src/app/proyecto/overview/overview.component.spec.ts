@@ -44,6 +44,8 @@ describe('OverviewComponent', () => {
     component = fixture.componentInstance;
     //PO
     component.permisos = {
+      idrol: 1,
+      rol: 'productOwner',
       mantenerUsuarios: 1,
       ordenar: 1,
       archivarProyecto: 1,

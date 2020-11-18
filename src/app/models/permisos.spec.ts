@@ -11,7 +11,9 @@ describe('Permiso', () => {
   });
 
   it('should create', () => {
-    model = new Permisos(1, 1, 1, 1, 1, 1, 1, 1, 1);
+    model = new Permisos(1, 'productOwner', 1, 1, 1, 1, 1, 1, 1, 1, 1);
+    expect(model.idrol).toBe(1);
+    expect(model.rol).toBe('productOwner');
     expect(model.ordenar).toBe(1);
     expect(model.editarPBI).toBe(1);
     expect(model.estimarTam).toBe(1);
