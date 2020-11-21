@@ -28,10 +28,11 @@ import { Dependencia } from '@app/models/dependencias';
 import { ConfirmDialogComponent } from '@app/shared/confirmDialog/confirmDialog.component';
 import { takeUntil } from 'rxjs/operators';
 import { Importancia } from '@app/models/importancias';
-import { ImportanciasService } from '@app/services/importancias.service';
+import { ValoresStakeholdersService } from '@app/services/valoresStakeholders.service';
 import { forkJoin, Observable } from 'rxjs';
+import { ValorStakeholder } from '@app/models/valoresStakeholders';
 
-export interface tableImportances {
+export interface tableValores {
   nick: string;
   valor: number;
 }
@@ -61,11 +62,11 @@ export class PbiDialogComponent implements OnInit, OnDestroy {
 
   sprintActual: number;
 
-  /* stakeholder importance data */
-  importancias: Importancia[] = [];
-  importanciaStakeholder: Importancia;
-  rangoImportancias: number[] = [0, 1, 2, 4, 5];
-  tablaImportancias: tableImportances[] = [];
+  /* stakeholder value data */
+  valores: ValorStakeholder[] = [];
+  valorStakeholder: ValorStakeholder;
+  rangoValores: number[] = [0, 1, 2, 3, 4, 5];
+  tablaValores: tableValores[] = [];
   displayedColumns: string[] = ['nick', 'valor'];
   /* @ViewChild(MatSort, { static: true }) sort: MatSort; */
   @ViewChild(MatSort, { static: false }) set content(sort: MatSort) {
@@ -75,7 +76,7 @@ export class PbiDialogComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator, { static: false }) set paginator(paginator: MatPaginator) {
     this.dataSource.paginator = paginator;
   }
-  dataSource: MatTableDataSource<tableImportances>;
+  dataSource: MatTableDataSource<tableValores>;
 
   /* archivos data */
   archivos: any[] = [];
@@ -120,7 +121,7 @@ export class PbiDialogComponent implements OnInit, OnDestroy {
     private archivosService: ArchivosService,
     private criteriosService: CriteriosService,
     private dependenciasService: DependenciasService,
-    private importanciasService: ImportanciasService,
+    private valoresService: ValoresStakeholdersService,
     private usuariosService: UsuariosService,
     private sanitizer: DomSanitizer,
     public dialog: MatDialog
@@ -157,7 +158,7 @@ export class PbiDialogComponent implements OnInit, OnDestroy {
     this.sprintActual = data.sprintActual;
 
     this.fibonacci.unshift(this.estimacion);
-    this.dataSource = new MatTableDataSource(this.tablaImportancias);
+    this.dataSource = new MatTableDataSource(this.tablaValores);
   }
 
   ngOnInit() {
@@ -168,27 +169,27 @@ export class PbiDialogComponent implements OnInit, OnDestroy {
     this.actualizarArchivos();
     this.actualizarCriterios();
     this.actualizarDependencias();
-    this.actualizarImportancias();
+    this.actualizarValores();
   }
 
   /* IMPORTANCIAS */
-  actualizarImportancias() {
+  actualizarValores() {
     this.isLoading = true;
     this.pbisService
-      .obtenerImportancias(this.idpbi)
+      .obtenerValores(this.idpbi)
       .pipe(untilDestroyed(this))
-      .subscribe((importancias: Importancia[]) => {
-        this.importancias = importancias;
+      .subscribe((valores: ValorStakeholder[]) => {
+        this.valores = valores;
         if (this.isStakeholder) {
-          this.importanciaStakeholder = this.importancias.find((imp: Importancia) => imp.idrol === this.permisos.idrol);
-          if (!this.importanciaStakeholder)
+          this.valorStakeholder = this.valores.find((val: ValorStakeholder) => val.idrol === this.permisos.idrol);
+          if (!this.valorStakeholder)
             //crear importancia sin valor: -1
-            this.importanciaStakeholder = new Importancia(null, -1, this.permisos.idrol, this.idpbi);
+            this.valorStakeholder = new ValorStakeholder(null, -1, this.permisos.idrol, this.idpbi);
         }
         if (this.isProductOwner) {
-          console.log(this.importancias);
+          console.log(this.valores);
           var peticiones$: Observable<any>[] = [];
-          this.importancias.forEach((imp: Importancia) => {
+          this.valores.forEach((imp: ValorStakeholder) => {
             //hacer forkjoin
             peticiones$.push(this.usuariosService.getUsuarioPorRol(imp.idrol).pipe(untilDestroyed(this)));
           });
@@ -198,59 +199,53 @@ export class PbiDialogComponent implements OnInit, OnDestroy {
             .subscribe(results => {
               console.log('aaa');
               results.forEach((result: any) => {
-                this.importancias.forEach((imp: Importancia) => {
-                  if (imp.valor > 0) {
-                    if (result.idrol === imp.idrol) {
-                      this.tablaImportancias.push({ valor: imp.valor, nick: result.nick } as tableImportances);
+                this.valores.forEach((val: ValorStakeholder) => {
+                  if (val.valor > 0) {
+                    if (result.idrol === val.idrol) {
+                      this.tablaValores.push({ valor: val.valor, nick: result.nick } as tableValores);
                     }
                   }
                 });
               });
-              console.log(this.tablaImportancias);
-              //this.dataSource = new MatTableDataSource(this.tablaImportancias);
-              this.dataSource.data = this.tablaImportancias;
-              /* this.dataSource.sort = this.sort;
-              this.dataSource.paginator = this.paginator; */
-              /*  this.dataSource.data=this.tablaImportancias;*/
-
+              console.log(this.tablaValores);
+              this.dataSource.data = this.tablaValores;
               this.isLoading = false;
-              console.log(this.dataSource);
             });
         }
       });
   }
-  actualizarImportancia() {
+  actualizarValor() {
     this.isLoading = true;
     // si la importancia existe:
-    if (this.importanciaStakeholder.idimportancia) {
+    if (this.valorStakeholder.idvalor) {
       //si tiene un valor:
-      if (this.importanciaStakeholder.valor >= 0) {
-        this.importanciasService
-          .editarImportancia(this.importanciaStakeholder)
+      if (this.valorStakeholder.valor >= 0) {
+        this.valoresService
+          .editarValor(this.valorStakeholder)
           .pipe(untilDestroyed(this))
           .subscribe((res: any) => {
-            this.actualizarImportancias();
+            this.actualizarValores();
             this.isLoading = false;
           });
       }
       //si no tiene un valor:
-      else if (this.importanciaStakeholder.valor < 0) {
-        this.importanciasService
-          .editarImportancia(this.importanciaStakeholder)
+      else if (this.valorStakeholder.valor < 0) {
+        this.valoresService
+          .editarValor(this.valorStakeholder)
           .pipe(untilDestroyed(this))
           .subscribe((res: any) => {
-            this.actualizarImportancias();
+            this.actualizarValores();
             this.isLoading = false;
           });
       }
     }
     //si no existe:
     else {
-      this.importanciasService
-        .crearImportancia(this.importanciaStakeholder)
+      this.valoresService
+        .crearValor(this.valorStakeholder)
         .pipe(untilDestroyed(this))
         .subscribe((res: any) => {
-          this.actualizarImportancias();
+          this.actualizarValores();
           this.isLoading = false;
         });
     }
@@ -593,7 +588,7 @@ export class PbiDialogComponent implements OnInit, OnDestroy {
   }
 
   save() {
-    if (this.isStakeholder) this.actualizarImportancia();
+    if (this.isStakeholder) this.actualizarValor();
 
     this.dialogRef.close({
       pbi: new Pbi(

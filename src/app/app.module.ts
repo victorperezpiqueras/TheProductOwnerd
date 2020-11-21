@@ -42,6 +42,7 @@ import { RegistroService } from './services/registro.service';
 import { InvitacionesService } from './services/invitaciones.service';
 import { SprintGoalsService } from './services/sprintgoals.service';
 import { ComparerModule } from './comparer/comparer.module';
+import { ValoresStakeholdersService } from './services/valoresStakeholders.service';
 
 @NgModule({
   imports: [
@@ -92,7 +93,8 @@ import { ComparerModule } from './comparer/comparer.module';
     RegistroService,
     InvitacionesService,
     SprintGoalsService,
-    ImportanciasService
+    ImportanciasService,
+    ValoresStakeholdersService
   ],
   entryComponents: [ProyectoDialogComponent, FavoritosDialogComponent, PbiDialogComponent, ConfirmDialogComponent],
   bootstrap: [AppComponent]

@@ -83,6 +83,12 @@ try {
       'idrol int not null,foreign key(idrol) references roles(idrol) on delete cascade, valor int not null)'
   );
   console.log('Tabla IMPORTANCIAS creada');
+
+  await connection.query(
+    'create table valores(idvalor INT AUTO_INCREMENT PRIMARY key,idpbi int not null,foreign key(idpbi) references pbis(idpbi) on delete cascade,' +
+      'idrol int not null,foreign key(idrol) references roles(idrol) on delete cascade, valor int not null)'
+  );
+  console.log('Tabla VALORES creada');
 } catch (error) {
   console.log('Error ejecutando el seeder');
 }
