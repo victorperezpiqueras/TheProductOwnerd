@@ -1,6 +1,15 @@
 import { UsuariosService } from '@app/services/usuarios.service';
-import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef, MatSnackBar, MatDialog, MatDialogConfig } from '@angular/material';
+import { Component, OnInit, Inject, OnDestroy, ViewChild } from '@angular/core';
+import {
+  MAT_DIALOG_DATA,
+  MatDialogRef,
+  MatSnackBar,
+  MatDialog,
+  MatDialogConfig,
+  MatSort,
+  MatTableDataSource,
+  MatPaginator
+} from '@angular/material';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Proyecto } from '@app/models/proyectos';
 import { Pbi } from '@app/models/pbis';
@@ -21,6 +30,11 @@ import { takeUntil } from 'rxjs/operators';
 import { Importancia } from '@app/models/importancias';
 import { ImportanciasService } from '@app/services/importancias.service';
 import { forkJoin, Observable } from 'rxjs';
+
+export interface tableImportances {
+  nick: string;
+  valor: number;
+}
 
 @Component({
   selector: 'app-pbiDialog',
@@ -51,8 +65,17 @@ export class PbiDialogComponent implements OnInit, OnDestroy {
   importancias: Importancia[] = [];
   importanciaStakeholder: Importancia;
   rangoImportancias: number[] = [0, 1, 2, 4, 5];
-  tablaImportancias: any[] = [];
-  displayedColumns: string[] = ['Nick', 'Importance'];
+  tablaImportancias: tableImportances[] = [];
+  displayedColumns: string[] = ['nick', 'valor'];
+  /* @ViewChild(MatSort, { static: true }) sort: MatSort; */
+  @ViewChild(MatSort, { static: false }) set content(sort: MatSort) {
+    this.dataSource.sort = sort;
+  }
+  /* @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator; */
+  @ViewChild(MatPaginator, { static: false }) set paginator(paginator: MatPaginator) {
+    this.dataSource.paginator = paginator;
+  }
+  dataSource: MatTableDataSource<tableImportances>;
 
   /* archivos data */
   archivos: any[] = [];
@@ -134,9 +157,12 @@ export class PbiDialogComponent implements OnInit, OnDestroy {
     this.sprintActual = data.sprintActual;
 
     this.fibonacci.unshift(this.estimacion);
+    this.dataSource = new MatTableDataSource(this.tablaImportancias);
   }
 
   ngOnInit() {
+    /* this.dataSource.paginator = this.paginator;
+     this.dataSource.sort = this.sort; */
     this.setColor();
     this.actualizarComentarios();
     this.actualizarArchivos();
@@ -156,7 +182,8 @@ export class PbiDialogComponent implements OnInit, OnDestroy {
         if (this.isStakeholder) {
           this.importanciaStakeholder = this.importancias.find((imp: Importancia) => imp.idrol === this.permisos.idrol);
           if (!this.importanciaStakeholder)
-            this.importanciaStakeholder = new Importancia(null, 0, this.permisos.idrol, this.idpbi);
+            //crear importancia sin valor: -1
+            this.importanciaStakeholder = new Importancia(null, -1, this.permisos.idrol, this.idpbi);
         }
         if (this.isProductOwner) {
           console.log(this.importancias);
@@ -172,31 +199,55 @@ export class PbiDialogComponent implements OnInit, OnDestroy {
               console.log('aaa');
               results.forEach((result: any) => {
                 this.importancias.forEach((imp: Importancia) => {
-                  if (result.idrol === imp.idrol) {
-                    this.tablaImportancias.push({ valor: imp.valor, nick: result.nick });
+                  if (imp.valor > 0) {
+                    if (result.idrol === imp.idrol) {
+                      this.tablaImportancias.push({ valor: imp.valor, nick: result.nick } as tableImportances);
+                    }
                   }
                 });
               });
-
               console.log(this.tablaImportancias);
+              //this.dataSource = new MatTableDataSource(this.tablaImportancias);
+              this.dataSource.data = this.tablaImportancias;
+              /* this.dataSource.sort = this.sort;
+              this.dataSource.paginator = this.paginator; */
+              /*  this.dataSource.data=this.tablaImportancias;*/
+
               this.isLoading = false;
+              console.log(this.dataSource);
             });
         }
       });
   }
   actualizarImportancia() {
     this.isLoading = true;
-    if (!this.importanciaStakeholder.idimportancia) {
+    // si la importancia existe:
+    if (this.importanciaStakeholder.idimportancia) {
+      //si tiene un valor:
+      if (this.importanciaStakeholder.valor >= 0) {
+        this.importanciasService
+          .editarImportancia(this.importanciaStakeholder)
+          .pipe(untilDestroyed(this))
+          .subscribe((res: any) => {
+            this.actualizarImportancias();
+            this.isLoading = false;
+          });
+      }
+      //si no tiene un valor:
+      else if (this.importanciaStakeholder.valor < 0) {
+        this.importanciasService
+          .editarImportancia(this.importanciaStakeholder)
+          .pipe(untilDestroyed(this))
+          .subscribe((res: any) => {
+            this.actualizarImportancias();
+            this.isLoading = false;
+          });
+      }
+    }
+    //si no existe:
+    else {
       this.importanciasService
         .crearImportancia(this.importanciaStakeholder)
-        .pipe(untilDestroyed(this))
-        .subscribe((res: any) => {
-          this.actualizarImportancias();
-          this.isLoading = false;
-        });
-    } else {
-      this.importanciasService
-        .editarImportancia(this.importanciaStakeholder)
         .pipe(untilDestroyed(this))
         .subscribe((res: any) => {
           this.actualizarImportancias();
