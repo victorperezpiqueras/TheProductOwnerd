@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "ng": "ng",
-    "build": "npm run env -s && ng build --aot --prod",
+    "build": "npm run env -s && ng build --aot --prod --outputHashing=all",
     "builddev": "npm run env -s && ng build",
     "start": "cd backend && npm start",
     "dev": "cd backend && npm run dev",
@@ -18,7 +18,7 @@
     "env": "ngx-scripts env npm_package_version",
     "prettier": "prettier --write \"./{src,e2e}/**/*.{ts,js,html,scss}\"",
     "prettier:check": "prettier --list-different \"./{src,e2e}/**/*.{ts,js,html,scss}\"",
-    "postinstall": "ng build --aot --prod && cd backend && npm install",
+    "postinstall": "ng build --aot --prod --outputHashing=all && cd backend && npm install",
     "generate": "ng generate"
   },
   "dependencies": {
