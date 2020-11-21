@@ -11,7 +11,7 @@ const apiDependencias = require('./dependencias');
 const apiInvitaciones = require('./invitaciones');
 const apiSprintGoals = require('./sprintgoals');
 const apiValores = require('./valores');
-//const apiImportancias = require('./importancias');
+const apiImportancias = require('./importancias');
 
 /* USUARIOS */
 router.use('/usuarios', apiUsuarios);
@@ -44,6 +44,6 @@ router.use('/sprintgoals', apiSprintGoals);
 router.use('/valores', apiValores);
 
 /* IMPORTANCIAS */
-//router.use('/importancias', apiImportancias);
+router.use('/importancias', apiImportancias);
 
 module.exports = router;

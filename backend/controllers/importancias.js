@@ -3,12 +3,12 @@ const connection = require('../db/connection');
 
 /**
  * Crea una importancia
- * @param importancias contiene los datos del archivo: valor, idpbi, idrol
+ * @param importancias contiene los datos de la importancia: importancia, idproyecto, idrol
  */
 ControllerImportancias.crearImportancia = function(importancia) {
   return new Promise(async function(resolve, reject) {
-    const sql = 'insert into importancias(valor,idpbi,idrol) values ' + '(?,?,?)';
-    const array = [importancia.valor, importancia.idpbi, importancia.idrol];
+    const sql = 'insert into importancias(importancia,idproyecto,idrol) values ' + '(?,?,?)';
+    const array = [importancia.importancia, importancia.idproyecto, importancia.idrol];
     try {
       let insertion = await connection.query(sql, array);
       resolve(insertion[0]);
@@ -20,12 +20,12 @@ ControllerImportancias.crearImportancia = function(importancia) {
 
 /**
  * Edita una importancia
- * @param importancias contiene los datos del archivo: valor, idpbi, idrol
+ * @param importancias contiene los datos del archivo: importancia, idproyecto, idrol
  */
 ControllerImportancias.editarImportancia = function(idimportancia, importancia) {
   return new Promise(async function(resolve, reject) {
-    const sql = 'update importancias set valor=? where idimportancia=?';
-    const array = [importancia.valor, idimportancia];
+    const sql = 'update importancias set importancia=? where idimportancia=?';
+    const array = [importancia.importancia, idimportancia];
     try {
       let insertion = await connection.query(sql, array);
       resolve(insertion[0]);
@@ -36,19 +36,19 @@ ControllerImportancias.editarImportancia = function(idimportancia, importancia) 
 };
 
 /**
- * Obtiene los archivos de un pbi
- * @param {number} idpbi id del pbi
- * @returns [ {valor, idpbi, idrol} ]
+ * Obtiene las importancias de un proyecto
+ * @param {number} idproyecto id del proyecto
+ * @returns [ {importancia, idproyecto, idrol} ]
  */
-ControllerImportancias.obtenerImportanciasPbi = function(idpbi) {
+ControllerImportancias.obtenerImportanciasProyecto = function(idproyecto) {
   return new Promise(async function(resolve, reject) {
-    const sql = 'select * from importancias where idpbi=?';
-    const array = [idpbi];
+    const sql = 'select * from importancias where idproyecto=?';
+    const array = [idproyecto];
     try {
       let importancias = await connection.query(sql, array);
       resolve(importancias[0]);
     } catch (error) {
-      reject({ error: 'Error inesperado en obtenerImportanciasPbi' });
+      reject({ error: 'Error inesperado en obtenerImportanciasProyecto' });
     }
   });
 };

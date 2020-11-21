@@ -3,6 +3,9 @@ const connection = require('../db/connection');
 const jwt = require('jsonwebtoken');
 const config = require('../config/config');
 const controllerInvitaciones = require('../controllers/invitaciones');
+const controllerImportancias = require('../controllers/importancias');
+const QueryResponse = require('../helpers/query-response');
+
 /* configurar mailer */
 const nodemailer = require('nodemailer');
 const fs = require('fs'); //Filesystem
@@ -311,10 +314,23 @@ ControllerProyectos.proyectoAgregarUsuario = function(idproyecto, data) {
         var list = ['productOwner', data.idusuario, idproyecto, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1];
       } else if (data.rol == 'desarrollador') {
         var list = ['desarrollador', data.idusuario, idproyecto, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0];
-      } else {
+      } else if (data.rol == 'stakeholder') {
         var list = ['stakeholder', data.idusuario, idproyecto, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0];
       }
       let insertion = await connection.query(sql, list);
+      console.log(insertion);
+
+      if (data.rol == 'stakeholder') {
+        //agregar importancia de stakeholder al proyecto:
+        let imp = {
+          importancia: 3, // 1-5:3default
+          idproyecto: idproyecto,
+          idrol: insertion[0].insertId
+        };
+        console.log(imp);
+        await controllerImportancias.crearImportancia(imp);
+        console.log('imp');
+      }
       resolve(insertion[0]);
     } catch (error) {
       reject({ error: 'Error inesperado en proyectoAgregarUsuario' });

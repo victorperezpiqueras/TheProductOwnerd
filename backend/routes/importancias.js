@@ -8,9 +8,8 @@ const { propertyChecker } = require('../helpers/propertyChecker');
 /* IMPORTANCIAS */
 router.post('/', verifyToken, function(req, res, next) {
   console.log('crearImportancia');
-  console.log(req.body);
-  if (!propertyChecker(req.body, ['valor', 'idpbi', 'idrol']))
-    throw new ErrorHandler(422, 'Missing required fields: valor, idpbi, idrol');
+  if (!propertyChecker(req.body, ['importancia', 'idproyecto', 'idrol']))
+    throw new ErrorHandler(422, 'Missing required fields: importancia, idproyecto, idrol');
   controllerImportancias
     .crearImportancia(req.body)
     .then(function(importancia) {
@@ -23,10 +22,22 @@ router.post('/', verifyToken, function(req, res, next) {
 
 router.put('/:idimportancia', verifyToken, function(req, res, next) {
   console.log('editarImportancia');
-  if (!propertyChecker(req.body, ['valor', 'idpbi', 'idrol']))
-    throw new ErrorHandler(422, 'Missing required fields: valor, idpbi, idrol');
+  if (!propertyChecker(req.body, ['importancia', 'idproyecto', 'idrol']))
+    throw new ErrorHandler(422, 'Missing required fields: importancia, idproyecto, idrol');
   controllerImportancias
     .editarImportancia(req.params.idimportancia, req.body)
+    .then(function(importancia) {
+      res.json(importancia);
+    })
+    .catch(function(err) {
+      res.status(500).json(err);
+    });
+});
+
+router.delete('/:idimportancia', verifyToken, function(req, res, next) {
+  console.log('borrarImportancia');
+  controllerImportancias
+    .borrarImportancia(req.params.idimportancia)
     .then(function(importancia) {
       res.json(importancia);
     })

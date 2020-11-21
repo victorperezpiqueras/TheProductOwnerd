@@ -13,15 +13,6 @@ export class ImportanciasService {
   constructor(private http: HttpClient) {}
 
   /**
-   * Crea una importancia
-   * @method POST
-   * @param importancia contiene los datos de la importancia: valor, idpbi, idrol
-   */
-  crearImportancia(importancia: Importancia): Observable<any> {
-    return this.http.post<any>(this.url, JSON.stringify(importancia), httpOptions);
-  }
-
-  /**
    * Edita un pbi
    * @method PUT
    * @param importancia contiene los datos de la importancia: valor, idpbi, idrol

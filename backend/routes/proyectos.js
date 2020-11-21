@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const controllerProyectos = require('../controllers/proyectos');
+const controllerImportancias = require('../controllers/importancias');
 const verifyToken = require('../middlewares/verify-token');
 const verifyProjectPermissions = require('../middlewares/proyecto-permisos');
 const { ErrorHandler } = require('../helpers/error');
@@ -161,6 +162,18 @@ router.post('/:idproyecto/invitar', verifyToken, verifyProjectPermissions, funct
     .proyectoInvitarUsuario(req.params.idproyecto, req.body)
     .then(function(proyecto) {
       res.json(proyecto);
+    })
+    .catch(function(err) {
+      res.status(500).json(err);
+    });
+});
+
+router.get('/:idproyecto/importancias', verifyToken, function(req, res, next) {
+  console.log('obtenerImportanciasProyecto');
+  controllerImportancias
+    .obtenerImportanciasProyecto(req.params.idproyecto)
+    .then(function(importancias) {
+      res.json(importancias);
     })
     .catch(function(err) {
       res.status(500).json(err);
