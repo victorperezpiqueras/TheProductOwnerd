@@ -15,7 +15,7 @@ export class ImportanciasService {
   /**
    * Edita un pbi
    * @method PUT
-   * @param importancia contiene los datos de la importancia: valor, idpbi, idrol
+   * @param importancia contiene los datos de la importancia: importancia, idproyecto, idrol
    */
   editarImportancia(importancia: Importancia): Observable<any> {
     return this.http.put<any>(this.url + '/' + importancia.idimportancia, JSON.stringify(importancia), httpOptions);

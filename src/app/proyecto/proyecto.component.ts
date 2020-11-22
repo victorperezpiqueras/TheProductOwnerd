@@ -129,8 +129,14 @@ export class ProyectoComponent implements OnInit, OnDestroy {
     this.changeDetectorRef.detectChanges();
     // console.log('actualizar proyecto');
     this.overview.proyecto = this.proyecto;
+    this.overview.permisos = this.permisos;
+
     this.backlog.proyecto = this.proyecto;
+    this.backlog.permisos = this.permisos;
+
     this.forecasts.proyecto = this.proyecto;
+    this.forecasts.permisos = this.permisos;
+
     this.overview.actualizar();
     this.backlog.actualizar();
     this.forecasts.actualizar();

@@ -162,27 +162,34 @@ ControllerProyectos.getProyectoUsuarios = function(idproyecto) {
 };
 
 /**
- * Obtiene los usuarios y roles de un proyecto
+ * Obtiene los usuarios y roles de un proyecto y sus importancias si son stakeholders
  * @param {number} idproyecto id del proyecto
  * @returns [ {idusuario, nick, email, rol} ]
  */
 ControllerProyectos.getProyectoUsuariosRoles = function(idproyecto) {
   return new Promise(async function(resolve, reject) {
     const sql =
-      'select u.idusuario, u.nick, u.email, r.nombre as rol from usuarios u,' +
+      'select u.idusuario, u.nick, u.email, r.nombre as rol, r.idrol from usuarios u,' +
       'proyectos p, roles r where u.idusuario = r.idusuario and p.idproyecto = r.idproyecto and p.idproyecto = ?';
-    /* connection.query(sql, [idproyecto], function (err, result) {
-      if (err) {
-        reject({ error: 'Error inesperado' });
-      } else {
-        console.log(result);
-        resolve(result);
-      }
-    }); */
     try {
       let usuariosRoles = await connection.query(sql, [idproyecto]);
       console.log(usuariosRoles[0]);
-      resolve(usuariosRoles[0]);
+      let response = usuariosRoles[0];
+
+      //juntar las importancias con los roles
+      let importancias = await controllerImportancias.obtenerImportanciasProyecto(idproyecto);
+      response.forEach(usuario => {
+        for (var imp of importancias) {
+          if (imp.idrol === usuario.idrol) {
+            usuario.importancia = imp.importancia;
+            usuario.idimportancia = imp.idimportancia;
+            break;
+          }
+        }
+      });
+      console.log(response);
+
+      resolve(response);
     } catch (error) {
       reject({ error: 'Error inesperado en getProyectoUsuariosRoles' });
     }
@@ -196,14 +203,6 @@ ControllerProyectos.getProyectosUsuariosRoles = function() {
   return new Promise(async function(resolve, reject) {
     const sql =
       'select u.idusuario, u.nick, u.email, r.nombre as rol, p.idproyecto from usuarios u, proyectos p, roles r where u.idusuario = r.idusuario and p.idproyecto = r.idproyecto';
-    /* connection.query(sql, function (err, result) {
-      if (err) {
-        reject({ error: 'Error inesperado' });
-      } else {
-        console.log(result);
-        resolve(result);
-      }
-    }); */
     try {
       let usuariosRoles = await connection.query(sql);
       console.log(usuariosRoles[0]);

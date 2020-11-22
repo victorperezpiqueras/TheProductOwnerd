@@ -1,3 +1,4 @@
+import { ImportanciasService } from './../../services/importancias.service';
 import { Component, OnInit, OnDestroy, Input, ViewChild, NgZone } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -23,10 +24,21 @@ import { ConfirmDialogComponent } from '@app/shared/confirmDialog/confirmDialog.
 import { formatRoles } from '@app/shared/helperRoles';
 import { PbcComponent } from './pbc/pbc.component';
 import { PocComponent } from './poc/poc.component';
+import { Importancia } from '@app/models/importancias';
 
 interface Rol {
   value: string;
   viewValue: string;
+}
+
+interface UsuarioRol {
+  idusuario: number;
+  nick: string;
+  email: string;
+  rol: string;
+  idrol: number;
+  importancia?: number;
+  idimportancia?: number;
 }
 
 @Component({
@@ -55,6 +67,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
   dataSource: any[] = [];
   pageSizeOptions: number[];
   pageSize: number;
+  importanceValues: number[] = [0, 1, 2, 3, 4, 5];
 
   /* --------------INVITE CARD-------------- */
   newEmail: string;
@@ -73,6 +86,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
     private credentialsService: CredentialsService,
     private proyectosService: ProyectosService,
     private usuariosService: UsuariosService,
+    private importanciasService: ImportanciasService,
     private activeRoute: ActivatedRoute,
     private _snackBar: MatSnackBar,
     public dialog: MatDialog,
@@ -85,29 +99,31 @@ export class OverviewComponent implements OnInit, OnDestroy {
 
   cargarDatos() {
     this.isLoading = true;
+    console.log('cargar');
     // modificar la UI en función del rol para ajustarla a los cards
-    if (this.permisos.mantenerUsuarios === 1) {
-      this.displayedColumns = ['Actions', 'Name', 'Role'];
+    if (this.permisos.rol === 'productOwner') {
+      this.displayedColumns = ['Name', 'Role', 'Importance', 'Actions'];
       this.pageSizeOptions = [5];
       this.pageSize = 5;
     } else {
-      this.displayedColumns = ['Actions', 'Name', 'Role'];
+      this.displayedColumns = ['Name', 'Role'];
       this.pageSizeOptions = [8];
       this.pageSize = 8;
     }
-    this.activeRoute.params.subscribe(routeParams => {
-      this.proyectosService
-        .getProyecto(routeParams.id)
-        .pipe(untilDestroyed(this))
-        .subscribe(proyecto => {
-          this.proyecto = proyecto;
-          this.actualizar();
-        });
-    });
+    /*     this.activeRoute.params.subscribe(routeParams => {
+          this.proyectosService
+            .getProyecto(routeParams.id)
+            .pipe(untilDestroyed(this))
+            .subscribe(proyecto => {
+              this.proyecto = proyecto;
+              this.actualizar();
+            });
+        }); */
   }
 
   actualizar() {
     // console.log('actualizar');
+    this.cargarDatos();
     this.actualizarUsuarios();
     this.actualizarGraficos();
   }
@@ -117,6 +133,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
       .getProyectoUsuariosRoles(this.proyecto.idproyecto)
       .pipe(untilDestroyed(this))
       .subscribe(usuarios => {
+        console.log(usuarios);
         this.proyecto.usuarios = usuarios;
         /* this.proyecto.usuarios.push({ nick: "aaaaaaa", rol: "stakeholder" })
       this.proyecto.usuarios.push({ nick: "aaaaaaa", rol: "stakeholder" })
@@ -229,6 +246,24 @@ export class OverviewComponent implements OnInit, OnDestroy {
     // Wait for changes to be applied, then trigger textarea resize.
     this._ngZone.onStable.pipe(take(1)).subscribe(() => this.autosize.resizeToFitContent(true));
   } */
+
+  changeImportance(usuario: UsuarioRol) {
+    this.isLoading = true;
+    let newImportancia = new Importancia(
+      usuario.idimportancia,
+      usuario.importancia,
+      usuario.idrol,
+      this.proyecto.idproyecto
+    );
+    console.log(newImportancia);
+    this.importanciasService
+      .editarImportancia(newImportancia)
+      .pipe(untilDestroyed(this))
+      .subscribe(data => {
+        this.isLoading = false;
+        this._snackBar.open("Stakeholder's importance edited successfully!", 'Close', { duration: 3000 });
+      });
+  }
 
   ngOnDestroy() {}
 
