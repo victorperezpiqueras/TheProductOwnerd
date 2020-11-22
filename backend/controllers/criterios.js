@@ -1,5 +1,6 @@
 var ControllerCriterios = {};
 const connection = require('../db/connection');
+module.exports = ControllerCriterios;
 
 /**
  * Crea un criterio
@@ -70,5 +71,3 @@ ControllerCriterios.obtenerCriteriosPbi = function(idpbi) {
     }
   });
 };
-
-module.exports = ControllerCriterios;

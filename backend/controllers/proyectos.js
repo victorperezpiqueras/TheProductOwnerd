@@ -2,8 +2,11 @@ var ControllerProyectos = {};
 const connection = require('../db/connection');
 const jwt = require('jsonwebtoken');
 const config = require('../config/config');
+module.exports = ControllerProyectos;
 const controllerInvitaciones = require('../controllers/invitaciones');
 const controllerImportancias = require('../controllers/importancias');
+const controllerUsuarios = require('../controllers/usuarios');
+
 const QueryResponse = require('../helpers/query-response');
 
 /* configurar mailer */
@@ -318,7 +321,6 @@ ControllerProyectos.proyectoAgregarUsuario = function(idproyecto, data) {
         var list = ['stakeholder', data.idusuario, idproyecto, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0];
       }
       let insertion = await connection.query(sql, list);
-      console.log(insertion);
 
       if (data.rol == 'stakeholder') {
         //agregar importancia de stakeholder al proyecto:
@@ -327,9 +329,7 @@ ControllerProyectos.proyectoAgregarUsuario = function(idproyecto, data) {
           idproyecto: idproyecto,
           idrol: insertion[0].insertId
         };
-        console.log(imp);
         await controllerImportancias.crearImportancia(imp);
-        console.log('imp');
       }
       resolve(insertion[0]);
     } catch (error) {
@@ -348,10 +348,12 @@ ControllerProyectos.proyectoEliminarUsuario = function(idproyecto, idusuario) {
     const sql = 'delete from roles where idusuario=? and idproyecto=?';
     try {
       let deletion = await connection.query(sql, [idusuario, idproyecto]);
-      console.log(deletion[0]);
-      resolve(deletion[0]);
+      console.log('antes controller');
+      //eliminar proyecto de los favoritos del usuario
+      await controllerUsuarios.eliminarUsuarioProyectosFavoritos(idusuario, idproyecto);
+      resolve(deletion);
     } catch (error) {
-      reject({ error: 'Error inesperado en proyectoEliminarUsuario' });
+      reject({ error: error });
     }
   });
 };
@@ -456,5 +458,3 @@ ControllerProyectos.checkProyectoTieneUsuario = async function(idproyecto, idusu
   if (data[0].length === 1) return true;
   else return false;
 };
-
-module.exports = ControllerProyectos;

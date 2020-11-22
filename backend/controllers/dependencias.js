@@ -1,5 +1,6 @@
 var ControllerDependencias = {};
 const connection = require('../db/connection');
+module.exports = ControllerDependencias;
 
 /**
  * Crea una dependencia
@@ -53,5 +54,3 @@ ControllerDependencias.obtenerDependenciasPbi = function(idpbi) {
     }
   });
 };
-
-module.exports = ControllerDependencias;

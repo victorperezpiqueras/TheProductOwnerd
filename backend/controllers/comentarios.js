@@ -1,5 +1,6 @@
 var ControllerComentarios = {};
 const connection = require('../db/connection');
+module.exports = ControllerComentarios;
 
 /**
  * Crea un comentario
@@ -35,5 +36,3 @@ ControllerComentarios.obtenerComentariosPbi = function(idpbi) {
     }
   });
 };
-
-module.exports = ControllerComentarios;

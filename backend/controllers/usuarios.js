@@ -3,7 +3,7 @@ const connection = require('../db/connection');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('../config/config');
-
+module.exports = ControllerUsuarios;
 const controllerProyectos = require('../controllers/proyectos');
 const controllerInvitaciones = require('../controllers/invitaciones');
 
@@ -290,6 +290,16 @@ ControllerUsuarios.eliminarUsuarioProyectosFavoritos = function(idusuario, idpro
   });
 };
 
+ControllerUsuarios.aaa = function(idusuario, idproyecto) {
+  return new Promise(async function(resolve, reject) {
+    try {
+      resolve('aaaaaaa');
+    } catch (error) {
+      reject({ error: 'Error inesperado en eliminarUsuarioProyectosFavoritos' });
+    }
+  });
+};
+
 /**
  * Obtiene los datos de un usuario a través de su rol
  * @param {number} idrol idrol del usuario
@@ -306,5 +316,3 @@ ControllerUsuarios.obtenerUsuarioPorRol = function(idrol) {
     }
   });
 };
-
-module.exports = ControllerUsuarios;

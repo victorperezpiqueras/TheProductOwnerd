@@ -1,5 +1,6 @@
 var ControllerPbis = {};
 const connection = require('../db/connection');
+module.exports = ControllerPbis;
 
 /**
  * Crea un pbi
@@ -85,5 +86,3 @@ ControllerPbis.editarPrioridadesPbis = function(pbis) {
     }
   });
 };
-
-module.exports = ControllerPbis;

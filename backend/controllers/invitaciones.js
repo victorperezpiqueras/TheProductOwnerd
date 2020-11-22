@@ -1,5 +1,6 @@
 var ControllerInvitaciones = {};
 const connection = require('../db/connection');
+module.exports = ControllerInvitaciones;
 
 /**
  * Crea una invitacion y borra otra si existiese para el email y proyecto dados
@@ -56,5 +57,3 @@ ControllerInvitaciones.obtenerInvitacion = function(token) {
     }
   });
 };
-
-module.exports = ControllerInvitaciones;

@@ -322,6 +322,14 @@ export class ProyectoComponent implements OnInit, OnDestroy {
       }); */
   }
 
+  get isStakeholder(): boolean {
+    return this.permisos.rol === 'stakeholder';
+  }
+
+  get isProductOwner(): boolean {
+    return this.permisos.rol === 'productOwner';
+  }
+
   ngOnDestroy() {}
 
   get username(): string | null {

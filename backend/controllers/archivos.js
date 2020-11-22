@@ -1,5 +1,6 @@
 var ControllerArchivos = {};
 const connection = require('../db/connection');
+module.exports = ControllerArchivos;
 
 /**
  * Crea un archivo
@@ -53,5 +54,3 @@ ControllerArchivos.obtenerArchivosPbi = function(idpbi) {
     }
   });
 };
-
-module.exports = ControllerArchivos;

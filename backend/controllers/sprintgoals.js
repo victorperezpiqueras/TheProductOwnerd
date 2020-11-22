@@ -1,5 +1,6 @@
 var ControllerSprintGoals = {};
 const connection = require('../db/connection');
+module.exports = ControllerSprintGoals;
 
 /**
  * Crea un sprintgoal
@@ -34,5 +35,3 @@ ControllerSprintGoals.actualizarSprintGoal = function(sprintGoal) {
     }
   });
 };
-
-module.exports = ControllerSprintGoals;

@@ -1,5 +1,6 @@
 var ControllerValores = {};
 const connection = require('../db/connection');
+module.exports = ControllerValores;
 
 /**
  * Crea un valor
@@ -52,5 +53,3 @@ ControllerValores.obtenerValoresPbi = function(idpbi) {
     }
   });
 };
-
-module.exports = ControllerValores;

@@ -1,5 +1,6 @@
 var ControllerImportancias = {};
 const connection = require('../db/connection');
+module.exports = ControllerImportancias;
 
 /**
  * Crea una importancia
@@ -52,5 +53,3 @@ ControllerImportancias.obtenerImportanciasProyecto = function(idproyecto) {
     }
   });
 };
-
-module.exports = ControllerImportancias;
