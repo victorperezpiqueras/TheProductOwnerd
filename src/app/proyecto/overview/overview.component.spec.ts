@@ -15,6 +15,7 @@ import { PocComponent } from './poc/poc.component';
 import { PbcComponent } from './pbc/pbc.component';
 import { HighchartsChartModule } from 'highcharts-angular';
 import { BugsComponent } from './bugs/bugs.component';
+import { ImportanciasService } from '@app/services/importancias.service';
 
 describe('OverviewComponent', () => {
   let component: OverviewComponent;
@@ -35,7 +36,7 @@ describe('OverviewComponent', () => {
         HighchartsChartModule
       ],
       declarations: [OverviewComponent, PocComponent, PbcComponent, BugsComponent],
-      providers: [AuthenticationService, CredentialsService, UsuariosService, ProyectosService]
+      providers: [AuthenticationService, CredentialsService, UsuariosService, ProyectosService, ImportanciasService]
     }).compileComponents();
   }));
 
