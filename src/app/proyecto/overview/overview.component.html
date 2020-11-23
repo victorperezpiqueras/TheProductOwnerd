@@ -7,7 +7,31 @@
 
       <div fxFlex="25" fxLayout="column" fxLayoutGap="30px">
         <mat-card fxFlex class="mat-elevation-z3">
-          <mat-card-title>Team</mat-card-title>
+          <mat-card-title>
+            Team&nbsp;
+            <ng-container *ngIf="isProductOwner">
+              <mat-icon
+                class="boton-editar-equipo"
+                *ngIf="!equipoEditable"
+                (click)="changeEditarEquipo()"
+                matTooltip="Unlock team edition"
+                matTooltipPosition="right"
+                matTooltipShowDelay="300"
+              >
+                lock</mat-icon
+              >
+              <mat-icon
+                class="boton-editar-equipo"
+                *ngIf="equipoEditable"
+                (click)="changeEditarEquipo()"
+                matTooltip="Lock team edition"
+                matTooltipPosition="right"
+                matTooltipShowDelay="300"
+                >lock_open
+              </mat-icon>
+            </ng-container>
+          </mat-card-title>
+
           <table mat-table [dataSource]="dataTable" style="overflow-y: scroll;">
             <ng-container matColumnDef="Name">
               <th mat-header-cell *matHeaderCellDef>Nick</th>

@@ -82,6 +82,9 @@ export class OverviewComponent implements OnInit, OnDestroy {
 
   buttonDisabled: boolean = true;
 
+  /* EDITAR PERMISOS */
+  editarEquipo: string = 'false';
+
   constructor(
     private credentialsService: CredentialsService,
     private proyectosService: ProyectosService,
@@ -94,14 +97,21 @@ export class OverviewComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.cargarLocalStorage();
     this.cargarDatos();
+  }
+
+  cargarLocalStorage() {
+    let editarStorage: string = localStorage.getItem('editarEquipo');
+    if (editarStorage) {
+      this.editarEquipo = editarStorage;
+    }
   }
 
   cargarDatos() {
     this.isLoading = true;
-    console.log('cargar');
     // modificar la UI en función del rol para ajustarla a los cards
-    if (this.permisos.rol === 'productOwner') {
+    if (this.permisos.rol === 'productOwner' && this.equipoEditable) {
       this.displayedColumns = ['Name', 'Role', 'Importance', 'Actions'];
       this.pageSizeOptions = [5];
       this.pageSize = 5;
@@ -110,6 +120,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
       this.pageSizeOptions = [8];
       this.pageSize = 8;
     }
+    this.isLoading = false;
     /*     this.activeRoute.params.subscribe(routeParams => {
           this.proyectosService
             .getProyecto(routeParams.id)
@@ -263,6 +274,22 @@ export class OverviewComponent implements OnInit, OnDestroy {
         this.isLoading = false;
         this._snackBar.open("Stakeholder's importance edited successfully!", 'Close', { duration: 3000 });
       });
+  }
+
+  changeEditarEquipo() {
+    let value: string;
+    this.equipoEditable ? (value = 'false') : (value = 'true');
+    this.editarEquipo = value;
+    localStorage.setItem('editarEquipo', value);
+    this.cargarDatos();
+  }
+
+  get equipoEditable(): boolean {
+    return this.editarEquipo === 'true';
+  }
+
+  get isProductOwner(): boolean {
+    return this.permisos.rol === 'productOwner';
   }
 
   ngOnDestroy() {}
