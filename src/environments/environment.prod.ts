@@ -9,7 +9,7 @@
 export const environment = {
   production: true,
   hmr: false,
-  version: '1.0.0',
+  version: '2.0.0',
   // serverUrl: '/api',
   serverUrl: 'https://theproductownerd.herokuapp.com/api',
   defaultLanguage: 'en-US',

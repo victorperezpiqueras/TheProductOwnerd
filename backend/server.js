@@ -34,6 +34,7 @@ app.use('/api', apiRouter);
 
 app.get('*', function(req, res, next) {
   //console.log("*")
+  res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
   res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
 

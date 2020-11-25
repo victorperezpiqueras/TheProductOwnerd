@@ -13,7 +13,7 @@
 export const environment = {
   production: false,
   hmr: true,
-  version: '1.0.0' + '-dev',
+  version: '2.0.0' + '-dev',
   serverUrl: 'http://localhost:5000/api',
   // serverUrl: 'https://the-product-ownerd.herokuapp.com/api',
   defaultLanguage: 'en-US',
