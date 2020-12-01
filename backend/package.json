@@ -7,6 +7,7 @@
     "start": "node server.js",
     "test": "node node_modules/jasmine/bin/jasmine.js",
     "dev": "node -r dotenv/config server.js",
+    "seeder": "node -r dotenv/config db/seeder.js",
     "seedertest": "node -r dotenv/config db/seederTest.js"
   },
   "author": "",

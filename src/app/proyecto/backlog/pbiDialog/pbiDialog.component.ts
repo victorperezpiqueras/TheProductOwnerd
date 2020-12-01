@@ -200,7 +200,7 @@ export class PbiDialogComponent implements OnInit, OnDestroy {
               console.log('aaa');
               results.forEach((result: any) => {
                 this.valores.forEach((val: ValorStakeholder) => {
-                  if (val.valor > 0) {
+                  if (val.valor >= 0) {
                     if (result.idrol === val.idrol) {
                       this.tablaValores.push({ valor: val.valor, nick: result.nick } as tableValores);
                     }

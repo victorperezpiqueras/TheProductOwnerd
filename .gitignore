@@ -61,4 +61,4 @@ testem.log
 Thumbs.db
 
 #dotenv
-.env
+*.env*
