@@ -116,4 +116,14 @@ export class ProyectosService {
   eliminarUsuario(idproyecto: number, idusuario: number): Observable<any> {
     return this.http.delete<any>(this.url + '/' + idproyecto + '/eliminarUsuario' + '/' + idusuario, httpOptions);
   }
+
+  /**
+   * Obtiene las releases de un proyecto
+   * @method GET
+   * @param {number} idproyecto id del proyecto
+   * @returns [ {version, descripcion, sprint, idproyecto} ]
+   */
+  getProyectoReleases(idproyecto: number): Observable<any> {
+    return this.http.get<any>(this.url + '/' + idproyecto + '/releases', httpOptions);
+  }
 }

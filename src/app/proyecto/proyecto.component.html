@@ -48,7 +48,7 @@
         </mat-card-header>
       </mat-card>
 
-      <mat-card fxFlex="80" class="sprint-card mat-elevation-z3">
+      <mat-card fxFlex="30" class="sprint-card mat-elevation-z3">
         <mat-card-header>
           <mat-card-title style="font-size: x-large">Sprint: </mat-card-title>
           <mat-icon
@@ -102,33 +102,229 @@
         </mat-card-header>
         <mat-card-content>
           <div style="margin-left: 15px;">
-            <!-- <b>Sprint Goal: </b><br> -->
-            <div *ngIf="showingGoal && permisos && permisos.sprintGoals === 1">
-              <mat-form-field appearance="outline" style="width: 85%;">
+            <div *ngIf="showingGoal && permisos && permisos.sprintGoals === 1" fxLayoutAlign="end start">
+              <mat-form-field appearance="outline" fxFlex="80">
                 <mat-label class="mat-h2">Sprint Goal</mat-label>
                 <textarea
                   matInput
                   [(ngModel)]="showingGoal.goal"
                   (ngModelChange)="switchSaveButton()"
-                  style="resize: none;"
+                  style="resize: none;min-height: 100px;"
                 ></textarea>
               </mat-form-field>
-              <button
-                mat-raised-button
-                (click)="guardarSprintGoal()"
-                [color]="'success'"
-                [disabled]="buttonDisabled"
-                style="margin-left: 2%;display: inline-block;width: 9vmin;height: 5vmin;min-width: 100px;min-height: 50px;"
-              >
-                <mat-icon>save</mat-icon>&nbsp;&nbsp;Save
-              </button>
+              <ng-container>
+                <button
+                  fxFlex="20"
+                  mat-raised-button
+                  (click)="guardarSprintGoal()"
+                  [color]="'success'"
+                  [disabled]="buttonDisabled"
+                  class="boton-save"
+                  style="margin-left: 2%;display: inline-block;"
+                >
+                  <mat-icon>save</mat-icon>&nbsp;&nbsp;Save
+                </button>
+              </ng-container>
             </div>
+
             <div *ngIf="showingGoal && permisos && permisos.sprintGoals === 0">
               <b class="mat-h3"><b>Goal: </b></b>
               <p style="color: rgb(119, 119, 119);display: inline-block;margin-top: 5px; text-align: justify;">
                 {{ showingGoal.goal }}
               </p>
             </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card fxFlex="50" class="sprint-card mat-elevation-z3">
+        <mat-card-header>
+          <mat-card-title style="font-size: x-large">Releases</mat-card-title>
+          <div fxFlex="40"></div>
+        </mat-card-header>
+        <mat-card-content *ngIf="releases">
+          <div style="margin-left: 15px;">
+            <mat-horizontal-stepper #stepper selectedIndex="0" style="background-color: rgba(255, 255, 255, 0);">
+              <!--  labelPosition="bottom" -->
+
+              <!--  <ng-template matStepperIcon="previous">
+                <mat-icon>check</mat-icon>
+              </ng-template> -->
+              <ng-template matStepperIcon="current">
+                <mat-icon>flag</mat-icon>
+              </ng-template>
+              <ng-template matStepperIcon="next">
+                <mat-icon>arrow_forward</mat-icon>
+              </ng-template>
+              <ng-template matStepperIcon="create">
+                <mat-icon>add</mat-icon>
+              </ng-template>
+              <ng-template matStepperIcon="viewAll">
+                <mat-icon>visibility</mat-icon>
+              </ng-template>
+
+              <ng-template matStepperIcon="done" let-index="index" let-active="active">
+                <mat-icon *ngIf="index === 0">flag</mat-icon>
+                <!-- <mat-icon *ngIf="index === 1">arrow_forward</mat-icon> -->
+                <mat-icon *ngIf="index === 1">add</mat-icon>
+                <mat-icon *ngIf="index === 2">visibility</mat-icon>
+                <ng-template #default>
+                  <mat-icon *ngIf="index === 0">flag</mat-icon>
+                </ng-template>
+              </ng-template>
+
+              <!-- <mat-step label="Previous release" [completed]="true" state="previous">
+                <mat-card fxLayout="row" fxLayoutGap="20px">
+                  <div fxFlex>
+                    <h4 class="body-2" style="margin-bottom: 0;margin-top: 0;">Previous release</h4>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  </div>
+                  <div fxFlex="30">
+                    <div style="margin-bottom: 5px;">
+                      <b class="body-2" class="release-card-text">Remaining Story Points:</b>&nbsp;
+                      <p class="release-card-text">20</p>
+                    </div>
+                      <b class="body-2" class="release-card-text">Sprints left:</b>&nbsp;
+                      <p class="release-card-text">1</p>
+                  </div>
+                </mat-card>
+              </mat-step> -->
+              <mat-step *ngIf="currentRelease" [label]="labelRelease" [completed]="true" state="current">
+                <mat-card fxLayout="row wrap" fxLayoutGap="20px">
+                  <div fxFlex>
+                    <h4 class="body-2" style="margin-bottom: 0;margin-top: 0;">{{ currentRelease.version }}</h4>
+                    <div>{{ currentRelease.descripcion }}</div>
+                  </div>
+                  <div fxFlex="30">
+                    <div style="margin-bottom: 5px;">
+                      <b class="body-2" class="release-card-text">Release Sprint:</b>&nbsp;
+                      <p class="release-card-text">{{ currentRelease.sprint }}</p>
+                    </div>
+                    <b class="body-2" class="release-card-text">Remaining Story Points:</b>&nbsp;
+                    <p class="release-card-text">20</p>
+                  </div>
+                </mat-card>
+              </mat-step>
+              <!--               <mat-step label="v1.1.0 - Next release" [completed]="true" state="next">
+                <mat-card fxLayout="row" fxLayoutGap="20px">
+                  <div fxFlex>
+                    <h4 class="body-2" style="margin-bottom: 0;margin-top: 0;">v1.1.0 - Next release</h4>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam libero urna, egestas id malesuada sit
+                    amet, viverra at urna.sit amet, consectetur adipiscing elit. Nam libero urna, egestas id malesuada
+                    sit
+                    amet, viverra at urna.
+                  </div>
+                  <div fxFlex="30">
+                    <div style="margin-bottom: 5px;">
+                      <b class="body-2" class="release-card-text">Release Sprint:</b>&nbsp;
+                      <p class="release-card-text">12</p>
+                    </div>
+                    <b class="body-2" class="release-card-text">Remaining Story Points:</b>&nbsp;
+                    <p class="release-card-text">100</p>
+                  </div>
+                </mat-card>
+              </mat-step> -->
+              <mat-step label="Create release" [completed]="true" state="create" *ngIf="isProductOwner">
+                <mat-card fxLayout="column">
+                  <form [formGroup]="enterpriseForm" (ngSubmit)="crearRelease()">
+                    <h4 class="body-2">Create release</h4>
+                    <div fxLayoutGap="10px" fxLayout="row">
+                      <div fxFlex="30" fxLayout="column">
+                        <mat-form-field appearance="outline">
+                          <mat-label>Version</mat-label>
+                          <input matInput formControlName="version" [errorStateMatcher]="matcher" />
+                          <mat-error *ngIf="enterpriseForm.get('version').errors?.required"
+                            >Version is required
+                          </mat-error>
+                        </mat-form-field>
+                        <mat-form-field appearance="outline">
+                          <mat-label>Release sprint</mat-label>
+                          <input matInput type="number" formControlName="sprint" [errorStateMatcher]="matcher" />
+                          <mat-error *ngIf="enterpriseForm.get('sprint').errors?.required"
+                            >Release sprint is required
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+
+                      <div fxFlex="70" fxLayout="column" fxLayoutGap="5px">
+                        <mat-form-field appearance="outline">
+                          <mat-label>Release description</mat-label>
+                          <textarea
+                            matInput
+                            formControlName="description"
+                            style="resize: none;min-height: 100px;"
+                          ></textarea>
+                        </mat-form-field>
+                        <button
+                          mat-raised-button
+                          [color]="'success'"
+                          class="boton-save"
+                          style="align-self: flex-end;"
+                          type="submit"
+                          [disabled]="!enterpriseForm.valid || !enterpriseForm.dirty"
+                        >
+                          <mat-icon>add_circle</mat-icon>&nbsp;&nbsp;Create
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </mat-card>
+              </mat-step>
+              <mat-step label="View all releases" [completed]="true" state="viewAll">
+                <div fxLayout="column" fxLayoutGap="10px">
+                  <h4 class="body-2">All releases</h4>
+                  <mat-card
+                    *ngFor="let rel of releases"
+                    [ngStyle]="{
+                      border: isCurrentRelease(rel) ? 'grey' : 'none',
+                      'border-style': isCurrentRelease(rel) ? 'groove' : 'none'
+                    }"
+                  >
+                    <div>
+                      <h4 class="body-2" style="margin-bottom: 0;margin-top: 0;">
+                        <mat-chip [selectable]="false" color="primary" selected
+                          >{{ rel.version }}
+                          <i class="mat-body" *ngIf="isCurrentRelease(rel)">&nbsp;(current) </i>
+                        </mat-chip>
+                        <span class="body-2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Release sprint:</span>
+                        <span class="mat-body">
+                          {{ rel.sprint }}
+                        </span>
+                      </h4>
+                      <p style="overflow-wrap: break-word;">{{ rel.descripcion }}</p>
+                    </div>
+                    <div *ngIf="isProductOwner" fxLayoutGap="10px">
+                      <button mat-raised-button color="primary">
+                        <mat-icon>edit</mat-icon>
+                      </button>
+                      <button mat-raised-button color="warn" (click)="borrarRelease(rel)">
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                    </div>
+                  </mat-card>
+                  <!-- <div fxFlex="30" fxLayout="column">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Version</mat-label>
+                      <input matInput />
+                    </mat-form-field>
+                    <mat-form-field appearance="outline">
+                      <mat-label>Sprint to finish</mat-label>
+                      <input matInput type="number" />
+                    </mat-form-field>
+                  </div>
+
+                  <div fxFlex="70" fxLayout="column" fxLayoutGap="5px">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Release description</mat-label>
+                      <textarea matInput style="resize: none;min-height: 100px;"></textarea>
+                    </mat-form-field>
+                    <button mat-raised-button [color]="'success'" class="boton-save" style="align-self: flex-end;">
+                      <mat-icon>add_circle</mat-icon>&nbsp;&nbsp;Create
+                    </button>
+                  </div> -->
+                </div>
+              </mat-step>
+            </mat-horizontal-stepper>
           </div>
         </mat-card-content>
       </mat-card>

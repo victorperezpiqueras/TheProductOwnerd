@@ -24,6 +24,7 @@ import { VelocityComponent } from './forecasts/velocity/velocity.component';
 import { LinearRegressionComponent } from './forecasts/linear-regression/linear-regression.component';
 import { PolynomialRegressionComponent } from './forecasts/polynomial-regression/polynomial-regression.component';
 import { BugsComponent } from './overview/bugs/bugs.component';
+import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 
 @NgModule({
   imports: [

@@ -1,3 +1,4 @@
+import { ReleasesService } from './services/releases.service';
 import { ImportanciasService } from './services/importancias.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -94,7 +95,8 @@ import { ValoresStakeholdersService } from './services/valoresStakeholders.servi
     InvitacionesService,
     SprintGoalsService,
     ImportanciasService,
-    ValoresStakeholdersService
+    ValoresStakeholdersService,
+    ReleasesService
   ],
   entryComponents: [ProyectoDialogComponent, FavoritosDialogComponent, PbiDialogComponent, ConfirmDialogComponent],
   bootstrap: [AppComponent]

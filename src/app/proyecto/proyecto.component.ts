@@ -1,6 +1,7 @@
+import { ReleasesService } from './../services/releases.service';
 import { Component, OnInit, OnDestroy, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { UsuariosService } from '@app/services/usuarios.service';
 import { CredentialsService, untilDestroyed } from '@app/core';
 import { Proyecto } from '@app/models/proyectos';
@@ -16,11 +17,21 @@ import { ForecastsComponent } from './forecasts/forecasts.component';
 import { SprintGoal } from '@app/models/sprintGoals';
 import { ConfirmDialogComponent } from '@app/shared/confirmDialog/confirmDialog.component';
 import { SprintGoalsService } from '@app/services/sprintgoals.service';
+import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
+import { Release } from '@app/models/releases';
+import { Input } from '@angular/core';
+import { MyErrorStateMatcher } from '@app/shared/default.error-matcher';
 
 @Component({
   selector: 'app-proyecto',
   templateUrl: './proyecto.component.html',
-  styleUrls: ['./proyecto.component.scss']
+  styleUrls: ['./proyecto.component.scss'],
+  providers: [
+    {
+      provide: STEPPER_GLOBAL_OPTIONS,
+      useValue: { displayDefaultIndicatorType: false }
+    }
+  ]
 })
 export class ProyectoComponent implements OnInit, OnDestroy {
   @ViewChild('overview', { static: false }) overview: OverviewComponent;
@@ -46,6 +57,16 @@ export class ProyectoComponent implements OnInit, OnDestroy {
   showingGoal: SprintGoal;
   sprintGoal: string;
 
+  releases: Release[];
+  currentRelease: Release;
+  labelRelease: string = 'Current release: ';
+  matcher = new MyErrorStateMatcher();
+  @Input() enterpriseForm: FormGroup = new FormGroup({
+    version: new FormControl('', Validators.required),
+    description: new FormControl(''),
+    sprint: new FormControl('', Validators.required)
+  });
+
   isFirstSprint: boolean;
   isFirstSprintDeadline: boolean;
 
@@ -65,6 +86,7 @@ export class ProyectoComponent implements OnInit, OnDestroy {
     private usuariosService: UsuariosService,
     private proyectosService: ProyectosService,
     private sprintGoalsService: SprintGoalsService,
+    private releasesService: ReleasesService,
     public dialog: MatDialog,
     private activeRoute: ActivatedRoute,
     private _snackBar: MatSnackBar,
@@ -96,9 +118,100 @@ export class ProyectoComponent implements OnInit, OnDestroy {
                   this.isLoading = false;
                 });
               this.actualizarSprintGoals();
+              this.actualizarReleases();
             });
         });
     });
+  }
+
+  isCurrentRelease(rel: Release): boolean {
+    if (rel === this.currentRelease) return true;
+    return false;
+  }
+
+  crearRelease() {
+    this.isLoading = true;
+    let release: Release = {
+      idrelease: null,
+      sprint: this.enterpriseForm.get('sprint').value,
+      descripcion: this.enterpriseForm.get('description').value,
+      version: this.enterpriseForm.get('version').value,
+      idproyecto: this.proyecto.idproyecto
+    };
+    this.releasesService
+      .crearRelease(release)
+      .pipe(untilDestroyed(this))
+      .subscribe(res => {
+        this.isLoading = false;
+        this._snackBar.open('Release created successfully!', 'Close', { duration: 3000 });
+        this.reiniciarCampos();
+        this.actualizarReleases();
+      });
+  }
+
+  borrarRelease(rel: Release) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.autoFocus = false;
+    dialogConfig.data = {
+      dialogMode: 'Release',
+      dialogModeVerbo: 'remove',
+      descripcion: 'Release: ' + rel.version,
+      botonConfirm: 'Remove release'
+    };
+    this.dialogRefConfirm = this.dialog.open(ConfirmDialogComponent, dialogConfig);
+    this.dialogRefConfirm
+      .afterClosed()
+      .pipe(untilDestroyed(this))
+      .subscribe(data => {
+        if (data != undefined) {
+          this.isLoading = true;
+          this.releasesService
+            .borrarRelease(rel.idrelease)
+            .pipe(untilDestroyed(this))
+            .subscribe(res => {
+              this.isLoading = false;
+              this._snackBar.open('Release removed successfully!', 'Close', { duration: 3000 });
+              this.actualizarReleases();
+            });
+        }
+      });
+  }
+
+  reiniciarCampos() {
+    this.enterpriseForm.markAsPristine();
+    this.enterpriseForm.reset();
+    this.enterpriseForm.markAsPristine();
+  }
+
+  actualizarReleases() {
+    this.isLoading = true;
+    this.proyectosService
+      .getProyectoReleases(this.proyecto.idproyecto)
+      .pipe(untilDestroyed(this))
+      .subscribe(releases => {
+        this.releases = releases;
+        this.releases = this.releases.sort((a: Release, b: Release) => {
+          if (a.sprint < b.sprint) return 1;
+          else return -1;
+        });
+        this.findCurrentRelease();
+        this.isLoading = false;
+      });
+  }
+
+  findCurrentRelease() {
+    if (this.releases.length > 0) {
+      let minSprint: number = Number.MAX_VALUE;
+      let minRelease: Release;
+      this.releases.forEach((rel: Release) => {
+        if (rel.sprint < minSprint) {
+          minRelease = rel;
+        }
+      });
+      console.log(minRelease);
+      this.currentRelease = minRelease;
+      this.labelRelease = 'Current release: ' + this.currentRelease.version;
+    }
   }
 
   actualizarSprintGoals() {
