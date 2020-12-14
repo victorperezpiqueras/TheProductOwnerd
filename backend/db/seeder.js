@@ -83,6 +83,12 @@ async function seeder() {
         'idrol int not null,foreign key(idrol) references roles(idrol) on delete cascade, valor int not null)'
     );
     console.log('Tabla VALORES creada');
+
+    await connection.query(
+      'CREATE TABLE if not exists releases ( idrelease INT AUTO_INCREMENT PRIMARY key,version varchar(255) not null,descripcion text,sprint int not null,' +
+        ' idproyecto int not null,foreign key(idproyecto) references proyectos(idproyecto) )'
+    );
+    console.log('Tabla RELEASES creada');
   } catch (error) {
     console.log('Error ejecutando el seeder');
   }

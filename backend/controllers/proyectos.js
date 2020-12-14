@@ -412,40 +412,6 @@ ControllerProyectos.proyectoInvitarUsuario = function(idproyecto, data) {
 };
 
 /**
- * Obtiene los pbis de un proyecto
- * @param {number} idproyecto id del proyecto
- * @returns [ {idpbi, titulo, descripcion, done, label, estimacion, idproyecto, prioridad, valor, sprint, sprintCreacion} ]
- */
-ControllerProyectos.getProyectoPBIs = function(idproyecto) {
-  return new Promise(async function(resolve, reject) {
-    const sql = 'select p.* from pbis p, proyectos pr where pr.idproyecto=p.idproyecto and p.idproyecto = ?';
-    try {
-      const pbis = await connection.query(sql, [idproyecto]);
-      resolve(pbis[0]);
-    } catch (error) {
-      reject({ error: 'Error inesperado en getProyectoPBIs' });
-    }
-  });
-};
-
-/**
- * Obtiene los sprintgoals de un proyecto
- * @param {number} idproyecto id del proyecto
- * @returns [ {idproyecto, goal, sprintNumber} ]
- */
-ControllerProyectos.getProyectoSprintGoals = function(idproyecto) {
-  return new Promise(async function(resolve, reject) {
-    const sql = 'select * from sprintgoals where idproyecto = ?';
-    try {
-      const pbis = await connection.query(sql, [idproyecto]);
-      resolve(pbis[0]);
-    } catch (error) {
-      reject({ error: 'Error inesperado en getProyectoSprintGoals' });
-    }
-  });
-};
-
-/**
  * Comprueba si un usuario pertenece a un proyecto
  * @param {number} idproyecto id del proyecto
  * @param {number} idusuario id del usuario

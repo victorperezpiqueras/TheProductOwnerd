@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const controllerProyectos = require('../controllers/proyectos');
 const controllerImportancias = require('../controllers/importancias');
+const controllerReleases = require('../controllers/releases');
+const controllerSprintGoals = require('../controllers/sprintgoals');
+const controllerPbis = require('../controllers/pbis');
 const verifyToken = require('../middlewares/verify-token');
 const verifyProjectPermissions = require('../middlewares/proyecto-permisos');
 const { ErrorHandler } = require('../helpers/error');
@@ -34,7 +37,7 @@ router.get('/:idproyecto', verifyToken, verifyProjectPermissions, function(req, 
 
 router.get('/:idproyecto/sprintgoals', verifyToken, verifyProjectPermissions, function(req, res, next) {
   console.log('getProyecto');
-  controllerProyectos
+  controllerSprintGoals
     .getProyectoSprintGoals(req.params.idproyecto)
     .then(function(sprintgoals) {
       res.json(sprintgoals);
@@ -70,7 +73,7 @@ router.get('/:idproyecto/usuarios/roles', verifyToken, verifyProjectPermissions,
 
 router.get('/:idproyecto/pbis', verifyToken, verifyProjectPermissions, function(req, res, next) {
   console.log('getProyectoPBIs');
-  controllerProyectos
+  controllerPbis
     .getProyectoPBIs(req.params.idproyecto)
     .then(function(pbis) {
       res.json(pbis);
@@ -168,12 +171,24 @@ router.post('/:idproyecto/invitar', verifyToken, verifyProjectPermissions, funct
     });
 });
 
-router.get('/:idproyecto/importancias', verifyToken, function(req, res, next) {
+router.get('/:idproyecto/importancias', verifyToken, verifyProjectPermissions, function(req, res, next) {
   console.log('obtenerImportanciasProyecto');
   controllerImportancias
     .obtenerImportanciasProyecto(req.params.idproyecto)
     .then(function(importancias) {
       res.json(importancias);
+    })
+    .catch(function(err) {
+      res.status(500).json(err);
+    });
+});
+
+router.get('/:idproyecto/releases', verifyToken, verifyProjectPermissions, function(req, res, next) {
+  console.log('obtenerImportanciasProyecto');
+  controllerReleases
+    .getProyectoReleases(req.params.idproyecto)
+    .then(function(releases) {
+      res.json(releases);
     })
     .catch(function(err) {
       res.status(500).json(err);

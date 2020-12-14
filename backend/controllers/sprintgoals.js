@@ -35,3 +35,20 @@ ControllerSprintGoals.actualizarSprintGoal = function(sprintGoal) {
     }
   });
 };
+
+/**
+ * Obtiene los sprintgoals de un proyecto
+ * @param {number} idproyecto id del proyecto
+ * @returns [ {idproyecto, goal, sprintNumber} ]
+ */
+ControllerSprintGoals.getProyectoSprintGoals = function(idproyecto) {
+  return new Promise(async function(resolve, reject) {
+    const sql = 'select * from sprintgoals where idproyecto = ?';
+    try {
+      const sprintGoals = await connection.query(sql, [idproyecto]);
+      resolve(sprintGoals[0]);
+    } catch (error) {
+      reject({ error: 'Error inesperado en getProyectoSprintGoals' });
+    }
+  });
+};

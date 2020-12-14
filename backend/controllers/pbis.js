@@ -86,3 +86,20 @@ ControllerPbis.editarPrioridadesPbis = function(pbis) {
     }
   });
 };
+
+/**
+ * Obtiene los pbis de un proyecto
+ * @param {number} idproyecto id del proyecto
+ * @returns [ {idpbi, titulo, descripcion, done, label, estimacion, idproyecto, prioridad, valor, sprint, sprintCreacion} ]
+ */
+ControllerPbis.getProyectoPBIs = function(idproyecto) {
+  return new Promise(async function(resolve, reject) {
+    const sql = 'select p.* from pbis p, proyectos pr where pr.idproyecto=p.idproyecto and p.idproyecto = ?';
+    try {
+      const pbis = await connection.query(sql, [idproyecto]);
+      resolve(pbis[0]);
+    } catch (error) {
+      reject({ error: 'Error inesperado en getProyectoPBIs' });
+    }
+  });
+};
