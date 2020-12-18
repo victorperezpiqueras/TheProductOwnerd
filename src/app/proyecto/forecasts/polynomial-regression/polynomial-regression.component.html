@@ -55,7 +55,7 @@
 
         <mat-form-field appearance="outline" style="width: 40%;">
           <mat-label>Last N Sprints</mat-label>
-          <input matInput type="number" [(ngModel)]="sprintNumber" [min]="sprintNumberBW" [max]="sprints.length - 1" />
+          <input matInput type="number" [(ngModel)]="sprintNumber" [min]="1" [max]="sprints.length - 1" />
         </mat-form-field>
       </div>
 
