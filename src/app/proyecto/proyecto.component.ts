@@ -1,3 +1,4 @@
+import { Pbi } from '@app/models/pbis';
 import { ReleasesService } from './../services/releases.service';
 import { Component, OnInit, OnDestroy, ViewChild, ChangeDetectorRef, HostListener } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -61,6 +62,7 @@ export class ProyectoComponent implements OnInit, OnDestroy {
   @ViewChild('stepper', { static: false }) private myStepper: MatStepper;
   releases: Release[];
   currentRelease: Release;
+  currentReleaseSPs: number;
   labelRelease: string = 'Current release: ';
   matcher = new MyErrorStateMatcher();
   @Input() releaseForm: FormGroup = new FormGroup({
@@ -236,6 +238,24 @@ export class ProyectoComponent implements OnInit, OnDestroy {
       .subscribe(releases => {
         this.releases = releases;
         this.findCurrentRelease();
+        this.countCurrentReleaseSPs();
+        this.isLoading = false;
+      });
+  }
+
+  countCurrentReleaseSPs() {
+    this.isLoading = true;
+    this.proyectosService
+      .getProyectoPBIs(this.proyecto.idproyecto)
+      .pipe(untilDestroyed(this))
+      .subscribe(pbis => {
+        let sps: number = 0;
+        pbis.forEach((pbi: Pbi) => {
+          if (pbi.done === 0 && pbi.idrelease === this.currentRelease.idrelease) {
+            sps += pbi.estimacion;
+          }
+        });
+        this.currentReleaseSPs = sps;
         this.isLoading = false;
       });
   }
@@ -353,6 +373,7 @@ export class ProyectoComponent implements OnInit, OnDestroy {
               this.actualizarSprintGoals();
               //this.updateSprintGoal();
               this.checkSprintZero();
+              this.actualizarReleases();
               this.actualizarComponentes();
               this.buttonDisabled = true;
               this.isLoading = false;
@@ -386,6 +407,7 @@ export class ProyectoComponent implements OnInit, OnDestroy {
                 this.actualizarSprintGoals();
                 //this.updateSprintGoal();
                 this.checkSprintZero();
+                this.actualizarReleases();
                 this.actualizarComponentes();
                 this.buttonDisabled = true;
                 this.isLoading = false;
