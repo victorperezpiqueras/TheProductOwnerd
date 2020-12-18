@@ -11,7 +11,7 @@ describe('Pbi', () => {
   });
 
   it('should create', () => {
-    model = new Pbi(1, '1', '1', 1, '1', 1, 1, 1, 1, 1, 1);
+    model = new Pbi(1, '1', '1', 1, '1', 1, 1, 1, 1, 1, 1, 1);
     expect(model.idpbi).toBe(1);
     expect(model.titulo).toBe('1');
     expect(model.descripcion).toBe('1');
@@ -23,5 +23,6 @@ describe('Pbi', () => {
     expect(model.sprint).toBe(1);
     expect(model.idproyecto).toBe(1);
     expect(model.sprintCreacion).toBe(1);
+    expect(model.idrelease).toBe(1);
   });
 });

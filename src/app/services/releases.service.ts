@@ -29,7 +29,7 @@ export class ReleasesService {
    * @method PUT
    * @param release contiene los datos de la release: version, descripcion, sprint, idproyecto
    */
-  actualizarRelease(release: Release): Observable<any> {
+  editarRelease(release: Release): Observable<any> {
     return this.http.put<any>(this.url + '/' + release.idrelease, JSON.stringify(release), httpOptions);
   }
 

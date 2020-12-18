@@ -1,5 +1,6 @@
+import { ReleasesService } from './../../../services/releases.service';
 import { UsuariosService } from '@app/services/usuarios.service';
-import { Component, OnInit, Inject, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy, ViewChild, ViewEncapsulation } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
   MatDialogRef,
@@ -31,6 +32,8 @@ import { Importancia } from '@app/models/importancias';
 import { ValoresStakeholdersService } from '@app/services/valoresStakeholders.service';
 import { forkJoin, Observable } from 'rxjs';
 import { ValorStakeholder } from '@app/models/valoresStakeholders';
+import { ProyectosService } from '@app/services/proyectos.service';
+import { Release } from '@app/models/releases';
 
 export interface tableValores {
   nick: string;
@@ -40,7 +43,8 @@ export interface tableValores {
 @Component({
   selector: 'app-pbiDialog',
   templateUrl: './pbiDialog.component.html',
-  styleUrls: ['./pbiDialog.component.scss']
+  styleUrls: ['./pbiDialog.component.scss'],
+  encapsulation: ViewEncapsulation.None ///////////
 })
 export class PbiDialogComponent implements OnInit, OnDestroy {
   isLoading = false;
@@ -59,6 +63,7 @@ export class PbiDialogComponent implements OnInit, OnDestroy {
   prioridad: number;
   sprint: number;
   sprintCreacion: number;
+  idrelease: number;
 
   sprintActual: number;
 
@@ -96,6 +101,10 @@ export class PbiDialogComponent implements OnInit, OnDestroy {
   dependenciaData: any;
   notSelectedPbis: any[];
 
+  /* releases data */
+  releases: Release[];
+  currentRelease: Release;
+
   dialogMode: string;
   permisos: Permisos;
   pbis: any[];
@@ -123,6 +132,7 @@ export class PbiDialogComponent implements OnInit, OnDestroy {
     private dependenciasService: DependenciasService,
     private valoresService: ValoresStakeholdersService,
     private usuariosService: UsuariosService,
+    private proyectosService: ProyectosService,
     private sanitizer: DomSanitizer,
     public dialog: MatDialog
   ) {
@@ -141,7 +151,7 @@ export class PbiDialogComponent implements OnInit, OnDestroy {
     if (index !== -1) {
       this.notSelectedPbis.splice(index, 1);
     }
-    console.log(this.permisos);
+    // console.log(this.permisos);
     // console.log(data.pbi);
     this.idpbi = data.pbi.idpbi;
     this.titulo = data.pbi.titulo;
@@ -154,6 +164,7 @@ export class PbiDialogComponent implements OnInit, OnDestroy {
     this.prioridad = data.pbi.prioridad;
     this.sprint = data.pbi.sprint;
     this.sprintCreacion = data.pbi.sprintCreacion;
+    this.idrelease = data.pbi.idrelease;
 
     this.sprintActual = data.sprintActual;
 
@@ -170,6 +181,38 @@ export class PbiDialogComponent implements OnInit, OnDestroy {
     this.actualizarCriterios();
     this.actualizarDependencias();
     this.actualizarValores();
+    this.actualizarReleases();
+  }
+
+  /* RELEASES */
+  actualizarReleases() {
+    this.isLoading = true;
+    this.proyectosService
+      .getProyectoReleases(this.idproyecto)
+      .pipe(untilDestroyed(this))
+      .subscribe(releases => {
+        this.releases = releases;
+        this.releases = this.releases.sort((a: Release, b: Release) => {
+          if (a.sprint < b.sprint) return 1;
+          else return -1;
+        });
+        this.findCurrentRelease();
+        this.isLoading = false;
+      });
+  }
+
+  findCurrentRelease() {
+    if (this.releases.length > 0) {
+      let minSprint: number = Number.MAX_VALUE;
+      let minRelease: Release;
+      this.releases.forEach((rel: Release) => {
+        if (rel.sprint < minSprint && rel.sprint >= this.sprintActual) {
+          minRelease = rel;
+        }
+      });
+      // console.log(minRelease);
+      this.currentRelease = minRelease;
+    }
   }
 
   /* IMPORTANCIAS */
@@ -187,7 +230,7 @@ export class PbiDialogComponent implements OnInit, OnDestroy {
             this.valorStakeholder = new ValorStakeholder(null, -1, this.permisos.idrol, this.idpbi);
         }
         if (this.isProductOwner) {
-          console.log(this.valores);
+          //console.log(this.valores);
           var peticiones$: Observable<any>[] = [];
           this.valores.forEach((imp: ValorStakeholder) => {
             //hacer forkjoin
@@ -589,7 +632,7 @@ export class PbiDialogComponent implements OnInit, OnDestroy {
 
   save() {
     if (this.isStakeholder) this.actualizarValor();
-
+    console.log(this.idrelease);
     this.dialogRef.close({
       pbi: new Pbi(
         this.idpbi,
@@ -602,7 +645,8 @@ export class PbiDialogComponent implements OnInit, OnDestroy {
         this.prioridad,
         this.sprint,
         this.idproyecto,
-        this.sprintCreacion
+        this.sprintCreacion,
+        this.idrelease
       )
     });
     // console.log(this.dialogMode);

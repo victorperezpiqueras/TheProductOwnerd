@@ -47,8 +47,8 @@
               </mat-form-field>
             </mat-grid-tile>
 
-            <mat-grid-tile [colspan]="3" [rowspan]="1">
-              <mat-form-field class="form" appearance="outline" style="width: 100%;">
+            <mat-grid-tile [colspan]="2" [rowspan]="1">
+              <mat-form-field class="form" appearance="outline" style="width: 80%;">
                 <mat-label>Label</mat-label>
                 <mat-select
                   [(ngModel)]="label"
@@ -99,8 +99,38 @@
               </mat-form-field>
             </mat-grid-tile>
 
-            <mat-grid-tile [colspan]="3" [rowspan]="1" *ngIf="isStakeholder && valorStakeholder">
+            <mat-grid-tile [colspan]="3" [rowspan]="1">
               <mat-form-field class="form" appearance="outline" style="width: 70%;">
+                <mat-label>Release</mat-label>
+                <mat-select
+                  [(ngModel)]="idrelease"
+                  (ngModelChange)="changed()"
+                  [disabled]="disabled || permisos.editarPBI == 0"
+                >
+                  <mat-option
+                    *ngFor="let rel of releases"
+                    [value]="rel.idrelease"
+                    [matTooltip]="'(Sprint: ' + rel.sprint + ') ' + rel.descripcion"
+                    matTooltipPosition="left"
+                    matTooltipShowDelay="500"
+                    matTooltipClass="tooltip-release"
+                    required
+                  >
+                    <ng-container *ngIf="rel !== currentRelease">
+                      {{ rel.version }}
+                    </ng-container>
+
+                    <ng-container *ngIf="rel === currentRelease">
+                      {{ rel.version }}&nbsp;<i>(current)</i>
+                    </ng-container>
+                  </mat-option>
+                  <mat-option [value]="null" required>Not defined</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </mat-grid-tile>
+
+            <mat-grid-tile [colspan]="2" [rowspan]="1" *ngIf="isStakeholder && valorStakeholder">
+              <mat-form-field appearance="outline" style="width: 100%;">
                 <mat-label>PBI Value</mat-label>
                 <mat-select
                   [(ngModel)]="valorStakeholder.valor"
@@ -317,7 +347,9 @@
 
         <!-- DEPENDENCIES -->
         <div fxLayout="row">
-          <mat-card class="comments-card"> <mat-card-title>Dependencies</mat-card-title> </mat-card><br />
+          <mat-card class="comments-card">
+            <mat-card-title>Dependencies</mat-card-title> </mat-card
+          ><br />
           <mat-chip-list style="display: inline-block;margin-right: 2%;">
             <mat-chip
               *ngFor="let dep of dependencias"
@@ -328,11 +360,12 @@
               selected
               class="mat-typography"
             >
-              {{ getPbiTitulo(dep.idpbi2) }}<mat-icon *ngIf="!disabled" matChipRemove>cancel</mat-icon>
+              {{ getPbiTitulo(dep.idpbi2)
+              }}<mat-icon *ngIf="!disabled && !isStakeholder" matChipRemove>cancel </mat-icon>
             </mat-chip>
           </mat-chip-list>
 
-          <mat-form-field style="display: inline-block;margin-right: 2%;" *ngIf="!disabled">
+          <mat-form-field style="display: inline-block;margin-right: 2%;" *ngIf="!disabled && !isStakeholder">
             <mat-label>Add Dependencies</mat-label>
             <!--  <mat-select multiple (selectionChange)="actualizarDependencia(pbi)">
               <mat-option *ngFor="let pbi of pbis" [value]="pbi">

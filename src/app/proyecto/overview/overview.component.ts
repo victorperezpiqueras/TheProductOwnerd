@@ -144,7 +144,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
       .getProyectoUsuariosRoles(this.proyecto.idproyecto)
       .pipe(untilDestroyed(this))
       .subscribe(usuarios => {
-        console.log(usuarios);
+        //console.log(usuarios);
         this.proyecto.usuarios = usuarios;
         /* this.proyecto.usuarios.push({ nick: "aaaaaaa", rol: "stakeholder" })
       this.proyecto.usuarios.push({ nick: "aaaaaaa", rol: "stakeholder" })
@@ -245,6 +245,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
       .subscribe(data => {
         // console.log(this.proyecto);
         this.isLoading = false;
+        this.buttonDisabled = true;
         this._snackBar.open('Vision edited successfully!', 'Close', { duration: 3000 });
       });
   }
@@ -266,7 +267,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
       usuario.idrol,
       this.proyecto.idproyecto
     );
-    console.log(newImportancia);
+    //console.log(newImportancia);
     this.importanciasService
       .editarImportancia(newImportancia)
       .pipe(untilDestroyed(this))

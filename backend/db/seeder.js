@@ -22,8 +22,15 @@ async function seeder() {
     console.log('Tabla ROLES creada');
 
     await connection.query(
+      'CREATE TABLE if not exists releases ( idrelease INT AUTO_INCREMENT PRIMARY key,version varchar(255) not null,descripcion text,sprint int not null,' +
+        ' idproyecto int not null,foreign key(idproyecto) references proyectos(idproyecto) )'
+    );
+    console.log('Tabla RELEASES creada');
+
+    await connection.query(
       'CREATE TABLE if not exists pbis ( idpbi INT AUTO_INCREMENT PRIMARY key,titulo varchar(255) not null, descripcion text,done boolean not null, prioridad int not null,' +
-        'label varchar(255) not null, estimacion int, valor int,sprint int, sprintCreacion int not null, idproyecto int not null, foreign key(idproyecto) references proyectos(idproyecto) )'
+        'label varchar(255) not null, estimacion int, valor int,sprint int, sprintCreacion int not null, idproyecto int not null, idrelease int,' +
+        ' foreign key(idproyecto) references proyectos(idproyecto), foreign key(idrelease) references releases(idrelease) )'
     );
     console.log('Tabla PBIS creada');
 
@@ -83,12 +90,6 @@ async function seeder() {
         'idrol int not null,foreign key(idrol) references roles(idrol) on delete cascade, valor int not null)'
     );
     console.log('Tabla VALORES creada');
-
-    await connection.query(
-      'CREATE TABLE if not exists releases ( idrelease INT AUTO_INCREMENT PRIMARY key,version varchar(255) not null,descripcion text,sprint int not null,' +
-        ' idproyecto int not null,foreign key(idproyecto) references proyectos(idproyecto) )'
-    );
-    console.log('Tabla RELEASES creada');
   } catch (error) {
     console.log('Error ejecutando el seeder');
   }

@@ -10,6 +10,7 @@ export class Pbi {
     public prioridad: number,
     public sprint: number,
     public idproyecto: number,
-    public sprintCreacion: number
+    public sprintCreacion: number,
+    public idrelease: number
   ) {}
 }

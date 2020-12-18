@@ -61,11 +61,12 @@ export class ProyectoComponent implements OnInit, OnDestroy {
   currentRelease: Release;
   labelRelease: string = 'Current release: ';
   matcher = new MyErrorStateMatcher();
-  @Input() enterpriseForm: FormGroup = new FormGroup({
+  @Input() releaseForm: FormGroup = new FormGroup({
     version: new FormControl('', Validators.required),
     description: new FormControl(''),
     sprint: new FormControl('', Validators.required)
   });
+  editingRelease: Release;
 
   isFirstSprint: boolean;
   isFirstSprintDeadline: boolean;
@@ -124,18 +125,53 @@ export class ProyectoComponent implements OnInit, OnDestroy {
     });
   }
 
+  editarRelease() {
+    this.isLoading = true;
+    let release: Release = {
+      idrelease: this.editingRelease.idrelease,
+      sprint: this.releaseForm.get('sprint').value,
+      descripcion: this.releaseForm.get('description').value,
+      version: this.releaseForm.get('version').value,
+      idproyecto: this.proyecto.idproyecto
+    };
+    // console.log(release)
+    this.releasesService
+      .editarRelease(release)
+      .pipe(untilDestroyed(this))
+      .subscribe(res => {
+        this.isLoading = false;
+        this._snackBar.open('Release updated successfully!', 'Close', { duration: 3000 });
+        this.resetEditingRelease();
+        this.actualizarReleases();
+      });
+  }
+
+  isEditingRelease(rel: Release): boolean {
+    return rel === this.editingRelease;
+  }
+
+  setEditingRelease(rel: Release) {
+    this.editingRelease = rel;
+    this.releaseForm.get('sprint').setValue(this.editingRelease.sprint);
+    this.releaseForm.get('version').setValue(this.editingRelease.version);
+    this.releaseForm.get('description').setValue(this.editingRelease.descripcion);
+  }
+
+  resetEditingRelease() {
+    this.editingRelease = null;
+  }
+
   isCurrentRelease(rel: Release): boolean {
-    if (rel === this.currentRelease) return true;
-    return false;
+    return rel === this.currentRelease;
   }
 
   crearRelease() {
     this.isLoading = true;
     let release: Release = {
       idrelease: null,
-      sprint: this.enterpriseForm.get('sprint').value,
-      descripcion: this.enterpriseForm.get('description').value,
-      version: this.enterpriseForm.get('version').value,
+      sprint: this.releaseForm.get('sprint').value,
+      descripcion: this.releaseForm.get('description').value,
+      version: this.releaseForm.get('version').value,
       idproyecto: this.proyecto.idproyecto
     };
     this.releasesService
@@ -178,9 +214,9 @@ export class ProyectoComponent implements OnInit, OnDestroy {
   }
 
   reiniciarCampos() {
-    this.enterpriseForm.markAsPristine();
-    this.enterpriseForm.reset();
-    this.enterpriseForm.markAsPristine();
+    this.releaseForm.markAsPristine();
+    this.releaseForm.reset();
+    this.releaseForm.markAsPristine();
   }
 
   actualizarReleases() {
@@ -204,11 +240,11 @@ export class ProyectoComponent implements OnInit, OnDestroy {
       let minSprint: number = Number.MAX_VALUE;
       let minRelease: Release;
       this.releases.forEach((rel: Release) => {
-        if (rel.sprint < minSprint) {
+        if (rel.sprint < minSprint && rel.sprint >= this.proyecto.sprintActual) {
           minRelease = rel;
         }
       });
-      console.log(minRelease);
+      // console.log(minRelease);
       this.currentRelease = minRelease;
       this.labelRelease = 'Current release: ' + this.currentRelease.version;
     }
@@ -240,6 +276,8 @@ export class ProyectoComponent implements OnInit, OnDestroy {
   actualizarComponentes() {
     this.tabIndex = 0;
     this.changeDetectorRef.detectChanges();
+
+    this.actualizarReleases();
     // console.log('actualizar proyecto');
     this.overview.proyecto = this.proyecto;
     this.overview.permisos = this.permisos;

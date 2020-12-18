@@ -1,3 +1,4 @@
+import { ReleasesService } from './../services/releases.service';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -58,7 +59,14 @@ describe('ProyectoComponent', () => {
         PocComponent,
         BugsComponent
       ],
-      providers: [AuthenticationService, CredentialsService, UsuariosService, ProyectosService, SprintGoalsService]
+      providers: [
+        AuthenticationService,
+        CredentialsService,
+        UsuariosService,
+        ProyectosService,
+        SprintGoalsService,
+        ReleasesService
+      ]
     }).compileComponents();
   }));
 

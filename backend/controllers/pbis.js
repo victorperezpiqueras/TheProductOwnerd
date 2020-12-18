@@ -43,7 +43,7 @@ ControllerPbis.editarPbi = function(idpbi, pbi) {
     if (pbi.sprint == 'null') pbi.sprint = null;
     if (pbi.valor == 'null') pbi.valor = null;
     const sql =
-      'update pbis set titulo=?,descripcion=?,done=?,label=?,estimacion=?,valor=?,prioridad=?,sprint=?,sprintCreacion=? where idpbi=?';
+      'update pbis set titulo=?,descripcion=?,done=?,label=?,estimacion=?,valor=?,prioridad=?,sprint=?,sprintCreacion=?,idrelease=? where idpbi=?';
     const array = [
       pbi.titulo,
       pbi.descripcion,
@@ -54,6 +54,7 @@ ControllerPbis.editarPbi = function(idpbi, pbi) {
       pbi.prioridad,
       pbi.sprint,
       pbi.sprintCreacion,
+      pbi.idrelease,
       idpbi
     ];
     try {
