@@ -32,7 +32,8 @@ describe('PbisService', () => {
       idproyecto: 1,
       prioridad: 1,
       sprintCreacion: 1,
-      sprint: 1
+      sprint: 1,
+      idrelease: 1
     };
     service.crearPbi(data).subscribe((data: any) => {});
     const req = httpMock.expectOne(service.url, 'post');
@@ -51,7 +52,8 @@ describe('PbisService', () => {
       idproyecto: 1,
       prioridad: 1,
       sprintCreacion: 1,
-      sprint: 1
+      sprint: 1,
+      idrelease: 1
     };
     service.editarPbi(data).subscribe((data: any) => {});
     const req = httpMock.expectOne(service.url + '/' + data.idproyecto, 'put');
@@ -70,7 +72,8 @@ describe('PbisService', () => {
       idproyecto: 1,
       prioridad: 1,
       sprintCreacion: 1,
-      sprint: 1
+      sprint: 1,
+      idrelease: 1
     };
     const data2: Pbi = {
       idpbi: 1,
@@ -83,7 +86,8 @@ describe('PbisService', () => {
       idproyecto: 1,
       prioridad: 1,
       sprintCreacion: 1,
-      sprint: 1
+      sprint: 1,
+      idrelease: 1
     };
     service.editarPrioridadesPbis([data, data2]).subscribe((data: any) => {});
     const req = httpMock.expectOne(service.url, 'put');
