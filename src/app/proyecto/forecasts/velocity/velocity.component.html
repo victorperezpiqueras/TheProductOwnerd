@@ -8,7 +8,7 @@
   ></highcharts-chart>
 
   <mat-accordion fxFlex="20" style="position: absolute;right: 1%;">
-    <mat-expansion-panel class="options mat-elevation-z2" expanded="true">
+    <mat-expansion-panel class="options-vel mat-elevation-z2" expanded="true">
       <mat-expansion-panel-header>
         <mat-panel-title style="font-size: x-large;">
           Forecast Options
@@ -16,15 +16,42 @@
       </mat-expansion-panel-header>
       <hr />
       <h1 class="mat-h3">General</h1>
-      <mat-form-field class="number-form form" appearance="outline">
-        <mat-label>Deadline Sprint</mat-label>
-        <input matInput type="number" [(ngModel)]="deadlineSprint" [min]="sprints.length - 1" />
-      </mat-form-field>
 
-      <mat-form-field class="number-form form" appearance="outline">
-        <mat-label>Last N Sprints</mat-label>
-        <input matInput type="number" [(ngModel)]="sprintNumber" [min]="sprintNumberBW" [max]="sprints.length - 1" />
-      </mat-form-field>
+      <div fxLayout="row" fxLayoutGap="10px">
+        <mat-form-field appearance="outline" style="width: 100%;">
+          <mat-label>Release</mat-label>
+          <mat-select [(ngModel)]="release" (selectionChange)="actualizarDeadline()">
+            <mat-option [value]="null" required>Not defined</mat-option>
+            <mat-option
+              *ngFor="let rel of releases"
+              [value]="rel"
+              [matTooltip]="'(Sprint: ' + rel.sprint + ') ' + rel.descripcion"
+              matTooltipPosition="left"
+              matTooltipShowDelay="500"
+              matTooltipClass="tooltip-release"
+              required
+            >
+              <ng-container *ngIf="rel === currentRelease"> {{ rel.version }}&nbsp;<i>(current)</i> </ng-container>
+              <ng-container *ngIf="rel !== currentRelease">
+                {{ rel.version }}
+              </ng-container>
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div fxLayout="row" fxLayoutGap="20px">
+        <mat-form-field appearance="outline" style="width: 40%;">
+          <mat-label>Deadline Sprint</mat-label>
+          <input matInput type="number" [(ngModel)]="deadlineSprint" [min]="sprints.length - 1" [disabled]="release" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" style="width: 40%;">
+          <mat-label>Last N Sprints</mat-label>
+          <input matInput type="number" [(ngModel)]="sprintNumber" [min]="sprintNumberBW" [max]="sprints.length - 1" />
+        </mat-form-field>
+      </div>
+
       <hr />
       <h1 class="mat-h3">Projected Average Velocity</h1>
       <h1 class="mat-h4">Velocity: {{ formatDataNumber(mediaAverage) }}</h1>
@@ -32,7 +59,7 @@
       <hr />
 
       <h1 class="mat-h3">Average Worst and Best Velocities</h1>
-      <mat-form-field class="number-form form" appearance="outline">
+      <mat-form-field class="number-form form" appearance="outline" style="width: 50%;">
         <mat-label>X Worst and Best Sprints</mat-label>
         <input matInput type="number" [(ngModel)]="sprintNumberBW" min="1" [max]="sprintNumber" />
       </mat-form-field>

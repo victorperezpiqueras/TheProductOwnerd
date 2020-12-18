@@ -43,8 +43,8 @@ export interface tableValores {
 @Component({
   selector: 'app-pbiDialog',
   templateUrl: './pbiDialog.component.html',
-  styleUrls: ['./pbiDialog.component.scss'],
-  encapsulation: ViewEncapsulation.None ///////////
+  styleUrls: ['./pbiDialog.component.scss']
+  //encapsulation: ViewEncapsulation.None // activar colores en mattooltip
 })
 export class PbiDialogComponent implements OnInit, OnDestroy {
   isLoading = false;

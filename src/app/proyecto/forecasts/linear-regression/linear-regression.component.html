@@ -10,7 +10,7 @@
   <!-- <mat-accordion style="position: absolute;right: 12%;"> 4default, 12 no molesta export -->
   <!--  <mat-accordion style="position: absolute;right: 2%;top: 35%;"> -->
   <mat-accordion style="position: absolute;right: 1%;">
-    <mat-expansion-panel class="options mat-elevation-z2" style="width: 350px;" expanded="true">
+    <mat-expansion-panel class="options-linear mat-elevation-z2" style="width: 350px;" expanded="true">
       <mat-expansion-panel-header>
         <mat-panel-title style="font-size: x-large;">
           Regression Options
@@ -18,15 +18,41 @@
       </mat-expansion-panel-header>
       <hr />
       <h1 class="mat-h3">General</h1>
-      <mat-form-field class="number-form form" appearance="outline">
-        <mat-label>Deadline Sprint</mat-label>
-        <input matInput type="number" [(ngModel)]="deadlineSprint" [min]="sprints.length - 1" />
-      </mat-form-field>
+      <div fxLayout="row" fxLayoutGap="10px">
+        <mat-form-field appearance="outline" style="width: 100%;">
+          <mat-label>Release</mat-label>
+          <mat-select [(ngModel)]="release" (selectionChange)="actualizarDeadline()">
+            <mat-option [value]="null" required>Not defined</mat-option>
+            <mat-option
+              *ngFor="let rel of releases"
+              [value]="rel"
+              [matTooltip]="'(Sprint: ' + rel.sprint + ') ' + rel.descripcion"
+              matTooltipPosition="left"
+              matTooltipShowDelay="500"
+              matTooltipClass="tooltip-release"
+              required
+            >
+              <ng-container *ngIf="rel === currentRelease"> {{ rel.version }}&nbsp;<i>(current)</i> </ng-container>
+              <ng-container *ngIf="rel !== currentRelease">
+                {{ rel.version }}
+              </ng-container>
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
 
-      <mat-form-field class="number-form form" appearance="outline">
-        <mat-label>Last N Sprints</mat-label>
-        <input matInput type="number" [(ngModel)]="sprintNumber" [min]="1" [max]="sprints.length - 1" />
-      </mat-form-field>
+      <div fxLayout="row" fxLayoutGap="20px">
+        <mat-form-field appearance="outline" style="width: 40%;">
+          <mat-label>Deadline Sprint</mat-label>
+          <input matInput type="number" [(ngModel)]="deadlineSprint" [min]="sprints.length - 1" [disabled]="release" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" style="width: 40%;">
+          <mat-label>Last N Sprints</mat-label>
+          <input matInput type="number" [(ngModel)]="sprintNumber" [min]="sprintNumberBW" [max]="sprints.length - 1" />
+        </mat-form-field>
+      </div>
+
       <br />
       <button class="number-form" mat-raised-button (click)="updateChart()" color="primary">
         Update chart

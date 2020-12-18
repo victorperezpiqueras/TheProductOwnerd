@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 
 import * as Highcharts from 'highcharts';
 import HC_exporting from 'highcharts/modules/exporting';
@@ -9,11 +9,14 @@ import { Sprint } from '@app/models/sprints';
 import { Proyecto } from '@app/models/proyectos';
 import { Grafico } from '@app/proyecto/grafico.interface';
 import { formatDataNumberStandardToFixed1 } from '@app/shared/formatDataNumber';
+import { Release } from '@app/models/releases';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-velocity',
   templateUrl: './velocity.component.html',
   styleUrls: ['./velocity.component.scss']
+  //encapsulation: ViewEncapsulation.None // activar colores en mattooltip
 })
 export class VelocityComponent implements Grafico, OnInit, OnDestroy {
   // highcharts
@@ -23,6 +26,9 @@ export class VelocityComponent implements Grafico, OnInit, OnDestroy {
   // datos principales
   proyecto: Proyecto;
   pbis: Pbi[];
+  showingPbis: Pbi[];
+  releases: Release[];
+  currentRelease: Release;
 
   //updated:
   newDeadlineFlag: boolean = true;
@@ -59,20 +65,42 @@ export class VelocityComponent implements Grafico, OnInit, OnDestroy {
   maxValor: number = 0;
   updateFlag: boolean = false;
 
-  constructor() {}
+  // releases
+  release: Release;
+
+  constructor(private _snackBar: MatSnackBar) {}
 
   ngOnInit() {}
 
-  actualizarGrafico(proyecto: Proyecto, pbis: Pbi[]) {
+  actualizarDeadline() {
+    this.deadlineSprint = this.release.sprint;
+  }
+
+  actualizarGrafico(proyecto: Proyecto, pbis: Pbi[], releases: Release[], currentRelease: Release) {
     this.proyecto = proyecto;
     this.pbis = pbis;
+    this.releases = releases;
+    this.currentRelease = currentRelease;
     this.newDeadlineFlag = true;
     this.generarDatos();
     this.generarGrafico();
   }
 
   generarDatos() {
-    if (this.pbis.length > 0) {
+    /* console.log(this.pbis)
+    console.log(this.idrelease)
+    console.log(this.currentRelease) */
+    // si se ha filtrado por release:
+    if (this.release) {
+      this.showingPbis = this.pbis.filter((pbi: Pbi) => pbi.idrelease === this.release.idrelease);
+      this.deadlineSprint = this.release.sprint;
+    } else {
+      this.showingPbis = [...this.pbis];
+      //this.deadlineSprint = this.proyecto.deadline;
+    }
+    //console.log(this.showingPbis)
+
+    if (this.showingPbis.length > 0) {
       this.generarDatosBasicos();
       // si no hay pbis acabados no se puede calcular el ultimo sprint
       if (this.sprints.length) {
@@ -82,6 +110,8 @@ export class VelocityComponent implements Grafico, OnInit, OnDestroy {
         this.generarPuntosCorte();
         this.calcularMaxValor();
       }
+    } else {
+      this._snackBar.open('No PBIs assigned to this release!', 'Close', { duration: 3000 });
     }
   }
 
@@ -124,7 +154,7 @@ export class VelocityComponent implements Grafico, OnInit, OnDestroy {
 
     // generar suma pbis:
     this.puntosTotales = 0;
-    this.pbis.forEach((pbi: Pbi) => {
+    this.showingPbis.forEach((pbi: Pbi) => {
       this.puntosTotales += pbi.estimacion;
     });
 
@@ -146,7 +176,7 @@ export class VelocityComponent implements Grafico, OnInit, OnDestroy {
       } else {
         // sumar las estimaciones para cada sprint:
         var sumpbis = 0;
-        this.pbis.forEach((pbi: Pbi) => {
+        this.showingPbis.forEach((pbi: Pbi) => {
           if (pbi.sprint === i) sumpbis += pbi.estimacion;
         });
         // restar al total anterior las del sprint
@@ -264,20 +294,20 @@ export class VelocityComponent implements Grafico, OnInit, OnDestroy {
     if (this.listaAverage[this.listaAverage.length - 1][0] >= this.deadlineSprint) {
       // y - y0 = m·(x-x0) --> y - this.sprints[this.ultimoSprint].restante = media*(deadline-this.ultimoSprint)
       var corteAverage =
-        this.sprints[this.ultimoSprint].restante -
-        this.mediaAverage * (this.deadlineSprint - this.ultimoSprint) /* + 1 */; // +1 due to axis starting at 1
+          this.sprints[this.ultimoSprint].restante -
+          this.mediaAverage * (this.deadlineSprint - this.ultimoSprint) /* + 1 */; // +1 due to axis starting at 1
       this.puntoCorteAverage.push([this.deadlineSprint, corteAverage]);
     }
     if (this.listaAverageWorst[this.listaAverageWorst.length - 1][0] >= this.deadlineSprint) {
       var corteAverageWorst =
-        this.sprints[this.ultimoSprint].restante -
-        this.mediaAverageWorst * (this.deadlineSprint - this.ultimoSprint) /* + 1 */; // +1 due to axis starting at 1
+          this.sprints[this.ultimoSprint].restante -
+          this.mediaAverageWorst * (this.deadlineSprint - this.ultimoSprint) /* + 1 */; // +1 due to axis starting at 1
       this.puntoCorteWorst.push([this.deadlineSprint, corteAverageWorst]);
     }
     if (this.listaAverageBest[this.listaAverageBest.length - 1][0] >= this.deadlineSprint) {
       var corteAverageBest =
-        this.sprints[this.ultimoSprint].restante -
-        this.mediaAverageBest * (this.deadlineSprint - this.ultimoSprint) /* + 1 */; // +1 due to axis starting at 1
+          this.sprints[this.ultimoSprint].restante -
+          this.mediaAverageBest * (this.deadlineSprint - this.ultimoSprint) /* + 1 */; // +1 due to axis starting at 1
       this.puntoCorteBest.push([this.deadlineSprint, corteAverageBest]);
     }
   }

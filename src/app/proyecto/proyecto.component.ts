@@ -1,5 +1,5 @@
 import { ReleasesService } from './../services/releases.service';
-import { Component, OnInit, OnDestroy, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ChangeDetectorRef, HostListener } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { UsuariosService } from '@app/services/usuarios.service';
@@ -11,7 +11,7 @@ import { MatDialogConfig, MatDialogRef, MatDialog } from '@angular/material/dial
 
 import { Permisos } from '@app/models/permisos';
 import { OverviewComponent } from './overview/overview.component';
-import { MatTabChangeEvent, MatSnackBar } from '@angular/material';
+import { MatTabChangeEvent, MatSnackBar, MatStepper } from '@angular/material';
 import { BacklogComponent } from './backlog/backlog.component';
 import { ForecastsComponent } from './forecasts/forecasts.component';
 import { SprintGoal } from '@app/models/sprintGoals';
@@ -21,6 +21,7 @@ import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { Release } from '@app/models/releases';
 import { Input } from '@angular/core';
 import { MyErrorStateMatcher } from '@app/shared/default.error-matcher';
+import { ScrollDispatcher } from '@angular/cdk/overlay';
 
 @Component({
   selector: 'app-proyecto',
@@ -57,6 +58,7 @@ export class ProyectoComponent implements OnInit, OnDestroy {
   showingGoal: SprintGoal;
   sprintGoal: string;
 
+  @ViewChild('stepper', { static: false }) private myStepper: MatStepper;
   releases: Release[];
   currentRelease: Release;
   labelRelease: string = 'Current release: ';
@@ -91,8 +93,11 @@ export class ProyectoComponent implements OnInit, OnDestroy {
     public dialog: MatDialog,
     private activeRoute: ActivatedRoute,
     private _snackBar: MatSnackBar,
-    private changeDetectorRef: ChangeDetectorRef
-  ) {}
+    private changeDetectorRef: ChangeDetectorRef,
+    private scrollDispatcher: ScrollDispatcher
+  ) {
+    /* this.scrollDispatcher.scrolled().subscribe(x => {console.log("scroll");this.myStepper.selectedIndex=0}); */
+  }
 
   ngOnInit() {
     this.isLoading = true;
@@ -116,10 +121,11 @@ export class ProyectoComponent implements OnInit, OnDestroy {
                 .pipe(untilDestroyed(this))
                 .subscribe((permisos: Permisos) => {
                   this.permisos = permisos;
+                  this.actualizarSprintGoals();
+                  this.actualizarReleases();
+                  this.actualizarComponentes();
                   this.isLoading = false;
                 });
-              this.actualizarSprintGoals();
-              this.actualizarReleases();
             });
         });
     });
@@ -143,6 +149,7 @@ export class ProyectoComponent implements OnInit, OnDestroy {
         this._snackBar.open('Release updated successfully!', 'Close', { duration: 3000 });
         this.resetEditingRelease();
         this.actualizarReleases();
+        this.actualizarComponentes();
       });
   }
 
@@ -182,6 +189,7 @@ export class ProyectoComponent implements OnInit, OnDestroy {
         this._snackBar.open('Release created successfully!', 'Close', { duration: 3000 });
         this.reiniciarCampos();
         this.actualizarReleases();
+        this.actualizarComponentes();
       });
   }
 
@@ -208,6 +216,7 @@ export class ProyectoComponent implements OnInit, OnDestroy {
               this.isLoading = false;
               this._snackBar.open('Release removed successfully!', 'Close', { duration: 3000 });
               this.actualizarReleases();
+              this.actualizarComponentes();
             });
         }
       });
@@ -226,16 +235,16 @@ export class ProyectoComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe(releases => {
         this.releases = releases;
-        this.releases = this.releases.sort((a: Release, b: Release) => {
-          if (a.sprint < b.sprint) return 1;
-          else return -1;
-        });
         this.findCurrentRelease();
         this.isLoading = false;
       });
   }
 
   findCurrentRelease() {
+    this.releases = this.releases.sort((a: Release, b: Release) => {
+      if (a.sprint < b.sprint) return 1;
+      else return -1;
+    });
     if (this.releases.length > 0) {
       let minSprint: number = Number.MAX_VALUE;
       let minRelease: Release;
@@ -257,7 +266,7 @@ export class ProyectoComponent implements OnInit, OnDestroy {
       .subscribe(sprintGoals => {
         this.sprintGoals = sprintGoals;
         this.updateSprintGoal();
-        this.actualizarComponentes();
+        //this.actualizarComponentes();
         this.isLoading = false;
       });
   }
@@ -277,7 +286,7 @@ export class ProyectoComponent implements OnInit, OnDestroy {
     this.tabIndex = 0;
     this.changeDetectorRef.detectChanges();
 
-    this.actualizarReleases();
+    //this.actualizarReleases();
     // console.log('actualizar proyecto');
     this.overview.proyecto = this.proyecto;
     this.overview.permisos = this.permisos;

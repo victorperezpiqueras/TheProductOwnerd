@@ -11,6 +11,7 @@ import { Pbi } from '@app/models/pbis';
 import { VelocityComponent } from './velocity/velocity.component';
 import { LinearRegressionComponent } from './linear-regression/linear-regression.component';
 import { PolynomialRegressionComponent } from './polynomial-regression/polynomial-regression.component';
+import { Release } from '@app/models/releases';
 
 @Component({
   selector: 'app-forecasts',
@@ -30,6 +31,9 @@ export class ForecastsComponent implements OnInit, OnDestroy {
   proyectos: Proyecto[] = [];
 
   pbis: Pbi[];
+
+  releases: Release[];
+  currentRelease: Release;
 
   deadlineSprint: number = 12;
 
@@ -68,10 +72,36 @@ export class ForecastsComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe((pbis: []) => {
         this.pbis = pbis;
-        this.velocity.actualizarGrafico(this.proyecto, this.pbis);
-        this.linearRegression.actualizarGrafico(this.proyecto, this.pbis);
-        this.polynomialRegression.actualizarGrafico(this.proyecto, this.pbis);
+        this.proyectosService
+          .getProyectoReleases(this.proyecto.idproyecto)
+          .pipe(untilDestroyed(this))
+          .subscribe((releases: []) => {
+            this.releases = releases;
+            this.findCurrentRelease();
+            this.velocity.actualizarGrafico(this.proyecto, this.pbis, this.releases, this.currentRelease);
+            this.linearRegression.actualizarGrafico(this.proyecto, this.pbis, this.releases, this.currentRelease);
+            this.polynomialRegression.actualizarGrafico(this.proyecto, this.pbis, this.releases, this.currentRelease);
+          });
       });
+  }
+
+  findCurrentRelease() {
+    this.releases = this.releases.sort((a: Release, b: Release) => {
+      if (a.sprint < b.sprint) return 1;
+      else return -1;
+    });
+    if (this.releases.length > 0) {
+      //console.log(this.releases)
+      let minSprint: number = Number.MAX_VALUE;
+      let minRelease: Release;
+      this.releases.forEach((rel: Release) => {
+        if (rel.sprint < minSprint && rel.sprint >= this.proyecto.sprintActual) {
+          minRelease = rel;
+          //console.log(this.proyecto.sprintActual)
+        }
+      });
+      this.currentRelease = minRelease;
+    }
   }
 
   ngOnDestroy() {}

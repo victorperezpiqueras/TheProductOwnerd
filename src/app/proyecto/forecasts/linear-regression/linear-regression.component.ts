@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, ViewEncapsulation } from '@angular/core';
 
 import * as Highcharts from 'highcharts';
 import HC_exporting from 'highcharts/modules/exporting';
@@ -11,11 +11,13 @@ import { Sprint } from '@app/models/sprints';
 import { Proyecto } from '@app/models/proyectos';
 import { Permisos } from '@app/models/permisos';
 import { Grafico } from '@app/proyecto/grafico.interface';
+import { Release } from '@app/models/releases';
 
 @Component({
   selector: 'app-linear-regression',
   templateUrl: './linear-regression.component.html',
   styleUrls: ['./linear-regression.component.scss']
+  //encapsulation: ViewEncapsulation.None // activar colores en mattooltip
 })
 export class LinearRegressionComponent implements Grafico, OnInit, OnDestroy {
   // highcharts
@@ -25,6 +27,9 @@ export class LinearRegressionComponent implements Grafico, OnInit, OnDestroy {
   // datos principales
   proyecto: Proyecto;
   pbis: Pbi[];
+  showingPbis: Pbi[];
+  releases: Release[];
+  currentRelease: Release;
 
   //updated:
   newDeadlineFlag: boolean = true;
@@ -58,20 +63,35 @@ export class LinearRegressionComponent implements Grafico, OnInit, OnDestroy {
   // regresion lineal
   regression: any;
 
+  // releases
+  release: Release;
+
   constructor() {}
 
   ngOnInit() {}
 
-  actualizarGrafico(proyecto: Proyecto, pbis: Pbi[]) {
+  actualizarDeadline() {
+    this.deadlineSprint = this.release.sprint;
+  }
+
+  actualizarGrafico(proyecto: Proyecto, pbis: Pbi[], releases: Release[], currentRelease: Release) {
     this.proyecto = proyecto;
     this.pbis = pbis;
+    this.releases = releases;
+    this.currentRelease = currentRelease;
     this.newDeadlineFlag = true;
     this.generarDatos();
     this.generarGrafico();
   }
 
   generarDatos() {
-    if (this.pbis.length > 0) {
+    if (this.release) {
+      this.showingPbis = this.pbis.filter((pbi: Pbi) => pbi.idrelease === this.release.idrelease);
+      this.deadlineSprint = this.release.sprint;
+    } else {
+      this.showingPbis = [...this.pbis];
+    }
+    if (this.showingPbis.length > 0) {
       this.generarDatosBasicos();
       // si no hay pbis acabados no se puede calcular el ultimo sprint
       if (this.sprints.length) {
@@ -116,7 +136,7 @@ export class LinearRegressionComponent implements Grafico, OnInit, OnDestroy {
 
     // generar suma pbis:
     this.puntosTotales = 0;
-    this.pbis.forEach((pbi: Pbi) => {
+    this.showingPbis.forEach((pbi: Pbi) => {
       this.puntosTotales += pbi.estimacion;
     });
 
@@ -138,7 +158,7 @@ export class LinearRegressionComponent implements Grafico, OnInit, OnDestroy {
       } else {
         // sumar las estimaciones para cada sprint:
         var sumpbis = 0;
-        this.pbis.forEach((pbi: Pbi) => {
+        this.showingPbis.forEach((pbi: Pbi) => {
           if (pbi.sprint === i) sumpbis += pbi.estimacion;
         });
         // restar al total anterior las del sprint
