@@ -1,9 +1,11 @@
 language: node_js
 node_js:
   - 12.5.0
-os: windows
-addons:
-  firefox: latest
+# os: windows
+os: linux
+dist: trusty
+#addons:
+#  firefox: latest
 branches:
   only:
     - master
