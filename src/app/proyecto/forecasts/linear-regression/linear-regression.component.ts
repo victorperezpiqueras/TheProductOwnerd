@@ -12,6 +12,7 @@ import { Proyecto } from '@app/models/proyectos';
 import { Permisos } from '@app/models/permisos';
 import { Grafico } from '@app/proyecto/grafico.interface';
 import { Release } from '@app/models/releases';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-linear-regression',
@@ -66,7 +67,7 @@ export class LinearRegressionComponent implements Grafico, OnInit, OnDestroy {
   // releases
   release: Release;
 
-  constructor() {}
+  constructor(private _snackBar: MatSnackBar) {}
 
   ngOnInit() {}
 
@@ -100,6 +101,8 @@ export class LinearRegressionComponent implements Grafico, OnInit, OnDestroy {
         this.generarDeadline(this.deadlineSprint);
         this.calcularMaxValor();
       }
+    } else {
+      this._snackBar.open('No PBIs assigned to this release!', 'Close', { duration: 3000 });
     }
   }
 
