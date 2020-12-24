@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { finalize, map, takeUntil } from 'rxjs/operators';
@@ -15,6 +15,7 @@ import { PbiDialogComponent } from './pbiDialog/pbiDialog.component';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { PbisService } from '@app/services/pbis.service';
 import { Permisos } from '@app/models/permisos';
+import { EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-backlog',
@@ -24,6 +25,7 @@ import { Permisos } from '@app/models/permisos';
 export class BacklogComponent implements OnInit, OnDestroy {
   @Input() proyecto: Proyecto;
   @Input() permisos: Permisos;
+  @Output() onNotify = new EventEmitter();
 
   /* --------------DIALOG ELEMENTS AND VARIABLES-------------- */
   dialogRef: MatDialogRef<any>;
@@ -397,6 +399,7 @@ export class BacklogComponent implements OnInit, OnDestroy {
       .subscribe((v: any) => {
         //console.log(v);
         //this.pbis.push(pbi);///////////////////COMPROBAR
+        this.notifyParent();
         this.actualizarPbis();
       });
   }
@@ -411,8 +414,13 @@ export class BacklogComponent implements OnInit, OnDestroy {
         /* var itemToUpdate = this.pbis.find((item) => item.idpbi == pbi.idpbi); //////////////////COMPROBAR
       var index = this.pbis.indexOf(itemToUpdate);
       this.pbis[index] = pbi; */
+        this.notifyParent();
         this.actualizarPbis();
       });
+  }
+
+  notifyParent() {
+    this.onNotify.emit('releases');
   }
 
   ngOnDestroy() {}

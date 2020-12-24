@@ -370,7 +370,7 @@
         </mat-tab>
 
         <mat-tab label="Backlog">
-          <app-backlog #backlog [proyecto]="proyecto" [permisos]="permisos"></app-backlog>
+          <app-backlog #backlog [proyecto]="proyecto" [permisos]="permisos" (onNotify)="onNotify($event)"></app-backlog>
         </mat-tab>
 
         <mat-tab label="Forecasts" *ngIf="isProductOwner || isStakeholder" [disabled]="permisos.proyecciones != 1">

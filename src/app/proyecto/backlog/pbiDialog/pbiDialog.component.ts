@@ -632,7 +632,7 @@ export class PbiDialogComponent implements OnInit, OnDestroy {
 
   save() {
     if (this.isStakeholder) this.actualizarValor();
-    console.log(this.idrelease);
+    //console.log(this.idrelease);
     this.dialogRef.close({
       pbi: new Pbi(
         this.idpbi,

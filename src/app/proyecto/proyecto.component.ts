@@ -133,6 +133,17 @@ export class ProyectoComponent implements OnInit, OnDestroy {
     });
   }
 
+  onNotify(type: string) {
+    if (type === 'releases') {
+      this.actualizarReleases();
+    } else if (type === 'sprintgoals') {
+      this.actualizarSprintGoals();
+    } else {
+      this.actualizarReleases();
+      this.actualizarSprintGoals();
+    }
+  }
+
   editarRelease() {
     this.isLoading = true;
     let release: Release = {
@@ -310,16 +321,17 @@ export class ProyectoComponent implements OnInit, OnDestroy {
     // console.log('actualizar proyecto');
     this.overview.proyecto = this.proyecto;
     this.overview.permisos = this.permisos;
+    this.overview.actualizar();
 
     this.backlog.proyecto = this.proyecto;
     this.backlog.permisos = this.permisos;
-
-    this.forecasts.proyecto = this.proyecto;
-    this.forecasts.permisos = this.permisos;
-
-    this.overview.actualizar();
     this.backlog.actualizar();
-    this.forecasts.actualizar();
+
+    if (this.isProductOwner || this.isStakeholder) {
+      this.forecasts.proyecto = this.proyecto;
+      this.forecasts.permisos = this.permisos;
+      this.forecasts.actualizar();
+    }
   }
 
   editMode() {
