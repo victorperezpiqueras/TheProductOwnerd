@@ -195,4 +195,16 @@ router.get('/:idproyecto/releases', verifyToken, verifyProjectPermissions, funct
     });
 });
 
+router.get('/:idproyecto/pbiPonderations', verifyToken, verifyProjectPermissions, function(req, res, next) {
+  console.log('getProyectoPbiPonderations');
+  controllerProyectos
+    .getProyectoPbiPonderations(req.params.idproyecto)
+    .then(function(data) {
+      res.json(data);
+    })
+    .catch(function(err) {
+      res.status(500).json(err);
+    });
+});
+
 module.exports = router;

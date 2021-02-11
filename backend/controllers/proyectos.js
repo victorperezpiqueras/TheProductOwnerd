@@ -6,6 +6,8 @@ module.exports = ControllerProyectos;
 const controllerInvitaciones = require('../controllers/invitaciones');
 const controllerImportancias = require('../controllers/importancias');
 const controllerUsuarios = require('../controllers/usuarios');
+const controllerPbis = require('../controllers/pbis');
+const controllerValores = require('../controllers/valores');
 
 const QueryResponse = require('../helpers/query-response');
 
@@ -422,4 +424,39 @@ ControllerProyectos.checkProyectoTieneUsuario = async function(idproyecto, idusu
   const data = await connection.query(sql, [idproyecto, idusuario]);
   if (data[0].length === 1) return true;
   else return false;
+};
+
+/**
+ * Obtiene los usuarios de un proyecto
+ * @param {number} idproyecto id del proyecto
+ * @returns [ stakeholderImportances, pbiValues, pbis ]
+ */
+ControllerProyectos.getProyectoPbiPonderations = function(idproyecto) {
+  return new Promise(async function(resolve, reject) {
+    try {
+      importancias = await controllerImportancias.obtenerImportanciasProyecto(idproyecto);
+      pbis = await controllerPbis.getProyectoPBIs(idproyecto);
+      //console.log(pbis.length)
+
+      valores = [];
+      for (pbi of pbis) {
+        //console.log(pbi.idpbi)
+        val = await controllerValores.obtenerValoresPbi(pbi.idpbi);
+        val.forEach(async value => {
+          valores.push(value);
+        });
+      }
+
+      //console.log(valores)
+
+      result = {
+        importancias: importancias,
+        pbis: pbis,
+        valores: valores
+      };
+      resolve(result);
+    } catch {
+      reject({ error: 'Error inesperado en getProyectoPbiPonderations' });
+    }
+  });
 };
