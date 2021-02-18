@@ -33,7 +33,7 @@ export class ErrorHandlerInterceptor implements HttpInterceptor {
       log.error('Request error', response);
     }
     /* if (res.error.error !== "password_missmatch")  */
-    this.router.navigate(['/login']); ///////////////
+    //this.router.navigate(['/login']); ///////////////
     throw response;
   }
 }

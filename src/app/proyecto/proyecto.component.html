@@ -381,6 +381,10 @@
           <app-forecasts #forecasts [proyecto]="proyecto" [permisos]="permisos"></app-forecasts>
         </mat-tab>
 
+        <mat-tab label="NRP Solver" *ngIf="isProductOwner || isStakeholder">
+          <app-nrp-solver #nrpSolver [proyecto]="proyecto" [permisos]="permisos"></app-nrp-solver>
+        </mat-tab>
+
         <!--  <mat-tab label="Stakeholders">
           <app-stakeholders #stakeholders [proyecto]="proyecto" [permisos]="permisos"></app-stakeholders>
         </mat-tab> -->

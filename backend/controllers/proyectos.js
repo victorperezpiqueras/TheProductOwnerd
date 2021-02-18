@@ -427,7 +427,7 @@ ControllerProyectos.checkProyectoTieneUsuario = async function(idproyecto, idusu
 };
 
 /**
- * Obtiene los usuarios de un proyecto
+ * Obtiene los pbis, valores e importancias de un proyecto
  * @param {number} idproyecto id del proyecto
  * @returns [ stakeholderImportances, pbiValues, pbis ]
  */

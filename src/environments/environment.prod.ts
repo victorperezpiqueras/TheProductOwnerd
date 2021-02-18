@@ -12,6 +12,7 @@ export const environment = {
   version: '2.0.0',
   // serverUrl: '/api',
   serverUrl: 'https://theproductownerd.herokuapp.com/api',
+  awsUrl: 'https://b7vfl1fmm2.execute-api.eu-west-1.amazonaws.com/dev',
   defaultLanguage: 'en-US',
   supportedLanguages: ['en-US', 'fr-FR']
 };

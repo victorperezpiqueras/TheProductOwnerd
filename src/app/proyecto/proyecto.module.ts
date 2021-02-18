@@ -25,6 +25,9 @@ import { LinearRegressionComponent } from './forecasts/linear-regression/linear-
 import { PolynomialRegressionComponent } from './forecasts/polynomial-regression/polynomial-regression.component';
 import { BugsComponent } from './overview/bugs/bugs.component';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
+import { NrpSolverComponent } from './nrp-solver/nrp-solver.component';
+import { NrpChartComponent } from './nrp-solver/nrp-chart/nrp-chart.component';
+import { NrpBacklogComponent } from './nrp-solver/nrp-backlog/nrp-backlog.component';
 
 @NgModule({
   imports: [
@@ -50,7 +53,10 @@ import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
     ForecastsComponent,
     VelocityComponent,
     LinearRegressionComponent,
-    PolynomialRegressionComponent
+    PolynomialRegressionComponent,
+    NrpSolverComponent,
+    NrpChartComponent,
+    NrpBacklogComponent
   ],
   providers: [PbisService, ComentariosService, ArchivosService]
 })

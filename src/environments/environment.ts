@@ -16,6 +16,7 @@ export const environment = {
   version: '2.0.0' + '-dev',
   serverUrl: 'http://localhost:5000/api',
   // serverUrl: 'https://the-product-ownerd.herokuapp.com/api',
+  awsUrl: 'http://localhost:3000/dev',
   defaultLanguage: 'en-US',
   supportedLanguages: ['en-US', 'fr-FR']
 };

@@ -1,0 +1,26 @@
+<div class="container" fxFill>
+  <div *ngIf="proyecto" fxLayout="column" fxLayoutGap="2%">
+    <app-loader class="loader" [isLoading]="isLoading"></app-loader>
+
+    <mat-card>
+      <mat-card-content fxLayout="column">
+        <h2>Generate Next Release</h2>
+
+        <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="start center" fxFill>
+          <button fxFlex="10" mat-raised-button color="primary" (click)="findNrp()">Find Next Release</button>
+
+          <div *ngIf="loadingNRP" fxLayout="column" fxFlex="90" fxLayoutAlign="center center">
+            <mat-card-subtitle fxFlex="50">This might take a few seconds...</mat-card-subtitle>
+            <mat-progress-bar [color]="primary" [mode]="'indeterminate'"></mat-progress-bar>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <div fxLayout="row" fxLayoutGap="20px">
+      <app-nrp-chart fxFlex="50" #nrpChart></app-nrp-chart>
+
+      <app-nrp-backlog fxFlex="50" #nrpBacklog></app-nrp-backlog>
+    </div>
+  </div>
+</div>

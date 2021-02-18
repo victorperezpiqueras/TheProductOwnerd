@@ -23,6 +23,7 @@ import { Release } from '@app/models/releases';
 import { Input } from '@angular/core';
 import { MyErrorStateMatcher } from '@app/shared/default.error-matcher';
 import { ScrollDispatcher } from '@angular/cdk/overlay';
+import { NrpSolverComponent } from './nrp-solver/nrp-solver.component';
 
 @Component({
   selector: 'app-proyecto',
@@ -39,6 +40,8 @@ export class ProyectoComponent implements OnInit, OnDestroy {
   @ViewChild('overview', { static: false }) overview: OverviewComponent;
   @ViewChild('backlog', { static: false }) backlog: BacklogComponent;
   @ViewChild('forecasts', { static: false }) forecasts: ForecastsComponent;
+  @ViewChild('nrp-solver', { static: false }) nrpSolver: NrpSolverComponent;
+
   /* --------------DIALOG ELEMENTS AND VARIABLES-------------- */
   dialogRef: MatDialogRef<any>;
 
