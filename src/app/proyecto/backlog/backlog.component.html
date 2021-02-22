@@ -119,7 +119,7 @@
 
       <div fxLayoutAlign="end center" fxFlex>
         <button
-          *ngIf="!viewDone"
+          *ngIf="!viewDone && permisos.rol !== 'stakeholder'"
           class="mat-button-create mat-elevation-z9"
           mat-fab
           color="primary"
@@ -160,8 +160,8 @@
           >
             <!-- matBadge="{{ pbi.estimacion }}" matBadgeOverlap="true" matBadgeSize="medium" matBadgeColor="primary" -->
             <mat-card-header>
-              <mat-card-title
-                ><mat-icon
+              <mat-card-title>
+                <mat-icon
                   class="drag-icon"
                   *ngIf="!(permisos?.ordenar == 0 || !priorityOn)"
                   cdkDragHandle
@@ -171,8 +171,8 @@
                   [matTooltipDisabled]="isDragging"
                   >open_with</mat-icon
                 >
-                #{{ pbi.idpbi }} - {{ pbi.titulo }}</mat-card-title
-              >
+                #{{ pbi.idpbi }} - {{ pbi.titulo }}
+              </mat-card-title>
               <div fxLayout="row" fxLayoutGap="10px" style="float:right;margin-left:auto; margin-right:0;">
                 <mat-chip-list>
                   <mat-chip

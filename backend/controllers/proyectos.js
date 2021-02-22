@@ -435,7 +435,7 @@ ControllerProyectos.getProyectoPbiPonderations = function(idproyecto) {
   return new Promise(async function(resolve, reject) {
     try {
       importancias = await controllerImportancias.obtenerImportanciasProyecto(idproyecto);
-      pbis = await controllerPbis.getProyectoPBIs(idproyecto);
+      pbis = await controllerPbis.getProyectoPBIsBacklog(idproyecto);
       //console.log(pbis.length)
 
       valores = [];

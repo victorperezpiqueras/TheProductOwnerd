@@ -16,6 +16,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { PbisService } from '@app/services/pbis.service';
 import { Permisos } from '@app/models/permisos';
 import { EventEmitter } from '@angular/core';
+import { getLabelColor } from '@app/shared/labelColors';
 
 @Component({
   selector: 'app-backlog',
@@ -225,10 +226,11 @@ export class BacklogComponent implements OnInit, OnDestroy {
   }
 
   getLabelColor(label: string) {
-    if (label == 'feature') return '#00ad17';
+    return getLabelColor(label);
+    /* if (label == 'feature') return '#00ad17';
     else if (label == 'tech-debt') return '#ffbb00';
     else if (label == 'bug') return '#ad0000';
-    else if (label == 'infrastructure') return '#2196f3';
+    else if (label == 'infrastructure') return '#2196f3'; */
   }
 
   actualizarPbis() {

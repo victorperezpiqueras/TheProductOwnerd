@@ -75,5 +75,10 @@ export class NrpSolverComponent implements OnInit, OnDestroy {
       });
   }
 
+  eventProposalSelected(backlogSelected: nrpAlgorithmIndividual) {
+    console.log('parent get');
+    this.nrpBacklog.actualizarBacklog(backlogSelected);
+  }
+
   ngOnDestroy(): void {}
 }

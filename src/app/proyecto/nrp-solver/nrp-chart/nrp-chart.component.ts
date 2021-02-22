@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { nrpAlgorithmIndividual } from '../nrp-solver.component';
 
 import * as Highcharts from 'highcharts';
@@ -15,19 +15,37 @@ export class NrpChartComponent implements OnInit {
   chartOptions: Highcharts.Options;
 
   backlogList: nrpAlgorithmIndividual[] = [];
+  backlogData: any[] = [];
+  backlogDataSelected: any[] = [];
+
+  @Output() eventProposalSelected = new EventEmitter();
 
   constructor() {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.generarDatos();
+    this.generarGrafico();
+  }
 
   actualizarGrafico(backlogList: nrpAlgorithmIndividual[]) {
+    //console.log(backlogList)
     this.backlogList = backlogList;
     this.generarDatos();
     this.generarGrafico();
   }
 
   generarDatos() {
-    //this.backlogList[0].
+    this.backlogData = [];
+    this.backlogDataSelected = [];
+    this.backlogList.forEach((backlog: nrpAlgorithmIndividual) => {
+      if (backlog.score !== 0 && backlog.cost !== 0) {
+        this.backlogData.push([Number(backlog.score.toFixed(2)), Number(backlog.cost.toFixed(2))]);
+      }
+    });
+  }
+
+  aaaa() {
+    console.log('aaa');
   }
 
   generarGrafico() {
@@ -38,6 +56,12 @@ export class NrpChartComponent implements OnInit {
           fontSize: '20px'
         }
       },
+      /*  tooltip: {
+         useHTML: true,
+         formatter: function () {
+           return "<button (click)='console.log(1+1)'>aaaa</button>"
+         }
+       }, */
       xAxis: [
         {
           title: {
@@ -47,11 +71,11 @@ export class NrpChartComponent implements OnInit {
             }
           },
           min: 0,
-          max: 5,
+          //max: 5,
           labels: {
-            formatter: function() {
+            /* formatter: function() {
               return (this.value === 0 ? 'Start' : this.value).toString();
-            }
+            } */
           },
           tickInterval: 1
         }
@@ -69,8 +93,57 @@ export class NrpChartComponent implements OnInit {
       series: [
         {
           type: 'scatter',
-          name: 'Browser share',
-          data: [1, 1.5, 2.8, 3.5, 3.9, 4.2]
+          name: 'Proposals',
+          data: this.backlogData,
+          color: '#80bfff',
+          tooltip: {
+            headerFormat: null,
+            pointFormatter: function() {
+              return (
+                '<b><span style="color:' +
+                this.color +
+                '">●</span> Proposal</b><br><b>Score: </b>' +
+                this.x +
+                '</b><br><b>Cost: </b>' +
+                this.y
+              );
+            }
+          },
+          point: {
+            events: {
+              click: function() {}
+            }
+          }
+        },
+        {
+          type: 'scatter',
+          name: 'Selected',
+          data: this.backlogDataSelected,
+          color: '#ff0000',
+          marker: {
+            radius: 8,
+            fillColor: '#FFFFFF',
+            lineWidth: 3,
+            lineColor: null // inherit from series
+          },
+          tooltip: {
+            headerFormat: null,
+            pointFormatter: function() {
+              return (
+                '<b><span style="color:' +
+                this.color +
+                '">●</span> Selected proposal</b><br><b>Score: </b>' +
+                this.x +
+                '</b><br><b>Cost: </b>' +
+                this.y
+              );
+            }
+          },
+          point: {
+            events: {
+              click: function() {}
+            }
+          }
         }
       ],
       navigation: {
@@ -88,5 +161,53 @@ export class NrpChartComponent implements OnInit {
         sourceWidth: 1920
       }
     };
+
+    this.chartOptions.series[0].point.events.click = point => {
+      console.log(point);
+      this.selectBacklog(point.point.options.x, point.point.options.y);
+    };
+    /* this.chartOptions.series[1].point.events.click = function (a) {
+      console.log(a)
+    } */
+  }
+
+  selectBacklog(x: number, y: number) {
+    // copiamos el listado de backlogs
+    let newBacklogData = [...this.backlogData];
+    console.log(this.backlogData);
+    newBacklogData = [];
+    // buscamos y eliminamos de la copia el elemento al que hemos hecho click
+    for (let i = 0; i < this.backlogData.length; i++) {
+      if (this.backlogData[i][0] == x && this.backlogData[i][1] == y) {
+        /*  console.log("borrado")
+         newBacklogData.splice(i, 1);
+         console.log([...newBacklogData])
+         break; */
+      } else {
+        newBacklogData.push(this.backlogData[i]);
+      }
+    }
+    // si habia uno seleccionado, lo añadimos al backlog list nuevo
+    if (this.backlogDataSelected.length > 0) {
+      newBacklogData.push(this.backlogDataSelected[0]);
+    }
+    console.log(newBacklogData);
+    // ponemos como backlog seleccionado el punto clickado
+    this.backlogDataSelected = [[x, y]];
+    // guardamos la lista modificada en la original
+    this.backlogData = [...newBacklogData];
+    this.generarGrafico();
+    this.notificarBacklog();
+  }
+
+  notificarBacklog() {
+    let backlogUpdate;
+    this.backlogList.forEach((backlog: nrpAlgorithmIndividual) => {
+      if (backlog.score == this.backlogDataSelected[0][0] && backlog.cost == this.backlogDataSelected[0][1]) {
+        backlogUpdate = backlog;
+      }
+    });
+    console.log(backlogUpdate);
+    this.eventProposalSelected.emit(backlogUpdate);
   }
 }

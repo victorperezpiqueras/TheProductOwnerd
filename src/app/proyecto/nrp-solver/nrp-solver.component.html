@@ -1,13 +1,15 @@
 <div class="container" fxFill>
-  <div *ngIf="proyecto" fxLayout="column" fxLayoutGap="2%">
+  <div *ngIf="proyecto" fxLayout="column" fxLayoutGap="1%">
     <app-loader class="loader" [isLoading]="isLoading"></app-loader>
 
     <mat-card>
       <mat-card-content fxLayout="column">
         <h2>Generate Next Release</h2>
 
-        <div fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="start center" fxFill>
-          <button fxFlex="10" mat-raised-button color="primary" (click)="findNrp()">Find Next Release</button>
+        <div fxLayout="row" fxLayoutGap="1%" fxLayoutAlign="start center" fxFill>
+          <button fxFlex="10" mat-raised-button color="primary" (click)="findNrp()" style="font: size 2vw;">
+            Find Next Release
+          </button>
 
           <div *ngIf="loadingNRP" fxLayout="column" fxFlex="90" fxLayoutAlign="center center">
             <mat-card-subtitle fxFlex="50">This might take a few seconds...</mat-card-subtitle>
@@ -17,10 +19,10 @@
       </mat-card-content>
     </mat-card>
 
-    <div fxLayout="row" fxLayoutGap="20px">
-      <app-nrp-chart fxFlex="50" #nrpChart></app-nrp-chart>
+    <div fxLayout="row" fxLayoutGap="1%">
+      <app-nrp-chart fxFlex="50" #nrpChart (eventProposalSelected)="eventProposalSelected($event)"></app-nrp-chart>
 
-      <app-nrp-backlog fxFlex="50" #nrpBacklog></app-nrp-backlog>
+      <app-nrp-backlog fxFlex="50" #nrpBacklog [proyecto]="proyecto"></app-nrp-backlog>
     </div>
   </div>
 </div>
