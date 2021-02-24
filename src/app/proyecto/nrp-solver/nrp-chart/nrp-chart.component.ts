@@ -65,25 +65,25 @@ export class NrpChartComponent implements OnInit {
       xAxis: [
         {
           title: {
-            text: 'Score',
+            text: 'Value delivered to stakeholders',
             style: {
               fontSize: '16px'
             }
           },
-          min: 0,
+          /* min: 0, */
           //max: 5,
           labels: {
             /* formatter: function() {
               return (this.value === 0 ? 'Start' : this.value).toString();
             } */
-          },
-          tickInterval: 1
+          }
+          /* tickInterval: 1 */
         }
       ],
       yAxis: [
         {
           title: {
-            text: 'Cost',
+            text: 'Cost in Story Points',
             style: {
               fontSize: '16px'
             }
@@ -96,15 +96,18 @@ export class NrpChartComponent implements OnInit {
           name: 'Proposals',
           data: this.backlogData,
           color: '#80bfff',
+          marker: {
+            radius: 6
+          },
           tooltip: {
             headerFormat: null,
             pointFormatter: function() {
               return (
                 '<b><span style="color:' +
                 this.color +
-                '">●</span> Proposal</b><br><b>Score: </b>' +
+                '">●</span> Proposal</b><br><b>Value delivered: </b>' +
                 this.x +
-                '</b><br><b>Cost: </b>' +
+                '</b><br><b>Cost (SPs): </b>' +
                 this.y
               );
             }

@@ -235,7 +235,7 @@
             mat-raised-button
             (click)="markDone()"
             color="accent"
-            [disabled]="permisos.setDone == 0"
+            [disabled]="permisos.setDone == 0 || disabled"
           >
             Unmark as Done
           </button>
@@ -245,7 +245,7 @@
             mat-raised-button
             (click)="markDone()"
             color="accent"
-            [disabled]="permisos.setDone == 0"
+            [disabled]="permisos.setDone == 0 || disabled"
           >
             &nbsp;Mark as Done&nbsp;
           </button>
@@ -429,7 +429,7 @@
             mat-raised-button
             color="primary"
             (click)="cargarImagen()"
-            [disabled]="isCreateMode"
+            [disabled]="isCreateMode || disabled"
           >
             <mat-icon>cloud_upload</mat-icon>&nbsp;Add file
           </button>
@@ -487,14 +487,14 @@
       <div fxLayout="row" fxLayoutAlign="end end" style="justify-content: flex-end">
         <mat-form-field class="description" appearance="outline">
           <mat-label>Write a comment...</mat-label>
-          <textarea matInput [(ngModel)]="comentarioData" [disabled]="isCreateMode"></textarea>
+          <textarea matInput [(ngModel)]="comentarioData" [disabled]="isCreateMode || disabled"></textarea>
         </mat-form-field>
         <button
           class="save-button"
           mat-raised-button
           (click)="crearComentario()"
           [color]="'success'"
-          [disabled]="!comentarioData || isCreateMode"
+          [disabled]="!comentarioData || isCreateMode || disabled"
           style="justify-content: flex-end"
         >
           <mat-icon>add_comment</mat-icon>&nbsp;&nbsp;Comment

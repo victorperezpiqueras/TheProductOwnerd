@@ -7,22 +7,38 @@
         <h2>Generate Next Release</h2>
 
         <div fxLayout="row" fxLayoutGap="1%" fxLayoutAlign="start center" fxFill>
-          <button fxFlex="10" mat-raised-button color="primary" (click)="findNrp()" style="font: size 2vw;">
-            Find Next Release
+          <button
+            *ngIf="!loadingNRP"
+            fxFlex="10"
+            mat-raised-button
+            color="primary"
+            (click)="findNrp()"
+            style="font: size 2vw;"
+          >
+            Find Next Releases
           </button>
 
-          <div *ngIf="loadingNRP" fxLayout="column" fxFlex="90" fxLayoutAlign="center center">
-            <mat-card-subtitle fxFlex="50">This might take a few seconds...</mat-card-subtitle>
+          <button *ngIf="loadingNRP" fxFlex="10" mat-raised-button color="warn" style="font: size 2vw;">
+            <span *ngIf="loadingNRP">
+              Loading...
+            </span>
+          </button>
+
+          <div *ngIf="loadingNRP" fxLayout="column" fxFlex="90" fxLayoutAlign="center start">
+            <mat-card-subtitle fxFill style="padding-top: 10px;" fxLayoutAlign="center start">
+              <span style="text-align: center;">{{ loadingFrase }}</span>
+              <!-- This might take a few seconds... -->
+            </mat-card-subtitle>
             <mat-progress-bar [color]="primary" [mode]="'indeterminate'"></mat-progress-bar>
           </div>
         </div>
       </mat-card-content>
     </mat-card>
 
-    <div fxLayout="row" fxLayoutGap="1%">
+    <div fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="1%">
       <app-nrp-chart fxFlex="50" #nrpChart (eventProposalSelected)="eventProposalSelected($event)"></app-nrp-chart>
 
-      <app-nrp-backlog fxFlex="50" #nrpBacklog [proyecto]="proyecto"></app-nrp-backlog>
+      <app-nrp-backlog fxFlex="50" #nrpBacklog [proyecto]="proyecto" [permisos]="permisos"></app-nrp-backlog>
     </div>
   </div>
 </div>

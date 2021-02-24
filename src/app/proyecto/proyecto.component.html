@@ -1,7 +1,7 @@
 <div class="container" fxFlex="100">
   <app-loader class="loader" [isLoading]="isLoading"></app-loader>
   <div *ngIf="proyecto" fxLayout="column" fxLayoutGap="1%">
-    <div fxFlex="20" fxLayout="row" fxLayoutGap="2%">
+    <div fxFlex="20" fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="2%">
       <mat-card fxFlex="20" class="title-card mat-elevation-z3">
         <mat-card-header>
           <mat-card-title style="font-size: x-large">
@@ -137,7 +137,7 @@
         </mat-card-content>
       </mat-card>
 
-      <mat-card fxFlex="50" class="sprint-card mat-elevation-z3">
+      <mat-card fxFlex="50" class="release-card mat-elevation-z3">
         <mat-card-header>
           <mat-card-title style="font-size: x-large">Releases</mat-card-title>
           <div fxFlex="40"></div>

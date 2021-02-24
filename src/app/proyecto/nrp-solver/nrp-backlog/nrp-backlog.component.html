@@ -1,21 +1,30 @@
-<mat-card fxFill class="mat-elevation-z3" fxLayout="column" fxFlex="100" fxLayoutAlign="start center">
-  <mat-card-title>Backlog Proposal</mat-card-title>
-  <mat-card-content fxFlex="100" fxLayoutAlign="start center">
+<mat-card class="mat-elevation-z3" fxLayout="column" fxLayoutAlign="start start">
+  <div fxFill fxLayoutAlign="center center">
+    <mat-card-title>
+      <h1 class="mat-h1" style="text-align: center;">Backlog Proposal</h1>
+    </mat-card-title>
+  </div>
+
+  <mat-card-content fxFlex="100" fxLayoutAlign="start start" fxLayout="column" fxFill>
     <div
-      fxFlex="100"
       class="droplist"
       cdkDropList
       [cdkDropListData]="backlog"
       (cdkDropListDropped)="drop($event)"
       [cdkDropListDisabled]="permisos?.ordenar == 0"
+      fxLayout="column"
+      fxFill
+      fxLayoutGap="1%"
     >
-      <div *ngFor="let pbi of backlog">
+      <ng-container *ngFor="let pbi of backlog">
         <mat-card
           *ngIf="pbi.done == 0"
           class="card mat-elevation-z9"
           cdkDrag
           (cdkDragStarted)="isDragging = true"
           (cdkDragReleased)="isDragging = false"
+          (click)="verPbiDialog(pbi)"
+          [ngStyle]="{ 'background-color': getPbiIncluded(pbi) ? '#cbffbc' : '#f5f5f5' }"
         >
           <mat-card-header>
             <mat-card-title>
@@ -56,12 +65,12 @@
           </mat-card-header>
           <mat-card-content>
             <p *ngIf="pbi.descripcion" style="color: rgb(119, 119, 119);font-size: 1.5vmin;margin-left:2%;">
-              {{ pbi.descripcion | limitTo: 100 }}
+              {{ pbi.descripcion | limitTo: 50 }}
             </p>
           </mat-card-content>
         </mat-card>
         <br />
-      </div>
+      </ng-container>
     </div>
   </mat-card-content>
 </mat-card>

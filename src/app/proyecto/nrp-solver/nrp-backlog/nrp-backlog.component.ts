@@ -1,3 +1,4 @@
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material';
 import { untilDestroyed } from '@app/core';
 import { ProyectosService } from './../../../services/proyectos.service';
 import { nrpAlgorithmGen } from './../nrp-solver.component';
@@ -9,6 +10,7 @@ import { Pbi } from '@app/models/pbis';
 import { getLabelColor } from '@app/shared/labelColors';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { PbisService } from '@app/services/pbis.service';
+import { PbiDialogComponent } from '@app/proyecto/backlog/pbiDialog/pbiDialog.component';
 
 @Component({
   selector: 'app-nrp-backlog',
@@ -27,7 +29,9 @@ export class NrpBacklogComponent implements OnInit, OnDestroy {
 
   isDragging: boolean = false;
 
-  constructor(private proyectosService: ProyectosService, private pbisService: PbisService) {}
+  dialogRef: MatDialogRef<any>;
+
+  constructor(private proyectosService: ProyectosService, private pbisService: PbisService, public dialog: MatDialog) {}
 
   ngOnInit() {
     //TESTING
@@ -75,16 +79,23 @@ export class NrpBacklogComponent implements OnInit, OnDestroy {
         // si esta elegido, lo guardamos en el backlog con la prioridad que corresponda
         if (this.backlogProposal.genes[i].included == 1) {
           pbi.prioridad = prioridad;
+          let npbi: any = pbi;
+          npbi.included = 1;
           prioridad++;
-          this.backlog.push(pbi);
+          this.backlog.push(npbi);
         } // si no esta elegido, lo ponemos al final de los elegidos y seguimos con su contador
         else if (this.backlogProposal.genes[i].included == 0) {
           pbi.prioridad = prioridadNoElegidos;
+          let npbi: any = pbi;
+          npbi.included = 0;
           prioridadNoElegidos++;
-          this.backlog.push(pbi);
+          this.backlog.push(npbi);
         }
       }
     }
+    this.backlog.sort((pbi1, pbi2) => {
+      return pbi1.prioridad - pbi2.prioridad;
+    });
     console.log(this.backlog);
   }
 
@@ -110,6 +121,35 @@ export class NrpBacklogComponent implements OnInit, OnDestroy {
 
   getLabelColor(label: string) {
     return getLabelColor(label);
+  }
+
+  getPbiIncluded(pbi: any) {
+    return pbi.included == 1;
+  }
+
+  verPbiDialog(pbi: Pbi) {
+    const dialogConfig = new MatDialogConfig();
+    //dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = false;
+    dialogConfig.height = '800px';
+    dialogConfig.width = '1920px';
+    dialogConfig.data = {
+      pbi: pbi,
+      permisos: this.permisos,
+      pbis: this.pbis,
+      sprintActual: this.proyecto.sprintActual,
+      dialogMode: 'view'
+    };
+    this.dialogRef = this.dialog.open(PbiDialogComponent, dialogConfig);
+    this.dialogRef
+      .afterClosed()
+      .pipe(untilDestroyed(this))
+      .subscribe(data => {
+        /* if (data != undefined) {
+          data.pbi.prioridad = this.showingPbis.length + 1;
+          this.editarPbi(data.pbi);
+        } */
+      });
   }
 
   ngOnDestroy(): void {}

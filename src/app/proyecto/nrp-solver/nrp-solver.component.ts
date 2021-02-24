@@ -6,6 +6,8 @@ import { Proyecto } from '@app/models/proyectos';
 import { untilDestroyed } from '@app/core';
 import { NrpChartComponent } from './nrp-chart/nrp-chart.component';
 import { NrpBacklogComponent } from './nrp-backlog/nrp-backlog.component';
+import { generarFraseLoading } from '@app/shared/generadorFrasesLoading';
+import { MatSnackBar } from '@angular/material';
 
 export interface nrpAlgorithmResult {
   hv: number;
@@ -47,12 +49,19 @@ export class NrpSolverComponent implements OnInit, OnDestroy {
   @ViewChild('nrpBacklog', { static: false }) nrpBacklog: NrpBacklogComponent;
 
   loadingNRP: boolean = false;
+  loadingFrase: string;
 
   backlogList: nrpAlgorithmIndividual[] = [];
 
-  constructor(private proyectosService: ProyectosService, private nrpService: NrpService) {}
+  constructor(
+    private proyectosService: ProyectosService,
+    private nrpService: NrpService,
+    private _snackBar: MatSnackBar
+  ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.loadingFrase = generarFraseLoading();
+  }
 
   actualizarGrafico() {
     this.nrpChart.actualizarGrafico(this.backlogList);
@@ -69,8 +78,13 @@ export class NrpSolverComponent implements OnInit, OnDestroy {
           .pipe(untilDestroyed(this))
           .subscribe((result: nrpAlgorithmResult) => {
             this.loadingNRP = false;
+            this.loadingFrase = generarFraseLoading();
+            console.log(this.loadingFrase);
             this.backlogList = result.population;
             this.actualizarGrafico();
+            this._snackBar.open('Release Proposals generated successfully!', 'Close', {
+              duration: 4000 //miliseconds
+            });
           });
       });
   }

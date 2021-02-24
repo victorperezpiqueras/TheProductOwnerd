@@ -14,10 +14,17 @@ h1 {
 
 .title-card {
   background-color: rgba(255, 255, 255, 0.87);
+  min-height: 250px;
 }
 
 .sprint-card {
   background-color: rgba(255, 255, 255, 0.87);
+  height: 250px;
+}
+
+.release-card {
+  background-color: rgba(255, 255, 255, 0.87);
+  min-height: 250px;
 }
 
 .descripcion {
