@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { nrpAlgorithmIndividual } from '../nrp-solver.component';
 
 import * as Highcharts from 'highcharts';
@@ -18,6 +18,7 @@ export class NrpChartComponent implements OnInit {
   backlogData: any[] = [];
   backlogDataSelected: any[] = [];
 
+  @Input() nrpUsed: boolean;
   @Output() eventProposalSelected = new EventEmitter();
 
   constructor() {}
@@ -166,7 +167,7 @@ export class NrpChartComponent implements OnInit {
     };
 
     this.chartOptions.series[0].point.events.click = point => {
-      console.log(point);
+      //console.log(point);
       this.selectBacklog(point.point.options.x, point.point.options.y);
     };
     /* this.chartOptions.series[1].point.events.click = function (a) {

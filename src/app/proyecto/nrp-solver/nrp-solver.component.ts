@@ -1,6 +1,6 @@
 import { NrpService } from './../../services/nrp.service';
 import { ProyectosService } from '@app/services/proyectos.service';
-import { Component, Input, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, ViewChild, EventEmitter, Output } from '@angular/core';
 import { Permisos } from '@app/models/permisos';
 import { Proyecto } from '@app/models/proyectos';
 import { untilDestroyed } from '@app/core';
@@ -44,6 +44,7 @@ export class NrpSolverComponent implements OnInit, OnDestroy {
   isLoading = false;
   @Input() proyecto: Proyecto;
   @Input() permisos: Permisos;
+  @Output() eventBacklogSavedParent = new EventEmitter();
 
   @ViewChild('nrpChart', { static: false }) nrpChart: NrpChartComponent;
   @ViewChild('nrpBacklog', { static: false }) nrpBacklog: NrpBacklogComponent;
@@ -52,6 +53,8 @@ export class NrpSolverComponent implements OnInit, OnDestroy {
   loadingFrase: string;
 
   backlogList: nrpAlgorithmIndividual[] = [];
+
+  nrpUsed: boolean = false;
 
   constructor(
     private proyectosService: ProyectosService,
@@ -78,8 +81,8 @@ export class NrpSolverComponent implements OnInit, OnDestroy {
           .pipe(untilDestroyed(this))
           .subscribe((result: nrpAlgorithmResult) => {
             this.loadingNRP = false;
+            this.nrpUsed = true;
             this.loadingFrase = generarFraseLoading();
-            console.log(this.loadingFrase);
             this.backlogList = result.population;
             this.actualizarGrafico();
             this._snackBar.open('Release Proposals generated successfully!', 'Close', {
@@ -92,6 +95,11 @@ export class NrpSolverComponent implements OnInit, OnDestroy {
   eventProposalSelected(backlogSelected: nrpAlgorithmIndividual) {
     console.log('parent get');
     this.nrpBacklog.actualizarBacklog(backlogSelected);
+  }
+
+  eventBacklogSaved() {
+    this.nrpUsed = false;
+    this.eventBacklogSavedParent.emit();
   }
 
   ngOnDestroy(): void {}

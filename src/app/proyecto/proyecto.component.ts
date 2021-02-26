@@ -12,7 +12,7 @@ import { MatDialogConfig, MatDialogRef, MatDialog } from '@angular/material/dial
 
 import { Permisos } from '@app/models/permisos';
 import { OverviewComponent } from './overview/overview.component';
-import { MatTabChangeEvent, MatSnackBar, MatStepper } from '@angular/material';
+import { MatTabChangeEvent, MatSnackBar, MatStepper, MatTabGroup } from '@angular/material';
 import { BacklogComponent } from './backlog/backlog.component';
 import { ForecastsComponent } from './forecasts/forecasts.component';
 import { SprintGoal } from '@app/models/sprintGoals';
@@ -37,6 +37,7 @@ import { NrpSolverComponent } from './nrp-solver/nrp-solver.component';
   ]
 })
 export class ProyectoComponent implements OnInit, OnDestroy {
+  @ViewChild('tabGroup', { static: false }) tabGroup: MatTabGroup;
   @ViewChild('overview', { static: false }) overview: OverviewComponent;
   @ViewChild('backlog', { static: false }) backlog: BacklogComponent;
   @ViewChild('forecasts', { static: false }) forecasts: ForecastsComponent;
@@ -543,5 +544,9 @@ export class ProyectoComponent implements OnInit, OnDestroy {
   get idusuario(): number | null {
     const credentials = this.credentialsService.credentials;
     return credentials ? credentials.id : null;
+  }
+
+  eventBacklogSavedParent() {
+    this.tabGroup.selectedIndex = 1;
   }
 }

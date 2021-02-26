@@ -1,8 +1,8 @@
-import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material';
+import { MatDialog, MatDialogConfig, MatDialogRef, MatSnackBar } from '@angular/material';
 import { untilDestroyed } from '@app/core';
 import { ProyectosService } from './../../../services/proyectos.service';
 import { nrpAlgorithmGen } from './../nrp-solver.component';
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { nrpAlgorithmIndividual } from '../nrp-solver.component';
 import { Permisos } from '@app/models/permisos';
 import { Proyecto } from '@app/models/proyectos';
@@ -18,8 +18,12 @@ import { PbiDialogComponent } from '@app/proyecto/backlog/pbiDialog/pbiDialog.co
   styleUrls: ['./nrp-backlog.component.scss']
 })
 export class NrpBacklogComponent implements OnInit, OnDestroy {
+  isLoading = false;
+
   @Input() proyecto: Proyecto;
   @Input() permisos: Permisos;
+  @Input() nrpUsed: boolean;
+  @Output() eventBacklogSaved = new EventEmitter();
 
   pbis: Pbi[] = [];
 
@@ -31,18 +35,23 @@ export class NrpBacklogComponent implements OnInit, OnDestroy {
 
   dialogRef: MatDialogRef<any>;
 
-  constructor(private proyectosService: ProyectosService, private pbisService: PbisService, public dialog: MatDialog) {}
+  constructor(
+    private proyectosService: ProyectosService,
+    private pbisService: PbisService,
+    public dialog: MatDialog,
+    private _snackBar: MatSnackBar
+  ) {}
 
   ngOnInit() {
     //TESTING
-    this.proyectosService
-      .getProyectoPBIs(this.proyecto.idproyecto)
-      .pipe(untilDestroyed(this))
-      .subscribe((pbis: Pbi[]) => {
-        this.pbis = pbis.filter((pbi: Pbi) => pbi.done == 0);
-        console.log(this.pbis);
-        this.backlog = this.pbis;
-      });
+    /*     this.proyectosService
+          .getProyectoPBIs(this.proyecto.idproyecto)
+          .pipe(untilDestroyed(this))
+          .subscribe((pbis: Pbi[]) => {
+            this.pbis = pbis.filter((pbi: Pbi) => pbi.done == 0);
+            console.log(this.pbis);
+            this.backlog = this.pbis;
+          }); */
   }
 
   actualizarBacklog(backlogProposal: nrpAlgorithmIndividual) {
@@ -62,8 +71,8 @@ export class NrpBacklogComponent implements OnInit, OnDestroy {
     this.backlog = [];
     this.backlogProposal = backlogProposal;
 
-    console.log(this.backlogProposal.genes);
-    console.log(this.pbis);
+    /*     console.log(this.backlogProposal.genes);
+        console.log(this.pbis); */
 
     let prioridad: number = 0;
     let prioridadNoElegidos: number = 0;
@@ -96,7 +105,7 @@ export class NrpBacklogComponent implements OnInit, OnDestroy {
     this.backlog.sort((pbi1, pbi2) => {
       return pbi1.prioridad - pbi2.prioridad;
     });
-    console.log(this.backlog);
+    //console.log(this.backlog);
   }
 
   drop(event: CdkDragDrop<string[]>) {
@@ -150,6 +159,33 @@ export class NrpBacklogComponent implements OnInit, OnDestroy {
           this.editarPbi(data.pbi);
         } */
       });
+  }
+
+  setBacklog() {
+    this.isLoading = true;
+    console.log(this.backlog);
+    let formatedBacklog = [...this.backlog];
+    formatedBacklog.forEach((npbi: any) => {
+      let newPbi = Object.assign({}, npbi);
+      delete newPbi.included;
+      console.log(newPbi);
+    });
+    this.pbisService
+      .editarPrioridadesPbis(formatedBacklog)
+      .pipe(untilDestroyed(this))
+      .subscribe(pbis => {
+        console.log(pbis);
+        this._snackBar.open('Backlog changed successfully!', 'Close', {
+          duration: 4000 //miliseconds
+        });
+        this.eventBacklogSaved.emit();
+        this.backlog = [];
+        this.isLoading = false;
+      });
+  }
+
+  get isBacklogEmpty(): boolean {
+    return this.backlog.length === 0;
   }
 
   ngOnDestroy(): void {}

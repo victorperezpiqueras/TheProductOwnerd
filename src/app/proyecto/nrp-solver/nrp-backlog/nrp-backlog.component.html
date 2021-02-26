@@ -1,9 +1,18 @@
-<mat-card class="container mat-elevation-z3" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="2%">
+<mat-card
+  *ngIf="nrpUsed"
+  class="container mat-elevation-z3"
+  fxLayout="column"
+  fxLayoutAlign="start start"
+  fxLayoutGap="2%"
+>
   <div fxLayout="column" fxFill fxLayoutAlign="center center">
     <h1 class="mat-h1" style="text-align: center;">Backlog Proposal</h1>
     <div fxLayout="row" fxFill fxLayoutAlign="end start">
-      <button mat-raised-button color="primary"><mat-icon>archive</mat-icon>&nbsp; Set Backlog</button>
+      <button mat-raised-button color="primary" (click)="setBacklog()" [disabled]="isBacklogEmpty">
+        <mat-icon>archive</mat-icon>&nbsp; Set Backlog
+      </button>
     </div>
+    <app-loader class="loader" [isLoading]="isLoading"></app-loader>
   </div>
 
   <mat-card-content fxFlex="100" fxLayoutAlign="start start" fxLayout="column" fxFill>

@@ -15,7 +15,7 @@
             (click)="findNrp()"
             style="font: size 2vw;"
           >
-            <span> <mat-icon>model_training</mat-icon>&nbsp; Find Next Releases </span>
+            <mat-icon>model_training</mat-icon>&nbsp; Find Next Releases
           </button>
 
           <button *ngIf="loadingNRP" fxFlex="10" mat-raised-button color="warn" style="font: size 2vw;">
@@ -36,9 +36,17 @@
     </mat-card>
 
     <div fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="1%">
-      <app-nrp-chart fxFlex="50" #nrpChart (eventProposalSelected)="eventProposalSelected($event)"></app-nrp-chart>
+      <app-nrp-chart fxFlex="50" #nrpChart (eventProposalSelected)="eventProposalSelected($event)" [nrpUsed]="nrpUsed">
+      </app-nrp-chart>
 
-      <app-nrp-backlog fxFlex="50" #nrpBacklog [proyecto]="proyecto" [permisos]="permisos"></app-nrp-backlog>
+      <app-nrp-backlog
+        fxFlex="50"
+        #nrpBacklog
+        [proyecto]="proyecto"
+        [permisos]="permisos"
+        [nrpUsed]="nrpUsed"
+        (eventBacklogSaved)="eventBacklogSaved($event)"
+      ></app-nrp-backlog>
     </div>
   </div>
 </div>
