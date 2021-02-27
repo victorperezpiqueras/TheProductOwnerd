@@ -291,6 +291,7 @@ export class ProyectoComponent implements OnInit, OnDestroy {
       // console.log(minRelease);
       this.currentRelease = minRelease;
       this.labelRelease = 'Current release: ' + this.currentRelease.version;
+      this.overview.deadline = this.currentRelease.sprint;
     }
   }
 
