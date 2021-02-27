@@ -45,10 +45,6 @@ export class NrpChartComponent implements OnInit {
     });
   }
 
-  aaaa() {
-    console.log('aaa');
-  }
-
   generarGrafico() {
     this.chartOptions = {
       title: {
@@ -136,9 +132,9 @@ export class NrpChartComponent implements OnInit {
               return (
                 '<b><span style="color:' +
                 this.color +
-                '">●</span> Selected proposal</b><br><b>Score: </b>' +
+                '">●</span> Selected Proposal</b><br><b>Value delivered: </b>' +
                 this.x +
-                '</b><br><b>Cost: </b>' +
+                '</b><br><b>Cost (SPs): </b>' +
                 this.y
               );
             }
@@ -178,7 +174,7 @@ export class NrpChartComponent implements OnInit {
   selectBacklog(x: number, y: number) {
     // copiamos el listado de backlogs
     let newBacklogData = [...this.backlogData];
-    console.log(this.backlogData);
+    //console.log(this.backlogData);
     newBacklogData = [];
     // buscamos y eliminamos de la copia el elemento al que hemos hecho click
     for (let i = 0; i < this.backlogData.length; i++) {
@@ -195,7 +191,7 @@ export class NrpChartComponent implements OnInit {
     if (this.backlogDataSelected.length > 0) {
       newBacklogData.push(this.backlogDataSelected[0]);
     }
-    console.log(newBacklogData);
+    //console.log(newBacklogData);
     // ponemos como backlog seleccionado el punto clickado
     this.backlogDataSelected = [[x, y]];
     // guardamos la lista modificada en la original
@@ -211,7 +207,7 @@ export class NrpChartComponent implements OnInit {
         backlogUpdate = backlog;
       }
     });
-    console.log(backlogUpdate);
+    //console.log(backlogUpdate);
     this.eventProposalSelected.emit(backlogUpdate);
   }
 }

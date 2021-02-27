@@ -2,20 +2,43 @@
   *ngIf="nrpUsed"
   class="container mat-elevation-z3"
   fxLayout="column"
-  fxLayoutAlign="start start"
+  fxLayoutAlign="center center"
   fxLayoutGap="2%"
 >
+  <h1 class="mat-h1" style="text-align: center;">Backlog Proposal</h1>
   <div fxLayout="column" fxFill fxLayoutAlign="center center">
-    <h1 class="mat-h1" style="text-align: center;">Backlog Proposal</h1>
-    <div fxLayout="row" fxFill fxLayoutAlign="end start">
-      <button mat-raised-button color="primary" (click)="setBacklog()" [disabled]="isBacklogEmpty">
-        <mat-icon>archive</mat-icon>&nbsp; Set Backlog
-      </button>
+    <div fxLayout="row" fxFill fxLayoutAlign="end start" fxLayoutGap="2%">
+      <mat-card fxFlex="80" class="mat-elevation-z2" style="background-color: rgb(247, 247, 247);">
+        <mat-card-title style="font-size: 18px;text-align: center;">Stakeholders Interest</mat-card-title>
+        <mat-grid-list cols="2" rowHeight="30px" gutterSize="20px">
+          <mat-grid-tile *ngFor="let stakeholderHappiness of stakeholderHappinessList">
+            <div fxFlex>
+              <mat-progress-bar
+                class=""
+                mode="determinate"
+                style="height: 5px;"
+                [value]="percentageHappiness(stakeholderHappiness)"
+                [appProgressBarColor]="getPercentageColorStyle(stakeholderHappiness)"
+              >
+              </mat-progress-bar>
+              &nbsp;<span style="font-size: 15px;color: rgb(146, 146, 146);">{{
+                stakeholderHappiness.stakeholderName
+              }}</span>
+            </div>
+          </mat-grid-tile>
+        </mat-grid-list>
+      </mat-card>
+
+      <div fxFlex>
+        <button mat-raised-button color="primary" (click)="setBacklog()" [disabled]="isBacklogEmpty">
+          <mat-icon>archive</mat-icon>&nbsp; Set Backlog
+        </button>
+      </div>
     </div>
     <app-loader class="loader" [isLoading]="isLoading"></app-loader>
   </div>
-
-  <mat-card-content fxFlex="100" fxLayoutAlign="start start" fxLayout="column" fxFill>
+  <br />
+  <mat-card-content fxFlex="100" fxLayoutAlign="start start" fxLayout="column" fxFill style="padding-top: 2%;">
     <div
       class="droplist"
       cdkDropList

@@ -28,6 +28,7 @@ import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { NrpSolverComponent } from './nrp-solver/nrp-solver.component';
 import { NrpChartComponent } from './nrp-solver/nrp-chart/nrp-chart.component';
 import { NrpBacklogComponent } from './nrp-solver/nrp-backlog/nrp-backlog.component';
+import { ProgressBarColor } from './nrp-solver/progress-bar-custom-color.directive';
 
 @NgModule({
   imports: [
@@ -56,7 +57,8 @@ import { NrpBacklogComponent } from './nrp-solver/nrp-backlog/nrp-backlog.compon
     PolynomialRegressionComponent,
     NrpSolverComponent,
     NrpChartComponent,
-    NrpBacklogComponent
+    NrpBacklogComponent,
+    ProgressBarColor
   ],
   providers: [PbisService, ComentariosService, ArchivosService]
 })

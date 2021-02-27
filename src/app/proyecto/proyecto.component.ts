@@ -107,7 +107,7 @@ export class ProyectoComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.isLoading = true;
-    this.tabIndex = 3;
+    this.tabIndex = 0;
     this.activeRoute.params.pipe(untilDestroyed(this)).subscribe(routeParams => {
       this.proyectosService
         .getProyecto(routeParams.id)
@@ -318,7 +318,7 @@ export class ProyectoComponent implements OnInit, OnDestroy {
   }
 
   actualizarComponentes() {
-    this.tabIndex = 3;
+    this.tabIndex = 0;
     this.changeDetectorRef.detectChanges();
 
     //this.actualizarReleases();

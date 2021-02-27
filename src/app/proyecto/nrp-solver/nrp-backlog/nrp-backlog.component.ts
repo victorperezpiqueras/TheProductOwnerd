@@ -12,6 +12,12 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { PbisService } from '@app/services/pbis.service';
 import { PbiDialogComponent } from '@app/proyecto/backlog/pbiDialog/pbiDialog.component';
 
+interface stakeholderHappiness {
+  stakeholderName: string;
+  stakeholderHappiness: number;
+  stakeholderMaxHappiness: number;
+}
+
 @Component({
   selector: 'app-nrp-backlog',
   templateUrl: './nrp-backlog.component.html',
@@ -35,6 +41,8 @@ export class NrpBacklogComponent implements OnInit, OnDestroy {
 
   dialogRef: MatDialogRef<any>;
 
+  stakeholderHappinessList: stakeholderHappiness[] = [];
+
   constructor(
     private proyectosService: ProyectosService,
     private pbisService: PbisService,
@@ -54,20 +62,21 @@ export class NrpBacklogComponent implements OnInit, OnDestroy {
           }); */
   }
 
-  actualizarBacklog(backlogProposal: nrpAlgorithmIndividual) {
+  actualizarBacklog(backlogProposal: nrpAlgorithmIndividual, valoresStakeholders: any[]) {
     this.proyectosService
       .getProyectoPBIs(this.proyecto.idproyecto)
       .pipe(untilDestroyed(this))
       .subscribe((pbis: Pbi[]) => {
         this.pbis = pbis.filter((pbi: Pbi) => pbi.done == 0);
-        console.log(this.pbis);
-        console.log(backlogProposal);
+        /* console.log(this.pbis);
+        console.log(backlogProposal); */
         this.setBacklogProposal(backlogProposal);
+        this.calculatePercentageBarStakeholders(backlogProposal, valoresStakeholders);
       });
   }
 
   setBacklogProposal(backlogProposal: nrpAlgorithmIndividual) {
-    console.log('child get');
+    //console.log('child get');
     this.backlog = [];
     this.backlogProposal = backlogProposal;
 
@@ -106,6 +115,41 @@ export class NrpBacklogComponent implements OnInit, OnDestroy {
       return pbi1.prioridad - pbi2.prioridad;
     });
     //console.log(this.backlog);
+  }
+
+  calculatePercentageBarStakeholders(backlogProposal: nrpAlgorithmIndividual, valoresStakeholders: any[]) {
+    this.stakeholderHappinessList = [];
+    this.proyectosService
+      .getProyectoUsuariosRoles(this.proyecto.idproyecto)
+      .pipe(untilDestroyed(this))
+      .subscribe((roles: any) => {
+        for (let rol of roles) {
+          // para cada stakeholder
+          if (rol.rol === 'stakeholder') {
+            let valorMax: number = 0;
+            let valorReal: number = 0;
+            // para cada una de las valoraciones
+            for (let valor of valoresStakeholders) {
+              // si es suya => calcular el valor maximo
+              if (rol.idrol === valor.idrol) {
+                valorMax += valor.valor;
+                // calcular valor real si en el backlog proposal esta incluido el pbi valorado
+                backlogProposal.genes.forEach((gen: nrpAlgorithmGen) => {
+                  if (gen.idpbi === valor.idpbi && gen.included == 1) {
+                    valorReal += valor.valor;
+                  }
+                });
+              }
+            }
+            this.stakeholderHappinessList.push({
+              stakeholderName: rol.nick,
+              stakeholderMaxHappiness: valorMax,
+              stakeholderHappiness: valorReal
+            });
+          }
+        }
+        console.log(this.stakeholderHappinessList);
+      });
   }
 
   drop(event: CdkDragDrop<string[]>) {
@@ -163,18 +207,18 @@ export class NrpBacklogComponent implements OnInit, OnDestroy {
 
   setBacklog() {
     this.isLoading = true;
-    console.log(this.backlog);
+    //console.log(this.backlog);
     let formatedBacklog = [...this.backlog];
     formatedBacklog.forEach((npbi: any) => {
       let newPbi = Object.assign({}, npbi);
       delete newPbi.included;
-      console.log(newPbi);
+      //console.log(newPbi);
     });
     this.pbisService
       .editarPrioridadesPbis(formatedBacklog)
       .pipe(untilDestroyed(this))
       .subscribe(pbis => {
-        console.log(pbis);
+        //console.log(pbis);
         this._snackBar.open('Backlog changed successfully!', 'Close', {
           duration: 4000 //miliseconds
         });
@@ -186,6 +230,23 @@ export class NrpBacklogComponent implements OnInit, OnDestroy {
 
   get isBacklogEmpty(): boolean {
     return this.backlog.length === 0;
+  }
+
+  percentageHappiness(data: stakeholderHappiness): number {
+    return (data.stakeholderHappiness / data.stakeholderMaxHappiness) * 100;
+  }
+
+  getPercentageColorStyle(stakeholderHappiness: stakeholderHappiness) {
+    let val = this.percentageHappiness(stakeholderHappiness);
+    if (val > 75) {
+      return '#00dd00';
+    } else if (val > 50) {
+      return '#ffd800';
+    } else if (val > 25) {
+      return '#ff7800';
+    } else {
+      return '#ff5050';
+    }
   }
 
   ngOnDestroy(): void {}
