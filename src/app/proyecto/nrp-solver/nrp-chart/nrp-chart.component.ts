@@ -179,10 +179,6 @@ export class NrpChartComponent implements OnInit {
     // buscamos y eliminamos de la copia el elemento al que hemos hecho click
     for (let i = 0; i < this.backlogData.length; i++) {
       if (this.backlogData[i][0] == x && this.backlogData[i][1] == y) {
-        /*  console.log("borrado")
-         newBacklogData.splice(i, 1);
-         console.log([...newBacklogData])
-         break; */
       } else {
         newBacklogData.push(this.backlogData[i]);
       }
@@ -202,9 +198,17 @@ export class NrpChartComponent implements OnInit {
 
   notificarBacklog() {
     let backlogUpdate;
+    console.log(this.backlogDataSelected[0]);
     this.backlogList.forEach((backlog: nrpAlgorithmIndividual) => {
-      if (backlog.score == this.backlogDataSelected[0][0] && backlog.cost == this.backlogDataSelected[0][1]) {
+      /* console.log(backlog.score)
+      console.log(backlog.cost) */
+      // no se por que aqui se vuelven a poner mas de 2 decimales
+      if (
+        Number(backlog.score.toFixed(2)) == this.backlogDataSelected[0][0] &&
+        Number(backlog.cost.toFixed(2)) == this.backlogDataSelected[0][1]
+      ) {
         backlogUpdate = backlog;
+        console.log('if');
       }
     });
     //console.log(backlogUpdate);

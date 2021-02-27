@@ -57,6 +57,8 @@ export class OverviewComponent implements OnInit, OnDestroy {
 
   pbis: Pbi[];
 
+  deadline: number;
+
   /* --------------TEAM TABLE-------------- */
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
   /*  @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize; */
@@ -167,7 +169,7 @@ export class OverviewComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe((pbis: []) => {
         this.pbis = pbis;
-        this.pbc.actualizarGrafico(this.proyecto, this.pbis);
+        this.pbc.actualizarGrafico(this.proyecto, this.pbis, this.deadline);
         this.poc.actualizarGrafico(this.proyecto, this.pbis);
         this.bugs.actualizarGrafico(this.proyecto, this.pbis);
       });

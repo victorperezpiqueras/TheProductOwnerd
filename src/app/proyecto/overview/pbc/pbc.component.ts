@@ -16,7 +16,7 @@ import { formatDataNumberStandardToFixed1 } from '@app/shared/formatDataNumber';
   templateUrl: './pbc.component.html',
   styleUrls: ['./pbc.component.scss']
 })
-export class PbcComponent implements Grafico, OnInit, OnDestroy {
+export class PbcComponent implements OnInit, OnDestroy {
   // highcharts
   Highcharts: typeof Highcharts = Highcharts;
   chartOptions: Highcharts.Options;
@@ -56,13 +56,16 @@ export class PbcComponent implements Grafico, OnInit, OnDestroy {
   averageThroughput: number = 0;
   averageVelocity: number = 0;
 
+  deadline: number;
+
   constructor() {}
 
   ngOnInit() {}
 
-  actualizarGrafico(proyecto: Proyecto, pbis: Pbi[]) {
+  actualizarGrafico(proyecto: Proyecto, pbis: Pbi[], deadline: number) {
     this.proyecto = proyecto;
     this.pbis = pbis;
+    this.deadline = deadline;
     this.showScopeCreep = false;
     this.generarDatos();
     this.generarIdeal();
@@ -318,7 +321,7 @@ export class PbcComponent implements Grafico, OnInit, OnDestroy {
   generarIdeal() {
     this.listaIdeal = [];
     this.listaIdeal.push({ x: 0, y: this.sprints[0].restante });
-    this.listaIdeal.push({ x: this.proyecto.deadline, y: 0 });
+    this.listaIdeal.push({ x: this.deadline, y: 0 });
   }
 
   generarGrafico() {
