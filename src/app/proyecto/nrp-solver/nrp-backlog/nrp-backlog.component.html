@@ -5,8 +5,26 @@
   fxLayoutAlign="center center"
   fxLayoutGap="2%"
 >
-  <h1 class="mat-h1" style="text-align: center;">Backlog Proposal</h1>
-  <div fxLayout="column" fxFill fxLayoutAlign="center center">
+  <!-- *ngIf="nrpUsed"  -->
+
+  <h1 class="mat-h1" style="text-align: center;">
+    Backlog Proposal
+  </h1>
+
+  <div fxLayout="column" fxFill fxLayoutAlign="center center" fxLayoutGap="2%">
+    <mat-card
+      *ngIf="warning && displayWarning"
+      fxFill
+      style="background-color: rgba(255, 153, 153, 0.438);display: flex;align-items:center ;"
+    >
+      <mat-icon [matTooltip]="tooltipWarning" matTooltipPosition="right" matTooltipShowDelay="500">
+        report_problem </mat-icon
+      ><span style="font-size: 0.8vw;">{{ tooltipWarning }}</span>
+      <button mat-icon-button class="close-button" (click)="closeWarning()">
+        <mat-icon class="close-icon" color="warn">close</mat-icon>
+      </button>
+    </mat-card>
+
     <div fxLayout="row" fxFill fxLayoutAlign="end start" fxLayoutGap="2%">
       <mat-card fxFlex="80" class="mat-elevation-z2" style="background-color: rgb(247, 247, 247);">
         <mat-card-title style="font-size: 18px;text-align: center;">Stakeholders Interest</mat-card-title>
@@ -29,8 +47,19 @@
         </mat-grid-list>
       </mat-card>
 
-      <div fxFlex>
-        <button mat-raised-button color="primary" (click)="setBacklog()" [disabled]="isBacklogEmpty">
+      <div
+        fxFlex
+        matTooltip="Set Backlog is disabled for future releases"
+        [matTooltipDisabled]="allowSetBacklog"
+        matTooltipPosition="above"
+        matTooltipShowDelay="500"
+      >
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="setBacklog()"
+          [disabled]="isBacklogEmpty || !allowSetBacklog"
+        >
           <mat-icon>archive</mat-icon>&nbsp; Set Backlog
         </button>
       </div>
@@ -38,7 +67,7 @@
     <app-loader class="loader" [isLoading]="isLoading"></app-loader>
   </div>
   <br />
-  <mat-card-content fxFlex="100" fxLayoutAlign="start start" fxLayout="column" fxFill style="padding-top: 2%;">
+  <mat-card-content fxFlex="100" fxLayoutAlign="center start" fxLayout="column" fxFill style="padding-top: 2%;">
     <div
       class="droplist"
       cdkDropList

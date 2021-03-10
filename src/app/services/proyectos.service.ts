@@ -135,4 +135,13 @@ export class ProyectosService {
   getProyectoPbiPonderations(idproyecto: number): Observable<any> {
     return this.http.get<any>(this.url + '/' + idproyecto + '/pbiPonderations', httpOptions);
   }
+
+  /**
+   * Obtiene los pbis, valores e importancias de un proyecto para una release
+   * @param {number} idproyecto id del proyecto
+   * @returns [ importancias, valores, pbis ]
+   */
+  getProyectoPbiPonderationsRelease(idproyecto: number, idrelease: number): Observable<any> {
+    return this.http.get<any>(this.url + '/' + idproyecto + '/pbiPonderations' + '/' + idrelease, httpOptions);
+  }
 }

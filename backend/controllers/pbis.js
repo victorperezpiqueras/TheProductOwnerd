@@ -122,3 +122,22 @@ ControllerPbis.getProyectoPBIsBacklog = function(idproyecto) {
     }
   });
 };
+
+/**
+ * Obtiene los pbis de un proyecto que estan en el backlog y que tengan la release dada
+ * @param {number} idproyecto id del proyecto
+ * @param {number} idrelease id de la release
+ * @returns [ {idpbi, titulo, descripcion, done, label, estimacion, idproyecto, prioridad, valor, sprint, sprintCreacion} ]
+ */
+ControllerPbis.getProyectoPBIsBacklogRelease = function(idproyecto, idrelease) {
+  return new Promise(async function(resolve, reject) {
+    const sql =
+      'select p.* from pbis p, proyectos pr where pr.idproyecto=p.idproyecto and p.idproyecto = ? and p.done=0 and p.idrelease=?';
+    try {
+      const pbis = await connection.query(sql, [idproyecto, idrelease]);
+      resolve(pbis[0]);
+    } catch (error) {
+      reject({ error: 'Error inesperado en getProyectoPBIsBacklogRelease' });
+    }
+  });
+};

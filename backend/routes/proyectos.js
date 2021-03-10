@@ -207,4 +207,16 @@ router.get('/:idproyecto/pbiPonderations', verifyToken, verifyProjectPermissions
     });
 });
 
+router.get('/:idproyecto/pbiPonderations/:idrelease', verifyToken, verifyProjectPermissions, function(req, res, next) {
+  console.log('getProyectoPbiPonderationsRelease');
+  controllerProyectos
+    .getProyectoPbiPonderationsRelease(req.params.idproyecto, req.params.idrelease)
+    .then(function(data) {
+      res.json(data);
+    })
+    .catch(function(err) {
+      res.status(500).json(err);
+    });
+});
+
 module.exports = router;

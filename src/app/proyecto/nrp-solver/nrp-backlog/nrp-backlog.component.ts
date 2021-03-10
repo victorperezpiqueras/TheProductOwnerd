@@ -43,6 +43,16 @@ export class NrpBacklogComponent implements OnInit, OnDestroy {
 
   stakeholderHappinessList: stakeholderHappiness[] = [];
 
+  allowSetBacklog: boolean = true;
+
+  warning: boolean = false;
+
+  tooltipWarning: string =
+    'Some PBIs were not estimated, so it will be assumed their estimation to be equal to the maximum estimation value of all PBIs.';
+  displayWarning: boolean = true;
+
+  numberChosenPbis: number;
+
   constructor(
     private proyectosService: ProyectosService,
     private pbisService: PbisService,
@@ -71,6 +81,7 @@ export class NrpBacklogComponent implements OnInit, OnDestroy {
         /* console.log(this.pbis);
         console.log(backlogProposal); */
         this.setBacklogProposal(backlogProposal);
+        this.calculateNotSelectedPbisOrder();
         this.calculatePercentageBarStakeholders(backlogProposal, valoresStakeholders);
       });
   }
@@ -80,15 +91,13 @@ export class NrpBacklogComponent implements OnInit, OnDestroy {
     this.backlog = [];
     this.backlogProposal = backlogProposal;
 
-    /*     console.log(this.backlogProposal.genes);
-        console.log(this.pbis); */
-
     let prioridad: number = 0;
     let prioridadNoElegidos: number = 0;
     // contar cuantos pbis van a estar ordenados por delante de los no elegidos
     this.backlogProposal.genes.forEach((gen: nrpAlgorithmGen) => {
       if (gen.included == 1) prioridadNoElegidos++;
     });
+    this.numberChosenPbis = prioridadNoElegidos;
 
     // buscamos para cada gen el pbi al que corresponde
     for (let i = 0; i < this.backlogProposal.genes.length; i++) {
@@ -115,6 +124,28 @@ export class NrpBacklogComponent implements OnInit, OnDestroy {
       return pbi1.prioridad - pbi2.prioridad;
     });
     //console.log(this.backlog);
+  }
+
+  calculateNotSelectedPbisOrder() {
+    this.backlog.length = this.numberChosenPbis;
+    console.log(this.backlog);
+    let notSelectedBacklog = []; /* [...this.pbis]; */
+    for (let pbi of this.pbis) {
+      let exists = this.backlog.find((otherPbi: Pbi) => otherPbi.idpbi === pbi.idpbi);
+      if (!exists) {
+        notSelectedBacklog.push(pbi);
+      }
+    }
+    let prioridadAcumulada = this.numberChosenPbis;
+    for (let pbi of notSelectedBacklog) {
+      pbi.prioridad = prioridadAcumulada;
+      prioridadAcumulada++;
+    }
+    this.backlog.push(...notSelectedBacklog);
+    /* orderedBacklog.sort((pbi1, pbi2) => {
+      return pbi1.prioridad - pbi2.prioridad;
+    }); */
+    console.log(this.backlog);
   }
 
   calculatePercentageBarStakeholders(backlogProposal: nrpAlgorithmIndividual, valoresStakeholders: any[]) {
@@ -224,6 +255,7 @@ export class NrpBacklogComponent implements OnInit, OnDestroy {
         });
         this.eventBacklogSaved.emit();
         this.backlog = [];
+        this.stakeholderHappinessList = [];
         this.isLoading = false;
       });
   }
@@ -247,6 +279,10 @@ export class NrpBacklogComponent implements OnInit, OnDestroy {
     } else {
       return '#ff5050';
     }
+  }
+
+  closeWarning() {
+    this.displayWarning = false;
   }
 
   ngOnDestroy(): void {}

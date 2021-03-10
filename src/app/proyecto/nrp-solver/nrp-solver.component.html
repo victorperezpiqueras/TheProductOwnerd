@@ -1,15 +1,64 @@
 <div class="container" fxFill>
-  <div *ngIf="proyecto" fxLayout="column" fxLayoutGap="1%">
+  <div *ngIf="proyecto && releases && currentRelease" fxLayout="column" fxLayoutGap="1%">
     <app-loader class="loader" [isLoading]="isLoading"></app-loader>
 
     <mat-card>
       <mat-card-content fxLayout="column">
         <h2 class="mat-h1">Next Release Advisor</h2>
 
-        <div fxLayout="row" fxLayoutGap="1%" fxLayoutAlign="start center" fxFill>
+        <div fxLayout="row" fxLayoutGap="0.5%" fxLayoutAlign="start center" fxFill>
+          <button mat-raised-button fxFlex="12" color="primary" [matMenuTriggerFor]="menu" [disabled]="loadingNRP">
+            {{ searchTypeButtonLabel }}
+            <mat-icon>arrow_drop_down</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="setSearchType(searchTypeButtonLabelOptions[0])">
+              {{ searchTypeButtonLabelOptions[0] }}&nbsp;&nbsp;
+              <mat-icon
+                [matTooltip]="searchOptionsHelpMessages[0]"
+                matTooltipPosition="right"
+                matTooltipShowDelay="800"
+              >
+                info
+              </mat-icon>
+            </button>
+            <button
+              mat-menu-item
+              (click)="setSearchType(searchTypeButtonLabelOptions[1] + ' ' + currentRelease.version, currentRelease)"
+            >
+              {{ searchTypeButtonLabelOptions[1] }} ({{ currentRelease.version }})&nbsp;&nbsp;
+              <mat-icon
+                [matTooltip]="searchOptionsHelpMessages[1]"
+                matTooltipPosition="right"
+                matTooltipShowDelay="800"
+              >
+                info
+              </mat-icon>
+            </button>
+            <button mat-menu-item [matMenuTriggerFor]="menu2">
+              {{ searchTypeButtonLabelOptions[2] }}&nbsp;&nbsp;
+              <mat-icon
+                [matTooltip]="searchOptionsHelpMessages[2]"
+                matTooltipPosition="below"
+                matTooltipShowDelay="800"
+              >
+                info
+              </mat-icon>
+            </button>
+            <mat-menu #menu2="matMenu">
+              <button
+                mat-menu-item
+                *ngFor="let release of releases"
+                (click)="setSearchType('Release ' + release.version, release)"
+              >
+                Release {{ release.version }}
+              </button>
+            </mat-menu>
+          </mat-menu>
+
           <button
             *ngIf="!loadingNRP"
-            fxFlex="10"
+            fxFlex="12"
             mat-raised-button
             color="primary"
             (click)="findNrp()"
@@ -18,7 +67,7 @@
             <mat-icon>model_training</mat-icon>&nbsp; Find Next Releases
           </button>
 
-          <button *ngIf="loadingNRP" fxFlex="10" mat-raised-button color="warn" style="font: size 2vw;">
+          <button *ngIf="loadingNRP" fxFlex="12" mat-raised-button color="warn" style="font: size 2vw;">
             <span *ngIf="loadingNRP">
               Loading...
             </span>
@@ -36,11 +85,11 @@
     </mat-card>
 
     <div fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="1%">
-      <app-nrp-chart fxFlex="50" #nrpChart (eventProposalSelected)="eventProposalSelected($event)" [nrpUsed]="nrpUsed">
+      <app-nrp-chart fxFlex="40" #nrpChart (eventProposalSelected)="eventProposalSelected($event)" [nrpUsed]="nrpUsed">
       </app-nrp-chart>
 
       <app-nrp-backlog
-        fxFlex="50"
+        fxFlex="60"
         #nrpBacklog
         [proyecto]="proyecto"
         [permisos]="permisos"

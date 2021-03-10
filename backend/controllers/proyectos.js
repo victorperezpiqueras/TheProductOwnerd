@@ -460,3 +460,38 @@ ControllerProyectos.getProyectoPbiPonderations = function(idproyecto) {
     }
   });
 };
+
+/**
+ * Obtiene los pbis, valores e importancias de un proyecto para una release
+ * @param {number} idproyecto id del proyecto
+ * @returns [ stakeholderImportances, pbiValues, pbis ]
+ */
+ControllerProyectos.getProyectoPbiPonderationsRelease = function(idproyecto, idrelease) {
+  return new Promise(async function(resolve, reject) {
+    try {
+      importancias = await controllerImportancias.obtenerImportanciasProyecto(idproyecto);
+      pbis = await controllerPbis.getProyectoPBIsBacklogRelease(idproyecto, idrelease);
+      //console.log(pbis.length)
+
+      valores = [];
+      for (pbi of pbis) {
+        //console.log(pbi.idpbi)
+        val = await controllerValores.obtenerValoresPbi(pbi.idpbi);
+        val.forEach(async value => {
+          valores.push(value);
+        });
+      }
+
+      //console.log(valores)
+
+      result = {
+        importancias: importancias,
+        pbis: pbis,
+        valores: valores
+      };
+      resolve(result);
+    } catch {
+      reject({ error: 'Error inesperado en getProyectoPbiPonderations' });
+    }
+  });
+};

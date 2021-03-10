@@ -41,7 +41,7 @@ export class ProyectoComponent implements OnInit, OnDestroy {
   @ViewChild('overview', { static: false }) overview: OverviewComponent;
   @ViewChild('backlog', { static: false }) backlog: BacklogComponent;
   @ViewChild('forecasts', { static: false }) forecasts: ForecastsComponent;
-  @ViewChild('nrp-solver', { static: false }) nrpSolver: NrpSolverComponent;
+  @ViewChild('nrpSolver', { static: false }) nrpSolver: NrpSolverComponent;
 
   /* --------------DIALOG ELEMENTS AND VARIABLES-------------- */
   dialogRef: MatDialogRef<any>;
@@ -129,7 +129,7 @@ export class ProyectoComponent implements OnInit, OnDestroy {
                   this.permisos = permisos;
                   this.actualizarSprintGoals();
                   this.actualizarReleases();
-                  this.actualizarComponentes();
+                  //this.actualizarComponentes();
                   this.isLoading = false;
                 });
             });
@@ -254,6 +254,7 @@ export class ProyectoComponent implements OnInit, OnDestroy {
         this.releases = releases;
         this.findCurrentRelease();
         this.countCurrentReleaseSPs();
+        this.actualizarComponentes();
         this.isLoading = false;
       });
   }
@@ -319,7 +320,7 @@ export class ProyectoComponent implements OnInit, OnDestroy {
   }
 
   actualizarComponentes() {
-    this.tabIndex = 0;
+    this.tabIndex = 3;
     this.changeDetectorRef.detectChanges();
 
     //this.actualizarReleases();
@@ -331,6 +332,12 @@ export class ProyectoComponent implements OnInit, OnDestroy {
     this.backlog.proyecto = this.proyecto;
     this.backlog.permisos = this.permisos;
     this.backlog.actualizar();
+
+    this.nrpSolver.proyecto = this.proyecto;
+    this.nrpSolver.permisos = this.permisos;
+    this.nrpSolver.releases = this.releases;
+    this.nrpSolver.currentRelease = this.currentRelease;
+    this.nrpSolver.actualizar();
 
     if (this.isProductOwner || this.isStakeholder) {
       this.forecasts.proyecto = this.proyecto;
