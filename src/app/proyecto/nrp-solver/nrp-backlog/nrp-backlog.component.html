@@ -67,6 +67,7 @@
     <app-loader class="loader" [isLoading]="isLoading"></app-loader>
   </div>
   <br />
+  <mat-card-subtitle *ngIf="backlog.length <= 0">Select a proposal to view details</mat-card-subtitle>
   <mat-card-content fxFlex="100" fxLayoutAlign="center start" fxLayout="column" fxFill style="padding-top: 2%;">
     <div
       class="droplist"

@@ -238,8 +238,9 @@
 
               <mat-step label="View all releases" [completed]="true" state="viewAll">
                 <div fxLayout="column" fxLayoutGap="10px" cdkScrollable>
-                  <mat-card-title class="body-2">All releases</mat-card-title>
-
+                  <mat-card-title style="display: flex;align-items:center ;" class="body-2"
+                    >All releases<mat-icon>arrow_downward</mat-icon></mat-card-title
+                  >
                   <mat-card
                     *ngFor="let rel of releases"
                     [ngStyle]="{

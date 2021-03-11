@@ -278,7 +278,8 @@ export class ProyectoComponent implements OnInit, OnDestroy {
 
   findCurrentRelease() {
     this.releases = this.releases.sort((a: Release, b: Release) => {
-      if (a.sprint < b.sprint) return 1;
+      if (a.sprint > b.sprint) return 1;
+      //< arriba las mas lejanas abajo las mas cercanas
       else return -1;
     });
     if (this.releases.length > 0) {
@@ -287,6 +288,7 @@ export class ProyectoComponent implements OnInit, OnDestroy {
       this.releases.forEach((rel: Release) => {
         if (rel.sprint < minSprint && rel.sprint >= this.proyecto.sprintActual) {
           minRelease = rel;
+          minSprint = rel.sprint;
         }
       });
       // console.log(minRelease);
@@ -320,7 +322,7 @@ export class ProyectoComponent implements OnInit, OnDestroy {
   }
 
   actualizarComponentes() {
-    this.tabIndex = 3;
+    this.tabIndex = 0;
     this.changeDetectorRef.detectChanges();
 
     //this.actualizarReleases();
@@ -335,7 +337,7 @@ export class ProyectoComponent implements OnInit, OnDestroy {
 
     this.nrpSolver.proyecto = this.proyecto;
     this.nrpSolver.permisos = this.permisos;
-    this.nrpSolver.releases = this.releases;
+    this.nrpSolver.releases = [...this.releases];
     this.nrpSolver.currentRelease = this.currentRelease;
     this.nrpSolver.actualizar();
 
