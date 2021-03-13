@@ -115,11 +115,14 @@ export class NrpSolverComponent implements OnInit, OnDestroy {
   findNrpRelease(release: Release, allowSetBacklog: boolean) {
     this.loadingNRP = true;
     this.nrpUsed = false;
+    this.nrpBacklog.releaseMode = release.idrelease;
+    this.nrpBacklog.resetBacklog();
     this.nrpBacklog.allowSetBacklog = allowSetBacklog;
     this.proyectosService
       .getProyectoPbiPonderationsRelease(this.proyecto.idproyecto, release.idrelease)
       .pipe(untilDestroyed(this))
       .subscribe((data: any) => {
+        //console.log(data)
         this.showData(data);
       });
   }
@@ -127,6 +130,8 @@ export class NrpSolverComponent implements OnInit, OnDestroy {
   findNrpAllBacklog() {
     this.loadingNRP = true;
     this.nrpUsed = false;
+    this.nrpBacklog.releaseMode = null;
+    this.nrpBacklog.resetBacklog();
     this.nrpBacklog.allowSetBacklog = true;
     this.proyectosService
       .getProyectoPbiPonderations(this.proyecto.idproyecto)

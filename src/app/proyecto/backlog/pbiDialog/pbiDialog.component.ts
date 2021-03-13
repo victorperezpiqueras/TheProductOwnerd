@@ -240,7 +240,7 @@ export class PbiDialogComponent implements OnInit, OnDestroy {
           forkJoin(peticiones$)
             .pipe(untilDestroyed(this))
             .subscribe(results => {
-              console.log('aaa');
+              //onsole.log('aaa');
               results.forEach((result: any) => {
                 this.valores.forEach((val: ValorStakeholder) => {
                   if (val.valor >= 0) {
@@ -250,7 +250,7 @@ export class PbiDialogComponent implements OnInit, OnDestroy {
                   }
                 });
               });
-              console.log(this.tablaValores);
+              //console.log(this.tablaValores);
               this.dataSource.data = this.tablaValores;
               this.isLoading = false;
             });

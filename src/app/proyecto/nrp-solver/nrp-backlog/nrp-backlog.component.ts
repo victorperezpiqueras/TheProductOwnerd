@@ -52,6 +52,7 @@ export class NrpBacklogComponent implements OnInit, OnDestroy {
   displayWarning: boolean = true;
 
   numberChosenPbis: number;
+  releaseMode: number = null;
 
   constructor(
     private proyectosService: ProyectosService,
@@ -72,25 +73,25 @@ export class NrpBacklogComponent implements OnInit, OnDestroy {
           }); */
   }
 
+  resetBacklog() {
+    this.backlog = [];
+    this.stakeholderHappinessList = [];
+  }
+
   actualizarBacklog(backlogProposal: nrpAlgorithmIndividual, valoresStakeholders: any[]) {
     this.proyectosService
       .getProyectoPBIs(this.proyecto.idproyecto)
       .pipe(untilDestroyed(this))
       .subscribe((pbis: Pbi[]) => {
         this.pbis = pbis.filter((pbi: Pbi) => pbi.done == 0);
-        /* console.log(this.pbis);
-        console.log(backlogProposal); */
-        this.setBacklogProposal(backlogProposal);
-        this.calculateNotSelectedPbisOrder();
+        this.calculateBacklogOrdering(backlogProposal);
         this.calculatePercentageBarStakeholders(backlogProposal, valoresStakeholders);
       });
   }
 
-  setBacklogProposal(backlogProposal: nrpAlgorithmIndividual) {
-    //console.log('child get');
+  calculateBacklogOrdering(backlogProposal: nrpAlgorithmIndividual) {
     this.backlog = [];
     this.backlogProposal = backlogProposal;
-
     let prioridad: number = 0;
     let prioridadNoElegidos: number = 0;
     // contar cuantos pbis van a estar ordenados por delante de los no elegidos
@@ -98,6 +99,8 @@ export class NrpBacklogComponent implements OnInit, OnDestroy {
       if (gen.included == 1) prioridadNoElegidos++;
     });
     this.numberChosenPbis = prioridadNoElegidos;
+
+    let notSelectedBacklog: Pbi[] = [];
 
     // buscamos para cada gen el pbi al que corresponde
     for (let i = 0; i < this.backlogProposal.genes.length; i++) {
@@ -110,41 +113,85 @@ export class NrpBacklogComponent implements OnInit, OnDestroy {
           npbi.included = 1;
           prioridad++;
           this.backlog.push(npbi);
+          //console.log(pbi.idpbi, "included")
         } // si no esta elegido, lo ponemos al final de los elegidos y seguimos con su contador
         else if (this.backlogProposal.genes[i].included == 0) {
-          pbi.prioridad = prioridadNoElegidos;
+          //console.log(pbi.idpbi, "not included")
+          //pbi.prioridad = prioridadNoElegidos;
           let npbi: any = pbi;
           npbi.included = 0;
+          notSelectedBacklog.push(npbi);
           prioridadNoElegidos++;
-          this.backlog.push(npbi);
+          /* this.backlog.push(npbi); */
         }
       }
     }
-    this.backlog.sort((pbi1, pbi2) => {
-      return pbi1.prioridad - pbi2.prioridad;
-    });
-    //console.log(this.backlog);
-  }
 
-  calculateNotSelectedPbisOrder() {
-    this.backlog.length = this.numberChosenPbis;
-    console.log(this.backlog);
-    let notSelectedBacklog = []; /* [...this.pbis]; */
-    for (let pbi of this.pbis) {
-      let exists = this.backlog.find((otherPbi: Pbi) => otherPbi.idpbi === pbi.idpbi);
-      if (!exists) {
-        notSelectedBacklog.push(pbi);
+    // si se cargan todos
+    if (!this.releaseMode) {
+      /* this.backlog.push(...notSelectedBacklog); */
+      let newNotSelectedBacklog: Pbi[] = [];
+      // recogemos los que no son elegidos y los ponemos en el mismo orden debajo
+      for (let pbi of this.pbis) {
+        let exists = this.backlog.find((otherPbi: Pbi) => otherPbi.idpbi === pbi.idpbi);
+        if (!exists) {
+          newNotSelectedBacklog.push(pbi);
+        }
       }
+      // nuevas prioridades en orden
+      let prioridad = this.numberChosenPbis;
+      for (let pbi of newNotSelectedBacklog) {
+        pbi.prioridad = prioridad;
+        prioridad++;
+      }
+      // unimos los elegidos con todos los no elegidos en orden
+      this.backlog.push(...newNotSelectedBacklog);
+      this.backlog.sort((pbi1, pbi2) => {
+        return pbi1.prioridad - pbi2.prioridad;
+      });
     }
-    let prioridadAcumulada = this.numberChosenPbis;
-    for (let pbi of notSelectedBacklog) {
-      pbi.prioridad = prioridadAcumulada;
-      prioridadAcumulada++;
+    // si es modo release: poner primero los de release y despues los demas
+    else {
+      //console.log(this.backlog)
+      // cogemos los pbis no elegidos de la release, los ordenamos por su antigua prioridad y la reseteamos a la nueva
+      notSelectedBacklog.sort((pbi1, pbi2) => {
+        return pbi1.prioridad - pbi2.prioridad;
+      });
+      let prioridad = this.backlog.length;
+      for (let pbi of notSelectedBacklog) {
+        pbi.prioridad = prioridad;
+        prioridad++;
+      }
+      //console.log(notSelectedBacklog)
+      // los metemos en el backlog final
+      this.backlog.push(...notSelectedBacklog);
+
+      // repetimos con los pbis que faltan
+      let newNotSelectedBacklog: Pbi[] = [];
+      for (let pbi of this.pbis) {
+        let exists = this.backlog.find((otherPbi: Pbi) => otherPbi.idpbi === pbi.idpbi);
+        if (!exists) {
+          newNotSelectedBacklog.push(pbi);
+        }
+      }
+      // reordenamos por prioridades para poder recorrerlos en orden
+      newNotSelectedBacklog.sort((pbi1, pbi2) => {
+        return pbi1.prioridad - pbi2.prioridad;
+      });
+      //console.log(newNotSelectedBacklog)
+      // poner nuevas prioridades en orden
+      prioridad = this.backlog.length;
+      for (let pbi of newNotSelectedBacklog) {
+        pbi.prioridad = prioridad;
+        prioridad++;
+      }
+      // los metemos en el backlog final
+      this.backlog.push(...newNotSelectedBacklog);
+      // ordenamos el backlog final
+      this.backlog.sort((pbi1, pbi2) => {
+        return pbi1.prioridad - pbi2.prioridad;
+      });
     }
-    this.backlog.push(...notSelectedBacklog);
-    /* orderedBacklog.sort((pbi1, pbi2) => {
-      return pbi1.prioridad - pbi2.prioridad;
-    }); */
     console.log(this.backlog);
   }
 
