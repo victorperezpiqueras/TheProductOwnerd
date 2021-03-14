@@ -138,6 +138,9 @@ export class NrpBacklogComponent implements OnInit, OnDestroy {
           newNotSelectedBacklog.push(pbi);
         }
       }
+      newNotSelectedBacklog.sort((pbi1, pbi2) => {
+        return pbi1.prioridad - pbi2.prioridad;
+      });
       // nuevas prioridades en orden
       let prioridad = this.numberChosenPbis;
       for (let pbi of newNotSelectedBacklog) {
