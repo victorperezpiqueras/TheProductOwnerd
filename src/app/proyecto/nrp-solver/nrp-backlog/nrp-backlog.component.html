@@ -7,9 +7,20 @@
 >
   <!-- *ngIf="nrpUsed"  -->
 
-  <h1 class="mat-h1" style="text-align: center;">
-    Backlog Proposal
-  </h1>
+  <div fxLayout="row" fxFill fxLayoutAlign="center center">
+    <h1 class="mat-h1" style="text-align: center;">
+      Backlog Proposal
+    </h1>
+    <mat-icon
+      style="margin-bottom: 16px;"
+      class="help-icon"
+      [matTooltip]="tooltipBacklog"
+      matTooltipPosition="above"
+      matTooltipShowDelay="0"
+    >
+      help
+    </mat-icon>
+  </div>
 
   <div fxLayout="column" fxFill fxLayoutAlign="center center" fxLayoutGap="2%">
     <mat-card
@@ -47,13 +58,7 @@
         </mat-grid-list>
       </mat-card>
 
-      <div
-        fxFlex
-        matTooltip="Set Backlog is disabled for future releases"
-        [matTooltipDisabled]="allowSetBacklog"
-        matTooltipPosition="above"
-        matTooltipShowDelay="500"
-      >
+      <div fxFlex>
         <button
           mat-raised-button
           color="primary"
@@ -62,6 +67,14 @@
         >
           <mat-icon>archive</mat-icon>&nbsp; Set Backlog
         </button>
+        &nbsp;<mat-icon
+          class="help-icon"
+          [matTooltip]="tooltipSetBacklog"
+          matTooltipPosition="above"
+          matTooltipShowDelay="0"
+        >
+          help
+        </mat-icon>
       </div>
     </div>
     <app-loader class="loader" [isLoading]="isLoading"></app-loader>

@@ -115,9 +115,14 @@ export class NrpSolverComponent implements OnInit, OnDestroy {
   findNrpRelease(release: Release, allowSetBacklog: boolean) {
     this.loadingNRP = true;
     this.nrpUsed = false;
-    this.nrpBacklog.releaseMode = release.idrelease;
+    if (allowSetBacklog) {
+      this.nrpBacklog.setBacklogMode('release', release.idrelease);
+    } else {
+      this.nrpBacklog.setBacklogMode('otherRelease', release.idrelease);
+    }
+    //this.nrpBacklog.releaseMode = release.idrelease;
     this.nrpBacklog.resetBacklog();
-    this.nrpBacklog.allowSetBacklog = allowSetBacklog;
+    //this.nrpBacklog.allowSetBacklog = allowSetBacklog;
     this.proyectosService
       .getProyectoPbiPonderationsRelease(this.proyecto.idproyecto, release.idrelease)
       .pipe(untilDestroyed(this))
@@ -130,9 +135,10 @@ export class NrpSolverComponent implements OnInit, OnDestroy {
   findNrpAllBacklog() {
     this.loadingNRP = true;
     this.nrpUsed = false;
-    this.nrpBacklog.releaseMode = null;
+    //this.nrpBacklog.releaseMode = null;
+    this.nrpBacklog.setBacklogMode('all', null);
     this.nrpBacklog.resetBacklog();
-    this.nrpBacklog.allowSetBacklog = true;
+    //this.nrpBacklog.allowSetBacklog = true;
     this.proyectosService
       .getProyectoPbiPonderations(this.proyecto.idproyecto)
       .pipe(untilDestroyed(this))

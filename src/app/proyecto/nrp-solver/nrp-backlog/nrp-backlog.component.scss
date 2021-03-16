@@ -75,3 +75,10 @@
 ::ng-deep .icon-outside .mat-dialog-container {
   overflow: unset;
 }
+
+.help-icon {
+  vertical-align: middle;
+}
+.help-icon:hover {
+  cursor: pointer;
+}
