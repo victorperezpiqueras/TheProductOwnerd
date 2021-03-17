@@ -28,9 +28,10 @@
       fxFill
       style="background-color: rgba(255, 153, 153, 0.438);display: flex;align-items:center ;"
     >
-      <mat-icon [matTooltip]="tooltipWarning" matTooltipPosition="right" matTooltipShowDelay="500">
-        report_problem </mat-icon
-      ><span style="font-size: 0.8vw;">{{ tooltipWarning }}</span>
+      <mat-icon>
+        report_problem
+      </mat-icon>
+      <span style="font-size: 0.8vw;">{{ tooltipWarning }}</span>
       <button mat-icon-button class="close-button" (click)="closeWarning()">
         <mat-icon class="close-icon" color="warn">close</mat-icon>
       </button>
