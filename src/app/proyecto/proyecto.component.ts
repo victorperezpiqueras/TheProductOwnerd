@@ -322,7 +322,7 @@ export class ProyectoComponent implements OnInit, OnDestroy {
   }
 
   actualizarComponentes() {
-    this.tabIndex = 0;
+    //this.tabIndex = 0;
     this.changeDetectorRef.detectChanges();
 
     //this.actualizarReleases();
