@@ -162,11 +162,21 @@
                 <mat-icon>visibility</mat-icon>
               </ng-template>
 
-              <ng-template matStepperIcon="done" let-index="index" let-active="active">
+              <ng-template *ngIf="isProductOwner" matStepperIcon="done" let-index="index" let-active="active">
                 <mat-icon *ngIf="index === 0">flag</mat-icon>
                 <!-- <mat-icon *ngIf="index === 1">arrow_forward</mat-icon> -->
                 <mat-icon *ngIf="index === 1">add</mat-icon>
                 <mat-icon *ngIf="index === 2">visibility</mat-icon>
+                <ng-template #default>
+                  <mat-icon *ngIf="index === 0">flag</mat-icon>
+                </ng-template>
+              </ng-template>
+
+              <ng-template *ngIf="!isProductOwner" matStepperIcon="done" let-index="index" let-active="active">
+                <mat-icon *ngIf="index === 0">flag</mat-icon>
+                <!-- <mat-icon *ngIf="index === 1">arrow_forward</mat-icon> -->
+                <!-- <mat-icon *ngIf="index === 1">add</mat-icon> -->
+                <mat-icon *ngIf="index === 1">visibility</mat-icon>
                 <ng-template #default>
                   <mat-icon *ngIf="index === 0">flag</mat-icon>
                 </ng-template>
