@@ -218,9 +218,12 @@ export class VelocityComponent implements Grafico, OnInit, OnDestroy {
     // console.log('this.mediaAverage', this.mediaAverage);
 
     // calculamos los sprints enteros esperados:
-    var puntoFinal = this.ultimoSprint + Math.trunc(restantes / this.mediaAverage);
+    var puntoFinal = this.ultimoSprint + /* Math.trunc( */ restantes / this.mediaAverage /* ) */;
     // calculamos la proporcion del ultimo sprint esperado:
-    puntoFinal += (restantes % this.mediaAverage) / this.mediaAverage;
+    /* puntoFinal += (restantes % this.mediaAverage) / this.mediaAverage;
+    console.log(puntoFinal)
+    console.log(restantes)
+    console.log(this.mediaAverage) */
 
     this.listaAverage.push([puntoFinal /* + 1 */, 0]); // +1 due to axis starting at 1
   }
@@ -268,12 +271,12 @@ export class VelocityComponent implements Grafico, OnInit, OnDestroy {
     const restantes = this.sprints[this.ultimoSprint].restante;
 
     // generar los puntos finales:
-    var puntoFinalWorst = this.ultimoSprint + Math.trunc(restantes / this.mediaAverageWorst);
-    var puntoFinalBest = this.ultimoSprint + Math.trunc(restantes / this.mediaAverageBest);
+    var puntoFinalWorst = this.ultimoSprint + /* Math.trunc */ restantes / this.mediaAverageWorst;
+    var puntoFinalBest = this.ultimoSprint + /* Math.trunc */ restantes / this.mediaAverageBest;
 
     // calculamos la proporcion del ultimo sprint esperado:
-    puntoFinalWorst += (restantes % this.mediaAverageWorst) / this.mediaAverageWorst;
-    puntoFinalBest += (restantes % this.mediaAverageBest) / this.mediaAverageBest;
+    /* puntoFinalWorst += (restantes % this.mediaAverageWorst) / this.mediaAverageWorst;
+    puntoFinalBest += (restantes % this.mediaAverageBest) / this.mediaAverageBest; */
     // insertamos los puntos finales:
     // por si alguna media diese 0:
     if (this.mediaAverageWorst > 0) this.listaAverageWorst.push([puntoFinalWorst /* + 1 */, 0]); // +1 due to axis starting at 1
@@ -310,6 +313,8 @@ export class VelocityComponent implements Grafico, OnInit, OnDestroy {
           this.mediaAverageBest * (this.deadlineSprint - this.ultimoSprint) /* + 1 */; // +1 due to axis starting at 1
       this.puntoCorteBest.push([this.deadlineSprint, corteAverageBest]);
     }
+    console.log(this.puntoCorteAverage);
+    console.log(this.puntoCorteBest);
   }
 
   // valor calculado para limitar el rango del grafico
