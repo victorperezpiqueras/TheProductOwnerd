@@ -328,7 +328,7 @@
             </mat-list-item>
           </mat-list>
 
-          <div fxLayout="row" *ngIf="!disabled && !permisos.editarPBI == 0 && !isCreateMode">
+          <div fxLayout="row" *ngIf="!disabled && !permisos.editarPBI === 0 && !isCreateMode">
             <mat-form-field class="criterio form" appearance="outline">
               <mat-label>New Acceptance Criteria</mat-label>
               <input
@@ -336,7 +336,7 @@
                 placeholder="New Acceptance Criteria"
                 [(ngModel)]="criterioData"
                 maxlength="100"
-                [disabled]="disabled || permisos.editarPBI == 0 || isCreateMode"
+                [disabled]="disabled || permisos.editarPBI === 0 || isCreateMode"
               />
             </mat-form-field>
             <button
@@ -357,9 +357,7 @@
 
         <!-- DEPENDENCIES -->
         <div fxLayout="row">
-          <mat-card class="comments-card">
-            <mat-card-title>Dependencies</mat-card-title> </mat-card
-          ><br />
+          <mat-card class="comments-card"> <mat-card-title>Dependencies</mat-card-title> </mat-card><br />
           <mat-chip-list style="display: inline-block;margin-right: 2%;">
             <mat-chip
               *ngFor="let dep of dependencias"
@@ -435,7 +433,7 @@
             </button>
           </div>
         </div>
-        <div *ngIf="!uploadFileMode && !disabled && !permisos.editarPBI == 0 && !isCreateMode">
+        <div *ngIf="!uploadFileMode && !disabled && !permisos.editarPBI === 0 && !isCreateMode">
           <button
             class="boton-cargar-imagen"
             mat-raised-button
@@ -502,7 +500,7 @@
       </mat-card>
       <br />
       <div
-        *ngIf="!disabled && !permisos.editarPBI == 0 && !isCreateMode"
+        *ngIf="!disabled && !permisos.editarPBI === 0 && !isCreateMode"
         fxLayout="row"
         fxLayoutAlign="end end"
         style="justify-content: flex-end"
