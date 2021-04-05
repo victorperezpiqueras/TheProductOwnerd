@@ -91,7 +91,7 @@
                 <mat-select
                   [(ngModel)]="idrelease"
                   (ngModelChange)="changed()"
-                  [disabled]="disabled || permisos.editarPBI == 0"
+                  [disabled]="disabled || permisos.editarPBI == 0 || isCreateMode"
                 >
                   <mat-option
                     *ngFor="let rel of releases"
@@ -311,14 +311,24 @@
           <br />
           <mat-list role="list" *ngFor="let crit of criterios">
             <mat-list-item role="listitem">
-              <mat-checkbox class="checkbox" [(ngModel)]="crit.done" (change)="actualizarCriterio(crit)"></mat-checkbox>
-              {{ crit.nombre }}&nbsp;<mat-icon class="borrar-criterio-icon" (click)="borrarCriterio(crit)"
+              <mat-checkbox
+                class="checkbox"
+                [(ngModel)]="crit.done"
+                (change)="actualizarCriterio(crit)"
+                [disabled]="disabled || permisos.editarPBI == 0 || isCreateMode"
+              >
+              </mat-checkbox>
+              {{ crit.nombre }}&nbsp;
+              <mat-icon
+                *ngIf="!disabled && !permisos.editarPBI == 0 && !isCreateMode"
+                class="borrar-criterio-icon"
+                (click)="borrarCriterio(crit)"
                 >cancel
               </mat-icon>
             </mat-list-item>
           </mat-list>
 
-          <div fxLayout="row">
+          <div fxLayout="row" *ngIf="!disabled && !permisos.editarPBI == 0 && !isCreateMode">
             <mat-form-field class="criterio form" appearance="outline">
               <mat-label>New Acceptance Criteria</mat-label>
               <input
@@ -347,7 +357,9 @@
 
         <!-- DEPENDENCIES -->
         <div fxLayout="row">
-          <mat-card class="comments-card"> <mat-card-title>Dependencies</mat-card-title> </mat-card><br />
+          <mat-card class="comments-card">
+            <mat-card-title>Dependencies</mat-card-title> </mat-card
+          ><br />
           <mat-chip-list style="display: inline-block;margin-right: 2%;">
             <mat-chip
               *ngFor="let dep of dependencias"
@@ -423,7 +435,7 @@
             </button>
           </div>
         </div>
-        <div *ngIf="!uploadFileMode">
+        <div *ngIf="!uploadFileMode && !disabled && !permisos.editarPBI == 0 && !isCreateMode">
           <button
             class="boton-cargar-imagen"
             mat-raised-button
@@ -455,7 +467,12 @@
           <mat-list-item role="listitem">
             <mat-icon class="icon-download" (click)="descargar(ar)">cloud_download</mat-icon>
             &nbsp;&nbsp;{{ ar.nombre }} &nbsp;
-            <mat-icon class="borrar-criterio-icon" (click)="borrarArchivo(ar)">cancel</mat-icon>
+            <mat-icon
+              class="borrar-criterio-icon"
+              *ngIf="!disabled && !permisos.editarPBI == 0 && !isCreateMode"
+              (click)="borrarArchivo(ar)"
+              >cancel</mat-icon
+            >
           </mat-list-item>
         </mat-list>
 
@@ -484,7 +501,12 @@
         <mat-card-title>Comments</mat-card-title>
       </mat-card>
       <br />
-      <div fxLayout="row" fxLayoutAlign="end end" style="justify-content: flex-end">
+      <div
+        *ngIf="!disabled && !permisos.editarPBI == 0 && !isCreateMode"
+        fxLayout="row"
+        fxLayoutAlign="end end"
+        style="justify-content: flex-end"
+      >
         <mat-form-field class="description" appearance="outline">
           <mat-label>Write a comment...</mat-label>
           <textarea matInput [(ngModel)]="comentarioData" [disabled]="isCreateMode || disabled"></textarea>
