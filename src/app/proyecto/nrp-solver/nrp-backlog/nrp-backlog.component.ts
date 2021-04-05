@@ -32,6 +32,7 @@ export class NrpBacklogComponent implements OnInit, OnDestroy {
   @Output() eventBacklogSaved = new EventEmitter();
 
   pbis: Pbi[] = [];
+  allPbis: Pbi[] = [];
 
   backlogProposal: nrpAlgorithmIndividual;
 
@@ -118,6 +119,7 @@ export class NrpBacklogComponent implements OnInit, OnDestroy {
       .getProyectoPBIs(this.proyecto.idproyecto)
       .pipe(untilDestroyed(this))
       .subscribe((pbis: Pbi[]) => {
+        this.allPbis = pbis;
         this.pbis = pbis.filter((pbi: Pbi) => pbi.done == 0);
         this.calculateBacklogOrdering(backlogProposal);
         this.calculatePercentageBarStakeholders(backlogProposal, valoresStakeholders);
@@ -305,7 +307,7 @@ export class NrpBacklogComponent implements OnInit, OnDestroy {
     dialogConfig.data = {
       pbi: pbi,
       permisos: this.permisos,
-      pbis: this.pbis,
+      pbis: this.allPbis,
       sprintActual: this.proyecto.sprintActual,
       dialogMode: 'view'
     };
