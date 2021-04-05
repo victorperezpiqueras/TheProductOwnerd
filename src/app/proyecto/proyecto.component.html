@@ -163,23 +163,37 @@
               </ng-template>
 
               <ng-template *ngIf="isProductOwner" matStepperIcon="done" let-index="index" let-active="active">
-                <mat-icon *ngIf="index === 0">flag</mat-icon>
-                <!-- <mat-icon *ngIf="index === 1">arrow_forward</mat-icon> -->
-                <mat-icon *ngIf="index === 1">add</mat-icon>
-                <mat-icon *ngIf="index === 2">visibility</mat-icon>
-                <ng-template #default>
+                <span *ngIf="!currentRelease">
+                  <mat-icon *ngIf="index === 0">add</mat-icon>
+                  <mat-icon *ngIf="index === 1">visibility</mat-icon>
+                  <ng-template #default>
+                    <mat-icon *ngIf="index === 0">add</mat-icon>
+                  </ng-template>
+                </span>
+                <span *ngIf="currentRelease">
                   <mat-icon *ngIf="index === 0">flag</mat-icon>
-                </ng-template>
+                  <mat-icon *ngIf="index === 1">add</mat-icon>
+                  <mat-icon *ngIf="index === 2">visibility</mat-icon>
+                  <ng-template #default>
+                    <mat-icon *ngIf="index === 0">flag</mat-icon>
+                  </ng-template>
+                </span>
               </ng-template>
 
               <ng-template *ngIf="!isProductOwner" matStepperIcon="done" let-index="index" let-active="active">
-                <mat-icon *ngIf="index === 0">flag</mat-icon>
-                <!-- <mat-icon *ngIf="index === 1">arrow_forward</mat-icon> -->
-                <!-- <mat-icon *ngIf="index === 1">add</mat-icon> -->
-                <mat-icon *ngIf="index === 1">visibility</mat-icon>
-                <ng-template #default>
+                <span *ngIf="!currentRelease">
+                  <mat-icon *ngIf="index === 0">visibility</mat-icon>
+                  <ng-template #default>
+                    <mat-icon *ngIf="index === 0">visibility</mat-icon>
+                  </ng-template>
+                </span>
+                <span *ngIf="currentRelease">
                   <mat-icon *ngIf="index === 0">flag</mat-icon>
-                </ng-template>
+                  <mat-icon *ngIf="index === 1">visibility</mat-icon>
+                  <ng-template #default>
+                    <mat-icon *ngIf="index === 0">flag</mat-icon>
+                  </ng-template>
+                </span>
               </ng-template>
 
               <mat-step *ngIf="currentRelease" [label]="labelRelease" [completed]="true" state="current">
@@ -249,8 +263,8 @@
               <mat-step label="View all releases" [completed]="true" state="viewAll">
                 <div fxLayout="column" fxLayoutGap="10px" cdkScrollable>
                   <mat-card-title style="display: flex;align-items:center ;" class="body-2"
-                    >All releases<mat-icon>arrow_downward</mat-icon></mat-card-title
-                  >
+                    >All releases<mat-icon> arrow_downward</mat-icon>
+                  </mat-card-title>
                   <mat-card
                     *ngFor="let rel of releases"
                     [ngStyle]="{
