@@ -740,6 +740,14 @@ export class PbiDialogComponent implements OnInit, OnDestroy {
     return this.dialogMode === 'Create new PBI';
   }
 
+  get isNoPermissions(): boolean {
+    return this.permisos.editarPBI === 0;
+  }
+
+  get isDisabled(): boolean {
+    return this.disabled || this.isCreateMode;
+  }
+
   get idusuario(): number | null {
     const credentials = this.credentialsService.credentials;
     return credentials ? credentials.id : null;

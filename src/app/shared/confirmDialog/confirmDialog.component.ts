@@ -73,13 +73,13 @@ export class ConfirmDialogComponent implements OnInit {
           done: 1,
           sprint: this.sprint
         });
-        this.openSnackBar('PBI marked as done successfully!', 'Close');
+        this.openSnackBar('PBI marked as done successfully! (Save to confirm)', 'Close');
       } else if (this.dialogModeVerbo == 'unmark as done') {
         this.dialogRef.close({
           done: 0,
           sprint: null
         });
-        this.openSnackBar('PBI unmarked as done successfully!', 'Close');
+        this.openSnackBar('PBI unmarked as done successfully! (Save to confirm)', 'Close');
       }
     } else if (this.dialogMode == 'User') {
       this.dialogRef.close({

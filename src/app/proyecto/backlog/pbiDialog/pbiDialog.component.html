@@ -328,7 +328,7 @@
             </mat-list-item>
           </mat-list>
 
-          <div fxLayout="row" *ngIf="!disabled && !permisos.editarPBI === 0 && !isCreateMode">
+          <div fxLayout="row" *ngIf="!isNoPermissions && !isDisabled">
             <mat-form-field class="criterio form" appearance="outline">
               <mat-label>New Acceptance Criteria</mat-label>
               <input
@@ -433,7 +433,7 @@
             </button>
           </div>
         </div>
-        <div *ngIf="!uploadFileMode && !disabled && !permisos.editarPBI === 0 && !isCreateMode">
+        <div *ngIf="!isDisabled">
           <button
             class="boton-cargar-imagen"
             mat-raised-button
@@ -499,12 +499,7 @@
         <mat-card-title>Comments</mat-card-title>
       </mat-card>
       <br />
-      <div
-        *ngIf="!disabled && !permisos.editarPBI === 0 && !isCreateMode"
-        fxLayout="row"
-        fxLayoutAlign="end end"
-        style="justify-content: flex-end"
-      >
+      <div *ngIf="!isDisabled" fxLayout="row" fxLayoutAlign="end end" style="justify-content: flex-end">
         <mat-form-field class="description" appearance="outline">
           <mat-label>Write a comment...</mat-label>
           <textarea matInput [(ngModel)]="comentarioData" [disabled]="isCreateMode || disabled"></textarea>
