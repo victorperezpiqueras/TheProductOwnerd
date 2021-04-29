@@ -40,7 +40,7 @@ export class NrpChartComponent implements OnInit {
     this.backlogDataSelected = [];
     this.backlogList.forEach((backlog: nrpAlgorithmIndividual) => {
       if (backlog.score !== 0 && backlog.cost !== 0) {
-        this.backlogData.push([Number(backlog.score.toFixed(2)), Number(backlog.cost.toFixed(2))]);
+        this.backlogData.push([Number(backlog.cost.toFixed(2)), Number(backlog.score.toFixed(2))]);
       }
     });
   }
@@ -62,7 +62,7 @@ export class NrpChartComponent implements OnInit {
       xAxis: [
         {
           title: {
-            text: 'Value delivered to stakeholders',
+            text: 'Cost in Story Points',
             style: {
               fontSize: '16px'
             }
@@ -80,7 +80,7 @@ export class NrpChartComponent implements OnInit {
       yAxis: [
         {
           title: {
-            text: 'Cost in Story Points',
+            text: 'Value delivered to stakeholders',
             style: {
               fontSize: '16px'
             }
@@ -102,10 +102,12 @@ export class NrpChartComponent implements OnInit {
               return (
                 '<b><span style="color:' +
                 this.color +
-                '">●</span> Proposal <i>(click to select)</i></b><br><b>Value delivered: </b>' +
-                this.x +
+                '">●</span> Proposal</b><br><b>AvgValue: </b>' +
+                (this.y / (this.x + 1)).toFixed(2) +
+                '<br><b>Value delivered: </b>' +
+                this.y.toFixed(2) +
                 '</b><br><b>Cost (SPs): </b>' +
-                this.y
+                this.x.toFixed(2)
               );
             }
           },
@@ -132,10 +134,12 @@ export class NrpChartComponent implements OnInit {
               return (
                 '<b><span style="color:' +
                 this.color +
-                '">●</span> Selected Proposal</b><br><b>Value delivered: </b>' +
-                this.x +
+                '">●</span> Selected Proposal</b><br><b>AvgValue: </b>' +
+                (this.y / (this.x + 1)).toFixed(2) +
+                '<br><b>Value delivered: </b>' +
+                this.y.toFixed(2) +
                 '</b><br><b>Cost (SPs): </b>' +
-                this.y
+                this.x.toFixed(2)
               );
             }
           },
@@ -204,8 +208,8 @@ export class NrpChartComponent implements OnInit {
       console.log(backlog.cost) */
       // no se por que aqui se vuelven a poner mas de 2 decimales
       if (
-        Number(backlog.score.toFixed(2)) == this.backlogDataSelected[0][0] &&
-        Number(backlog.cost.toFixed(2)) == this.backlogDataSelected[0][1]
+        Number(backlog.cost.toFixed(2)) == this.backlogDataSelected[0][0] &&
+        Number(backlog.score.toFixed(2)) == this.backlogDataSelected[0][1]
       ) {
         backlogUpdate = backlog;
         console.log('if');
