@@ -14,7 +14,7 @@ ControllerValores.crearValor = function(valor) {
       let insertion = await connection.query(sql, array);
       resolve(insertion[0]);
     } catch (error) {
-      reject({ error: 'Error inesperado en crearValor' });
+      reject({ error: 'Error inesperado en crearValor', details: error });
     }
   });
 };

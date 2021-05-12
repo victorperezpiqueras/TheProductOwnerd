@@ -226,7 +226,8 @@ ControllerProyectos.crearProyecto = function(data) {
     try {
       let insertion = await connection.query(sql, [data.nombre, data.descripcion]);
       console.log(insertion[0]);
-      idProyecto = insertion[0].insertId;
+      projectInsertion = insertion[0];
+      idProyecto = projectInsertion.insertId;
     } catch (error) {
       /* reject({ error: 'project_name_exists' }); */
       reject({ error: 'error_creating_project' });
@@ -263,7 +264,7 @@ ControllerProyectos.crearProyecto = function(data) {
         1 */
       ]);
       console.log(insertion[0]);
-      resolve(insertion[0]);
+      resolve(projectInsertion);
     } catch (error) {
       reject({ error: 'Error al insertar los roles' });
     }
@@ -334,7 +335,7 @@ ControllerProyectos.proyectoAgregarUsuario = function(idproyecto, data) {
       }
       resolve(insertion[0]);
     } catch (error) {
-      reject({ error: 'Error inesperado en proyectoAgregarUsuario' });
+      reject({ error: 'Error inesperado en proyectoAgregarUsuario', details: error });
     }
   });
 };

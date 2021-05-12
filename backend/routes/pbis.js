@@ -57,7 +57,7 @@ router.put('/:idpbi', verifyToken, function(req, res, next) {
   )
     throw new ErrorHandler(
       422,
-      'Missing required fields: titulo,descripcion,done,label,estimacion,valor,idproyecto,prioridad,sprint, printCreacion'
+      'Missing required fields: titulo,descripcion,done,label,estimacion,valor,idproyecto,prioridad,sprint, sprintCreacion'
     );
   controllerPbis
     .editarPbi(req.params.idpbi, req.body)
