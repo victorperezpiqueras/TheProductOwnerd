@@ -171,7 +171,7 @@
                   [matTooltipDisabled]="isDragging"
                   >open_with</mat-icon
                 >
-                #{{ pbi.idpbi }} - {{ pbi.titulo }}
+                <!-- #{{ pbi.idpbi }} -  -->{{ pbi.titulo }}
               </mat-card-title>
               <div fxLayout="row" fxLayoutGap="10px" style="float:right;margin-left:auto; margin-right:0;">
                 <mat-chip-list>
@@ -221,7 +221,7 @@
           <mat-card *ngIf="pbi.done == 1" class="card mat-elevation-z9" (click)="verPbiDialog(pbi)">
             <!-- matBadge="{{ pbi.estimacion }}" matBadgeOverlap="true" matBadgeSize="medium" matBadgeColor="primary" -->
             <mat-card-header>
-              <mat-card-title>#{{ pbi.idpbi }} - {{ pbi.titulo }}</mat-card-title>
+              <mat-card-title><!-- #{{ pbi.idpbi }} -  -->{{ pbi.titulo }}</mat-card-title>
               <div fxLayout="row" fxLayoutGap="10px" style="float:right;margin-left:auto; margin-right:0;">
                 <mat-chip-list>
                   <mat-chip
