@@ -10,25 +10,28 @@
           <mat-card-title>
             Team&nbsp;
             <ng-container *ngIf="isProductOwner">
-              <mat-icon
-                class="boton-editar-equipo"
+              <button
+                mat-raised-button
+                color="primary"
                 *ngIf="!equipoEditable"
                 (click)="changeEditarEquipo()"
                 matTooltip="Unlock team edition"
                 matTooltipPosition="right"
                 matTooltipShowDelay="300"
               >
-                lock</mat-icon
-              >
-              <mat-icon
-                class="boton-editar-equipo"
+                <mat-icon class="boton-editar-equipo"> lock</mat-icon>
+              </button>
+              <button
+                mat-raised-button
+                color="primary"
                 *ngIf="equipoEditable"
                 (click)="changeEditarEquipo()"
                 matTooltip="Lock team edition"
                 matTooltipPosition="right"
                 matTooltipShowDelay="300"
-                >lock_open
-              </mat-icon>
+              >
+                <mat-icon class="boton-editar-equipo">lock_open </mat-icon>
+              </button>
             </ng-container>
           </mat-card-title>
 
