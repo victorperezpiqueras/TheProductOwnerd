@@ -63,7 +63,7 @@ export class ProyectoComponent implements OnInit, OnDestroy {
   showingGoal: SprintGoal;
   sprintGoal: string;
 
-  @ViewChild('stepper', { static: false }) private myStepper: MatStepper;
+  @ViewChild('releasesStepper', { static: false }) private releasesStepper: MatStepper;
   releases: Release[];
   currentRelease: Release;
   currentReleaseSPs: number;
@@ -207,6 +207,7 @@ export class ProyectoComponent implements OnInit, OnDestroy {
         this.reiniciarCampos();
         this.actualizarReleases();
         this.actualizarComponentes();
+        this.releasesStepper.selectedIndex = 2;
       });
   }
 
