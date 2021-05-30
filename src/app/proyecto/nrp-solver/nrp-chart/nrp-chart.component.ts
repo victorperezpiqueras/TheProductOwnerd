@@ -102,7 +102,7 @@ export class NrpChartComponent implements OnInit {
               return (
                 '<b><span style="color:' +
                 this.color +
-                '">●</span> Proposal</b><br><b>AvgValue: </b>' +
+                '">●</span> Proposal</b><i> (Click to select)</i><br><b>AvgValue: </b>' +
                 (this.y / (this.x + 1)).toFixed(2) +
                 '<br><b>Value delivered: </b>' +
                 this.y.toFixed(2) +
