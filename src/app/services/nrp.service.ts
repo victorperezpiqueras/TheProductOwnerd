@@ -21,6 +21,6 @@ export class NrpService {
    * Calcula el nrp de un proyecto
    */
   calculateNrp(data: any): Observable<any> {
-    return this.http.post<any>(this.url + '/calculateGeneticNDS', JSON.stringify(data), httpOptions); //calculateNSGAII
+    return this.http.post<any>(this.url + '/calculateNSGAII', JSON.stringify(data), httpOptions); // calculateGeneticNDS
   }
 }
